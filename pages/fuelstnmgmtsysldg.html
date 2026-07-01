@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa Fuel Station Management | Cloud-Based Petrol Pump Accounting & Inventory</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+HEROPESA ERP THEME - ENTERPRISE PROFESSIONAL
+========================================= */
+
+/* Material Design Google Color Accents */
+.color-blue { color: #1a73e8 !important; }
+.color-red { color: #ea4335 !important; }
+.color-yellow { color: #fbbc05 !important; }
+.color-green { color: #34a853 !important; }
+.bg-blue-light { background-color: rgba(26, 115, 232, 0.08) !important; border-color: rgba(26, 115, 232, 0.3) !important; color: #1a73e8 !important; }
+.bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
+.bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
+.bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
+
+:root {
+--primary: #1a73e8;
+--primary-hover: #1557b0;
+--primary-accent: #1a73e8;
+--bg-body: #ffffff;
+--bg-alt: #f8f9fa;
+--bg-dark: #ffffff;
+--text-main: #202124;
+--text-secondary: #5f6368;
+--text-muted: #70757a;
+--border: #dadce0;
+--border-hover: #bdc1c6;
+--shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+--shadow-md: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+--shadow-lg: 0 4px 6px 0 rgba(60,64,67,0.3), 0 8px 16px 6px rgba(60,64,67,0.15);
+--radius-sm: 4px;
+--radius-md: 4px;
+--radius-lg: 8px;
+--radius-xl: 16px;
+--transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+--font-main: 'Inter', system-ui, -apple-system, sans-serif;
+--container: 1200px;
+--header-height: 72px;
+}
+/* =========================================
+RESET & BASE
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-main); color: var(--text-main); line-height: 1.65; background: var(--bg-body); overflow-x: hidden; }
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, select, textarea { font-family: inherit; border: none; outline: none; background: none; }
+::selection { background: var(--primary); color: #fff; }
+/* =========================================
+UTILITIES
+========================================= */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; position: relative; }
+.section-header { text-align: center; max-width: 700px; margin: 0 auto 56px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } .section-header h2 { font-size: 1.75rem; } }
+/* =========================================
+IMAGE PLACEHOLDERS
+========================================= */
+.img-placeholder {
+background: var(--bg-alt);
+border: 1px solid var(--border);
+border-radius: var(--radius-lg);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+font-size: 0.85rem;
+position: relative;
+overflow: hidden;
+transition: border-color var(--transition);
+}
+.img-placeholder:hover { border-color: var(--primary); }
+.img-placeholder::before {
+content: '\f03e';
+font-family: 'Font Awesome 6 Free';
+font-weight: 900;
+font-size: 1.75rem;
+margin-bottom: 10px;
+display: block;
+color: var(--primary);
+opacity: 0.7;
+}
+.img-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.img-hero { min-height: 420px; border-radius: var(--radius-xl); }
+.img-card { min-height: 200px; }
+.img-sm { min-height: 140px; border-radius: var(--radius-md); }
+/* =========================================
+BUTTONS
+========================================= */
+.btn {
+display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+padding: 14px 28px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem;
+cursor: pointer; transition: all var(--transition); border: 1.5px solid transparent;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-primary:active { transform: translateY(0); }
+.btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--bg-alt); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { color: var(--text-main); }
+.btn-sm { padding: 10px 20px; font-size: 0.9rem; }
+/* =========================================
+HEROPESA HEADER STYLES - START
+========================================= */
+.heropesa-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, #4285f4 25%, #ea4335 25%, #ea4335 50%, #fbbc05 50%, #fbbc05 75%, #34a853 75%) 1;
+  border-bottom: 1px solid var(--border, #e5e5e5); z-index: 1000;
+  transition: all var(--transition);
+}
+.heropesa-header.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.04));
+  border-bottom-color: var(--border-hover, #cccccc);
+}
+.nav-wrapper { 
+  display: flex; align-items: center; justify-content: space-between; height: 100%; 
+  position: relative; /* Added for mega menu centering */
+}
+.logo { font-size: 1.35rem; font-weight: 700; color: var(--text-main, #0a0a0a); display: flex; align-items: center; gap: 8px; }
+.logo-accent { color: var(--primary, #0a0a0a); }
+
+/* Primary Nav */
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-item { /* Removed position: relative to allow mega menu to center relative to nav-wrapper */ }
+.nav-item > a {
+  font-weight: 500; font-size: 0.9rem; color: var(--text-secondary, #555555);
+  position: relative; padding: 4px 0; display: flex; align-items: center; gap: 4px;
+}
+.nav-item > a:hover { color: var(--text-main, #0a0a0a); }
+.nav-item > a::after {
+  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
+  background: var(--primary, #0a0a0a); transition: width var(--transition);
+}
+.nav-item > a:hover::after { width: 100%; }
+.nav-item .chevron { font-size: 0.65rem; opacity: 0.7; transition: transform 0.2s var(--transition); }
+.nav-item:hover .chevron { transform: rotate(180deg); }
+
+/* Mega Menu - FIXED: Centered relative to viewport/header */
+.mega-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 1000px; max-width: 95vw; background: #fff; border: 1px solid var(--border, #e5e5e5);
+  border-radius: var(--radius-lg, 12px); padding: 32px; box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.08));
+  display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 24px;
+  opacity: 0; visibility: hidden; transition: all 0.25s var(--transition);
+  z-index: 999; pointer-events: none;
+}
+.nav-item:hover .mega-menu {
+  opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.mega-menu h6 {
+  font-size: 0.75rem; font-weight: 600; color: var(--text-heading, #0a0a0a);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+}
+.mega-menu ul { list-style: none; padding: 0; margin: 0; }
+.mega-menu li { margin-bottom: 8px; }
+.mega-menu a {
+  font-size: 0.85rem; color: var(--text-secondary, #555555); display: block; padding: 2px 0;
+  transition: color var(--transition), padding-left var(--transition);
+}
+.mega-menu a:hover { color: var(--primary, #0a0a0a); padding-left: 4px; }
+
+/* Utility Actions & Buttons - FIXED for Desktop */
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-actions .btn { 
+  padding: 10px 24px; 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+}
+.nav-actions .btn-ghost {
+  border: 1.5px solid var(--border);
+  color: var(--text-main);
+}
+.nav-actions .btn-ghost:hover { 
+  border-color: var(--primary); 
+  background: var(--bg-light); 
+}
+.nav-actions .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border: 1.5px solid var(--primary);
+}
+.nav-actions .btn-primary:hover { 
+  background: var(--primary-hover); 
+  border-color: var(--primary-hover);
+  transform: translateY(-1px); 
+  box-shadow: var(--shadow-md); 
+}
+
+/* Functional Header Search Bar */
+.header-search {
+  display: flex;
+  align-items: center;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  transition: all var(--transition);
+}
+.header-search:focus-within {
+  border-color: var(--primary);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.05);
+}
+.header-search input {
+  background: transparent;
+  border: none;
+  padding: 10px 0;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  width: 160px;
+  outline: none;
+}
+.header-search input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Mobile Toggle */
+.mobile-toggle { display: none; font-size: 1.25rem; cursor: pointer; color: var(--text-main, #0a0a0a); }
+
+/* Mobile Nav Actions (Hidden on Desktop) */
+.mobile-nav-actions { display: none; }
+
+/* Responsive Header */
+@media (max-width: 1200px) {
+  .mega-menu { width: 900px; grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1024px) {
+  .nav-links { 
+    display: none; 
+    flex-direction: column; 
+    position: absolute; 
+    top: var(--header-height);
+    left: 0; 
+    width: 100%; 
+    background: #fff; 
+    padding: 24px; 
+    border-bottom: 1px solid var(--border, #e5e5e5);
+    gap: 16px; 
+    animation: slideDown 0.25s ease; 
+    box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+  }
+  .nav-links.active { display: flex; }
+  
+  .nav-links.active .nav-item { width: 100%; }
+  .nav-links.active .mega-menu {
+    position: static; transform: none; width: 100%; opacity: 1; visibility: visible;
+    box-shadow: none; border: none; padding: 16px 0 0 0; grid-template-columns: 1fr;
+    pointer-events: auto; display: block;
+  }
+  .mega-menu h6 { margin-top: 16px; }
+  
+  .nav-actions .desktop-only { display: none; }
+  .nav-actions .nav-btn-login,
+  .nav-actions .nav-btn-demo { display: none; }
+  
+  .mobile-nav-actions {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .nav-links.active .mobile-nav-actions { display: flex; }
+  .mobile-nav-actions .btn {
+    width: 100%;
+    text-align: center;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    justify-content: center;
+  }
+
+  .mobile-toggle { display: block; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+}
+@media (max-width: 768px) {
+  .mega-menu { width: 100%; }
+  .nav-actions { gap: 8px; }
+}
+/* HEROPESA HEADER STYLES - END */
+/* =========================================
+HERO SECTION
+========================================= */
+.hero {
+padding-top: calc(var(--header-height) + 40px); padding-bottom: 72px;
+background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-body) 100%);
+}
+.hero-content { text-align: center; max-width: 800px; margin: 0 auto; }
+.hero-content h1 {
+font-size: 2.75rem; font-weight: 700; line-height: 1.15; margin-bottom: 20px;
+letter-spacing: -0.8px; color: var(--text-main);
+}
+.hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 650px; margin-left: auto; margin-right: auto; }
+.hero-stats { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-alt); padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px; }
+.hero-stats i { color: var(--primary); }
+.hero-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+.hero-trust { display: flex; justify-content: center; align-items: center; gap: 20px; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; }
+@media (max-width: 768px) {
+.hero-content h1 { font-size: 2.1rem; }
+.hero-content p { font-size: 1.05rem; }
+}
+/* =========================================
+AI ADVANTAGE SECTION
+========================================= */
+.ai-section { background: var(--bg-body); }
+.ai-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.ai-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
+.ai-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
+.ai-features li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; font-size: 0.95rem; color: var(--text-secondary); }
+.ai-features li i { color: var(--primary); margin-top: 4px; font-size: 0.9rem; }
+.testimonial-mini {
+background: var(--bg-alt); padding: 24px; border-radius: var(--radius-lg);
+border-left: 3px solid var(--primary); margin-top: 24px;
+}
+.testimonial-mini p { font-size: 0.95rem; font-style: italic; color: var(--text-main); margin-bottom: 12px; }
+.testimonial-mini .author { font-size: 0.85rem; color: var(--text-secondary); }
+.testimonial-mini .author strong { color: var(--text-main); font-weight: 600; }
+@media (max-width: 900px) { .ai-layout { grid-template-columns: 1fr; } }
+/* =========================================
+BENEFITS SECTION
+========================================= */
+.benefits-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.benefit-card {
+background: #fff; padding: 28px; border-radius: var(--radius-lg);
+border: 1px solid var(--border); transition: all var(--transition);
+}
+.benefit-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.benefit-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 14px; }
+.benefit-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.benefit-card p { font-size: 0.92rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .benefits-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .benefits-grid { grid-template-columns: 1fr; } }
+/* =========================================
+FEATURES SECTION
+========================================= */
+.features-section { background: var(--bg-body); }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card {
+background: var(--bg-alt); padding: 24px; border-radius: var(--radius-lg);
+border: 1px solid var(--border); transition: all var(--transition);
+display: flex; flex-direction: column; height: 100%;
+}
+.feature-card:hover { border-color: var(--primary); }
+.feature-card h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.feature-card h4 i { color: var(--primary); }
+.feature-card p { font-size: 0.9rem; color: var(--text-secondary); flex-grow: 1; }
+@media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+/* =========================================
+CHALLENGES SECTION
+========================================= */
+.challenges-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.challenges-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; align-items: center; }
+.challenges-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; }
+.challenges-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
+.challenge-item {
+background: #fff; padding: 20px; border-radius: var(--radius-md);
+border: 1px solid var(--border); margin-bottom: 16px;
+}
+.challenge-item h5 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.challenge-item h5 i { color: var(--primary); }
+.challenge-item p { font-size: 0.9rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .challenges-grid { grid-template-columns: 1fr; } }
+/* =========================================
+SUITE SUCCESS SECTION
+========================================= */
+.success-section { background: var(--bg-body); }
+.success-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.success-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
+.success-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
+.success-steps { counter-reset: step; }
+.success-step {
+display: flex; gap: 16px; margin-bottom: 24px; position: relative; padding-left: 48px;
+}
+.success-step::before {
+counter-increment: step; content: counter(step);
+position: absolute; left: 0; top: 0;
+width: 32px; height: 32px; border-radius: 50%;
+background: var(--primary); color: #fff;
+display: flex; align-items: center; justify-content: center;
+font-weight: 600; font-size: 0.9rem;
+}
+.success-step h5 { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+.success-step p { font-size: 0.92rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .success-layout { grid-template-columns: 1fr; } }
+/* =========================================
+PRICING SECTION
+========================================= */
+.pricing-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.pricing-card {
+background: #fff; border-radius: var(--radius-xl); border: 1px solid var(--border);
+padding: 40px; max-width: 700px; margin: 0 auto; box-shadow: var(--shadow-md);
+}
+.pricing-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; text-align: center; }
+.pricing-card > p { text-align: center; color: var(--text-secondary); margin-bottom: 32px; }
+.pricing-components { margin-bottom: 32px; }
+.pricing-component {
+display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; padding-bottom: 16px;
+border-bottom: 1px solid var(--border);
+}
+.pricing-component:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.pricing-component i { color: var(--primary); font-size: 1.1rem; margin-top: 2px; }
+.pricing-component h5 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.pricing-component p { font-size: 0.9rem; color: var(--text-secondary); }
+.pricing-note { font-size: 0.85rem; color: var(--text-muted); text-align: center; line-height: 1.5; }
+/* =========================================
+RESOURCES SECTION
+========================================= */
+.resources-section { background: var(--bg-body); }
+.resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.resource-card {
+background: var(--bg-alt); padding: 24px; border-radius: var(--radius-lg);
+border: 1px solid var(--border); transition: all var(--transition);
+display: flex; align-items: center; gap: 16px;
+}
+.resource-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.resource-card i { font-size: 1.5rem; color: var(--primary); }
+.resource-card h5 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.resource-card p { font-size: 0.9rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .resources-grid { grid-template-columns: 1fr; } }
+/* =========================================
+CTA BANNER
+========================================= */
+.cta-banner {
+background: var(--primary); color: #fff; text-align: center;
+padding: 72px 0; position: relative; overflow: hidden;
+}
+.cta-banner h3 { font-size: 2rem; font-weight: 700; margin-bottom: 14px; }
+.cta-banner p { font-size: 1.05rem; opacity: 0.95; margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-banner .btn-outline { border-color: rgba(255,255,255,0.3); color: #fff; }
+.cta-banner .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+/* =========================================
+HEROPESA FOOTER STYLES - START
+========================================= */
+.heropesa-footer { background: #fff; padding: 72px 0 32px; border-top: 1px solid var(--border, #e5e5e5); }
+.footer-grid { display: grid; grid-template-columns: 1.8fr repeat(6, 1fr); gap: 32px; margin-bottom: 48px; }
+.footer-brand p { color: var(--text-secondary, #555555); margin: 14px 0 18px; font-size: 0.9rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 10px; }
+.social-icons a {
+width: 36px; height: 36px; border-radius: 50%; background: var(--bg-alt, #f8f9fa);
+border: 1px solid var(--border, #e5e5e5); display: flex; align-items: center; justify-content: center;
+color: var(--text-muted, #888888); transition: all var(--transition);
+}
+.social-icons a:hover { background: var(--primary, #0a0a0a); border-color: var(--primary, #0a0a0a); color: #fff; }
+.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; color: var(--text-main, #0a0a0a); }
+.footer-col ul li { margin-bottom: 9px; }
+.footer-col ul li a { color: var(--text-secondary, #555555); font-size: 0.82rem; }
+.footer-col ul li a:hover { color: var(--primary, #0a0a0a); }
+.footer-bottom {
+border-top: 1px solid var(--border, #e5e5e5); padding-top: 24px; display: flex;
+justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted, #888888);
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--primary, #0a0a0a); }
+@media (max-width: 1200px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+.footer-grid { grid-template-columns: repeat(2, 1fr); }
+.footer-col:nth-child(n+4) { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+.footer-grid { grid-template-columns: 1fr; }
+.footer-col:nth-child(n+4) { grid-column: span 1; }
+.footer-bottom { flex-direction: column; text-align: center; }
+.footer-links { justify-content: center; }
+}
+/* HEROPESA FOOTER STYLES - END */
+/* =========================================
+ANIMATIONS (Subtle, Professional)
+========================================= */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.value-card, .benefit-card, .feature-card, .resource-card { will-change: transform; }
+.btn:active { transform: scale(0.98); }
+@media (max-width: 480px) {
+.section { padding: 64px 0; }
+.btn { width: 100%; justify-content: center; }
+.hero-actions { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+<!-- HEROPESA ECOSYSTEM HEADER - DO NOT MODIFY STRUCTURE -->
+<header id="navbar" class="heropesa-header">
+<div class="container nav-wrapper">
+<a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+<nav class="nav-links" id="navLinks">
+<div class="nav-item">
+<a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Core Platforms</h6><ul>
+<li><a href="/erp.html">Enterprise ERP</a></li>
+<li><a href="/accounting.html">Accounting Software</a></li>
+<li><a href="/crm.html">CRM & Sales</a></li>
+<li><a href="/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/inventory.html">Inventory Control</a></li>
+</ul></div>
+<div><h6>Operations</h6><ul>
+<li><a href="/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pos.html">Point of Sale</a></li>
+<li><a href="/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/marketing-auto.html">Marketing Automation</a></li>
+</ul></div>
+<div><h6>Industry Solutions</h6><ul>
+<li><a href="/manufacturing.html">Manufacturing</a></li>
+<li><a href="/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/education.html">Education Platform</a></li>
+<li><a href="/retail.html">Retail & Commerce</a></li>
+</ul></div>
+<div><h6>AI & Automation</h6><ul>
+<li><a href="/ai-support.html">AI Customer Support</a></li>
+<li><a href="/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/ai-workflows.html">AI Workflows</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>By Industry</h6><ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+</ul></div>
+<div><h6>By Use Case</h6><ul>
+<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+<li><a href="/solutions/scaling.html">Global Scaling</a></li>
+<li><a href="/solutions/automation.html">Process Automation</a></li>
+</ul></div>
+<div><h6>By Company Size</h6><ul>
+<li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+</ul></div>
+<div><h6>Migration & Integration</h6><ul>
+<li><a href="/migration.html">Legacy System Migration</a></li>
+<li><a href="/integrations.html">Third-Party Integrations</a></li>
+<li><a href="/api.html">API & Webhooks</a></li>
+<li><a href="/implementation.html">Implementation Services</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Documentation</h6><ul>
+<li><a href="/docs.html">API Documentation</a></li>
+<li><a href="/guides.html">Business Guides</a></li>
+<li><a href="/glossary.html">Solutions Glossary</a></li>
+<li><a href="/help.html">Help Center</a></li>
+</ul></div>
+<div><h6>Learning</h6><ul>
+<li><a href="/demos.html">Product Demos</a></li>
+<li><a href="/stories.html">Customer Stories</a></li>
+<li><a href="/webinars.html">Webinars & Events</a></li>
+<li><a href="/education.html">Education Services</a></li>
+</ul></div>
+<div><h6>Technical</h6><ul>
+<li><a href="/sdks.html">SDKs & Libraries</a></li>
+<li><a href="/status.html">System Status</a></li>
+<li><a href="/changelog.html">Changelog</a></li>
+<li><a href="/sandbox.html">Developer Sandbox</a></li>
+</ul></div>
+<div><h6>Trust & Security</h6><ul>
+<li><a href="/security.html">Security Compliance</a></li>
+<li><a href="/trust.html">Trust Center</a></li>
+<li><a href="/privacy.html">Privacy Policy</a></li>
+<li><a href="/responsible-ai.html">Responsible AI</a></li>
+</ul></div>
+</div>
+</div>
+<a href="/partners.html">Partners</a>
+<a href="#pricing">Pricing</a>
+
+<!-- Mobile-only actions placed inside nav-links for proper mobile display -->
+<div class="mobile-nav-actions">
+  <a href="/login.html" class="btn btn-ghost">Log in</a>
+  <a href="#demo" class="btn btn-primary">Request Demo</a>
+</div>
+</nav>
+<div class="nav-actions">
+<!-- Functional Search Bar replacing Language Selector -->
+<div class="header-search desktop-only">
+    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); margin-right: 8px;"></i>
+    <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+</div>
+<a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+<i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+</div>
+</div>
+</header>
+<!-- END HEROPESA HEADER -->
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+<div class="hero-content reveal">
+<div class="hero-stats"><i class="fa-solid fa-gas-pump"></i> Trusted by fuel stations across Africa</div>
+<h1>Cloud-Based Fuel Station Accounting & Inventory Management</h1>
+<p>Our Fuel Station Management System comes with an abundance of cutting-edge features. Cloud-based management, real-time access on the go, easy customization, HR/payroll, and forecourt automation designed to help you optimize your petrol station operations in Africa.</p>
+<div class="hero-actions">
+<a href="#demo" class="btn btn-primary">Request Demo <i class="fa-solid fa-arrow-right"></i></a>
+<a href="#features" class="btn btn-outline">Download Brochure</a>
+</div>
+<div class="hero-trust">
+<span><i class="fa-solid fa-check-circle"></i> Real-time forecourt automation</span>
+<span><i class="fa-solid fa-check-circle"></i> Cloud-based accounting</span>
+<span><i class="fa-solid fa-check-circle"></i> GPRS vehicle tracking</span>
+</div>
+</div>
+<div class="img-placeholder img-hero reveal" style="margin-top: 48px;">
+<span>Codelab FMS & Petrosoft System Dashboard Overview Placeholder</span>
+</div>
+</div>
+</section>
+
+<!-- CORE CAPABILITIES -->
+<section class="section ai-section">
+<div class="container">
+<div class="ai-layout">
+<div class="reveal">
+<h3>Optimize Your Fuel Station with Intelligent Automation</h3>
+<p>The Fuel Station Management Software combines several functions like monitoring of fuel sales, stock control, and accounting. Station owners can constantly monitor fuel stock and have comprehensive data about sales. It allows for easier billing and reporting, cutting down on mistakes and time spent on manual processes.</p>
+<ul class="ai-features">
+<li><i class="fa-solid fa-circle-check color-green"></i> Real-Time Full Round Management</li>
+<li><i class="fa-solid fa-circle-check color-green"></i> Automated Billing & Accounting</li>
+<li><i class="fa-solid fa-circle-check color-green"></i> Forecourt Controller Integrations</li>
+<li><i class="fa-solid fa-circle-check color-green"></i> GPRS Vehicle Tracking & Fuel Monitoring</li>
+</ul>
+<div class="testimonial-mini">
+<p>"Automating tasks like sales recording, billing, and accounting reduces errors, improves inventory management, saves time, and enhances customer satisfaction. Ultimately, it is a valuable tool for fuel stations to increase profitability and efficiency."</p>
+<div class="author"><strong>Petrosoft Operational Review</strong>, Fuel Retail Industry Summary</div>
+</div>
+</div>
+<div class="reveal reveal-delay-1">
+<div class="img-placeholder img-card">
+<span>Forecourt Automation & Cloud Dashboard Placeholder</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section benefits-section" id="benefits">
+<div class="container">
+<div class="section-header reveal">
+<h2>Benefits of Using Fuel Station Management Software</h2>
+<p>Optimize your parameters, streamline daily processing steps, and track operations transparently.</p>
+</div>
+<div class="benefits-grid">
+<div class="benefit-card reveal">
+<i class="fa-solid fa-shield-halved color-blue"></i>
+<h4>Reduce Fuel Theft & Fraud</h4>
+<p>Tracks every transaction in real time, ensuring accurate records of fuel sales and inventory levels with alerts for unusual actions.</p>
+</div>
+<div class="benefit-card reveal reveal-delay-1">
+<i class="fa-solid fa-file-invoice-dollar"></i>
+<h4>Billing & Accounting</h4>
+<p>Automates transaction recording, invoice generation, and payment tracking, reducing manual errors and providing accurate financial reports.</p>
+</div>
+<div class="benefit-card reveal reveal-delay-2">
+<i class="fa-solid fa-boxes-stacked"></i>
+<h4>Inventory Management</h4>
+<p>Provides real-time tracking of fuel levels and other stock, monitoring sales patterns for better inventory planning and reduced waste.</p>
+</div>
+<div class="benefit-card reveal">
+<i class="fa-solid fa-chart-line"></i>
+<h4>Sales Management</h4>
+<p>Records every transaction in real time, identifies trends, handles promotions, and optimizes sales processes to enhance overall revenue.</p>
+</div>
+<div class="benefit-card reveal reveal-delay-1">
+<i class="fa-solid fa-face-smile"></i>
+<h4>Customer Satisfaction</h4>
+<p>Enables faster transactions, reduces wait times, ensures accurate billing, and manages loyalty programs to maintain customer flow.</p>
+</div>
+<div class="benefit-card reveal reveal-delay-2">
+<i class="fa-solid fa-eye"></i>
+<h4>Day-to-Day Visibility</h4>
+<p>Offers real-time updates on fuel levels, sales data, inventory status, and financial records for informed decision-making.</p>
+</div>
+<div class="benefit-card reveal">
+<i class="fa-solid fa-file-lines"></i>
+<h4>Automatic Report Generation</h4>
+<p>Automatically produces sales, inventory, and financial reports, making it easier to get relevant information for better decision-making.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-section" id="features">
+<div class="container">
+<div class="section-header reveal">
+<h2>CODELAB-FMS™ Core Capabilities</h2>
+<p>World-class petrol station management customized for domestic and international clients, based on global petroleum industry guidelines.</p>
+</div>
+<div class="features-grid">
+<div class="feature-card reveal">
+<h4><i class="fa-solid fa-cloud"></i> Cloud Accounting & Inventory</h4>
+<p>Cloud-based accounting and inventory software with real-time data access from anywhere on a secured dedicated server.</p>
+</div>
+<div class="feature-card reveal reveal-delay-1">
+<h4><i class="fa-solid fa-gears"></i> Forecourt Automation</h4>
+<p>Supports 100+ dispenser brands and 30+ ATG systems. Get real-time meter readings and control dispensers remotely.</p>
+</div>
+<div class="feature-card reveal reveal-delay-2">
+<h4><i class="fa-solid fa-truck-fast"></i> GPRS Vehicle Tracking</h4>
+<p>Monitor fleet fuel usage, detect syphoning, and track vehicle location with advanced digital fuel sensors.</p>
+</div>
+<div class="feature-card reveal">
+<h4><i class="fa-solid fa-gauge-high"></i> Personalised Dashboards</h4>
+<p>Custom dashboards for station owners and dedicated portals for credit customers to track statements and payments.</p>
+</div>
+<div class="feature-card reveal reveal-delay-1">
+<h4><i class="fa-solid fa-users"></i> HR & Payroll Management</h4>
+<p>Track employee working hours, manage staff salaries, and streamline HR operations seamlessly.</p>
+</div>
+<div class="feature-card reveal reveal-delay-2">
+<h4><i class="fa-solid fa-chart-pie"></i> Analytical Reports</h4>
+<p>Automatic generation of nozzle-wise, location-wise, item-wise, and month-wise sales and stock reports.</p>
+</div>
+<div class="feature-card reveal">
+<h4><i class="fa-solid fa-comment-sms"></i> SMS Notifications</h4>
+<p>Automated SMS alerts for cash and credit sales, payment receipts, delayed payments, and even birthdays.</p>
+</div>
+<div class="feature-card reveal reveal-delay-1">
+<h4><i class="fa-solid fa-landmark"></i> Financial Accounts</h4>
+<p>Comprehensive ledger, cash, and bank accounts with bank reconciliation and cost accounting features.</p>
+</div>
+<div class="feature-card reveal reveal-delay-2">
+<h4><i class="fa-solid fa-clipboard-list"></i> Stock Report Features</h4>
+<p>Item-wise, value-wise, and location-wise stock reports with closing stock calculations as per purchase or sale rate.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CHALLENGES -->
+<section class="section challenges-section" id="challenges">
+<div class="container">
+<div class="challenges-grid">
+<div class="reveal reveal-delay-1">
+<div class="img-placeholder img-card">
+<span>Fuel Station Challenge Resolution Workflow Placeholder</span>
+</div>
+</div>
+<div class="reveal">
+<h3>Challenges Heropesa Fuel Station Management Solves</h3>
+<p>Overcome the most common obstacles facing modern fuel retail operations with intelligent, integrated solutions.</p>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-user-ninja"></i> Fuel Theft & Syphoning</h5>
+<p>Detect fraud by capturing actual fuel volume filled vs. receipt and protect against all methods of fuel syphoning, including via return pipe.</p>
+</div>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-calculator"></i> Manual Billing Errors</h5>
+<p>Eliminate mistakes in nozzle reading, rate history, and credit billing with automated, error-proof billing software.</p>
+</div>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-eye-slash"></i> Lack of Real-Time Visibility</h5>
+<p>Gain instant, centralized visibility into forecourt sales, tank levels, and financial records from any internet-enabled device.</p>
+</div>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-database"></i> Inventory Shrinkage</h5>
+<p>Monitor tank-wise stock, purchase rates, and sale rates to prevent waste and ensure optimal product availability.</p>
+</div>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-car-burst"></i> Fleet Fuel Fraud</h5>
+<p>Discourage drivers from freewheeling and fuel theft with digital fuel monitoring sensors and GPRS tracking.</p>
+</div>
+<div class="challenge-item">
+<h5><i class="fa-solid fa-handshake-angle"></i> Complex Credit Management</h5>
+<p>Streamline credit billing, statement generation, and payment receipts with a personalised portal for credit customers.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- SUCCESS / IMPLEMENTATION -->
+<section class="section success-section" id="suite-success">
+<div class="container">
+<div class="success-layout">
+<div class="reveal">
+<h3>Your Proven Path to Fuel Station Digital Transformation</h3>
+<p>Leveraging years of experience working with fuel stations across Africa, our implementation methodology helps customers transform their operations with faster time-to-value, better ROI, and greater staff adoption.</p>
+<div class="success-steps">
+<div class="success-step">
+<div>
+<h5>Forecourt & Tank Automation</h5>
+<p>Easy installation of forecourt controllers and ATG systems, supporting simultaneous operation with 50+ dispensers and 50 tanks.</p>
+</div>
+</div>
+<div class="success-step">
+<div>
+<h5>Cloud Platform Configuration</h5>
+<p>Tailored setup of cloud-based accounting, inventory, and HR/payroll modules to match your station's specific workflows.</p>
+</div>
+</div>
+<div class="success-step">
+<div>
+<h5>Continuous Optimization & Support</h5>
+<p>Ongoing guidance, real-time monitoring, and 24/7 emergency support to maximize your station's profitability.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="reveal reveal-delay-1">
+<div class="img-placeholder img-card">
+<span>Fuel Station Implementation Journey Placeholder</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PRICING -->
+<section class="section pricing-section" id="pricing">
+<div class="container">
+<div class="section-header reveal">
+<h2>Transparent, Scalable Fuel Station Pricing</h2>
+<p>Flexible licensing designed to grow with your business—from single-site petrol pumps to multi-location fuel retail networks.</p>
+</div>
+<div class="pricing-card reveal">
+<h3>How Heropesa Fuel Station Management is Priced</h3>
+<p>Companies of every size run their operations on Heropesa. Your subscription includes everything you need to start tracking and optimizing, with the flexibility to scale as your network grows.</p>
+<div class="pricing-components">
+<div class="pricing-component">
+<i class="fa-solid fa-cube"></i>
+<div>
+<h5>Core FMS Platform</h5>
+<p>Access to cloud-based accounting, inventory, sales management, and automated reporting.</p>
+</div>
+</div>
+<div class="pricing-component">
+<i class="fa-solid fa-microchip"></i>
+<div>
+<h5>Forecourt Hardware Integration</h5>
+<p>Seamless integration with over 100 brands of dispensers and 30+ ATG systems and probes.</p>
+</div>
+</div>
+<div class="pricing-component">
+<i class="fa-solid fa-users"></i>
+<div>
+<h5>Station & User Licenses</h5>
+<p>Scale your access with flexible tiers for station owners, managers, cashiers, and credit customer portals.</p>
+</div>
+</div>
+</div>
+<p class="pricing-note">A one-time implementation fee covers initial hardware provisioning, software configuration, and team training. As a cloud platform, it eliminates upfront IT costs and delivers continuous updates.</p>
+<div style="text-align: center; margin-top: 32px;">
+<a href="#demo" class="btn btn-primary">Get Custom Pricing</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- RESOURCES -->
+<section class="section resources-section" id="resources">
+<div class="container">
+<div class="section-header reveal">
+<h2>Learn More About Heropesa Fuel Station Management</h2>
+<p>Access specifications, customer stories, and expert insights to inform your fuel retail technology decisions.</p>
+</div>
+<div class="resources-grid">
+<a href="#" class="resource-card reveal">
+<i class="fa-solid fa-book"></i>
+<div>
+<h5>Fuel Management Guides</h5>
+<p>Expert insights on daily fuel reconciliation, inventory tips, and stopping petrol pump theft.</p>
+</div>
+</a>
+<a href="#" class="resource-card reveal reveal-delay-1">
+<i class="fa-solid fa-users"></i>
+<div>
+<h5>Customer Success Stories</h5>
+<p>See how fuel stations across Africa transformed operations and cut losses with our software.</p>
+</div>
+</a>
+<a href="#" class="resource-card reveal reveal-delay-2">
+<i class="fa-solid fa-play-circle"></i>
+<div>
+<h5>Product Demos</h5>
+<p>Watch guided tours of forecourt automation, GPRS tracking, and cloud accounting in action.</p>
+</div>
+</a>
+<a href="#" class="resource-card reveal">
+<i class="fa-solid fa-newspaper"></i>
+<div>
+<h5>Industry Blogs & Insights</h5>
+<p>Stay updated on fuel retail trends, operational challenges, and digital transformation strategies.</p>
+</div>
+</a>
+<a href="#" class="resource-card reveal reveal-delay-1">
+<i class="fa-solid fa-file-code"></i>
+<div>
+<h5>Technical Documentation</h5>
+<p>Access specifications for forecourt controllers, ATG integrations, and API webhooks.</p>
+</div>
+</a>
+<a href="#" class="resource-card reveal reveal-delay-2">
+<i class="fa-solid fa-shield-halved color-blue"></i>
+<div>
+<h5>Security & Compliance</h5>
+<p>Learn about our data security practices, dedicated servers, and global quality assurance guidelines.</p>
+</div>
+</a>
+</div>
+</div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="demo">
+<div class="container">
+<h3 class="reveal">Ready to Transform Your Fuel Station Operations?</h3>
+<p class="reveal">Join hundreds of fuel stations across Africa who trust our management system to streamline operations, prevent theft, and accelerate growth.</p>
+<div class="reveal" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+<a href="#" class="btn" style="background:#fff;color:var(--primary);">Request Verification Demo</a>
+<a href="#" class="btn btn-outline">Contact Sales</a>
+</div>
+</div>
+</section>
+
+<!-- HEROPESA ECOSYSTEM FOOTER - DO NOT MODIFY STRUCTURE -->
+<footer class="heropesa-footer">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+<p>Cloud fleet management built for modern enterprises. Unified, intelligent, and designed to scale with your logistics needs.</p>
+<div class="social-icons">
+<a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+<a href="#"><i class="fa-brands fa-twitter"></i></a>
+<a href="#"><i class="fa-brands fa-youtube"></i></a>
+<a href="#"><i class="fa-brands fa-github"></i></a>
+</div>
+</div>
+<!-- Core Platforms -->
+<div class="footer-col">
+<h5>Core Platforms</h5>
+<ul>
+<li><a href="/business-software.html">Business Software</a></li>
+<li><a href="/pos.html">Point of Sale</a></li>
+<li><a href="/erp.html">Enterprise ERP</a></li>
+<li><a href="/accounting.html">Accounting Software</a></li>
+<li><a href="/crm.html">CRM & Sales</a></li>
+<li><a href="/businessmanagementsystems.html">Business Management Systems</a></li>
+<li><a href="/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/supply-chain.html">Supply Chain</a></li>
+<li><a href="/inventory.html">Inventory Control</a></li>
+<li><a href="/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/education.html">Education Platform</a></li>
+<li><a href="/marketing-auto.html">Marketing Automation</a></li>
+<li><a href="/ai-support.html">AI Customer Support</a></li>
+<li><a href="/bulk-messaging.html">Bulk Messaging</a></li>
+<li><a href="/collaboration-tool.html">Collaboration Tool</a></li>
+<li><a href="/help-desk.html">Help Desk</a></li>
+<li><a href="/insights.html">Insights</a></li>
+<li><a href="/web-builder.html">Web builder</a></li>
+<li><a href="/learning-lms.html">Learning (LMS)</a></li>
+<li><a href="/drive.html">Drive</a></li>
+</ul>
+</div>
+<!-- Trading & Finance -->
+<div class="footer-col">
+<h5>Trading & Finance</h5>
+<ul>
+<li><a href="/trading-prop.html">Trading & Prop</a></li>
+<li><a href="/cfd-prop.html">CFD Prop Firms</a></li>
+<li><a href="/crypto-prop.html">Crypto Prop Solutions</a></li>
+<li><a href="/futures.html">Futures Trading</a></li>
+<li><a href="/sports-betting.html">Sports Betting Tech</a></li>
+<li><a href="/risk-mgmt.html">Risk Management</a></li>
+<li><a href="/payments.html">Payment Processing</a></li>
+<li><a href="/trader-dash.html">Trader Dashboards</a></li>
+<li><a href="/trading-analytics.html">Trading Analytics</a></li>
+<li><a href="/compliance-monitoring.html">Compliance Monitoring</a></li>
+<li><a href="/kyc-aml.html">KYC & AML</a></li>
+</ul>
+</div>
+<!-- Cloud & Infrastructure -->
+<div class="footer-col">
+<h5>Cloud & Infrastructure</h5>
+<ul>
+<li><a href="/cloud-infra.html">Cloud & Infrastructure</a></li>
+<li><a href="/domains.html">Domain Registration</a></li>
+<li><a href="/web-hosting.html">Web Hosting</a></li>
+<li><a href="/vps-dedicated.html">VPS & Dedicated</a></li>
+<li><a href="/cloud-computing.html">Cloud Computing</a></li>
+<li><a href="/cdn-security.html">CDN & Security</a></li>
+<li><a href="/backup.html">Backup & Recovery</a></li>
+<li><a href="/enterprise-email.html">Enterprise Email</a></li>
+<li><a href="/dev-apis.html">Developer APIs</a></li>
+<li><a href="/monitoring.html">Monitoring & Logs</a></li>
+<li><a href="/infra-status.html">Infrastructure Status</a></li>
+</ul>
+</div>
+<!-- Security & AI -->
+<div class="footer-col">
+<h5>Security & AI</h5>
+<ul>
+<li><a href="/cybersecurity.html">Cybersecurity Suite</a></li>
+<li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/cctv-physical.html">CCTV & Physical Security</a></li>
+<li><a href="/business-intel.html">Business Intelligence</a></li>
+<li><a href="/threat-detection.html">Threat Detection</a></li>
+<li><a href="/compliance-gov.html">Compliance & Governance</a></li>
+<li><a href="/identity-access.html">Identity & Access</a></li>
+<li><a href="/soc-monitoring.html">SOC Monitoring</a></li>
+<li><a href="/ai-workflows.html">AI Workflows</a></li>
+</ul>
+</div>
+<!-- Industries -->
+<div class="footer-col">
+<h5>Industries</h5>
+<ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/restaurants.html">Restaurants</a></li>
+<li><a href="/industries/beauty-wellness.html">Beauty & Wellness</a></li>
+<li><a href="/industries/pro-services.html">Professional Services</a></li>
+<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+<li><a href="/industries/finance.html">Finance</a></li>
+<li><a href="/industries/enterprise.html">Enterprise</a></li>
+</ul>
+</div>
+<!-- Developers -->
+<div class="footer-col">
+<h5>Developers</h5>
+<ul>
+<li><a href="/developers.html">Developer Hub</a></li>
+<li><a href="/docs.html">API Documentation</a></li>
+<li><a href="/sdks.html">SDKs & Libraries</a></li>
+<li><a href="/webhooks.html">Webhooks & Events</a></li>
+<li><a href="/marketplace.html">App Marketplace</a></li>
+<li><a href="/console.html">Developer Console</a></li>
+<li><a href="/open-source.html">Open Source</a></li>
+<li><a href="/status.html">Status Page</a></li>
+<li><a href="/changelog.html">Changelog</a></li>
+<li><a href="/sandbox.html">Sandbox Access</a></li>
+<li><a href="/cli.html">CLI Tools</a></li>
+</ul>
+</div>
+<!-- Company & Legal -->
+<div class="footer-col">
+<h5>Company & Legal</h5>
+<ul>
+<li><a href="/about.html">About Us</a></li>
+<li><a href="/leadership.html">Leadership</a></li>
+<li><a href="/investors.html">Investor Relations</a></li>
+<li><a href="/newsroom.html">Newsroom</a></li>
+<li><a href="/careers.html">Careers</a></li>
+<li><a href="/partners.html">Partners</a></li>
+<li><a href="/events.html">Events</a></li>
+<li><a href="/contact-sales.html">Contact Sales</a></li>
+<li><a href="/support.html">Support Center</a></li>
+<li><a href="/offices.html">Global Offices</a></li>
+<li><a href="/privacy.html">Privacy Policy</a></li>
+<li><a href="/terms.html">Terms of Service</a></li>
+<li><a href="/cookies.html">Cookie Preferences</a></li>
+<li><a href="/dpa.html">Data Processing Addendum</a></li>
+<li><a href="/security-compliance.html">Security Compliance</a></li>
+<li><a href="/api-terms.html">API Terms</a></li>
+<li><a href="/licenses.html">Licenses</a></li>
+<li><a href="/accessibility.html">Accessibility</a></li>
+<li><a href="/trust.html">Trust Center</a></li>
+<li><a href="/responsible-ai.html">Responsible AI</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/news.html">News</a></li>
+<li><a href="/faqs.html">FAQs</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-links">
+<a href="/privacy.html">Privacy Policy</a>
+<a href="/terms.html">Terms of Service</a>
+<a href="/cookies.html">Cookie Policy</a>
+<a href="/accessibility.html">Accessibility</a>
+<a href="/licenses.html">Licenses</a>
+</div>
+<div>© 2026 Heropesa Global Inc. All rights reserved.</div>
+</div>
+<p style="font-size:0.75rem;color:var(--text-muted,#888888);margin-top:24px;line-height:1.5;">
+Heropesa Fuel Station Management is a cloud-based petrol pump accounting and inventory platform.
+Hardware installation and partner integrations may be required for certain forecourt automation capabilities.
+Contact sales for detailed compliance and regulatory information specific to your region and industry.
+</p>
+</div>
+</footer>
+<!-- END HEROPESA FOOTER -->
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+// ===== HEROPESA HEADER JS - START =====
+// Mobile menu toggle
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+if (menuToggle && navLinks) {
+menuToggle.addEventListener('click', () => {
+navLinks.classList.toggle('active');
+const isExpanded = navLinks.classList.contains('active');
+menuToggle.classList.toggle('fa-bars', !isExpanded);
+menuToggle.classList.toggle('fa-xmark', isExpanded);
+menuToggle.setAttribute('aria-expanded', isExpanded);
+});
+// Close mobile menu when clicking a link
+navLinks.querySelectorAll('a').forEach(link => {
+link.addEventListener('click', () => {
+if (window.innerWidth <= 1024 && navLinks.classList.contains('active')) {
+navLinks.classList.remove('active');
+menuToggle.classList.add('fa-bars');
+menuToggle.classList.remove('fa-xmark');
+menuToggle.setAttribute('aria-expanded', 'false');
+}
+});
+});
+}
+// Close mega menus when clicking outside
+document.addEventListener('click', (e) => {
+if (!e.target.closest('.nav-item')) {
+document.querySelectorAll('.nav-item').forEach(item => {
+item.classList.remove('active');
+});
+}
+});
+// Header shadow on scroll
+const header = document.getElementById('navbar');
+if (header) {
+window.addEventListener('scroll', () => {
+header.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+}
+// Search button placeholder
+document.querySelector('.search-btn')?.addEventListener('click', () => {
+console.log('Search triggered - connect to your search backend');
+});
+// ===== HEROPESA HEADER JS - END =====
+// ===== ORIGINAL PAGE JS - PRESERVED =====
+// Scroll reveal animation (progressive enhancement)
+const revealElements = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+observer.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+revealElements.forEach(el => observer.observe(el));
+} else {
+// Fallback: show all immediately for older browsers
+revealElements.forEach(el => el.classList.add('visible'));
+}
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+anchor.addEventListener('click', function(e) {
+e.preventDefault();
+const target = document.querySelector(this.getAttribute('href'));
+if (target) {
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// Close mobile menu if open
+if (navLinks && navLinks.classList.contains('active')) {
+navLinks.classList.remove('active');
+if (menuToggle) {
+menuToggle.classList.add('fa-bars');
+menuToggle.classList.remove('fa-xmark');
+menuToggle.setAttribute('aria-expanded', 'false');
+}
+}
+}
+});
+});
+// Header shadow on scroll (original - merged with header spec)
+window.addEventListener('scroll', () => {
+if (header) {
+header.style.borderBottomColor = window.scrollY > 10 ? 'var(--border-hover)' : 'var(--border)';
+}
+}, { passive: true });
+// CTA button hover micro-interaction
+const primaryBtns = document.querySelectorAll('.btn-primary');
+primaryBtns.forEach(btn => {
+btn.addEventListener('mouseenter', function() {
+this.style.transform = 'translateY(-2px)';
+});
+btn.addEventListener('mouseleave', function() {
+this.style.transform = 'translateY(0)';
+});
+});
+});
+</script>
+
+<!-- HEROPESA DEMO REQUEST MODAL - START -->
+<style>
+.demo-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 99999;
+}
+.demo-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.demo-modal-container {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 32px;
+  width: 90%;
+  max-width: 460px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  position: relative;
+  box-sizing: border-box;
+}
+.demo-modal-overlay.active .demo-modal-container {
+  transform: scale(1);
+}
+.demo-modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
+.demo-modal-close {
+  background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: #888888;
+  transition: color 0.2s; line-height: 1;
+}
+.demo-modal-close:hover { color: #0a0a0a; }
+.demo-form-group { margin-bottom: 16px; text-align: left; }
+.demo-form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: #555555; }
+.demo-form-group input, .demo-form-group select {
+  width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 6px;
+  font-size: 0.92rem; outline: none; transition: border-color 0.25s;
+  box-sizing: border-box;
+}
+.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
+.demo-submit-btn {
+  width: 100%; padding: 12px; background: #0a0a0a; color: #ffffff; border: none;
+  border-radius: 6px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
+  transition: background-color 0.25s; margin-top: 8px;
+}
+.demo-submit-btn:hover { background: #222222; }
+.demo-success-state { text-align: center; padding: 20px 0; }
+.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
+.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
+.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
+.demo-close-btn {
+  padding: 10px 24px; background: #0a0a0a; color: #ffffff; border: none;
+  border-radius: 6px; font-weight: 500; cursor: pointer;
+}
+</style>
+
+<div id="demoModal" class="demo-modal-overlay">
+  <div class="demo-modal-container">
+    <div class="demo-modal-header">
+      <h3>Schedule an Enterprise Demo</h3>
+      <button class="demo-modal-close" onclick="closeDemoModal()">&times;</button>
+    </div>
+    <form id="demoModalForm" onsubmit="handleDemoSubmit(event)">
+      <div class="demo-form-group">
+        <label>Full Name</label>
+        <input type="text" required placeholder="John Doe">
+      </div>
+      <div class="demo-form-group">
+        <label>Corporate Email</label>
+        <input type="email" required placeholder="name@company.com">
+      </div>
+      <div class="demo-form-group">
+        <label>Company Size</label>
+        <select required>
+          <option value="">Select size</option>
+          <option>1-9 employees</option>
+          <option>10-49 employees</option>
+          <option>50-249 employees</option>
+          <option>250+ employees</option>
+        </select>
+      </div>
+      <div class="demo-form-group">
+        <label>Phone Number</label>
+        <input type="tel" required placeholder="+1 (555) 000-0000">
+      </div>
+      <button type="submit" class="demo-submit-btn">Submit Request</button>
+    </form>
+    <div id="demoSuccessState" class="demo-success-state" style="display: none;">
+      <i class="fa-solid fa-circle-check color-green"></i>
+      <h4>Request Submitted!</h4>
+      <p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
+      <button class="demo-close-btn" onclick="closeDemoModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Bind all demo elements to show modal
+  document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDemoModal();
+    });
+  });
+});
+
+function openDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.getElementById('demoModalForm').style.display = 'block';
+    document.getElementById('demoSuccessState').style.display = 'none';
+  }
+}
+
+function closeDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+}
+
+function handleDemoSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('demoModalForm');
+  const success = document.getElementById('demoSuccessState');
+  form.style.display = 'none';
+  success.style.display = 'block';
+}
+</script>
+<!-- HEROPESA DEMO REQUEST MODAL - END -->
+</body>
+</html>

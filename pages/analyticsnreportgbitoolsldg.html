@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa Analytics & Reporting BI Tools</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+SUBTLE GOOGLE (MATERIAL) THEME & VARIABLES
+========================================= */
+:root {
+  --google-blue: #1a73e8;
+  --google-blue-light: #e8f0fe;
+  --google-blue-hover: #1b66c9;
+  --google-red: #ea4335;
+  --google-yellow: #fbbc05;
+  --google-green: #34a853;
+  --primary: var(--google-blue);
+  --primary-hover: var(--google-blue-hover);
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa; 
+  --bg-dark: #202124;
+  --text-main: #202124; 
+  --text-secondary: #5f6368; 
+  --text-muted: #80868b;
+  --border: #dadce0; 
+  --border-hover: #bdc1c6;
+  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); 
+  --shadow-md: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15); 
+  --shadow-lg: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); 
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, sans-serif;
+  --container: 1180px;
+  --header-height: 72px;
+}
+
+/* =========================================
+RESET & BASE STYLES
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+body {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  line-height: 1.65;
+  background: var(--bg-body);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, textarea { font-family: inherit; border: none; outline: none; }
+
+/* =========================================
+UTILITIES & LAYOUT
+========================================= */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.section { padding: 80px 0; position: relative; }
+.section-header { text-align: center; max-width: 780px; margin: 0 auto 56px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.5px; color: var(--text-main); }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .section-header h2 { font-size: 1.8rem; }
+}
+
+/* =========================================
+MEDIA PLACEHOLDERS (FOR LATER USE)
+========================================= */
+.media-placeholder {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.media-placeholder:hover { box-shadow: var(--shadow-sm); }
+.media-placeholder::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2.5rem; margin-bottom: 16px; color: var(--border-hover); display: block; }
+.media-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.media-sm { min-height: 160px; }
+.media-hero { min-height: 420px; }
+
+/* =========================================
+BUTTONS & INTERACTIVE ELEMENTS
+========================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 24px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.95rem;
+  cursor: pointer; transition: all var(--transition); border: 1px solid transparent;
+  letter-spacing: 0.25px;
+}
+.btn-primary { background: var(--google-blue); color: #fff; }
+.btn-primary:hover { background: var(--google-blue-hover); box-shadow: var(--shadow-sm); }
+.btn-outline { background: #fff; color: var(--google-blue); border-color: var(--border); }
+.btn-outline:hover { background: var(--google-blue-light); border-color: var(--google-blue-light); color: var(--google-blue-hover); }
+.btn-ghost { background: transparent; color: var(--text-main); }
+.btn-ghost:hover { background: var(--bg-light); }
+
+/* =========================================
+HERO SECTION
+========================================= */
+.hero { padding-top: calc(var(--header-height) + 80px); padding-bottom: 60px; background: var(--bg-body); }
+.hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
+.hero-content h1 { font-size: 3.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 24px; letter-spacing: -1px; color: var(--text-main); }
+.hero-content p { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 40px; font-weight: 400; }
+.hero-actions { display: flex; justify-content: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap; }
+@media (max-width: 768px) { .hero-content h1 { font-size: 2.5rem; } }
+
+/* =========================================
+ADAPTED SECTIONS FOR ORIGINAL CONTENT
+========================================= */
+.quick-nav { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem auto 2.5rem; max-width: 900px; }
+.quick-nav a { padding: 0.4rem 1rem; border: 1px solid var(--border); border-radius: 50px; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; color: var(--text-secondary); }
+.quick-nav a:hover { border-color: var(--google-blue); background: var(--google-blue-light); color: var(--google-blue); }
+
+.overview { background: var(--bg-body); border-bottom: 1px solid var(--border); }
+.overview-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.overview-text h2 { font-size: 1.8rem; font-weight: 500; margin-bottom: 16px; color: var(--text-main); }
+.overview-text h3 { font-size: 1.4rem; font-weight: 500; margin-bottom: 12px; margin-top: 24px; color: var(--text-main); }
+.overview-text h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-main); }
+.overview-text p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+@media (max-width: 900px) { .overview-grid { grid-template-columns: 1fr; } .media-placeholder { order: -1; min-height: 280px; } }
+
+.features { background: var(--bg-light); border-top: 1px solid var(--border); }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0; justify-content: center; }
+.tag { padding: 0.45rem 0.9rem; background: var(--google-blue-light); border: 1px solid var(--border); font-size: 0.85rem; font-weight: 500; border-radius: 50px; color: var(--google-blue); }
+
+.dark-block { background: var(--bg-dark); color: #fff; padding: 80px 0; text-align: center; }
+.dark-block h2 { color: #fff; font-size: 2.25rem; font-weight: 400; margin-bottom: 16px; }
+.dark-block p { color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-bottom: 24px; }
+.dark-block .btn-outline { border-color: rgba(255,255,255,0.4); color: #fff; }
+.dark-block .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+.testimonial-section { background: var(--bg-body); text-align: center; }
+.testimonial-card { max-width: 800px; margin: 0 auto; padding: 40px; background: var(--bg-light); border-radius: var(--radius-md); border: 1px solid var(--border); }
+.testimonial-quote { font-size: 1.25rem; font-weight: 400; line-height: 1.6; margin-bottom: 24px; color: var(--text-main); font-style: italic; }
+.testimonial-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--google-blue-light); color: var(--google-blue); display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; }
+.testimonial-info h6 { font-size: 0.95rem; font-weight: 500; margin: 0; color: var(--text-main); }
+.testimonial-info span { font-size: 0.85rem; color: var(--text-muted); }
+
+.benefits { background: var(--bg-body); }
+.challenges { background: var(--bg-light); border-top: 1px solid var(--border); }
+.feat-card, .challenge-card { background: #fff; padding: 28px; border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); height: 100%; }
+.feat-card:hover, .challenge-card:hover { border-color: transparent; transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.feat-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--google-blue-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--google-blue); margin-bottom: 18px; }
+.feat-card h4, .challenge-card h5 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+.feat-card p, .challenge-card p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; }
+.challenge-card h5 i { color: var(--google-blue); }
+
+.resources { background: var(--bg-light); border-top: 1px solid var(--border); }
+
+/* =========================================
+HEROPSA HEADER STYLES
+========================================= */
+.heropsa-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px);
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, #4285f4 25%, #ea4335 25%, #ea4335 50%, #fbbc05 50%, #fbbc05 75%, #34a853 75%) 1;
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  transition: all var(--transition);
+}
+.heropsa-header.scrolled { box-shadow: var(--shadow-sm); }
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 100%; position: relative; }
+.logo { font-size: 1.4rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; letter-spacing: -0.5px; }
+.logo span:nth-child(1) { color: var(--text-main); }
+.logo-accent { color: var(--google-blue); font-weight: 600; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-item > a { font-weight: 500; font-size: 0.95rem; color: var(--text-secondary); position: relative; padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+.nav-item > a:hover { color: var(--text-main); }
+.nav-item .chevron { font-size: 0.7rem; color: var(--text-muted); transition: transform 0.2s; }
+.nav-item:hover .chevron { transform: rotate(180deg); color: var(--text-main); }
+.mega-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 1000px; max-width: 95vw; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-lg);
+  display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 32px;
+  opacity: 0; visibility: hidden; transition: all 0.2s ease;
+  z-index: 999; pointer-events: none;
+}
+.nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.mega-menu h6 { font-size: 0.85rem; font-weight: 500; color: var(--text-main); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+.mega-menu ul { list-style: none; padding: 0; margin: 0; }
+.mega-menu li { margin-bottom: 12px; }
+.mega-menu a { font-size: 0.95rem; color: var(--text-secondary); display: block; padding: 2px 0; transition: color var(--transition); }
+.mega-menu a:hover { color: var(--google-blue); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.header-search { display: flex; align-items: center; background: var(--bg-light); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 0 16px; transition: all var(--transition); height: 40px; }
+.header-search:focus-within { background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm); }
+.header-search i { color: var(--text-secondary); font-size: 1rem; margin-right: 8px; }
+.header-search input { background: transparent; border: none; font-size: 0.95rem; color: var(--text-main); width: 180px; outline: none; }
+.header-search input::placeholder { color: var(--text-muted); }
+.mobile-toggle { display: none; font-size: 1.4rem; cursor: pointer; color: var(--text-secondary); }
+.mobile-nav-actions { display: none; }
+
+@media (max-width: 1200px) { .mega-menu { width: 900px; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) {
+  .nav-links { display: none; flex-direction: column; position: absolute; top: var(--header-height); left: 0; width: 100%; background: #fff; padding: 24px; border-bottom: 1px solid var(--border); gap: 16px; box-shadow: var(--shadow-md); max-height: calc(100vh - var(--header-height)); overflow-y: auto; }
+  .nav-links.active { display: flex; }
+  .nav-links.active .nav-item { width: 100%; }
+  .nav-links.active .mega-menu { position: static; transform: none; width: 100%; opacity: 1; visibility: visible; box-shadow: none; border: none; padding: 16px 0 0 0; grid-template-columns: 1fr; pointer-events: auto; display: block; border-top: 1px solid var(--border); }
+  .mega-menu h6 { margin-top: 16px; }
+  .nav-actions .desktop-only { display: none; }
+  .nav-actions .nav-btn-login, .nav-actions .nav-btn-demo { display: none; }
+  .mobile-nav-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .mobile-nav-actions .btn { width: 100%; text-align: center; padding: 12px; justify-content: center; }
+  .mobile-toggle { display: block; }
+}
+@media (max-width: 768px) { .mega-menu { width: 100%; } .nav-actions { gap: 8px; } }
+
+/* =========================================
+HEROPSA FOOTER STYLES
+========================================= */
+.heropsa-footer { background: var(--bg-light); padding: 80px 0 40px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(auto-fit, minmax(140px, 1fr)); gap: 32px; margin-bottom: 64px; }
+.footer-brand { grid-column: 1 / 2; }
+.footer-brand p { color: var(--text-secondary); margin: 16px 0 24px; font-size: 0.95rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 12px; }
+.social-icons a { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition); font-size: 1.1rem; }
+.social-icons a:hover { background: var(--bg-light); color: var(--text-main); border-color: var(--border-hover); }
+.footer-col h5 { font-size: 0.95rem; margin-bottom: 20px; font-weight: 500; color: var(--text-main); }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.9rem; transition: color var(--transition); }
+.footer-col ul li a:hover { color: var(--google-blue); text-decoration: underline; }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; color: var(--text-secondary); }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--text-main); }
+
+@media (max-width: 1024px) { .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 24px; }
+  .footer-links { justify-content: center; }
+}
+
+/* =========================================
+SCROLL ANIMATIONS
+========================================= */
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
+.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 480px) {
+  .section { padding: 64px 0; }
+  .btn { width: 100%; }
+  .hero-actions { flex-direction: column; }
+  .media-placeholder { min-height: 240px; }
+}
+
+/* =========================================
+DEMO MODAL STYLES
+========================================= */
+.demo-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(32, 33, 36, 0.6); backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; z-index: 99999; }
+.demo-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.demo-modal-container { background: #ffffff; border-radius: 8px; padding: 32px; width: 90%; max-width: 440px; box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.2); transform: scale(0.95) translateY(20px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); position: relative; box-sizing: border-box; }
+.demo-modal-overlay.active .demo-modal-container { transform: scale(1) translateY(0); }
+.demo-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+.demo-modal-header h3 { font-size: 1.25rem; font-weight: 500; color: var(--text-main); margin: 0; }
+.demo-modal-close { background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-secondary); transition: color 0.2s; line-height: 1; padding: 4px; }
+.demo-modal-close:hover { color: var(--text-main); background: var(--bg-light); border-radius: 50%; }
+.demo-form-group { margin-bottom: 20px; text-align: left; }
+.demo-form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 8px; color: var(--text-secondary); }
+.demo-form-group input, .demo-form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; outline: none; transition: all 0.2s; box-sizing: border-box; color: var(--text-main); }
+.demo-form-group input:focus, .demo-form-group select:focus { border-color: var(--google-blue); box-shadow: inset 0 0 0 1px var(--google-blue); }
+.demo-submit-btn { width: 100%; padding: 10px 24px; background: var(--google-blue); color: #ffffff; border: none; border-radius: 4px; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: background-color 0.2s, box-shadow 0.2s; margin-top: 8px; }
+.demo-submit-btn:hover { background: var(--google-blue-hover); box-shadow: var(--shadow-sm); }
+.demo-success-state { text-align: center; padding: 24px 0; }
+.demo-success-state i { font-size: 3rem; color: var(--google-green); margin-bottom: 20px; }
+.demo-success-state h4 { font-size: 1.25rem; font-weight: 500; margin-bottom: 12px; margin-top: 0; color: var(--text-main); }
+.demo-success-state p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px; }
+.demo-close-btn { padding: 10px 24px; background: transparent; color: var(--google-blue); border: 1px solid var(--border); border-radius: 4px; font-weight: 500; cursor: pointer; transition: background 0.2s; }
+.demo-close-btn:hover { background: var(--google-blue-light); border-color: var(--google-blue-light); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="navbar" class="heropsa-header">
+  <div class="container nav-wrapper">
+    <a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+    <nav class="nav-links" id="navLinks">
+      <div class="nav-item">
+        <a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Core Platforms</h6><ul>
+            <li><a href="/erp.html">Enterprise ERP</a></li>
+            <li><a href="/accounting.html">Accounting Software</a></li>
+            <li><a href="/crm.html">CRM & Sales</a></li>
+            <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+            <li><a href="/inventory.html">Inventory Control</a></li>
+          </ul></div>
+          <div><h6>Operations</h6><ul>
+            <li><a href="/supply-chain.html">Supply Chain</a></li>
+            <li><a href="/pos.html">Point of Sale</a></li>
+            <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+            <li><a href="/marketing-auto.html">Marketing Automation</a></li>
+          </ul></div>
+          <div><h6>Industry Solutions</h6><ul>
+            <li><a href="/manufacturing.html">Manufacturing</a></li>
+            <li><a href="/healthcare-os.html">Healthcare OS</a></li>
+            <li><a href="/education.html">Education Platform</a></li>
+            <li><a href="/retail.html">Retail & Commerce</a></li>
+          </ul></div>
+          <div><h6>AI & Automation</h6><ul>
+            <li><a href="/ai-support.html">AI Customer Support</a></li>
+            <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+            <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+            <li><a href="/ai-workflows.html">AI Workflows</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>By Industry</h6><ul>
+            <li><a href="/industries/retail.html">Retail</a></li>
+            <li><a href="/industries/hospitality.html">Hospitality</a></li>
+            <li><a href="/industries/healthcare.html">Healthcare</a></li>
+            <li><a href="/industries/education.html">Education</a></li>
+            <li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+          </ul></div>
+          <div><h6>By Use Case</h6><ul>
+            <li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+            <li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+            <li><a href="/solutions/scaling.html">Global Scaling</a></li>
+            <li><a href="/solutions/automation.html">Process Automation</a></li>
+          </ul></div>
+          <div><h6>By Company Size</h6><ul>
+            <li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+            <li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+            <li><a href="/solutions/enterprise.html">Enterprise</a></li>
+            <li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+          </ul></div>
+          <div><h6>Migration & Integration</h6><ul>
+            <li><a href="/migration.html">Legacy System Migration</a></li>
+            <li><a href="/integrations.html">Third-Party Integrations</a></li>
+            <li><a href="/api.html">API & Webhooks</a></li>
+            <li><a href="/implementation.html">Implementation Services</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Documentation</h6><ul>
+            <li><a href="/docs.html">API Documentation</a></li>
+            <li><a href="/guides.html">Business Guides</a></li>
+            <li><a href="/glossary.html">Solutions Glossary</a></li>
+            <li><a href="/help.html">Help Center</a></li>
+          </ul></div>
+          <div><h6>Learning</h6><ul>
+            <li><a href="/demos.html">Product Demos</a></li>
+            <li><a href="/stories.html">Customer Stories</a></li>
+            <li><a href="/webinars.html">Webinars & Events</a></li>
+            <li><a href="/education.html">Education Services</a></li>
+          </ul></div>
+          <div><h6>Technical</h6><ul>
+            <li><a href="/sdks.html">SDKs & Libraries</a></li>
+            <li><a href="/status.html">System Status</a></li>
+            <li><a href="/changelog.html">Changelog</a></li>
+            <li><a href="/sandbox.html">Developer Sandbox</a></li>
+          </ul></div>
+          <div><h6>Trust & Security</h6><ul>
+            <li><a href="/security.html">Security Compliance</a></li>
+            <li><a href="/trust.html">Trust Center</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/responsible-ai.html">Responsible AI</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <a href="/partners.html">Partners</a>
+      <a href="#pricing">Pricing</a>
+      <div class="mobile-nav-actions">
+        <a href="/login.html" class="btn btn-ghost">Log in</a>
+        <a href="#demo" class="btn btn-primary">Request Demo</a>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <div class="header-search desktop-only">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+      </div>
+      <a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+      <a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+      <i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content reveal">
+        <h1>Heropesa Analytics & Reporting BI Tools</h1>
+        <p>AI-powered business intelligence tools help deliver meaningful insights to run and grow your business.</p>
+      </div>
+      <!-- IMAGE PLACEHOLDER 1 -->
+      <div class="media-placeholder media-hero reveal" style="margin-top: 48px;">
+        <span>Heropesa Analytics and Reporting Thumbnail</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK NAV -->
+  <div class="container">
+    <nav class="quick-nav">
+      <a href="#what-is">What is Analytics?</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#features">Features</a>
+      <a href="#challenges">Challenges</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </div>
+
+  <!-- WHAT IS -->
+  <section id="what-is" class="section overview">
+    <div class="container">
+      <div class="overview-grid">
+        <div class="overview-text reveal">
+          <h2>What is Heropesa Analytics and Reporting?</h2>
+          <p>Heropesa SuiteAnalytics analytics and reporting capabilities provide real-time visibility into company operational and financial performance across all business functions. Prebuilt and easily customizable, these reports and analyses make it easy to get the data you need, while role-based dashboards and key performance indicators (KPIs) help you keep an eye on business performance.</p>
+        </div>
+        <div class="reveal reveal-delay-1">
+          <h2>Insights that help run your business better and improve decision making</h2>
+          <h3>AI-Powered Insights</h3>
+          <p>As a unified suite, Heropesa centralizes your data from all business functions to provide an ideal foundation for getting the most out of AI. AI helps delivers faster, better insights and analysis to help guide leaders, improve outcomes, and support more informed decision-making.</p>
+          <!-- IMAGE PLACEHOLDER 2 -->
+          <div class="media-placeholder" style="margin-top: 24px; min-height: 200px;">
+            <span>AI-Powered Insights Thumbnail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="section testimonial-section">
+    <div class="container">
+      <div class="testimonial-card reveal">
+        <p class="testimonial-quote">"Imagine you're driving a car really fast, and you have duct tape over your dashboard. You don't know how fast you're going, you don't know how much gas you have, and you're probably not going to get where you're trying to go. Heropesa provides that dashboard for us."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JD</div>
+          <div class="testimonial-info">
+            <h6>Jordan DeCicco</h6>
+            <span>Founder, Super Coffee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DARK BLOCK CTA -->
+  <div class="dark-block reveal">
+    <div class="container">
+      <h2>Learn How ERP Can Streamline Your Business</h2>
+      <p>Discover how unified analytics and reporting drive smarter, faster business decisions.</p>
+      <a href="#" class="btn btn-outline">Explore Solutions</a>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <section id="benefits" class="section benefits">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Heropesa Analytics and Reporting Benefits</h2>
+      </div>
+      <div class="grid-3">
+        <div class="feat-card reveal">
+          <div class="feat-icon"><i class="fa-solid fa-rocket"></i></div>
+          <h4>Get Up and Running Faster</h4>
+          <p>Prebuilt reports, role-based dashboards and KPIs are based on industry-leading practices.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="feat-icon"><i class="fa-solid fa-lightbulb"></i></div>
+          <h4>Make Better Decisions</h4>
+          <p>Secure, self-service capabilities deliver information to analysts and decision-makers without relying on IT.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-2">
+          <div class="feat-icon"><i class="fa-solid fa-chart-column"></i></div>
+          <h4>More Efficient Reporting</h4>
+          <p>A central database reduces the time needed to consolidate and reconcile information.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section features">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Heropesa Analytics and Reporting Features</h2>
+        <p>Heropesa analytics and reporting capabilities provides flexible querying tools, role-based dashboards, operational reports, KPIs and the ability to analyze Heropesa and non-Heropesa data from a central platform to make better, faster decisions.</p>
+      </div>
+      <div class="tag-cloud reveal">
+        <span class="tag">Reporting & Dashboards</span>
+        <span class="tag">Data Warehouse</span>
+      </div>
+      <div class="overview-grid" style="margin-top: 48px; align-items: center;">
+        <div class="reveal">
+          <h3>Reporting & Dashboards</h3>
+          <p>Real-time searches, reporting, KPIs, dashboards and SuiteAnalytics Workbook capabilities are embedded into Heropesa to help decision-makers understand what's happening in the business.</p>
+        </div>
+        <!-- IMAGE PLACEHOLDER 3 -->
+        <div class="reveal reveal-delay-1">
+          <div class="media-placeholder">
+            <span>Heropesa dashboard</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGES -->
+  <section id="challenges" class="section challenges">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Challenges Heropesa Analytics and Reporting Solves</h2>
+      </div>
+      <div class="grid-3">
+        <div class="challenge-card reveal">
+          <h5><i class="fa-solid fa-table-cells-large"></i> Multiple Spreadsheets and Data Silos</h5>
+          <p>With all financial and operational data centralized, time needed to consolidate and reconcile information is eliminated.</p>
+        </div>
+        <div class="challenge-card reveal reveal-delay-1">
+          <h5><i class="fa-solid fa-file-lines"></i> Inefficient Manual Reporting</h5>
+          <p>Prebuilt, industry-standard reports plus no-code customization capabilities get business users the information they need quickly.</p>
+        </div>
+        <div class="challenge-card reveal reveal-delay-2">
+          <h5><i class="fa-solid fa-chart-line"></i> Hard-to-Track Business Performance</h5>
+          <p>Incorporate business performance metrics into your dashboards and KPIs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources" class="section resources">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Resources</h2>
+        <p>Data Sheets • Product Demos • Guides & Blogs • Essential Learning</p>
+      </div>
+      <div class="overview-grid" style="margin-top: 32px;">
+        <div class="reveal">
+          <h3>Data Sheets</h3>
+          <p>Access specifications, features and benefits of Heropesa SuiteAnalytics.</p>
+          <ul style="margin-top: 16px; list-style: disc; padding-left: 20px; color: var(--text-secondary);">
+            <li style="margin-bottom: 8px;"><a href="#" style="color: var(--google-blue);">Heropesa SuiteAnalytics ↗</a></li>
+            <li><a href="#" style="color: var(--google-blue);">Heropesa Analytics Warehouse ↗</a></li>
+          </ul>
+        </div>
+        <!-- IMAGE PLACEHOLDER 4 -->
+        <div class="reveal reveal-delay-1">
+          <div class="media-placeholder">
+            <span>Data Sheets Thumbnails</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="heropsa-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+        <p>Cloud ERP built for modern businesses. Unified, intelligent, and designed to scale with your growth.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Core Platforms</h5>
+        <ul>
+          <li><a href="/business-software.html">Business Software</a></li>
+          <li><a href="/pos.html">Point of Sale</a></li>
+          <li><a href="/erp.html">Enterprise ERP</a></li>
+          <li><a href="/accounting.html">Accounting Software</a></li>
+          <li><a href="/crm.html">CRM & Sales</a></li>
+          <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+          <li><a href="/supply-chain.html">Supply Chain</a></li>
+          <li><a href="/inventory.html">Inventory Control</a></li>
+          <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Trading & Finance</h5>
+        <ul>
+          <li><a href="/trading-prop.html">Trading & Prop</a></li>
+          <li><a href="/cfd-prop.html">CFD Prop Firms</a></li>
+          <li><a href="/crypto-prop.html">Crypto Prop Solutions</a></li>
+          <li><a href="/prediction-markets.html">Prediction Market Solutions</a></li>
+          <li><a href="/sports-betting.html">Sports Betting Tech</a></li>
+          <li><a href="/payments.html">Payment Processing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Cloud & Infrastructure</h5>
+        <ul>
+          <li><a href="/cloud-infra.html">Cloud & Infrastructure</a></li>
+          <li><a href="/domains.html">Domain Registration</a></li>
+          <li><a href="/web-hosting.html">Web Hosting</a></li>
+          <li><a href="/vps-dedicated.html">VPS & Dedicated</a></li>
+          <li><a href="/cloud-computing.html">Cloud Computing</a></li>
+          <li><a href="/cdn-security.html">CDN & Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Security & AI</h5>
+        <ul>
+          <li><a href="/cybersecurity.html">Cybersecurity Suite</a></li>
+          <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+          <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+          <li><a href="/business-intel.html">Business Intelligence</a></li>
+          <li><a href="/threat-detection.html">Threat Detection</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Industries</h5>
+        <ul>
+          <li><a href="/industries/retail.html">Retail</a></li>
+          <li><a href="/industries/hospitality.html">Hospitality</a></li>
+          <li><a href="/industries/healthcare.html">Healthcare</a></li>
+          <li><a href="/industries/education.html">Education</a></li>
+          <li><a href="/industries/restaurants.html">Restaurants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <ul>
+          <li><a href="/developers.html">Developer Hub</a></li>
+          <li><a href="/docs.html">API Documentation</a></li>
+          <li><a href="/sdks.html">SDKs & Libraries</a></li>
+          <li><a href="/webhooks.html">Webhooks & Events</a></li>
+          <li><a href="/marketplace.html">App Marketplace</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company & Legal</h5>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/careers.html">Careers</a></li>
+          <li><a href="/partners.html">Partners</a></li>
+          <li><a href="/contact-sales.html">Contact Sales</a></li>
+          <li><a href="/support.html">Support Center</a></li>
+        </ul>
+      </div>
+      <!-- NEW COLUMNS ADDED -->
+      <div class="footer-col">
+        <h5>Business Types</h5>
+        <ul>
+          <li><a href="#">Hair salon</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="#">SFA</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/cookies.html">Cookie Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/licenses.html">Licenses</a>
+      </div>
+      <div>©️ 2026 Heropesa Ltd. All rights reserved.</div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
+      Heropesa Analytics & Reporting BI Tools is a cloud-based business management platform.
+      Implementation services and partner integrations may be required for certain capabilities.
+      Contact sales for detailed compliance and regulatory information specific to your industry and region.
+    </p>
+  </div>
+</footer>
+
+<!-- DEMO REQUEST MODAL -->
+<div id="demoModal" class="demo-modal-overlay">
+  <div class="demo-modal-container">
+    <div class="demo-modal-header">
+      <h3>Schedule an Enterprise Demo</h3>
+      <button class="demo-modal-close" onclick="closeDemoModal()">&times;</button>
+    </div>
+    <form id="demoModalForm" onsubmit="handleDemoSubmit(event)">
+      <div class="demo-form-group">
+        <label>Full Name</label>
+        <input type="text" required placeholder="John Doe">
+      </div>
+      <div class="demo-form-group">
+        <label>Corporate Email</label>
+        <input type="email" required placeholder="name@company.com">
+      </div>
+      <div class="demo-form-group">
+        <label>Company Size</label>
+        <select required>
+          <option value="">Select size</option>
+          <option>1-9 employees</option>
+          <option>10-49 employees</option>
+          <option>50-249 employees</option>
+          <option>250+ employees</option>
+        </select>
+      </div>
+      <div class="demo-form-group">
+        <label>Phone Number</label>
+        <input type="tel" required placeholder="+1 (555) 000-0000">
+      </div>
+      <button type="submit" class="demo-submit-btn">Submit Request</button>
+    </form>
+    <div id="demoSuccessState" class="demo-success-state" style="display: none;">
+      <i class="fa-solid fa-circle-check"></i>
+      <h4>Request Submitted!</h4>
+      <p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
+      <button class="demo-close-btn" onclick="closeDemoModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Mobile Menu Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  if(menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('fa-bars', navLinks.classList.contains('active'));
+      menuToggle.classList.toggle('fa-xmark', !navLinks.classList.contains('active'));
+    });
+  }
+
+  // 2. Scroll Reveal Animation
+  const revealElements = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    document.body.classList.add('js-enabled');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    revealElements.forEach(el => el.classList.add('visible'));
+  }
+
+  // 3. Smooth Scroll for Anchor Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if(href === '#demo') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if(navLinks) navLinks.classList.remove('active');
+        if(menuToggle) {
+          menuToggle.classList.add('fa-bars');
+          menuToggle.classList.remove('fa-xmark');
+        }
+      }
+    });
+  });
+
+  // 4. Header shadow on scroll
+  const header = document.getElementById('navbar');
+  if(header) {
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  }
+
+  // 5. Demo Modal Logic
+  document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDemoModal();
+    });
+  });
+});
+
+function openDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.getElementById('demoModalForm').style.display = 'block';
+    document.getElementById('demoSuccessState').style.display = 'none';
+  }
+}
+
+function closeDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+}
+
+function handleDemoSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('demoModalForm');
+  const success = document.getElementById('demoSuccessState');
+  if(form) form.style.display = 'none';
+  if(success) success.style.display = 'block';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snippe Payments</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        
+/* Material Design Google Color Accents */
+.color-blue { color: #1a73e8 !important; }
+.color-red { color: #ea4335 !important; }
+.color-yellow { color: #fbbc05 !important; }
+.color-green { color: #34a853 !important; }
+.bg-blue-light { background-color: rgba(26, 115, 232, 0.08) !important; border-color: rgba(26, 115, 232, 0.3) !important; color: #1a73e8 !important; }
+.bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
+.bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
+.bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
+
+:root {
+            --bg-base: #ffffff;
+            --bg-panel: #f8f9fa;
+            --bg-card: #ffffff;
+            --border-color: #dadce0;
+            --text-main: #202124;
+            --text-muted: #70757a;
+            --accent-green: #34a853;
+            --accent-green-hover: #2e8b57;
+            --status-completed: #e6f4ea;
+            --status-completed-text: #137333;
+            --status-unpaid: #fef7e0;
+            --status-unpaid-text: #b06000;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-base);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+            overflow-y: auto;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px 24px 24px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .brand-icon {
+            width: 28px;
+            height: 28px;
+            background-color: var(--accent-green);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-base);
+        }
+
+        .menu-section {
+            margin-bottom: 8px;
+        }
+
+        .menu-title {
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.2s;
+            user-select: none;
+        }
+
+        .menu-title:hover {
+            color: var(--text-main);
+        }
+
+        .menu-items {
+            list-style: none;
+            display: none;
+        }
+
+        .menu-items.active {
+            display: block;
+        }
+
+        .menu-item {
+            padding: 10px 24px 10px 40px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        .sidebar-footer .menu-item {
+            padding-left: 24px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 70px;
+            min-height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            background-color: var(--bg-base);
+            position: relative;
+            z-index: 10;
+        }
+
+        .topbar-left {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: 0.2s;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-main);
+            border-color: #404040;
+        }
+
+        .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background-color: #ea4335;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            background-color: var(--bg-base);
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Notifications Panel */
+        .notifications-panel {
+            position: absolute;
+            top: 60px;
+            right: 32px;
+            width: 400px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: none;
+            z-index: 100;
+        }
+
+        .notifications-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notifications-header h3 { font-size: 16px; font-weight: 600; }
+        .notifications-header a { font-size: 12px; color: var(--text-muted); text-decoration: none; }
+
+        .notification-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 24px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .notification-item h4 { font-size: 14px; margin-bottom: 4px; }
+        .notification-item p { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .notification-item span { font-size: 12px; color: var(--accent-green); display: block; margin-top: 8px; }
+
+        /* Dashboard specific styles */
+        .page-header { margin-bottom: 24px; }
+        .page-header h1 { font-size: 20px; font-weight: 600; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .stat-title { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between;}
+        .stat-value { font-size: 28px; font-weight: 700; margin-bottom: 8px;}
+        .stat-change { font-size: 13px; color: var(--accent-green); }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .action-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .action-card:hover { border-color: #404040; }
+        .action-tag { display: inline-block; padding: 4px 8px; background: rgba(255,255,255,0.1); border-radius: 4px; font-size: 10px; margin-bottom: 12px;}
+        .action-card h3 { font-size: 16px; margin-bottom: 8px;}
+        .action-card p { font-size: 13px; color: var(--text-muted); }
+
+        /* Tables */
+        .table-container {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--bg-base);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px 24px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border-color);
+            background-color: #080808;
+        }
+
+        td {
+            padding: 16px 24px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        tr:hover { background-color: rgba(255,255,255,0.02); }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-completed { background-color: var(--status-completed); color: var(--status-completed-text); }
+        .status-unpaid { background-color: var(--status-unpaid); color: var(--status-unpaid-text); }
+        
+        .empty-state {
+            padding: 80px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+        }
+
+        /* Forms & Inputs */
+        .api-card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-base);
+            overflow: hidden;
+        }
+
+        .api-row {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .api-row:last-child {
+            border-bottom: none;
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background-color: #34a853;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(85, 166, 70, 0.4);
+            border: none;
+            transition: transform 0.2s;
+            z-index: 1000;
+        }
+        .fab:hover { transform: scale(1.05); }
+
+        /* Utility */
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .text-muted { color: var(--text-muted); }
+        .mb-4 { margin-bottom: 16px; }
+        
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            gap: 12px;
+        }
+        
+        .btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover { background-color: #1a1a1a; border-color: #404040; }
+
+        input.btn { cursor: text; }
+        input.btn:hover { background-color: var(--bg-card); }
+        input.btn:focus { outline: none; border-color: var(--accent-green); }
+
+        .btn-primary {
+            background-color: var(--accent-green);
+            color: black;
+            border: none;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: var(--accent-green-hover);
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">S</div>
+            Snippe
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('overview-menu')">Overview <span>▾</span></div>
+            <ul class="menu-items active" id="overview-menu">
+                <li class="menu-item active" onclick="navigate('dashboard', 'Overview')">Dashboard</li>
+                <li class="menu-item" onclick="navigate('analytics', 'Analytics')">Analytics</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('transactions-menu')">Transactions <span>▾</span></div>
+            <ul class="menu-items active" id="transactions-menu">
+                <li class="menu-item" onclick="navigate('payments', 'Payments')">Payments</li>
+                <li class="menu-item" onclick="navigate('payouts', 'Payouts')">Payouts</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('links-menu')">Payment Links <span>▾</span></div>
+            <ul class="menu-items active" id="links-menu">
+                <li class="menu-item" onclick="navigate('links', 'Payment Links')">Links</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('pages-menu')">Payment Pages <span>▾</span></div>
+            <ul class="menu-items active" id="pages-menu">
+                <li class="menu-item" onclick="navigate('pages', 'Payment Pages')">Pages</li>
+                <li class="menu-item" onclick="navigate('page-payments', 'Payment Pages > Payments')">Payments</li>
+            </ul>
+        </div>
+        
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('catalog-menu')">Catalog <span>▾</span></div>
+            <ul class="menu-items active" id="catalog-menu">
+                <li class="menu-item" onclick="navigate('products', 'Catalog > Products')">Products</li>
+                <li class="menu-item" onclick="navigate('categories', 'Catalog > Categories')">Categories</li>
+                <li class="menu-item" onclick="navigate('media', 'Catalog > Media Library')">Media Library</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('marketing-menu')">Marketing <span>▾</span></div>
+            <ul class="menu-items active" id="marketing-menu">
+                <li class="menu-item" onclick="navigate('campaigns', 'Marketing > Campaigns')">Campaigns</li>
+            </ul>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-title" onclick="toggleMenu('developer-menu')">Developer / API <span>▾</span></div>
+            <ul class="menu-items active" id="developer-menu">
+                <li class="menu-item" onclick="navigate('apikeys', 'API Keys')">API Keys</li>
+                <li class="menu-item">API Versions</li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="menu-item">Docs</div>
+            <div class="menu-item">Support Ticket</div>
+            <div class="menu-item">+255 699 920 009</div>
+            <div class="menu-item" style="margin-top: 16px; color: #ef4444;">Log out</div>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header id="navbar" class="heropesa-header">
+<div class="container nav-wrapper">
+<a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+<nav class="nav-links" id="navLinks">
+<div class="nav-item">
+<a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Core Platforms</h6><ul>
+<li><a href="/erp.html">Enterprise ERP</a></li>
+<li><a href="/accounting.html">Accounting Software</a></li>
+<li><a href="/crm.html">CRM & Sales</a></li>
+<li><a href="/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/inventory.html">Inventory Control</a></li>
+</ul></div>
+<div><h6>Operations</h6><ul>
+<li><a href="/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pos.html">Point of Sale</a></li>
+<li><a href="/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/marketing-auto.html">Marketing Automation</a></li>
+</ul></div>
+<div><h6>Industry Solutions</h6><ul>
+<li><a href="/manufacturing.html">Manufacturing</a></li>
+<li><a href="/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/education.html">Education Platform</a></li>
+<li><a href="/retail.html">Retail & Commerce</a></li>
+</ul></div>
+<div><h6>AI & Automation</h6><ul>
+<li><a href="/ai-support.html">AI Customer Support</a></li>
+<li><a href="/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/ai-workflows.html">AI Workflows</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>By Industry</h6><ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+</ul></div>
+<div><h6>By Use Case</h6><ul>
+<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+<li><a href="/solutions/scaling.html">Global Scaling</a></li>
+<li><a href="/solutions/automation.html">Process Automation</a></li>
+</ul></div>
+<div><h6>By Company Size</h6><ul>
+<li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+</ul></div>
+<div><h6>Migration & Integration</h6><ul>
+<li><a href="/migration.html">Legacy System Migration</a></li>
+<li><a href="/integrations.html">Third-Party Integrations</a></li>
+<li><a href="/api.html">API & Webhooks</a></li>
+<li><a href="/implementation.html">Implementation Services</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Documentation</h6><ul>
+<li><a href="/docs.html">API Documentation</a></li>
+<li><a href="/guides.html">Business Guides</a></li>
+<li><a href="/glossary.html">Solutions Glossary</a></li>
+<li><a href="/help.html">Help Center</a></li>
+</ul></div>
+<div><h6>Learning</h6><ul>
+<li><a href="/demos.html">Product Demos</a></li>
+<li><a href="/stories.html">Customer Stories</a></li>
+<li><a href="/webinars.html">Webinars & Events</a></li>
+<li><a href="/education.html">Education Services</a></li>
+</ul></div>
+<div><h6>Technical</h6><ul>
+<li><a href="/sdks.html">SDKs & Libraries</a></li>
+<li><a href="/status.html">System Status</a></li>
+<li><a href="/changelog.html">Changelog</a></li>
+<li><a href="/sandbox.html">Developer Sandbox</a></li>
+</ul></div>
+<div><h6>Trust & Security</h6><ul>
+<li><a href="/security.html">Security Compliance</a></li>
+<li><a href="/trust.html">Trust Center</a></li>
+<li><a href="/privacy.html">Privacy Policy</a></li>
+<li><a href="/responsible-ai.html">Responsible AI</a></li>
+</ul></div>
+</div>
+</div>
+<a href="/partners.html">Partners</a>
+<a href="#pricing">Pricing</a>
+
+<!-- Mobile-only actions placed inside nav-links for proper mobile display -->
+<div class="mobile-nav-actions">
+  <a href="/login.html" class="btn btn-ghost">Log in</a>
+  <a href="#demo" class="btn btn-primary">Request Demo</a>
+</div>
+</nav>
+<div class="nav-actions">
+<!-- Functional Search Bar replacing Language Selector -->
+<div class="header-search desktop-only">
+    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); margin-right: 8px;"></i>
+    <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+</div>
+<a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+<i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+</div>
+</div>
+</header>
+
+        <div class="content-area">
+            
+            <div id="view-dashboard" class="view-section active">
+                <div class="page-header">
+                    <h1>Overview</h1>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Available Balance <span>💼</span></div>
+                        <div class="stat-value">TSh 498</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total Balance <span>💼</span></div>
+                        <div class="stat-value">TSh 498</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Payments This Week <span>💰</span></div>
+                        <div class="stat-value">TSh 500</div>
+                        <div class="stat-change">↗ 100.0% vs last week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Transactions <span>🧾</span></div>
+                        <div class="stat-value">1</div>
+                        <div class="text-muted" style="font-size: 13px;">this week</div>
+                    </div>
+                </div>
+
+                <div class="actions-grid">
+                    <div class="action-card">
+                        <span class="action-tag">NEW</span>
+                        <h3>Card Payments</h3>
+                        <p>Accept Visa & Mastercard from your customers</p>
+                    </div>
+                    <div class="action-card">
+                        <span class="action-tag">SELL</span>
+                        <h3>Payment Pages</h3>
+                        <p>Create pages to sell products & services</p>
+                    </div>
+                    <div class="action-card">
+                        <span class="action-tag" style="visibility: hidden;">DELIVER</span>
+                        <h3>Content Delivery</h3>
+                        <p>Track digital product fulfillment</p>
+                    </div>
+                </div>
+
+                <div class="page-header flex-between" style="margin-top: 40px;">
+                    <h2 style="font-size: 16px; font-weight: 500;">Recent Payments</h2>
+                    <button class="btn">View all ❯</button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Reference</th>
+                                <th>Type</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>SN178039...</td>
+                                <td><span style="background: #1a1a1a; padding: 4px 8px; border-radius: 4px; font-size:11px;">MOBILE</span></td>
+                                <td>Loopy von</td>
+                                <td>+255680200009</td>
+                                <td>TSh 500</td>
+                                <td><span class="status-badge status-completed">COMPLETED</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-analytics" class="view-section">
+                <div class="page-header flex-between">
+                    <h1>Overview</h1>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn">Today</button>
+                        <button class="btn" style="background: var(--accent-green); color: black;">7D</button>
+                        <button class="btn">30D</button>
+                        <button class="btn">90D</button>
+                        <button class="btn">All</button>
+                        <button class="btn">📅 Custom</button>
+                    </div>
+                </div>
+                
+                <div class="stats-grid mb-4">
+                    <div class="stat-card">
+                        <div class="stat-title">Payments <span>💰</span></div>
+                        <div class="stat-value">TSh 500</div>
+                        <div class="text-muted" style="font-size: 12px;">1 transactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Payouts <span>↗</span></div>
+                        <div class="stat-value">TSh 0</div>
+                        <div class="text-muted" style="font-size: 12px;">0 transactions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Successful <span>✓</span></div>
+                        <div class="stat-value">1</div>
+                        <div class="text-muted" style="font-size: 12px;">TSh 500</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Pending <span>🕐</span></div>
+                        <div class="stat-value">0</div>
+                        <div class="text-muted" style="font-size: 12px;">TSh 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Success Rate <span>✓</span></div>
+                        <div class="stat-value">25.0%</div>
+                        <div class="text-muted" style="font-size: 12px;">3 failed</div>
+                    </div>
+                </div>
+                <div class="empty-state">
+                    [ Chart Visualizations Placeholder ]<br>
+                    <span style="font-size: 12px; opacity: 0.5;">Transactions & Payments vs Payouts</span>
+                </div>
+            </div>
+
+            <div id="view-payments" class="view-section">
+                <div class="toolbar">
+                    <div style="display: flex; gap: 12px;">
+                        <select class="btn"><option>All statuses</option></select>
+                        <select class="btn"><option>Reference</option></select>
+                        <input type="text" class="btn" placeholder="🔍 Search by reference..." style="width: 250px;">
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn">📅 Date range</button>
+                        <button class="btn">⚲ View</button>
+                        <button class="btn">↓ Export</button>
+                        <button class="btn">↻</button>
+                        <button class="btn btn-primary">+ New Payment</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Reference</th>
+                                <th>Type</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Amount</th>
+                                <th>Net</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>SN178039.</td>
+                                <td><span style="background: #1a1a1a; padding: 4px 8px; border-radius: 4px; font-size:11px;">MOBILE</span></td>
+                                <td>Loopy von</td>
+                                <td>+255680200009</td>
+                                <td>TSh 500</td>
+                                <td style="color: var(--accent-green)">+TSh 498</td>
+                                <td><span class="status-badge status-completed">COMPLETED</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:39</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>SN178039.</td>
+                                <td><span style="background: #1a1a1a; padding: 4px 8px; border-radius: 4px; font-size:11px;">MOBILE</span></td>
+                                <td>Loopy von</td>
+                                <td>+255680200009</td>
+                                <td>TSh 500</td>
+                                <td style="color: var(--accent-green)">+TSh 498</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:22</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>SN178033.</td>
+                                <td><span style="background: #1a1a1a; padding: 4px 8px; border-radius: 4px; font-size:11px;">MOBILE</span></td>
+                                <td>Ethan Migire</td>
+                                <td>+255782350517</td>
+                                <td>TSh 500</td>
+                                <td style="color: var(--accent-green)">+TSh 498</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">1 Jun 2026, 21:38</td>
+                            </tr>
+                             <tr>
+                                <td><input type="checkbox"></td>
+                                <td>SN178033.</td>
+                                <td><span style="background: #1a1a1a; padding: 4px 8px; border-radius: 4px; font-size:11px;">MOBILE</span></td>
+                                <td>Supastore</td>
+                                <td>+255789388180</td>
+                                <td>TSh 500</td>
+                                <td style="color: var(--accent-green)">+TSh 498</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">1 Jun 2026, 20:51</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-payouts" class="view-section">
+                <div class="toolbar">
+                    <div style="display: flex; gap: 12px;">
+                        <select class="btn"><option>All statuses</option></select>
+                        <input type="text" class="btn" placeholder="🔍 Search by reference..." style="width: 300px;">
+                    </div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn">📅 Date range</button>
+                        <button class="btn">⚲ View</button>
+                        <button class="btn">↻</button>
+                        <button class="btn btn-primary">+ Withdraw</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Reference</th>
+                                <th>Recipient</th>
+                                <th>Amount</th>
+                                <th>Channel</th>
+                                <th>Narration</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state" style="border: none;">No payouts yet.</div>
+                </div>
+            </div>
+
+            <div id="view-links" class="view-section">
+                <div class="toolbar">
+                    <div style="display: flex; gap: 12px;">
+                        <select class="btn"><option>All statuses</option></select>
+                        <input type="text" class="btn" placeholder="🔍 Search by reference..." style="width: 300px;">
+                    </div>
+                     <div style="display: flex; gap: 12px;">
+                        <button class="btn">📅 Date range</button>
+                        <button class="btn">↻</button>
+                        <button class="btn btn-primary">+ New Link</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>🔗 Reference</th>
+                                <th>Merchant Profile</th>
+                                <th>Amount</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PAY17803957...</td>
+                                <td>Hatta</td>
+                                <td>TSh 500</td>
+                                <td></td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:22</td>
+                            </tr>
+                            <tr>
+                                <td>PAY17803955...</td>
+                                <td>Hatta</td>
+                                <td>TSh 150</td>
+                                <td></td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:18</td>
+                            </tr>
+                            <tr>
+                                <td>PAY17803949...</td>
+                                <td>Ariel Safari</td>
+                                <td>TSh 100</td>
+                                <td></td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:09</td>
+                            </tr>
+                             <tr>
+                                <td>PAY17803361...</td>
+                                <td>Ariel Safari</td>
+                                <td>TSh 500</td>
+                                <td></td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">1 Jun 2026, 20:49</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-pages" class="view-section">
+                 <h1 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Payment Pages</h1>
+                <div class="toolbar" style="justify-content: flex-end;">
+                     <button class="btn">↻</button>
+                    <button class="btn btn-primary">+ New Page</button>
+                </div>
+                <div class="table-container">
+                     <div class="empty-state">No payment pages yet.</div>
+                </div>
+            </div>
+
+            <div id="view-page-payments" class="view-section">
+                 <div class="toolbar">
+                    <div style="display: flex; gap: 12px;">
+                        <select class="btn"><option>All pages</option></select>
+                        <select class="btn"><option>All statuses</option></select>
+                        <input type="text" class="btn" placeholder="🔍 Search by reference..." style="width: 300px;">
+                    </div>
+                     <div style="display: flex; gap: 12px;">
+                         <button class="btn">⚲ View</button>
+                         <button class="btn">↻</button>
+                     </div>
+                </div>
+                 <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Reference</th>
+                                <th>Profile</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>PAY17803...</td>
+                                <td>Hatta</td>
+                                <td></td>
+                                <td>TSh 500</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:22</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>PAY17803...</td>
+                                <td>Hatta</td>
+                                <td></td>
+                                <td>TSh 150</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:18</td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox"></td>
+                                <td>PAY17803...</td>
+                                <td>Ariel Safari</td>
+                                <td></td>
+                                <td>TSh 100</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">2 Jun 2026, 13:09</td>
+                            </tr>
+                             <tr>
+                                <td><input type="checkbox"></td>
+                                <td>PAY17803...</td>
+                                <td>Ariel Safari</td>
+                                <td></td>
+                                <td>TSh 500</td>
+                                <td><span class="status-badge status-unpaid">UNPAID</span></td>
+                                <td class="text-muted">1 Jun 2026, 20:49</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="view-products" class="view-section">
+                <div class="toolbar">
+                    <input type="text" class="btn" placeholder="🔍 Search products..." style="width: 100%; max-width: 600px;">
+                     <div style="display: flex; gap: 12px;">
+                         <button class="btn">⚲ View</button>
+                         <button class="btn">↻</button>
+                        <button class="btn btn-primary">+ New Product</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state" style="border: none;">No products yet.</div>
+                </div>
+            </div>
+
+            <div id="view-categories" class="view-section">
+                <h1 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Product Categories</h1>
+                <div class="toolbar" style="justify-content: flex-end;">
+                     <button class="btn">↻</button>
+                    <button class="btn btn-primary">+ New Category</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Products</th>
+                                <th>Order</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state" style="border: none;">No categories yet.</div>
+                </div>
+            </div>
+
+            <div id="view-media" class="view-section">
+                <div class="flex-between mb-4">
+                    <h1 style="font-size: 18px; font-weight: 600;">Media</h1>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn">↻</button>
+                        <button class="btn">📁</button>
+                        <button class="btn btn-primary">↑ Upload</button>
+                    </div>
+                </div>
+                <input type="text" class="btn mb-4" placeholder="🔍 Search files..." style="width: 100%; background: var(--bg-base);">
+                
+                <div class="empty-state" style="border: none; padding-top: 100px;">
+                    <div style="font-size: 32px; margin-bottom: 16px; color: #404040;">📄</div>
+                    <div style="margin-bottom: 8px; color: var(--text-main);">No files yet. Upload your first file to get started.</div>
+                    <div class="text-muted">Drag and drop files here, or click Upload.</div>
+                </div>
+            </div>
+
+            <div id="view-campaigns" class="view-section">
+                <div class="toolbar">
+                    <div style="display: flex; gap: 12px; width: 100%;">
+                        <select class="btn"><option>All statuses</option></select>
+                        <input type="text" class="btn" placeholder="🔍 Search campaigns..." style="flex: 1;">
+                    </div>
+                     <div style="display: flex; gap: 12px;">
+                         <button class="btn">⚲ View</button>
+                         <button class="btn">↻</button>
+                        <button class="btn btn-primary">+ New Campaign</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox"></th>
+                                <th>Name</th>
+                                <th>Affiliates</th>
+                                <th>Sales</th>
+                                <th>Paid Out</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="empty-state" style="border: none;">No campaigns yet.</div>
+                </div>
+            </div>
+
+            <div id="view-apikeys" class="view-section">
+                <div style="max-width: 800px;">
+                    <p style="font-size: 15px; line-height: 1.6; color: var(--text-muted); margin-bottom: 32px;">
+                        Payment APIs let you integrate Snippe payments directly into your application. To get started, complete the steps below.
+                    </p>
+
+                    <h3 style="font-size: 14px; font-weight: 500; margin-bottom: 12px;">What you get with Payment APIs</h3>
+                    <div class="api-card mb-4">
+                        <div class="api-row flex-between">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 16px; color: var(--text-muted);">🔑</span>
+                                <strong style="font-weight: 500;">Collection API</strong>
+                            </div>
+                            <div style="font-size: 12px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 6px;">
+                                Accept M-Pesa, Airtel Money, Tigo Pesa, and card payments
+                            </div>
+                        </div>
+                        <div class="api-row flex-between">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span style="font-size: 16px; color: var(--text-muted);">📁</span>
+                                <strong style="font-weight: 500;">Disbursement API</strong>
+                            </div>
+                            <div style="font-size: 12px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 6px;">
+                                Send payouts to mobile wallets and bank accounts
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 14px; font-weight: 500; margin-bottom: 12px; margin-top: 32px;">Complete these steps to activate Payment APIs</h3>
+                    <div class="api-card mb-4">
+                        <div class="api-row">
+                            <div style="color: var(--accent-green); font-size: 18px; margin-top: -2px;">✓</div>
+                            <div>
+                                <strong style="display: block; margin-bottom: 6px; font-weight: 500;">Verify your business</strong>
+                                <span class="text-muted" style="font-size: 13px; line-height: 1.5;">Create a business profile, upload the required documents, and submit for verification. Our team typically approves within a few hours.</span>
+                            </div>
+                        </div>
+                        <div class="api-row">
+                            <div style="color: var(--text-muted); font-size: 18px; margin-top: -2px;">○</div>
+                            <div>
+                                <strong style="display: block; margin-bottom: 6px; font-weight: 500;">Request access and complete the onboarding payment</strong>
+                                <span class="text-muted" style="font-size: 13px; line-height: 1.5;">Once your business is verified, request Payment API access and complete the one-time onboarding payment via mobile money.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 14px; margin-top: 24px;">
+                        Request Payment API access
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        
+        <div style="padding: 12px 32px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); background: var(--bg-base);">
+            <div style="color: var(--accent-green);">● All systems operational</div>
+            <div>© 2026 Snippe Payments · Neurotech Company L...</div>
+        </div>
+    </main>
+
+    <button class="fab">
+        <span style="font-size: 20px;">💬</span>
+        <div style="text-align: left; line-height: 1.2;">
+            <div style="font-size: 14px;">Need Help?</div>
+            <div style="font-size: 11px; font-weight: 400;">Ask me</div>
+        </div>
+    </button>
+
+    <script>
+        // Store the active item
+        let currentActiveItem = document.querySelector('.menu-item.active');
+
+        // Toggle Sidebar Menus
+        function toggleMenu(menuId) {
+            const menu = document.getElementById(menuId);
+            menu.classList.toggle('active');
+        }
+
+        // Toggle Notifications Panel
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                panel.style.display = 'block';
+            }
+        }
+
+        // Close notifications when clicking outside
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById('notifications-panel');
+            const bellBtn = event.target.closest('.icon-btn');
+            if (!bellBtn && !panel.contains(event.target) && panel.style.display === 'block') {
+                panel.style.display = 'none';
+            }
+        });
+
+        // Handle Navigation
+        function navigate(viewId, breadcrumbText) {
+            // Setup the event context correctly depending on how it was called
+            let element = event.currentTarget;
+
+            // Remove active class from all sidebar items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked item
+            element.classList.add('active');
+
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show selected view
+            const targetView = document.getElementById('view-' + viewId);
+            if(targetView) {
+                targetView.classList.add('active');
+                
+                // Update Topbar context based on passed string
+                if (viewId === 'dashboard') {
+                    document.getElementById('current-user').textContent = 'arielisafari@gmail.com';
+                } else {
+                    document.getElementById('current-user').innerHTML = `arielisafari@gmail.com &nbsp;&nbsp;>&nbsp;&nbsp; ${breadcrumbText}`;
+                }
+            }
+        }
+    </script>
+
+<!-- HEROPESA DEMO REQUEST MODAL - START -->
+<style>
+.demo-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 99999;
+}
+.demo-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.demo-modal-container {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 32px;
+  width: 90%;
+  max-width: 460px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  position: relative;
+  box-sizing: border-box;
+}
+.demo-modal-overlay.active .demo-modal-container {
+  transform: scale(1);
+}
+.demo-modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
+.demo-modal-close {
+  background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: #888888;
+  transition: color 0.2s; line-height: 1;
+}
+.demo-modal-close:hover { color: #0a0a0a; }
+.demo-form-group { margin-bottom: 16px; text-align: left; }
+.demo-form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: #555555; }
+.demo-form-group input, .demo-form-group select {
+  width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 6px;
+  font-size: 0.92rem; outline: none; transition: border-color 0.25s;
+  box-sizing: border-box;
+}
+.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
+.demo-submit-btn {
+  width: 100%; padding: 12px; background: #0a0a0a; color: #ffffff; border: none;
+  border-radius: 6px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
+  transition: background-color 0.25s; margin-top: 8px;
+}
+.demo-submit-btn:hover { background: #222222; }
+.demo-success-state { text-align: center; padding: 20px 0; }
+.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
+.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
+.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
+.demo-close-btn {
+  padding: 10px 24px; background: #0a0a0a; color: #ffffff; border: none;
+  border-radius: 6px; font-weight: 500; cursor: pointer;
+}
+</style>
+
+<div id="demoModal" class="demo-modal-overlay">
+  <div class="demo-modal-container">
+    <div class="demo-modal-header">
+      <h3>Schedule an Enterprise Demo</h3>
+      <button class="demo-modal-close" onclick="closeDemoModal()">&times;</button>
+    </div>
+    <form id="demoModalForm" onsubmit="handleDemoSubmit(event)">
+      <div class="demo-form-group">
+        <label>Full Name</label>
+        <input type="text" required placeholder="John Doe">
+      </div>
+      <div class="demo-form-group">
+        <label>Corporate Email</label>
+        <input type="email" required placeholder="name@company.com">
+      </div>
+      <div class="demo-form-group">
+        <label>Company Size</label>
+        <select required>
+          <option value="">Select size</option>
+          <option>1-9 employees</option>
+          <option>10-49 employees</option>
+          <option>50-249 employees</option>
+          <option>250+ employees</option>
+        </select>
+      </div>
+      <div class="demo-form-group">
+        <label>Phone Number</label>
+        <input type="tel" required placeholder="+1 (555) 000-0000">
+      </div>
+      <button type="submit" class="demo-submit-btn">Submit Request</button>
+    </form>
+    <div id="demoSuccessState" class="demo-success-state" style="display: none;">
+      <i class="fa-solid fa-circle-check color-green"></i>
+      <h4>Request Submitted!</h4>
+      <p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
+      <button class="demo-close-btn" onclick="closeDemoModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Bind all demo elements to show modal
+  document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDemoModal();
+    });
+  });
+});
+
+function openDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.add('active');
+    document.getElementById('demoModalForm').style.display = 'block';
+    document.getElementById('demoSuccessState').style.display = 'none';
+  }
+}
+
+function closeDemoModal() {
+  const modal = document.getElementById('demoModal');
+  if (modal) {
+    modal.classList.remove('active');
+  }
+}
+
+function handleDemoSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('demoModalForm');
+  const success = document.getElementById('demoSuccessState');
+  form.style.display = 'none';
+  success.style.display = 'block';
+}
+</script>
+<!-- HEROPESA DEMO REQUEST MODAL - END -->
+</body>
+</html>

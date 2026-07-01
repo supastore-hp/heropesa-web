@@ -1,0 +1,2523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa CRM</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+--sidebar-bg: #1a1a6e;
+--sidebar-active: rgba(255,255,255,0.15);
+--sidebar-hover: rgba(255,255,255,0.08);
+--topbar-bg: linear-gradient(135deg, #1a1a6e 0%, #2a2a8e 100%);
+--main-bg: #f5f7fa;
+--card-bg: #ffffff;
+--primary: #3b82f6;
+--primary-dark: #2563eb;
+--green: #22c55e;
+--green-dark: #16a34a;
+--red: #ef4444;
+--orange: #f59e0b;
+--yellow: #eab308;
+--text-primary: #1e293b;
+--text-secondary: #64748b;
+--text-muted: #94a3b8;
+--border: #e2e8f0;
+--shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+--shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+--shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+--shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+--radius-sm: 6px;
+--radius-md: 8px;
+--radius-lg: 12px;
+--radius-xl: 16px;
+--radius-2xl: 24px;
+--font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+--transition: all 0.2s ease;
+--crm-glass-bg: rgba(255, 255, 255, 0.08);
+--crm-glass-bg-strong: rgba(255, 255, 255, 0.12);
+--crm-glass-border: rgba(255, 255, 255, 0.18);
+--crm-glass-border-light: rgba(255, 255, 255, 0.1);
+--crm-text-primary: #ffffff;
+--crm-text-secondary: rgba(255, 255, 255, 0.75);
+--crm-text-muted: rgba(255, 255, 255, 0.5);
+--crm-accent-green: #4ade80;
+--crm-accent-green-dark: #16a34a;
+--crm-accent-blue: #3b82f6;
+--crm-accent-cyan: #22d3ee;
+--crm-accent-teal: #14b8a6;
+--crm-accent-red: #ef4444;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font); background: var(--main-bg); color: var(--text-primary); overflow: hidden; height: 100vh; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+/* ===== AUTH SCREEN ===== */
+.auth-screen { display: flex; align-items: center; justify-content: center; height: 100vh; background: linear-gradient(135deg, #1a1a6e 0%, #0f0f3d 50%, #1a2a8e 100%); position: relative; overflow: hidden; }
+.auth-screen::before { content: ''; position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%); top: -200px; right: -200px; animation: authFloat 8s ease-in-out infinite; }
+.auth-screen::after { content: ''; position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%); bottom: -100px; left: -100px; animation: authFloat 6s ease-in-out infinite reverse; }
+@keyframes authFloat { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, -30px); } }
+.auth-card { background: white; border-radius: var(--radius-xl); padding: 48px; width: 420px; max-width: 90vw; box-shadow: var(--shadow-xl); position: relative; z-index: 1; animation: authSlideIn 0.5s ease; }
+@keyframes authSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.auth-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+.auth-logo svg { width: 36px; height: 36px; }
+.auth-logo span { font-size: 24px; font-weight: 700; color: var(--sidebar-bg); }
+.auth-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+.auth-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 28px; }
+.auth-form .form-group { margin-bottom: 18px; }
+.auth-form label { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.auth-form input { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font); transition: var(--transition); outline: none; }
+.auth-form input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.auth-form input::placeholder { color: var(--text-muted); }
+.auth-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 600; cursor: pointer; transition: var(--transition); margin-top: 8px; }
+.auth-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.auth-btn:active { transform: translateY(0); }
+.auth-divider { text-align: center; margin: 24px 0; position: relative; color: var(--text-muted); font-size: 13px; }
+.auth-divider::before, .auth-divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.auth-divider::before { left: 0; }
+.auth-divider::after { right: 0; }
+.auth-social { display: flex; gap: 10px; margin-bottom: 20px; }
+.auth-social-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: white; cursor: pointer; font-size: 14px; font-family: var(--font); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 8px; }
+.auth-social-btn:hover { border-color: var(--primary); background: #f8fafc; }
+.auth-switch { margin-top: 16px; text-align: center; font-size: 13px; color: var(--text-secondary); }
+.auth-error { background: #fef2f2; border: 1px solid #fecaca; color: var(--red); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 13px; margin-bottom: 16px; display: none; }
+.auth-error.show { display: block; }
+
+/* ===== MAIN LAYOUT ===== */
+.app-layout { display: none; height: 100vh; overflow: hidden; }
+.app-layout.active { display: flex; }
+.sidebar { width: 240px; background: var(--sidebar-bg); display: flex; flex-direction: column; flex-shrink: 0; transition: width 0.3s ease; overflow: hidden; z-index: 100; }
+.sidebar.collapsed { width: 60px; }
+.sidebar.collapsed .sidebar-label, .sidebar.collapsed .sidebar-section-title { display: none; }
+.sidebar.collapsed .sidebar-logo span { display: none; }
+.sidebar-header { display: flex; align-items: center; padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.1); min-height: 60px; }
+.sidebar-logo { display: flex; align-items: center; gap: 10px; color: white; font-size: 18px; font-weight: 700; white-space: nowrap; }
+.sidebar-logo svg { width: 28px; height: 28px; flex-shrink: 0; }
+.sidebar-toggle { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.6); cursor: pointer; padding: 4px; border-radius: 4px; transition: var(--transition); }
+.sidebar-toggle:hover { color: white; background: rgba(255,255,255,0.1); }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 8px; }
+.sidebar-section { margin-bottom: 4px; }
+.sidebar-section-title { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 12px 6px; white-space: nowrap; }
+.sidebar-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; color: rgba(255,255,255,0.7); cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition); white-space: nowrap; font-size: 14px; position: relative; }
+.sidebar-item:hover { background: var(--sidebar-hover); color: white; }
+.sidebar-item.active { background: var(--sidebar-active); color: white; font-weight: 600; }
+.sidebar-item svg { width: 20px; height: 20px; flex-shrink: 0; }
+.sidebar-item .sidebar-label { flex: 1; }
+.sidebar-submenu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding-left: 20px; }
+.sidebar-submenu.open { max-height: 200px; }
+.sidebar-submenu .sidebar-item { font-size: 13px; padding: 6px 12px; }
+.sidebar-footer { padding: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
+.upgrade-btn { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: linear-gradient(135deg, #f97316, #ec4899); color: white; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
+.upgrade-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.topbar { display: flex; align-items: center; padding: 0 20px; height: 56px; background: var(--topbar-bg); color: white; flex-shrink: 0; gap: 4px; }
+.topbar-nav { display: flex; align-items: center; gap: 2px; flex: 1; overflow-x: auto; }
+.topbar-nav-item { padding: 8px 14px; font-size: 14px; font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 4px; color: rgba(255,255,255,0.75); }
+.topbar-nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+.topbar-nav-item.active { background: rgba(255,255,255,0.2); color: white; }
+.topbar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.topbar-search { display: flex; align-items: center; gap: 8px; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; transition: var(--transition); }
+.topbar-search:hover { background: rgba(255,255,255,0.15); }
+.topbar-search svg { width: 18px; height: 18px; }
+.topbar-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255,255,255,0.1); border: none; color: white; cursor: pointer; transition: var(--transition); position: relative; }
+.topbar-btn:hover { background: rgba(255,255,255,0.2); }
+.topbar-btn .notif-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--red); border-radius: 50%; border: 2px solid var(--sidebar-bg); }
+.topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; cursor: pointer; transition: var(--transition); }
+.topbar-avatar:hover { transform: scale(1.05); }
+.topbar-time { font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: var(--radius-sm); }
+.topbar-time svg { width: 16px; height: 16px; }
+.page-content { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.module-page { display: none; min-height: 100%; }
+.module-page.active { display: block; }
+
+/* ===== DASHBOARD MODULE ===== */
+.dashboard-module { padding: 24px; }
+.dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.kpi-card { background: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); transition: var(--transition); }
+.kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.kpi-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.kpi-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.kpi-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
+.kpi-value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+.kpi-change { font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+.kpi-change.up { color: #16a34a; }
+.kpi-change.down { color: #dc2626; }
+.dashboard-charts { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+.chart-card { background: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); }
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.chart-title { font-size: 16px; font-weight: 600; }
+.chart-tabs { display: flex; gap: 4px; }
+.chart-tab { padding: 4px 12px; font-size: 12px; border: none; background: none; cursor: pointer; border-radius: 4px; color: var(--text-secondary); transition: var(--transition); }
+.chart-tab.active { background: #eff6ff; color: var(--primary); font-weight: 600; }
+canvas { width: 100% !important; }
+.dashboard-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.activity-feed { background: white; border-radius: var(--radius-lg); padding: 20px; box-shadow: var(--shadow-sm); }
+.activity-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+.activity-item:last-child { border-bottom: none; }
+.activity-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+.activity-content { flex: 1; }
+.activity-text { font-size: 13px; color: var(--text-primary); line-height: 1.4; }
+.activity-text strong { font-weight: 600; }
+.activity-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ===== CRM MODULE (Bitrix24 Glass Kanban) ===== */
+.crm-module { position: relative; height: 100%; min-height: 100%; color: var(--crm-text-primary); font-family: 'Inter', sans-serif; overflow: hidden; display: flex; flex-direction: column; }
+.crm-earth-bg { position: absolute; inset: 0; background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80'); background-size: cover; background-position: center; z-index: 0; }
+.crm-earth-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(5, 15, 40, 0.55) 0%, rgba(10, 25, 60, 0.45) 50%, rgba(5, 20, 50, 0.6) 100%); z-index: 1; }
+.crm-inner { position: relative; z-index: 2; display: flex; flex-direction: column; height: 100%; flex: 1; }
+.crm-top-nav { display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 52px; background: rgba(10, 20, 45, 0.35); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--crm-glass-border-light); flex-shrink: 0; }
+.crm-top-nav-left { display: flex; align-items: center; gap: 4px; }
+.crm-nav-item { display: flex; align-items: center; gap: 6px; padding: 7px 14px; font-size: 13px; font-weight: 500; color: var(--crm-text-secondary); cursor: pointer; border-radius: 20px; transition: all 0.2s ease; white-space: nowrap; }
+.crm-nav-item:hover { color: var(--crm-text-primary); background: rgba(255, 255, 255, 0.06); }
+.crm-nav-item.active { color: var(--crm-text-primary); background: rgba(255, 255, 255, 0.15); font-weight: 600; }
+.crm-nav-item .crm-dropdown-arrow { font-size: 10px; opacity: 0.7; margin-left: 2px; }
+.crm-nav-item.active .crm-dropdown-arrow { display: none; }
+.crm-top-nav-right { display: flex; align-items: center; gap: 10px; position: relative; }
+.crm-top-icon-btn { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: transparent; color: var(--crm-text-secondary); cursor: pointer; transition: all 0.2s ease; font-size: 14px; border: none; }
+.crm-top-icon-btn:hover { background: rgba(255, 255, 255, 0.1); color: var(--crm-text-primary); }
+.crm-bitrix-brand { display: flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 13px; font-weight: 600; color: var(--crm-text-primary); cursor: pointer; border-radius: 6px; transition: all 0.2s ease; }
+.crm-bitrix-brand:hover { background: rgba(255, 255, 255, 0.08); }
+.crm-bitrix-brand i { font-size: 12px; color: var(--crm-text-muted); }
+.crm-rocket-btn { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #22c55e, #16a34a); display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4); border: none; }
+.crm-rocket-btn:hover { transform: scale(1.05); box-shadow: 0 6px 16px rgba(34, 197, 94, 0.6); }
+.crm-pill-badge { display: flex; align-items: center; gap: 8px; padding: 5px 6px 5px 12px; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--crm-glass-border); border-radius: 20px; cursor: pointer; transition: all 0.2s ease; position: relative; font-size: 13px; font-weight: 500; }
+.crm-pill-badge:hover { background: rgba(255, 255, 255, 0.15); }
+.crm-pill-badge i { font-size: 12px; color: var(--crm-text-secondary); }
+.crm-pill-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #8b5cf6, #ec4899); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+.crm-notif-dot { position: absolute; top: -4px; right: -4px; background: var(--crm-accent-red); color: white; font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 10px; min-width: 18px; text-align: center; border: 2px solid rgba(10, 20, 45, 0.8); }
+.crm-action-bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: rgba(10, 20, 45, 0.25); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--crm-glass-border-light); flex-shrink: 0; }
+.crm-action-title { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; color: var(--crm-text-primary); margin-right: 8px; }
+.crm-action-title .crm-pin-icon { font-size: 14px; color: var(--crm-text-muted); cursor: pointer; }
+.crm-create-btn { display: flex; align-items: stretch; height: 36px; border-radius: 6px; overflow: hidden; cursor: pointer; transition: all 0.2s ease; flex-shrink: 0; box-shadow: 0 2px 8px rgba(74, 222, 128, 0.3); }
+.crm-create-btn-main { display: flex; align-items: center; gap: 6px; padding: 0 16px; background: linear-gradient(135deg, #4ade80, #22c55e); color: white; font-size: 13px; font-weight: 600; border: none; cursor: pointer; font-family: inherit; }
+.crm-create-btn-dropdown { display: flex; align-items: center; justify-content: center; width: 28px; background: linear-gradient(135deg, #16a34a, #15803d); color: white; border: none; border-left: 1px solid rgba(255, 255, 255, 0.2); cursor: pointer; font-size: 11px; }
+.crm-create-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(74, 222, 128, 0.5); }
+.crm-pipeline-btn { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 6px; color: var(--crm-text-primary); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s ease; white-space: nowrap; }
+.crm-pipeline-btn:hover { background: var(--crm-glass-bg-strong); }
+.crm-pipeline-btn i { font-size: 12px; color: var(--crm-text-secondary); }
+.crm-search-bar { flex: 1; display: flex; align-items: center; gap: 8px; padding: 7px 12px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 6px; min-width: 200px; transition: all 0.2s ease; }
+.crm-search-bar:focus-within { background: var(--crm-glass-bg-strong); border-color: rgba(255, 255, 255, 0.3); }
+.crm-search-tag { display: flex; align-items: center; gap: 6px; padding: 3px 10px; background: rgba(59, 130, 246, 0.25); border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 14px; font-size: 12px; font-weight: 500; color: #93c5fd; white-space: nowrap; }
+.crm-search-tag .crm-close-x { cursor: pointer; opacity: 0.8; font-size: 10px; }
+.crm-search-tag .crm-close-x:hover { opacity: 1; }
+.crm-search-input { flex: 1; background: transparent; border: none; outline: none; color: var(--crm-text-primary); font-size: 13px; font-family: inherit; }
+.crm-search-input::placeholder { color: var(--crm-text-muted); }
+.crm-search-icons { display: flex; align-items: center; gap: 6px; color: var(--crm-text-muted); font-size: 13px; }
+.crm-search-icons i { cursor: pointer; transition: color 0.2s ease; }
+.crm-search-icons i:hover { color: var(--crm-text-primary); }
+.crm-gear-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 6px; color: var(--crm-text-secondary); cursor: pointer; transition: all 0.2s ease; font-size: 14px; }
+.crm-gear-btn:hover { background: var(--crm-glass-bg-strong); color: var(--crm-text-primary); }
+.crm-tabs-bar { display: flex; align-items: center; gap: 12px; padding: 10px 20px; background: rgba(10, 20, 45, 0.2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--crm-glass-border-light); flex-shrink: 0; }
+.crm-view-tabs { display: flex; gap: 2px; background: rgba(255, 255, 255, 0.05); padding: 3px; border-radius: 8px; border: 1px solid var(--crm-glass-border-light); }
+.crm-view-tab { padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--crm-text-secondary); cursor: pointer; border-radius: 6px; transition: all 0.2s ease; }
+.crm-view-tab:hover { color: var(--crm-text-primary); }
+.crm-view-tab.active { background: rgba(255, 255, 255, 0.15); color: var(--crm-text-primary); font-weight: 600; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); }
+.crm-counter-pills { display: flex; gap: 6px; margin-left: 8px; }
+.crm-counter-pill { display: flex; align-items: center; gap: 6px; padding: 5px 12px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 14px; font-size: 12px; font-weight: 500; color: var(--crm-text-secondary); cursor: pointer; transition: all 0.2s ease; }
+.crm-counter-pill:hover { background: var(--crm-glass-bg-strong); color: var(--crm-text-primary); }
+.crm-counter-pill .crm-count { background: rgba(255, 255, 255, 0.15); padding: 1px 6px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+.crm-tabs-right { margin-left: auto; display: flex; gap: 8px; }
+.crm-action-pill { display: flex; align-items: center; gap: 8px; padding: 6px 14px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 6px; font-size: 13px; font-weight: 500; color: var(--crm-text-primary); cursor: pointer; transition: all 0.2s ease; }
+.crm-action-pill:hover { background: var(--crm-glass-bg-strong); }
+.crm-action-pill i { font-size: 13px; }
+.crm-workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
+.crm-kanban-container { flex: 1; display: flex; gap: 14px; padding: 20px; overflow-x: auto; overflow-y: auto; padding-right: 80px; }
+.crm-kanban-container::-webkit-scrollbar { height: 8px; width: 8px; }
+.crm-kanban-container::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); border-radius: 4px; }
+.crm-kanban-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 4px; }
+.crm-kanban-column { min-width: 280px; max-width: 280px; display: flex; flex-direction: column; flex-shrink: 0; }
+.crm-column-header { position: relative; padding: 12px 18px 12px 16px; color: white; font-size: 14px; font-weight: 700; clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%); margin-right: -8px; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; }
+.crm-column-header .crm-count { background: rgba(255, 255, 255, 0.25); padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+.crm-column-header.crm-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.crm-column-header.crm-light-blue { background: linear-gradient(135deg, #60a5fa, #3b82f6); }
+.crm-column-header.crm-cyan { background: linear-gradient(135deg, #22d3ee, #06b6d4); }
+.crm-column-header.crm-teal { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+.crm-column-body { margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.crm-value-badge { display: flex; align-items: center; justify-content: center; padding: 10px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 8px; font-size: 16px; font-weight: 700; color: var(--crm-text-primary); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.crm-quick-deal-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 8px; color: var(--crm-text-primary); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.crm-quick-deal-btn:hover { background: var(--crm-glass-bg-strong); transform: translateY(-1px); }
+.crm-quick-deal-btn i { font-size: 14px; color: var(--crm-accent-green); }
+.crm-add-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin: 0 auto; background: var(--crm-glass-bg); border: 1px solid var(--crm-glass-border); border-radius: 50%; color: var(--crm-text-primary); font-size: 14px; cursor: pointer; transition: all 0.2s ease; }
+.crm-add-btn:hover { background: var(--crm-glass-bg-strong); transform: scale(1.1); }
+.crm-contact-center-panel { margin-top: 12px; background: rgba(255, 255, 255, 0.08); border: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 12px; padding: 16px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+.crm-contact-center-title { font-size: 13px; font-weight: 700; color: var(--crm-text-primary); margin-bottom: 14px; line-height: 1.4; }
+.crm-contact-center-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.crm-contact-center-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: rgba(255, 255, 255, 0.06); border-radius: 6px; font-size: 12px; font-weight: 500; color: var(--crm-text-primary); cursor: pointer; transition: all 0.2s ease; }
+.crm-contact-center-item:hover { background: rgba(255, 255, 255, 0.12); }
+.crm-contact-center-item i { font-size: 13px; color: var(--crm-accent-cyan); width: 16px; text-align: center; }
+.crm-import-link { display: block; text-align: center; padding: 10px; font-size: 12px; font-weight: 500; color: #93c5fd; text-decoration: none; border-top: 1px solid rgba(255, 255, 255, 0.15); cursor: pointer; transition: color 0.2s ease; }
+.crm-import-link:hover { color: #60a5fa; text-decoration: underline; }
+.crm-right-sidebar { position: absolute; top: 0; right: 0; width: 56px; height: 100%; background: rgba(10, 20, 45, 0.45); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-left: 1px solid var(--crm-glass-border-light); display: flex; flex-direction: column; align-items: center; padding: 16px 0; gap: 10px; z-index: 50; }
+.crm-sidebar-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; color: var(--crm-text-secondary); cursor: pointer; transition: all 0.2s ease; font-size: 14px; position: relative; border: 1px solid transparent; }
+.crm-sidebar-icon:hover { background: rgba(255, 255, 255, 0.15); color: var(--crm-text-primary); transform: scale(1.05); }
+.crm-sidebar-icon.crm-green-circle { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-size: 11px; font-weight: 700; }
+.crm-sidebar-icon .crm-mini-notif { position: absolute; top: -2px; right: -2px; background: var(--crm-accent-red); color: white; font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 8px; min-width: 14px; text-align: center; border: 1.5px solid rgba(10, 20, 45, 0.8); }
+.crm-chevron-btn { position: absolute; top: 50%; right: 48px; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid var(--crm-glass-border); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: flex; align-items: center; justify-content: center; color: var(--crm-text-primary); font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; z-index: 60; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); }
+.crm-chevron-btn:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-50%) scale(1.08); }
+
+/* ============================================================
+   ===== BOOKING MODULE - NEW BITRIX24-STYLE =====
+   ============================================================ */
+.booking-module {
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  color: var(--crm-text-primary);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.booking-earth-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80');
+  background-size: cover; background-position: center; z-index: 0;
+}
+.booking-earth-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(5, 15, 40, 0.55) 0%, rgba(10, 25, 60, 0.45) 50%, rgba(5, 20, 50, 0.6) 100%);
+  z-index: 1;
+}
+.booking-inner {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; height: 100%; flex: 1;
+}
+
+/* Booking Top Nav */
+.booking-top-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 52px;
+  background: rgba(10, 20, 45, 0.35);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--crm-glass-border-light);
+  flex-shrink: 0;
+}
+.booking-top-nav-left { display: flex; align-items: center; gap: 4px; }
+.booking-nav-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px; font-size: 13px; font-weight: 500;
+  color: var(--crm-text-secondary); cursor: pointer;
+  border-radius: 20px; transition: all 0.2s ease; white-space: nowrap;
+}
+.booking-nav-item:hover { color: var(--crm-text-primary); background: rgba(255, 255, 255, 0.06); }
+.booking-nav-item.active { color: var(--crm-text-primary); background: rgba(255, 255, 255, 0.15); font-weight: 600; }
+.booking-nav-item .booking-dropdown-arrow { font-size: 10px; opacity: 0.7; margin-left: 2px; }
+.booking-nav-item.active .booking-dropdown-arrow { display: none; }
+.booking-top-nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* Booking Action Bar */
+.booking-action-bar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 24px;
+  background: rgba(10, 20, 45, 0.28);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--crm-glass-border-light);
+  flex-shrink: 0;
+}
+.booking-action-left { display: flex; align-items: center; gap: 14px; }
+.booking-action-title {
+  font-size: 24px; font-weight: 700; color: var(--crm-text-primary);
+}
+.booking-action-date {
+  font-size: 15px; font-weight: 500; color: var(--crm-text-secondary);
+}
+.booking-action-stats { display: flex; flex-direction: column; gap: 2px; }
+.booking-action-stats .stat-line {
+  font-size: 12px; color: var(--crm-text-secondary); font-weight: 500;
+  display: flex; align-items: center; gap: 4px;
+}
+.booking-action-stats .stat-line .stat-val { color: var(--crm-text-primary); font-weight: 600; }
+.booking-action-stats .stat-line.dotted .stat-val {
+  border-bottom: 1px dotted var(--crm-text-secondary);
+  padding-bottom: 1px;
+}
+.booking-action-search {
+  flex: 1; max-width: 420px;
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 14px;
+  background: var(--crm-glass-bg);
+  border: 1px solid var(--crm-glass-border);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.booking-action-search:focus-within { background: var(--crm-glass-bg-strong); border-color: rgba(255,255,255,0.3); }
+.booking-action-search input {
+  flex: 1; background: transparent; border: none; outline: none;
+  color: var(--crm-text-primary); font-size: 13px; font-family: inherit;
+}
+.booking-action-search input::placeholder { color: var(--crm-text-muted); }
+.booking-action-search i { color: var(--crm-text-muted); font-size: 13px; }
+.booking-action-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.booking-action-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: var(--crm-glass-bg);
+  border: 1px solid var(--crm-glass-border);
+  border-radius: 14px;
+  font-size: 12px; font-weight: 500; color: var(--crm-text-secondary);
+  cursor: pointer; transition: all 0.2s ease;
+}
+.booking-action-pill:hover { background: var(--crm-glass-bg-strong); color: var(--crm-text-primary); }
+.booking-action-pill .pill-count {
+  background: rgba(255,255,255,0.15);
+  padding: 1px 6px; border-radius: 10px;
+  font-size: 11px; font-weight: 600; color: var(--crm-text-primary);
+}
+.booking-action-pill i.lock-icon { font-size: 9px; opacity: 0.7; }
+.booking-view-toggle {
+  display: flex;
+  background: var(--crm-glass-bg);
+  border: 1px solid var(--crm-glass-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.booking-view-toggle-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 14px;
+  font-size: 12px; font-weight: 500;
+  color: var(--crm-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+}
+.booking-view-toggle-btn.active {
+  background: rgba(255,255,255,0.15);
+  color: var(--crm-text-primary);
+  font-weight: 600;
+}
+.booking-view-toggle-btn i.lock-icon { font-size: 9px; opacity: 0.7; }
+
+/* Booking Workspace */
+.booking-workspace {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+  position: relative;
+}
+.booking-card {
+  width: 100%;
+  max-width: 1400px;
+  min-height: 600px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Card Header */
+.booking-card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.booking-card-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.booking-card-header-row .v-divider {
+  width: 1px;
+  height: 24px;
+  background: #e2e8f0;
+  margin: 0 4px;
+}
+.booking-funnel-btn {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+.booking-funnel-btn:hover { background: #eff6ff; }
+.booking-add-resource-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  border-radius: 6px;
+  color: var(--primary);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.booking-add-resource-btn:hover { background: #dbeafe; }
+.booking-add-resource-btn i { font-size: 12px; }
+.booking-bundle-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 4px 0;
+  color: #cbd5e1;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.booking-bundle-btn:hover { color: #94a3b8; }
+.booking-bundle-btn i { font-size: 14px; }
+
+/* Timeline / Calendar Grid */
+.booking-timeline {
+  flex: 1;
+  position: relative;
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  min-height: 500px;
+}
+.booking-time-col {
+  border-right: 1px solid #f1f5f9;
+  position: relative;
+}
+.booking-time-slot {
+  height: 80px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 4px 12px 0 0;
+  font-size: 12px;
+  color: #cbd5e1;
+  font-weight: 500;
+  position: relative;
+}
+.booking-time-slot::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -1px;
+  width: 8px;
+  height: 1px;
+  background: #e2e8f0;
+}
+.booking-grid-area {
+  position: relative;
+  background-image:
+    linear-gradient(to bottom, #f8fafc 1px, transparent 1px);
+  background-size: 100% 80px;
+}
+.booking-grid-area::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: #f1f5f9;
+}
+
+/* Floating Zoom Panel */
+.booking-zoom-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-size: 12px;
+  color: var(--text-secondary);
+  z-index: 10;
+}
+.booking-zoom-panel .expand-icon {
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+.booking-zoom-panel .expand-icon:hover { color: var(--text-primary); }
+.booking-zoom-panel .show-all {
+  color: var(--text-secondary);
+  border-bottom: 1px dotted var(--text-muted);
+  cursor: pointer;
+  padding-bottom: 1px;
+  transition: color 0.2s ease;
+}
+.booking-zoom-panel .show-all:hover { color: var(--text-primary); }
+.booking-zoom-panel .zoom-divider {
+  width: 1px;
+  height: 16px;
+  background: #e2e8f0;
+}
+.booking-zoom-panel .zoom-btn {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.booking-zoom-panel .zoom-btn:hover { background: #f1f5f9; color: var(--text-primary); }
+.booking-zoom-panel .zoom-level {
+  font-weight: 600;
+  color: var(--text-primary);
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Mini Calendar Widget */
+.booking-mini-calendar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 280px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  padding: 14px;
+  z-index: 10;
+  font-family: 'Inter', sans-serif;
+}
+.bmc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.bmc-nav-btn {
+  width: 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+}
+.bmc-nav-btn:hover { background: #f1f5f9; color: var(--text-primary); }
+.bmc-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.bmc-close {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 11px;
+  transition: all 0.2s ease;
+}
+.bmc-close:hover { background: #f1f5f9; color: var(--text-primary); }
+.bmc-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.bmc-weekday {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 0;
+}
+.bmc-weekday.red { color: var(--red); }
+.bmc-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.bmc-date {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.bmc-date:hover { background: #f1f5f9; }
+.bmc-date.other-month { color: #cbd5e1; }
+.bmc-date.red { color: var(--red); }
+.bmc-date.today {
+  background: var(--primary);
+  color: white !important;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(59,130,246,0.4);
+}
+
+/* Booking Right Sidebar */
+.booking-right-sidebar {
+  position: absolute;
+  top: 0; right: 0;
+  width: 56px; height: 100%;
+  background: rgba(10, 20, 45, 0.45);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-left: 1px solid var(--crm-glass-border-light);
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 0; gap: 10px;
+  z-index: 50;
+}
+.booking-sidebar-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--crm-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  position: relative;
+  border: 1px solid transparent;
+}
+.booking-sidebar-icon:hover { background: rgba(255, 255, 255, 0.15); color: var(--crm-text-primary); transform: scale(1.05); }
+.booking-sidebar-icon.green-circle { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; font-size: 11px; font-weight: 700; }
+.booking-sidebar-icon .mini-notif {
+  position: absolute; top: -2px; right: -2px;
+  background: var(--crm-accent-red); color: white;
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 8px;
+  min-width: 14px; text-align: center;
+  border: 1.5px solid rgba(10, 20, 45, 0.8);
+}
+
+/* ===== INVENTORY MODULE ===== */
+.inventory-module { padding: 24px; }
+.inventory-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+.inventory-title { font-size: 24px; font-weight: 700; }
+.search-bar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; background: white; border: 1.5px solid var(--border); border-radius: var(--radius-sm); min-width: 300px; transition: var(--transition); }
+.search-bar:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.search-bar input { border: none; outline: none; font-size: 14px; flex: 1; font-family: var(--font); }
+.search-bar svg { width: 18px; height: 18px; color: var(--text-muted); flex-shrink: 0; }
+.empty-state { text-align: center; padding: 60px 20px; max-width: 600px; margin: 0 auto; }
+.empty-state-icon { width: 80px; height: 80px; margin: 0 auto 24px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.empty-state-icon svg { width: 36px; height: 36px; color: var(--text-muted); }
+.empty-state h3 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.empty-state p { color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 24px; }
+.migration-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: var(--radius-lg); padding: 32px; max-width: 500px; margin: 24px auto; }
+.migration-box h4 { font-size: 15px; margin-bottom: 16px; color: var(--text-primary); }
+.migration-logos { display: flex; align-items: center; justify-content: center; gap: 24px; margin-bottom: 24px; }
+.migration-logo { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 700; color: var(--text-secondary); }
+.migrate-btn { padding: 12px 36px; background: #0ea5e9; color: white; border: none; border-radius: var(--radius-xl); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); display: block; margin: 0 auto; }
+.migrate-btn:hover { background: #0284c7; transform: translateY(-1px); }
+.data-table { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+table { width: 100%; border-collapse: collapse; }
+thead th { text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); background: #f8fafc; white-space: nowrap; cursor: pointer; user-select: none; }
+thead th:hover { color: var(--text-primary); }
+tbody td { padding: 12px 16px; font-size: 14px; border-bottom: 1px solid #f1f5f9; }
+tbody tr:hover { background: #f8fafc; }
+.status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-badge.active { background: #dcfce7; color: #16a34a; }
+.status-badge.pending { background: #fef3c7; color: #d97706; }
+.status-badge.completed { background: #dbeafe; color: #2563eb; }
+.status-badge.cancelled { background: #fee2e2; color: #dc2626; }
+
+/* ===== MARKETING MODULE ===== */
+.marketing-module { padding: 24px; }
+.marketing-header { margin-bottom: 24px; }
+.marketing-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+.marketing-subtitle { color: var(--text-secondary); font-size: 14px; }
+.campaign-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.campaign-card { background: white; border-radius: var(--radius-lg); padding: 24px; text-align: center; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-sm); border: 2px solid transparent; }
+.campaign-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.campaign-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 24px; }
+.campaign-icon.email { background: #dbeafe; color: #2563eb; }
+.campaign-icon.sms { background: #fce7f3; color: #db2777; }
+.campaign-icon.messenger { background: #dcfce7; color: #16a34a; }
+.campaign-icon.voice { background: #fef3c7; color: #d97706; }
+.campaign-icon.audio { background: #e0e7ff; color: #4f46e5; }
+.campaign-card h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.campaign-card p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.section-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; margin-top: 32px; }
+
+/* ===== SITES MODULE ===== */
+.sites-module { padding: 24px; }
+.sites-hero { background: white; border-radius: var(--radius-2xl); padding: 48px; display: flex; align-items: center; gap: 48px; box-shadow: var(--shadow-md); max-width: 900px; margin: 0 auto; }
+.sites-hero-content { flex: 1; }
+.sites-hero-content h2 { font-size: 28px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.sites-hero-content .tagline { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+.sites-hero-content .copilot-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: linear-gradient(135deg, #ede9fe, #fce7f3); border-radius: 20px; font-size: 13px; font-weight: 600; color: #7c3aed; margin-bottom: 24px; }
+.sites-features { list-style: none; margin-bottom: 24px; }
+.sites-features li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+.sites-features li .check { width: 20px; height: 20px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.sites-features li .check svg { width: 12px; height: 12px; color: white; }
+.sites-create-btn { padding: 12px 36px; background: #84cc44; color: white; border: none; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; cursor: pointer; transition: var(--transition); }
+.sites-create-btn:hover { background: #65a30d; transform: translateY(-1px); }
+
+/* ===== TASKS MODULE ===== */
+.tasks-module { padding: 24px; }
+.task-list { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+.task-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; border-bottom: 1px solid #f1f5f9; transition: var(--transition); }
+.task-item:hover { background: #f8fafc; }
+.task-item.completed { opacity: 0.5; }
+.task-item.completed .task-title { text-decoration: line-through; }
+.task-checkbox { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
+.task-checkbox:hover { border-color: var(--primary); }
+.task-checkbox.checked { background: var(--primary); border-color: var(--primary); }
+.task-checkbox.checked::after { content: '✓'; color: white; font-size: 12px; font-weight: 700; }
+.task-title { flex: 1; font-size: 14px; }
+.task-priority { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+.task-priority.high { background: #fef2f2; color: #dc2626; }
+.task-priority.medium { background: #fff7ed; color: #ea580c; }
+.task-priority.low { background: #f0f9ff; color: #0284c7; }
+.task-due { font-size: 12px; color: var(--text-muted); }
+
+/* ===== MODAL ===== */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; backdrop-filter: blur(4px); }
+.modal-overlay.show { opacity: 1; visibility: visible; }
+.modal { background: white; border-radius: var(--radius-xl); padding: 32px; width: 500px; max-width: 90vw; max-height: 85vh; overflow-y: auto; transform: scale(0.9) translateY(20px); transition: transform 0.3s ease; box-shadow: var(--shadow-xl); }
+.modal-overlay.show .modal { transform: scale(1) translateY(0); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.modal-header h3 { font-size: 18px; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: #f1f5f9; border-radius: 50%; cursor: pointer; color: var(--text-secondary); transition: var(--transition); }
+.modal-close:hover { background: #e2e8f0; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-family: var(--font); transition: var(--transition); outline: none; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+.form-group textarea { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
+.btn { padding: 10px 20px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); border: none; font-family: var(--font); }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: #f1f5f9; color: var(--text-primary); }
+.btn-secondary:hover { background: #e2e8f0; }
+.btn-danger { background: var(--red); color: white; }
+.btn-danger:hover { background: #dc2626; }
+.create-btn { display: flex; align-items: center; gap: 6px; padding: 8px 18px; background: var(--green); color: white; border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); }
+.create-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+
+/* ===== TOAST ===== */
+.toast-container { position: fixed; top: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: white; border-radius: var(--radius-md); padding: 14px 20px; box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px; min-width: 300px; max-width: 400px; animation: toastIn 0.3s ease; border-left: 4px solid; }
+.toast.success { border-color: var(--green); }
+.toast.error { border-color: var(--red); }
+.toast.info { border-color: var(--primary); }
+@keyframes toastIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+.toast-icon { font-size: 18px; }
+.toast-message { font-size: 13px; flex: 1; }
+
+/* ===== NOTIFICATION PANEL ===== */
+.notification-panel { position: fixed; top: 0; right: -400px; width: 380px; height: 100vh; background: white; box-shadow: var(--shadow-xl); z-index: 500; transition: right 0.3s ease; display: flex; flex-direction: column; }
+.notification-panel.show { right: 0; }
+.notification-panel-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.notification-panel-header h3 { font-size: 16px; font-weight: 700; }
+.notification-list { flex: 1; overflow-y: auto; padding: 12px; }
+.notification-item { display: flex; gap: 12px; padding: 12px; border-radius: var(--radius-md); cursor: pointer; transition: var(--transition); }
+.notification-item:hover { background: #f8fafc; }
+.notification-item.unread { background: #eff6ff; }
+.notification-icon-wrap { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 16px; }
+.notification-content { flex: 1; }
+.notification-text { font-size: 13px; line-height: 1.4; color: var(--text-primary); }
+.notification-time { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ===== SETTINGS MODULE ===== */
+.settings-module { padding: 24px; }
+.settings-grid { display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+.settings-nav { background: white; border-radius: var(--radius-lg); padding: 8px; box-shadow: var(--shadow-sm); height: fit-content; }
+.settings-nav-item { padding: 10px 14px; font-size: 14px; cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition); display: flex; align-items: center; gap: 10px; color: var(--text-secondary); }
+.settings-nav-item:hover { background: #f1f5f9; color: var(--text-primary); }
+.settings-nav-item.active { background: #eff6ff; color: var(--primary); font-weight: 600; }
+.settings-content { background: white; border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm); }
+.settings-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.setting-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f1f5f9; }
+.setting-info h5 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+.setting-info p { font-size: 12px; color: var(--text-muted); }
+.toggle-switch { width: 44px; height: 24px; background: #cbd5e1; border-radius: 12px; cursor: pointer; position: relative; transition: var(--transition); }
+.toggle-switch.active { background: var(--primary); }
+.toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: white; border-radius: 50%; transition: var(--transition); box-shadow: var(--shadow-sm); }
+.toggle-switch.active::after { left: 22px; }
+
+/* ===== PROFILE DROPDOWN ===== */
+.profile-dropdown { position: absolute; top: 50px; right: 0; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); min-width: 240px; padding: 8px; z-index: 500; display: none; }
+.profile-dropdown.show { display: block; }
+.profile-dropdown-header { padding: 12px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.profile-dropdown-name { font-size: 14px; font-weight: 600; }
+.profile-dropdown-email { font-size: 12px; color: var(--text-muted); }
+.profile-dropdown-item { padding: 8px 12px; font-size: 13px; cursor: pointer; border-radius: var(--radius-sm); transition: var(--transition); display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
+.profile-dropdown-item:hover { background: #f1f5f9; }
+.profile-dropdown-item.danger { color: var(--red); }
+
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+.tab { padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
+.tab:hover { color: var(--text-primary); }
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+
+/* Filter chips */
+.filter-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-chip { padding: 6px 14px; background: #f1f5f9; border: 1px solid var(--border); border-radius: 20px; font-size: 13px; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 6px; }
+.filter-chip:hover { background: #e2e8f0; }
+.filter-chip.active { background: #eff6ff; border-color: var(--primary); color: var(--primary); }
+
+/* Progress bar */
+.progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1200px) {
+.dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+.dashboard-charts { grid-template-columns: 1fr; }
+.crm-counter-pills { display: none; }
+.booking-action-search { max-width: 280px; }
+}
+@media (max-width: 768px) {
+.sidebar { position: fixed; left: -240px; z-index: 200; }
+.sidebar.mobile-open { left: 0; }
+.dashboard-grid { grid-template-columns: 1fr; }
+.sites-hero { flex-direction: column; padding: 32px; }
+.settings-grid { grid-template-columns: 1fr; }
+.crm-nav-item:not(.active) { display: none; }
+.crm-pipeline-btn { display: none; }
+.booking-action-bar { flex-wrap: wrap; }
+.booking-action-search { max-width: 100%; order: 3; width: 100%; }
+.booking-mini-calendar { width: 240px; right: 10px; top: 10px; }
+}
+@media (max-width: 640px) {
+.crm-bitrix-brand { display: none; }
+.crm-search-bar { display: none; }
+.crm-tabs-right { display: none; }
+.booking-action-right { display: none; }
+.booking-zoom-panel { transform: scale(0.9); transform-origin: bottom left; }
+}
+
+.mobile-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 150; display: none; }
+.mobile-overlay.show { display: block; }
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div class="auth-screen" id="authScreen">
+<div class="auth-card">
+<div class="auth-logo">
+<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#1a1a6e"/><path d="M10 18L16 12L22 18L16 24Z" fill="#3b82f6"/><path d="M16 24L22 18L28 24L22 30Z" fill="#60a5fa" opacity="0.7"/></svg>
+<span>Heropesa CRM</span>
+</div>
+<h2 class="auth-title" id="authTitle">Welcome back</h2>
+<p class="auth-subtitle" id="authSubtitle">Sign in to your workspace</p>
+<div class="auth-error" id="authError"></div>
+<form class="auth-form" id="authForm" onsubmit="return false;">
+<div class="form-group" id="nameGroup" style="display:none;">
+<label>Full Name</label>
+<input type="text" id="regName" placeholder="John Doe">
+</div>
+<div class="form-group">
+<label>Email address</label>
+<input type="email" id="authEmail" placeholder="you@company.com" required>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="authPassword" placeholder="••••••••" required>
+</div>
+<button type="submit" class="auth-btn" id="authBtn" onclick="handleAuth()">Sign In</button>
+</form>
+<div class="auth-divider">or continue with</div>
+<div class="auth-social">
+<button class="auth-social-btn" onclick="socialAuth('google')">
+<svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.997 8.997 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+Google
+</button>
+<button class="auth-social-btn" onclick="socialAuth('microsoft')">
+<svg width="18" height="18" viewBox="0 0 18 18"><rect x="1" y="1" width="7" height="7" fill="#F25022"/><rect x="10" y="1" width="7" height="7" fill="#7FBA00"/><rect x="1" y="10" width="7" height="7" fill="#00A4EF"/><rect x="10" y="10" width="7" height="7" fill="#FFB900"/></svg>
+Microsoft
+</button>
+</div>
+<div class="auth-switch" id="authSwitch">
+Don't have an account? <a onclick="toggleAuthMode()">Sign up</a>
+</div>
+</div>
+</div>
+
+<!-- MAIN APP -->
+<div class="app-layout" id="appLayout">
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<div class="sidebar-logo">
+<svg viewBox="0 0 36 36" fill="none"><rect width="36" height="36" rx="8" fill="#1a1a6e"/><path d="M10 18L16 12L22 18L16 24Z" fill="#3b82f6"/><path d="M16 24L22 18L28 24L22 30Z" fill="#60a5fa" opacity="0.7"/></svg>
+<span>Heropesa CRM</span>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M11.25 4.5L6.75 9L11.25 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+</div>
+<nav class="sidebar-nav" id="sidebarNav">
+<div class="sidebar-section">
+<div class="sidebar-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+<svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
+<span class="sidebar-label">Dashboard</span>
+</div>
+<div class="sidebar-item" data-page="crm" onclick="navigateTo('crm')">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="sidebar-label">CRM</span>
+</div>
+<div class="sidebar-item" data-page="booking" onclick="navigateTo('booking')">
+<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8H17" stroke="currentColor" stroke-width="1.5"/><path d="M7 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 3V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="sidebar-label">Booking</span>
+</div>
+<div class="sidebar-item" data-page="inventory" onclick="navigateTo('inventory')">
+<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8H17" stroke="currentColor" stroke-width="1.5"/><path d="M7 12H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="sidebar-label">Inventory management</span>
+</div>
+<div class="sidebar-item" data-page="marketing" onclick="navigateTo('marketing')">
+<svg viewBox="0 0 20 20" fill="none"><path d="M10 2C5.58 2 2 5.58 2 10C2 14.42 5.58 18 10 18C14.42 18 18 14.42 18 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 2L13 5M10 2L7 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+<span class="sidebar-label">Marketing</span>
+</div>
+<div class="sidebar-item" data-page="sites" onclick="navigateTo('sites')">
+<svg viewBox="0 0 20 20" fill="none"><path d="M4 4L10 2L16 4L10 6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 10L10 8L16 10L10 12Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M4 16L10 14L16 16L10 18Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+<span class="sidebar-label">Sites and stores</span>
+</div>
+<div class="sidebar-item" data-page="tasks" onclick="navigateTo('tasks')">
+<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7L10 10L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<span class="sidebar-label">Tasks and Projects</span>
+</div>
+</div>
+<div class="sidebar-section">
+<div class="sidebar-item" onclick="toggleSubmenu(this)">
+<svg viewBox="0 0 20 20" fill="none"><path d="M10 2C5.58 2 2 5.58 2 10C2 14.42 5.58 18 10 18C14.42 18 18 14.42 18 10" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
+<span class="sidebar-label">Collaboration</span>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:auto;transition:transform 0.2s"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+<div class="sidebar-submenu" id="collabSubmenu">
+<div class="sidebar-item" onclick="navigateTo('chat')"><span class="sidebar-label">Chat</span></div>
+<div class="sidebar-item" onclick="navigateTo('video')"><span class="sidebar-label">Video Calls</span></div>
+<div class="sidebar-item" onclick="navigateTo('drive')"><span class="sidebar-label">Drive</span></div>
+</div>
+<div class="sidebar-item" data-page="bi" onclick="navigateTo('bi')">
+<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8.5" y="6" width="3" height="11" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="3" width="3" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+<span class="sidebar-label">BI Builder</span>
+</div>
+<div class="sidebar-item" data-page="employees" onclick="navigateTo('employees')">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="6" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M4 16C4 12.686 6.686 10 10 10C13.314 10 16 12.686 16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="sidebar-label">Employees</span>
+</div>
+<div class="sidebar-item" data-page="automation" onclick="navigateTo('automation')">
+<svg viewBox="0 0 20 20" fill="none"><path d="M10 2L12 6H8L10 2Z" stroke="currentColor" stroke-width="1.5"/><path d="M4 6L2 10H6L4 6Z" stroke="currentColor" stroke-width="1.5"/><path d="M16 6L14 10H18L16 6Z" stroke="currentColor" stroke-width="1.5"/><path d="M10 18L8 14H12L10 18Z" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" stroke="currentColor" stroke-width="1.5"/></svg>
+<span class="sidebar-label">Automation</span>
+</div>
+<div class="sidebar-item" data-page="settings" onclick="navigateTo('settings')">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2V4M10 16V18M2 10H4M16 10H18M4.93 4.93L6.34 6.34M13.66 13.66L15.07 15.07M15.07 4.93L13.66 6.34M6.34 13.66L4.93 15.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="sidebar-label">Settings</span>
+</div>
+</div>
+</nav>
+<div class="sidebar-footer">
+<button class="upgrade-btn" onclick="showToast('Upgrade plans coming soon!', 'info')">
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2L10 6H6L8 2Z" fill="currentColor"/><path d="M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 12L6 8H2L4 12Z" fill="currentColor"/><path d="M12 12L14 8H10L12 12Z" fill="currentColor"/></svg>
+Upgrade your plan
+</button>
+</div>
+</aside>
+
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Main Content -->
+<div class="main-content">
+<!-- Top Bar -->
+<header class="topbar">
+<button class="topbar-btn" onclick="toggleSidebar()" style="display:none" id="mobileMenuBtn">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+</button>
+<div class="topbar-nav" id="topbarNav">
+<div class="topbar-nav-item active" data-module="dashboard" onclick="switchModule('dashboard')">Dashboard</div>
+<div class="topbar-nav-item" data-module="crm" onclick="switchModule('crm')">Deals</div>
+<div class="topbar-nav-item" data-module="booking" onclick="switchModule('booking')">Booking</div>
+<div class="topbar-nav-item" data-module="inventory" onclick="switchModule('inventory')">Inventory</div>
+<div class="topbar-nav-item" data-module="marketing" onclick="switchModule('marketing')">Marketing</div>
+<div class="topbar-nav-item" data-module="sites" onclick="switchModule('sites')">Sites</div>
+</div>
+<div class="topbar-actions">
+<div class="topbar-search" onclick="openGlobalSearch()">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span>Search</span>
+</div>
+<button class="topbar-btn" onclick="toggleNotifications()">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2C6.686 2 4 4.686 4 8V10L2 14H18L16 10V8C16 4.686 13.314 2 10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 16C8 17.105 8.895 18 10 18C11.105 18 12 17.105 12 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span class="notif-dot" id="notifDot"></span>
+</button>
+<div class="topbar-time" id="topbarTime">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M10 6V10L13 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<span id="clockDisplay">10:05 AM</span>
+</div>
+<div class="topbar-avatar" id="topbarAvatar" onclick="toggleProfileDropdown()">JD</div>
+</div>
+</header>
+
+<!-- Page Content -->
+<div class="page-content" id="pageContent">
+
+<!-- ===== DASHBOARD MODULE ===== -->
+<div class="module-page active" id="page-dashboard">
+<div class="dashboard-module">
+<div class="dashboard-grid" id="kpiGrid"></div>
+<div class="dashboard-charts">
+<div class="chart-card">
+<div class="chart-header">
+<span class="chart-title">Revenue Overview</span>
+<div class="chart-tabs">
+<button class="chart-tab active" onclick="switchChartTab(this,'week')">Week</button>
+<button class="chart-tab" onclick="switchChartTab(this,'month')">Month</button>
+<button class="chart-tab" onclick="switchChartTab(this,'year')">Year</button>
+</div>
+</div>
+<canvas id="revenueChart" height="250"></canvas>
+</div>
+<div class="chart-card">
+<div class="chart-header"><span class="chart-title">Deal Stages</span></div>
+<canvas id="dealStageChart" height="250"></canvas>
+</div>
+</div>
+<div class="dashboard-bottom">
+<div class="activity-feed">
+<h4 style="font-size:16px;font-weight:600;margin-bottom:16px;">Recent Activity</h4>
+<div id="activityFeed"></div>
+</div>
+<div class="chart-card">
+<div class="chart-header"><span class="chart-title">Top Performers</span></div>
+<div id="topPerformers"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== CRM MODULE ===== -->
+<div class="module-page" id="page-crm">
+<div class="crm-module">
+<div class="crm-earth-bg"></div>
+<div class="crm-earth-overlay"></div>
+<div class="crm-inner">
+<nav class="crm-top-nav">
+<div class="crm-top-nav-left">
+<div class="crm-nav-item active">Deals</div>
+<div class="crm-nav-item">Inventory <i class="fas fa-chevron-down crm-dropdown-arrow"></i></div>
+<div class="crm-nav-item">Customers <i class="fas fa-chevron-down crm-dropdown-arrow"></i></div>
+<div class="crm-nav-item">Sales <i class="fas fa-chevron-down crm-dropdown-arrow"></i></div>
+<div class="crm-nav-item">Analytics <i class="fas fa-chevron-down crm-dropdown-arrow"></i></div>
+<div class="crm-nav-item">More <i class="fas fa-chevron-down crm-dropdown-arrow"></i></div>
+</div>
+<div class="crm-top-nav-right">
+<button class="crm-top-icon-btn" title="Search"><i class="fas fa-search"></i></button>
+<div class="crm-bitrix-brand">Bitrix 24<i class="far fa-clock"></i></div>
+<button class="crm-top-icon-btn" title="Settings"><i class="fas fa-sliders-h"></i></button>
+<button class="crm-top-icon-btn" title="Add User"><i class="fas fa-user-plus"></i></button>
+<button class="crm-rocket-btn" title="CoPilot"><i class="fas fa-rocket"></i></button>
+<button class="crm-top-icon-btn" title="Help"><i class="far fa-question-circle"></i></button>
+<div class="crm-pill-badge">
+<i class="far fa-clock"></i>
+<span class="crm-clock-display">5:48 PM</span>
+<div class="crm-pill-avatar">JD</div>
+<div class="crm-notif-dot">9</div>
+</div>
+</div>
+</nav>
+<div class="crm-action-bar">
+<div class="crm-action-title">Deals<i class="fas fa-thumbtack crm-pin-icon" title="Pin"></i></div>
+<div class="crm-create-btn">
+<button class="crm-create-btn-main">+ Create</button>
+<button class="crm-create-btn-dropdown"><i class="fas fa-chevron-down"></i></button>
+</div>
+<div class="crm-pipeline-btn">
+<i class="fas fa-filter"></i>
+<span>Default pipeline</span>
+<i class="fas fa-chevron-down" style="font-size:10px;opacity:0.7;"></i>
+</div>
+<div class="crm-search-bar">
+<div class="crm-search-tag">Deals in progress<span class="crm-close-x"><i class="fas fa-times"></i></span></div>
+<input type="text" class="crm-search-input" placeholder="search">
+<div class="crm-search-icons"><i class="fas fa-search"></i><i class="fas fa-times"></i></div>
+</div>
+<button class="crm-gear-btn" title="Settings"><i class="fas fa-cog"></i></button>
+</div>
+<div class="crm-tabs-bar">
+<div class="crm-view-tabs">
+<div class="crm-view-tab active">Kanban</div>
+<div class="crm-view-tab">List</div>
+<div class="crm-view-tab">Activities</div>
+<div class="crm-view-tab">Calendar</div>
+</div>
+<div class="crm-counter-pills">
+<div class="crm-counter-pill"><span class="crm-count">0</span> Inbound</div>
+<div class="crm-counter-pill"><span class="crm-count">0</span> Planned</div>
+<div class="crm-counter-pill"><span class="crm-count">0</span> More <i class="fas fa-chevron-down" style="font-size:9px;opacity:0.7;"></i></div>
+</div>
+<div class="crm-tabs-right">
+<div class="crm-action-pill"><i class="fas fa-robot"></i><span>Automation rules</span></div>
+<div class="crm-action-pill"><span>Extensions</span><i class="fas fa-chevron-down" style="font-size:10px;opacity:0.7;"></i></div>
+</div>
+</div>
+<div class="crm-workspace">
+<div class="crm-kanban-container">
+<div class="crm-kanban-column">
+<div class="crm-column-header crm-blue">Name <span class="crm-count">0</span></div>
+<div class="crm-column-body">
+<div class="crm-value-badge">$0</div>
+<div class="crm-quick-deal-btn"><i class="fas fa-plus"></i><span>Quick Deal</span></div>
+<div class="crm-contact-center-panel">
+<div class="crm-contact-center-title">Contact Center: Automatic deal sources</div>
+<div class="crm-contact-center-grid">
+<div class="crm-contact-center-item"><i class="fas fa-comments"></i> Live Chat</div>
+<div class="crm-contact-center-item"><i class="fas fa-phone"></i> Calls</div>
+<div class="crm-contact-center-item"><i class="fas fa-file-alt"></i> CRM forms</div>
+<div class="crm-contact-center-item"><i class="fas fa-envelope"></i> Mail</div>
+<div class="crm-contact-center-item"><i class="fab fa-viber"></i> Viber</div>
+<div class="crm-contact-center-item"><i class="fab fa-telegram"></i> Telegram</div>
+</div>
+<a class="crm-import-link">Import data from another CRM or Excel file</a>
+</div>
+</div>
+</div>
+<div class="crm-kanban-column">
+<div class="crm-column-header crm-light-blue">New <span class="crm-count">0</span></div>
+<div class="crm-column-body">
+<div class="crm-value-badge">$0</div>
+<div class="crm-add-btn"><i class="fas fa-plus"></i></div>
+</div>
+</div>
+<div class="crm-kanban-column">
+<div class="crm-column-header crm-cyan">Create papers <span class="crm-count">0</span></div>
+<div class="crm-column-body">
+<div class="crm-value-badge">$0</div>
+<div class="crm-add-btn"><i class="fas fa-plus"></i></div>
+</div>
+</div>
+<div class="crm-kanban-column">
+<div class="crm-column-header crm-teal">Invoice <span class="crm-count">0</span></div>
+<div class="crm-column-body">
+<div class="crm-value-badge">$0</div>
+<div class="crm-add-btn"><i class="fas fa-plus"></i></div>
+</div>
+</div>
+</div>
+<div class="crm-chevron-btn" title="Expand sidebar"><i class="fas fa-chevron-right"></i></div>
+<aside class="crm-right-sidebar">
+<div class="crm-sidebar-icon" title="Notifications"><i class="far fa-bell"></i></div>
+<div class="crm-sidebar-icon" title="Goals"><i class="fas fa-bullseye"></i></div>
+<div class="crm-sidebar-icon" title="Sync"><i class="fas fa-sync-alt"></i></div>
+<div class="crm-sidebar-icon crm-green-circle" title="Group Chat">GC</div>
+<div class="crm-sidebar-icon" title="Documents"><i class="far fa-file"></i></div>
+<div class="crm-sidebar-icon" title="Messages"><i class="far fa-user"></i><span class="crm-mini-notif">1</span></div>
+<div class="crm-sidebar-icon" title="Chat"><i class="far fa-comment"></i></div>
+<div class="crm-sidebar-icon" title="Bookmarks"><i class="far fa-bookmark"></i></div>
+</aside>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== BOOKING MODULE (NEW BITRIX24 STYLE) ===== -->
+<div class="module-page" id="page-booking">
+<div class="booking-module">
+<div class="booking-earth-bg"></div>
+<div class="booking-earth-overlay"></div>
+<div class="booking-inner">
+
+  <!-- Booking Top Nav -->
+  <nav class="booking-top-nav">
+    <div class="booking-top-nav-left">
+      <div class="booking-nav-item active">Bookings</div>
+      <div class="booking-nav-item">Services <i class="fas fa-chevron-down booking-dropdown-arrow"></i></div>
+      <div class="booking-nav-item">More <i class="fas fa-chevron-down booking-dropdown-arrow"></i></div>
+    </div>
+    <div class="booking-top-nav-right">
+      <button class="crm-top-icon-btn" title="Search"><i class="fas fa-search"></i></button>
+      <div class="crm-bitrix-brand">Bitrix 24<i class="far fa-clock"></i></div>
+      <button class="crm-top-icon-btn" title="Settings"><i class="fas fa-sliders-h"></i></button>
+      <button class="crm-top-icon-btn" title="Add User"><i class="fas fa-user-plus"></i></button>
+      <button class="crm-rocket-btn" title="CoPilot"><i class="fas fa-rocket"></i></button>
+      <button class="crm-top-icon-btn" title="Help"><i class="far fa-question-circle"></i></button>
+      <div class="crm-pill-badge">
+        <i class="far fa-clock"></i>
+        <span class="crm-clock-display">6:18 PM</span>
+        <div class="crm-pill-avatar">JD</div>
+        <div class="crm-notif-dot">9</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Booking Action Bar -->
+  <div class="booking-action-bar">
+    <div class="booking-action-left">
+      <div class="booking-action-title">Booking</div>
+      <div class="booking-action-date" id="bookingActionDate">Jun 17</div>
+      <div class="booking-action-stats">
+        <div class="stat-line"><span class="stat-val" id="bookingCustomersStat">+ 0</span> customers</div>
+        <div class="stat-line dotted"><span class="stat-val" id="bookingRevenueStat">+ $0</span></div>
+      </div>
+    </div>
+    <div class="booking-action-search">
+      <input type="text" placeholder="Filter">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="booking-action-right">
+      <div class="booking-action-pill">
+        <span class="pill-count">0</span> Not confirmed
+      </div>
+      <div class="booking-action-pill">
+        <span class="pill-count">0</span> Late <i class="fas fa-lock lock-icon"></i>
+      </div>
+      <div class="booking-view-toggle">
+        <button class="booking-view-toggle-btn active" data-view="day">Day</button>
+        <button class="booking-view-toggle-btn" data-view="week">Week <i class="fas fa-lock lock-icon"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Workspace -->
+  <div class="booking-workspace">
+    <div class="booking-card">
+      <!-- Card Header -->
+      <div class="booking-card-header">
+        <div class="booking-card-header-row">
+          <div class="booking-funnel-btn" title="Filter"><i class="far fa-filter"></i></div>
+          <button class="booking-add-resource-btn" onclick="openModal('resource')">
+            <i class="fas fa-plus"></i> Add a resource
+          </button>
+          <div class="v-divider"></div>
+        </div>
+        <div class="booking-card-header-row">
+          <div class="booking-bundle-btn">
+            <i class="fas fa-layer-group"></i> + Make resource bundle
+          </div>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="booking-timeline">
+        <div class="booking-time-col">
+          <div class="booking-time-slot">9:00 am</div>
+          <div class="booking-time-slot">10:00 am</div>
+          <div class="booking-time-slot">11:00 am</div>
+          <div class="booking-time-slot">12:00 pm</div>
+          <div class="booking-time-slot">1:00 pm</div>
+          <div class="booking-time-slot">2:00 pm</div>
+        </div>
+        <div class="booking-grid-area"></div>
+      </div>
+
+      <!-- Floating Zoom Panel -->
+      <div class="booking-zoom-panel">
+        <i class="fas fa-expand expand-icon" title="Show all"></i>
+        <span class="show-all">Show all</span>
+        <div class="zoom-divider"></div>
+        <div class="zoom-btn" id="zoomOut">−</div>
+        <div class="zoom-level" id="zoomLevel">100 %</div>
+        <div class="zoom-btn" id="zoomIn">+</div>
+      </div>
+
+      <!-- Mini Calendar Widget -->
+      <div class="booking-mini-calendar" id="bookingMiniCalendar">
+        <div class="bmc-header">
+          <button class="bmc-nav-btn" id="bmcPrev"><i class="fas fa-chevron-left"></i></button>
+          <div class="bmc-title" id="bmcTitle">June 2026</div>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <button class="bmc-nav-btn" id="bmcNext"><i class="fas fa-chevron-right"></i></button>
+            <div class="bmc-close" id="bmcClose"><i class="fas fa-times"></i></div>
+          </div>
+        </div>
+        <div class="bmc-weekdays">
+          <div class="bmc-weekday red">Sun</div>
+          <div class="bmc-weekday">Mon</div>
+          <div class="bmc-weekday">Tue</div>
+          <div class="bmc-weekday">Wed</div>
+          <div class="bmc-weekday">Thu</div>
+          <div class="bmc-weekday">Fri</div>
+          <div class="bmc-weekday">Sat</div>
+        </div>
+        <div class="bmc-dates" id="bmcDates"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Booking Right Sidebar -->
+  <aside class="booking-right-sidebar">
+    <div class="booking-sidebar-icon" title="Notifications"><i class="far fa-bell"></i></div>
+    <div class="booking-sidebar-icon" title="Goals"><i class="fas fa-bullseye"></i></div>
+    <div class="booking-sidebar-icon" title="Sync"><i class="fas fa-sync-alt"></i></div>
+    <div class="booking-sidebar-icon green-circle" title="Group Chat">GC</div>
+    <div class="booking-sidebar-icon" title="Documents"><i class="far fa-file"></i></div>
+    <div class="booking-sidebar-icon" title="Messages"><i class="far fa-user"></i><span class="mini-notif">1</span></div>
+    <div class="booking-sidebar-icon" title="Chat"><i class="far fa-comment"></i></div>
+    <div class="booking-sidebar-icon" title="Bookmarks"><i class="far fa-bookmark"></i></div>
+  </aside>
+
+</div>
+</div>
+</div>
+
+<!-- ===== INVENTORY MODULE ===== -->
+<div class="module-page" id="page-inventory">
+<div class="inventory-module">
+<div class="inventory-header">
+<h2 class="inventory-title">Inventory</h2>
+<div style="display:flex;align-items:center;gap:10px;">
+<div class="search-bar">
+<svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+<input type="text" placeholder="Filter and search" oninput="filterInventory(this.value)">
+</div>
+<button class="create-btn" onclick="openModal('inventory')">+ Create</button>
+</div>
+</div>
+<div id="inventoryContent">
+<div class="empty-state" id="inventoryEmpty">
+<div class="empty-state-icon">
+<svg viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M3 8H17" stroke="currentColor" stroke-width="1.5"/><path d="M7 12H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+</div>
+<h3>Create your first stock adjustment</h3>
+<p>Keep track of goods arriving at your warehouse.</p>
+<div class="migration-box">
+<h4>Migrate your data from third-party systems to Bitrix24</h4>
+<div class="migration-logos">
+<div class="migration-logo" style="color:#e67e22;">Z</div>
+<span style="font-size:18px;font-weight:700;color:#2d3748;">Inventory</span>
+<span style="color:var(--text-muted);">and more</span>
+<div class="migration-logo" style="color:#2bb673;">qb</div>
+<span style="font-size:14px;font-weight:700;color:#2d3748;">QuickBooks</span>
+</div>
+<button class="migrate-btn" onclick="showToast('Migration wizard opening...', 'info')">MIGRATE</button>
+</div>
+</div>
+<div class="data-table" id="inventoryTable" style="display:none;">
+<table>
+<thead>
+<tr>
+<th><input type="checkbox" onchange="toggleAllInventory(this)"></th>
+<th onclick="sortInventory('name')">Name</th>
+<th onclick="sortInventory('doc')">Document #</th>
+<th onclick="sortInventory('type')">Type</th>
+<th onclick="sortInventory('status')">Status</th>
+<th onclick="sortInventory('modified')">Modified on</th>
+<th>Responsible</th>
+</tr>
+</thead>
+<tbody id="inventoryBody"></tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== MARKETING MODULE ===== -->
+<div class="module-page" id="page-marketing">
+<div class="marketing-module">
+<div class="marketing-header">
+<h2 class="marketing-title">Marketing</h2>
+<p class="marketing-subtitle">Create and manage your marketing campaigns</p>
+</div>
+<div class="filter-chips">
+<div class="filter-chip active">All Campaigns</div>
+<div class="filter-chip">Email</div>
+<div class="filter-chip">SMS</div>
+<div class="filter-chip">Messengers</div>
+</div>
+<h3 class="section-title">Create Campaign</h3>
+<div class="campaign-grid">
+<div class="campaign-card" onclick="openModal('campaign')"><div class="campaign-icon email">✉</div><h4>Email Campaign</h4><p>Send bulk emails to your contacts</p></div>
+<div class="campaign-card" onclick="openModal('campaign')"><div class="campaign-icon sms">SMS</div><h4>SMS Campaign</h4><p>Reach customers via text messages</p></div>
+<div class="campaign-card" onclick="openModal('campaign')"><div class="campaign-icon messenger">💬</div><h4>Messengers</h4><p>WhatsApp, Telegram, and more</p></div>
+<div class="campaign-card" onclick="openModal('campaign')"><div class="campaign-icon voice"></div><h4>Voice broadcasting</h4><p>Automated voice calls to leads</p></div>
+<div class="campaign-card" onclick="openModal('campaign')"><div class="campaign-icon audio">🎙</div><h4>Audio call</h4><p>One-to-one audio outreach</p></div>
+</div>
+</div>
+</div>
+
+<!-- ===== SITES MODULE ===== -->
+<div class="module-page" id="page-sites">
+<div class="sites-module">
+<div class="sites-hero">
+<div class="sites-hero-content">
+<h2>Bitrix24 Sites</h2>
+<p class="tagline">IT WILL TAKE ONLY TWO MINUTES!</p>
+<div class="copilot-badge">✨ Now with CoPilot</div>
+<ul class="sites-features">
+<li><span class="check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Create your own site with an easy to use and handy website builder</li>
+<li><span class="check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your site will be equipped a built-in callback form, a feedback form and an online chat</li>
+<li><span class="check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>All customer contacts are saved directly to the CRM</li>
+<li><span class="check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Your site is always mobile friendly</li>
+</ul>
+<button class="sites-create-btn" onclick="showToast('Opening site builder...', 'success')">CREATE</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== TASKS MODULE ===== -->
+<div class="module-page" id="page-tasks">
+<div class="tasks-module">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+<h2 style="font-size:24px;font-weight:700;margin-right:auto;">Tasks and Projects</h2>
+<button class="create-btn" onclick="openModal('task')">+ Add Task</button>
+</div>
+<div class="tabs">
+<div class="tab active" onclick="switchTaskTab(this,'all')">All Tasks</div>
+<div class="tab" onclick="switchTaskTab(this,'active')">Active</div>
+<div class="tab" onclick="switchTaskTab(this,'completed')">Completed</div>
+<div class="tab" onclick="switchTaskTab(this,'overdue')">Overdue</div>
+</div>
+<div class="task-list" id="taskList"></div>
+</div>
+</div>
+
+<!-- ===== BI BUILDER MODULE ===== -->
+<div class="module-page" id="page-bi">
+<div class="tasks-module">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+<h2 style="font-size:24px;font-weight:700;margin-right:auto;">All dashboards</h2>
+<button class="create-btn" onclick="showToast('Creating dashboard...','info')">Create</button>
+</div>
+<div class="data-table">
+<table>
+<thead><tr><th>Name</th><th>Status</th><th>Shared</th><th>Created by</th><th>ID</th></tr></thead>
+<tbody>
+<tr><td>User profile dashboards</td><td><span class="status-badge active">Active</span></td><td>Yes</td><td>Admin</td><td>1</td></tr>
+<tr><td>Employee profile</td><td><span class="status-badge active">Active</span></td><td>Yes</td><td>Admin</td><td>2</td></tr>
+<tr><td>Tasks and flows dashboards</td><td><span class="status-badge active">Active</span></td><td>Yes</td><td>Manager</td><td>3</td></tr>
+<tr><td>CRM dashboards</td><td><span class="status-badge active">Active</span></td><td>Yes</td><td>Sales Dir</td><td>9</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ===== EMPLOYEES MODULE ===== -->
+<div class="module-page" id="page-employees">
+<div class="tasks-module">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+<h2 style="font-size:20px;font-weight:600;margin-right:auto;">Find Employee</h2>
+<button class="create-btn" onclick="showToast('Opening invite form...','info')">Invite</button>
+</div>
+<div class="data-table">
+<table>
+<thead><tr><th><input type="checkbox"></th><th>Employee</th><th>Department</th><th>Email</th><th>Mobile</th></tr></thead>
+<tbody>
+<tr><td><input type="checkbox"></td><td>John Doe</td><td>IT</td><td>john@company.com</td><td>555-1234</td></tr>
+<tr><td><input type="checkbox"></td><td>Jane Smith</td><td>HR</td><td>jane@company.com</td><td>555-5678</td></tr>
+<tr><td><input type="checkbox"></td><td>Alex Johnson</td><td>Sales</td><td>alex@company.com</td><td>555-8765</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- ===== AUTOMATION MODULE ===== -->
+<div class="module-page" id="page-automation">
+<div class="settings-module">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;">
+<h2 style="font-size:24px;font-weight:700;margin-right:auto;">Robotic Process Automation (RPA)</h2>
+</div>
+<div class="settings-grid">
+<div class="settings-nav">
+<div class="settings-nav-item active">Robotic Process Automation</div>
+<div class="settings-nav-item">Applications</div>
+<div class="settings-nav-item">e-Signature for HR</div>
+<div class="settings-nav-item">e-Signature</div>
+</div>
+<div class="settings-content">
+<h4>Robotic Process Automation</h4>
+<p style="color:var(--text-muted);font-size:14px;">Automate your workflows and processes effectively.</p>
+<div style="text-align:center;padding:40px 20px;">
+<div style="font-size:48px;margin-bottom:16px;">🤖</div>
+<h3 style="font-size:18px;font-weight:600;margin-bottom:8px;">No automated processes yet</h3>
+<p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;">Create your first RPA to automate repetitive tasks.</p>
+<button class="create-btn" style="margin:0 auto;" onclick="showToast('Creating RPA process...','info')">+ Create Process</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ===== SETTINGS MODULE ===== -->
+<div class="module-page" id="page-settings">
+<div class="settings-module">
+<h2 style="font-size:24px;font-weight:700;margin-bottom:24px;">Settings</h2>
+<div class="settings-grid">
+<div class="settings-nav">
+<div class="settings-nav-item active" onclick="switchSettingsTab(this,'general')">⚙️ General</div>
+<div class="settings-nav-item" onclick="switchSettingsTab(this,'profile')">👤 Profile</div>
+<div class="settings-nav-item" onclick="switchSettingsTab(this,'notifications')">🔔 Notifications</div>
+<div class="settings-nav-item" onclick="switchSettingsTab(this,'security')">🔒 Security</div>
+<div class="settings-nav-item" onclick="switchSettingsTab(this,'integrations')">🔗 Integrations</div>
+<div class="settings-nav-item" onclick="switchSettingsTab(this,'billing')">💳 Billing</div>
+</div>
+<div class="settings-content" id="settingsContent">
+<div class="settings-section" id="settings-general">
+<h4>General Settings</h4>
+<div class="setting-row"><div class="setting-info"><h5>Dark Mode</h5><p>Toggle dark theme for the interface</p></div><div class="toggle-switch" onclick="this.classList.toggle('active');showToast('Theme preference saved','info')"></div></div>
+<div class="setting-row"><div class="setting-info"><h5>Email Notifications</h5><p>Receive email updates for important events</p></div><div class="toggle-switch active" onclick="this.classList.toggle('active');showToast('Notification preference saved','info')"></div></div>
+<div class="setting-row"><div class="setting-info"><h5>Sound Alerts</h5><p>Play sound for new notifications</p></div><div class="toggle-switch" onclick="this.classList.toggle('active');showToast('Sound preference saved','info')"></div></div>
+<div class="setting-row"><div class="setting-info"><h5>Auto-save Drafts</h5><p>Automatically save form drafts</p></div><div class="toggle-switch active" onclick="this.classList.toggle('active');showToast('Auto-save preference saved','info')"></div></div>
+<div class="setting-row" style="border:none;"><div class="setting-info"><h5>Language</h5><p>Choose your preferred language</p></div>
+<select style="padding:6px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;" onchange="showToast('Language changed','success')">
+<option>English</option><option>Spanish</option><option>French</option><option>German</option><option>Portuguese</option>
+</select></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- end page-content -->
+</div><!-- end main-content -->
+
+<!-- Notification Panel -->
+<div class="notification-panel" id="notificationPanel">
+<div class="notification-panel-header">
+<h3>Notifications</h3>
+<button class="modal-close" onclick="toggleNotifications()">✕</button>
+</div>
+<div class="notification-list" id="notificationList"></div>
+</div>
+</div><!-- end app-layout -->
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+<div class="modal" id="modalContent" onclick="event.stopPropagation()">
+<div class="modal-header">
+<h3 id="modalTitle">Create New</h3>
+<button class="modal-close" onclick="closeModal()">✕</button>
+</div>
+<div id="modalBody"></div>
+</div>
+</div>
+
+<!-- Global Search Modal -->
+<div class="modal-overlay" id="searchOverlay" onclick="closeSearch()">
+<div class="modal" style="width:600px;" onclick="event.stopPropagation()">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="var(--text-muted)" stroke-width="1.5"/><path d="M13.5 13.5L17 17" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round"/></svg>
+<input type="text" id="globalSearchInput" placeholder="Search contacts, deals, tasks..." style="flex:1;border:none;outline:none;font-size:16px;font-family:var(--font);" oninput="performGlobalSearch(this.value)">
+</div>
+<div id="searchResults" style="max-height:400px;overflow-y:auto;"></div>
+</div>
+</div>
+
+<script>
+// ===== STATE MANAGEMENT =====
+const AppState = {
+  currentUser: null, currentPage: 'dashboard', currentModule: 'dashboard',
+  sidebarCollapsed: false, deals: [], contacts: [], tasks: [], inventory: [],
+  notifications: [], activities: [],
+  bookingCal: { year: 2026, month: 5 }, // June = 5
+  zoomLevel: 100,
+  dealStages: [
+    { id: 'new', name: 'New Leads', color: '#6366f1' },
+    { id: 'qualified', name: 'Qualified', color: '#8b5cf6' },
+    { id: 'proposal', name: 'Proposal Sent', color: '#f59e0b' },
+    { id: 'negotiation', name: 'Negotiation', color: '#ec4899' },
+    { id: 'closed', name: 'Closed Won', color: '#22c55e' },
+    { id: 'lost', name: 'Closed Lost', color: '#ef4444' }
+  ]
+};
+
+// ===== DATA GENERATION =====
+const firstNames = ['Alex','Jordan','Taylor','Morgan','Casey','Riley','Jamie','Quinn','Avery','Harper'];
+const lastNames = ['Johnson','Williams','Brown','Jones','Garcia','Miller','Davis','Rodriguez','Martinez','Hernandez'];
+const companies = ['Acme Corp','TechFlow Inc','Global Dynamics','Stark Industries','Wayne Enterprises','Initech'];
+const randomFrom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+function generateDeals() {
+  const deals = [], stages = AppState.dealStages.slice(0, 5);
+  for (let i = 0; i < 24; i++) {
+    const stage = randomFrom(stages);
+    const date = new Date(); date.setDate(date.getDate() - randomInt(0, 30));
+    deals.push({
+      id: 'deal-' + i,
+      title: randomFrom(['Website Redesign','Mobile App Dev','Cloud Migration','CRM Integration','Security Audit']),
+      company: randomFrom(companies),
+      contact: randomFrom(firstNames) + ' ' + randomFrom(lastNames),
+      amount: randomInt(5000, 150000), stage: stage.id,
+      priority: randomFrom(['hot','warm','cold']),
+      date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      avatar: randomFrom(['#6366f1','#8b5cf6','#ec4899','#f59e0b','#22c55e','#06b6d4'])
+    });
+  }
+  return deals;
+}
+
+function generateTasks() {
+  const taskNames = ['Follow up with client','Update CRM records','Prepare quarterly report','Schedule team meeting','Review contract terms','Send invoice'];
+  return taskNames.map((name, i) => ({
+    id: 'task-' + i, title: name,
+    priority: randomFrom(['high','medium','low']),
+    dueDate: new Date(Date.now() + randomInt(-3,7)*86400000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    completed: Math.random() > 0.6,
+    assignee: randomFrom(firstNames)
+  }));
+}
+
+function generateNotifications() {
+  return [
+    { id: 1, text: 'New deal <strong>"Website Redesign"</strong> moved to Negotiation', time: '2 min ago', icon: '💰', bg: '#dcfce7', unread: true },
+    { id: 2, text: '<strong>Alex Johnson</strong> commented on your task', time: '15 min ago', icon: '💬', bg: '#dbeafe', unread: true },
+    { id: 3, text: 'Meeting reminder: <strong>Product Demo</strong> at 2:00 PM', time: '1 hour ago', icon: '📅', bg: '#fef3c7', unread: false },
+    { id: 4, text: 'Invoice #INV-2847 has been <strong>paid</strong>', time: '2 hours ago', icon: '✅', bg: '#dcfce7', unread: false },
+  ];
+}
+
+function generateActivities() {
+  const avatars = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#22c55e','#06b6d4'];
+  const names = ['Alex Johnson','Sarah Williams','Mike Brown','Emily Davis','Chris Wilson','Lisa Martinez'];
+  const actions = ['closed a deal with','updated the status of','created a new task for','sent an email to'];
+  const targets = ['Acme Corp','TechFlow Inc','Global Dynamics','Stark Industries'];
+  return Array.from({length: 8}, (_, i) => ({
+    avatar: avatars[i % avatars.length], name: names[i % names.length],
+    action: actions[i % actions.length], target: targets[i % targets.length],
+    time: randomInt(1, 60) + ' min ago'
+  }));
+}
+
+function generateInventory() {
+  return [
+    { id: 'inv-0', name: 'Stock Receipt', doc: 'INV-001', type: 'Receipt', status: 'completed', modified: 'May 25, 2026', responsible: 'John Smith' },
+    { id: 'inv-1', name: 'Stock Adjustment', doc: 'ADJ-001', type: 'Adjustment', status: 'pending', modified: 'May 24, 2026', responsible: 'Jane Doe' },
+    { id: 'inv-2', name: 'Transfer Order', doc: 'TRF-001', type: 'Transfer', status: 'active', modified: 'May 23, 2026', responsible: 'Mike Johnson' },
+  ];
+}
+
+// ===== INITIALIZATION =====
+function init() {
+  const savedUser = localStorage.getItem('bitrix24_user');
+  if (savedUser) { AppState.currentUser = JSON.parse(savedUser); showApp(); }
+  generateData();
+  startClock();
+  setupEventListeners();
+  setupBookingInteractions();
+}
+
+function generateData() {
+  AppState.deals = JSON.parse(localStorage.getItem('bitrix24_deals')) || generateDeals();
+  AppState.tasks = JSON.parse(localStorage.getItem('bitrix24_tasks')) || generateTasks();
+  AppState.inventory = JSON.parse(localStorage.getItem('bitrix24_inventory')) || generateInventory();
+  AppState.notifications = generateNotifications();
+  AppState.activities = generateActivities();
+  saveState();
+}
+
+function saveState() {
+  localStorage.setItem('bitrix24_deals', JSON.stringify(AppState.deals));
+  localStorage.setItem('bitrix24_tasks', JSON.stringify(AppState.tasks));
+  localStorage.setItem('bitrix24_inventory', JSON.stringify(AppState.inventory));
+}
+
+// ===== AUTH =====
+let isSignup = false;
+function toggleAuthMode() {
+  isSignup = !isSignup;
+  const title = document.getElementById('authTitle');
+  const subtitle = document.getElementById('authSubtitle');
+  const btn = document.getElementById('authBtn');
+  const switchEl = document.getElementById('authSwitch');
+  const nameGroup = document.getElementById('nameGroup');
+  document.getElementById('authError').classList.remove('show');
+  if (isSignup) {
+    title.textContent = 'Create your account';
+    subtitle.textContent = 'Start your free trial today';
+    btn.textContent = 'Sign Up';
+    switchEl.innerHTML = 'Already have an account? <a onclick="toggleAuthMode()">Sign in</a>';
+    nameGroup.style.display = 'block';
+  } else {
+    title.textContent = 'Welcome back';
+    subtitle.textContent = 'Sign in to your workspace';
+    btn.textContent = 'Sign In';
+    switchEl.innerHTML = 'Don\'t have an account? <a onclick="toggleAuthMode()">Sign up</a>';
+    nameGroup.style.display = 'none';
+  }
+}
+
+function handleAuth() {
+  const email = document.getElementById('authEmail').value;
+  const password = document.getElementById('authPassword').value;
+  const name = document.getElementById('regName').value;
+  const error = document.getElementById('authError');
+  if (!email || !password) { error.textContent = 'Please fill in all fields'; error.classList.add('show'); return; }
+  if (password.length < 4) { error.textContent = 'Password must be at least 4 characters'; error.classList.add('show'); return; }
+  if (isSignup && !name) { error.textContent = 'Please enter your name'; error.classList.add('show'); return; }
+  const user = { name: isSignup ? name : email.split('@')[0], email, initials: (name || email).split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) };
+  localStorage.setItem('bitrix24_user', JSON.stringify(user));
+  AppState.currentUser = user;
+  showApp();
+  showToast(isSignup ? 'Account created successfully!' : 'Welcome back!', 'success');
+}
+
+function socialAuth(provider) {
+  const user = { name: 'John Doe', email: 'john@company.com', initials: 'JD' };
+  localStorage.setItem('bitrix24_user', JSON.stringify(user));
+  AppState.currentUser = user;
+  showApp();
+  showToast('Signed in with ' + provider, 'success');
+}
+
+function showApp() {
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appLayout').classList.add('active');
+  if (AppState.currentUser) document.getElementById('topbarAvatar').textContent = AppState.currentUser.initials;
+  renderAll();
+}
+
+function logout() {
+  localStorage.removeItem('bitrix24_user');
+  AppState.currentUser = null;
+  document.getElementById('authScreen').style.display = 'flex';
+  document.getElementById('appLayout').classList.remove('active');
+  showToast('Signed out successfully', 'info');
+}
+
+// ===== NAVIGATION =====
+function navigateTo(page) {
+  AppState.currentPage = page;
+  document.querySelectorAll('.sidebar-item').forEach(item => item.classList.toggle('active', item.dataset.page === page));
+  const moduleMap = { dashboard: 'dashboard', crm: 'crm', booking: 'booking', inventory: 'inventory', marketing: 'marketing', sites: 'sites', tasks: 'tasks', bi: 'bi', employees: 'employees', automation: 'automation', settings: 'settings' };
+  const mod = moduleMap[page];
+  if (mod) switchModule(mod);
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('mobileOverlay').classList.remove('show');
+  }
+}
+
+function switchModule(module) {
+  AppState.currentModule = module;
+  document.querySelectorAll('.topbar-nav-item').forEach(item => item.classList.toggle('active', item.dataset.module === module));
+  document.querySelectorAll('.module-page').forEach(page => page.classList.toggle('active', page.id === 'page-' + module));
+  if (module === 'dashboard') { setTimeout(() => { drawRevenueChart(); drawDealStageChart(); }, 50); }
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth <= 768) {
+    sidebar.classList.toggle('mobile-open');
+    document.getElementById('mobileOverlay').classList.toggle('show');
+  } else {
+    sidebar.classList.toggle('collapsed');
+    AppState.sidebarCollapsed = !AppState.sidebarCollapsed;
+  }
+}
+
+function toggleSubmenu(el) {
+  const submenu = el.nextElementSibling;
+  if (submenu && submenu.classList.contains('sidebar-submenu')) submenu.classList.toggle('open');
+}
+
+// ===== RENDERING =====
+function renderAll() {
+  renderDashboard();
+  renderInventoryTable();
+  renderTasks();
+  renderNotifications();
+  renderBookingCalendar();
+}
+
+function renderDashboard() {
+  const totalRevenue = AppState.deals.filter(d => d.stage === 'closed').reduce((s, d) => s + d.amount, 0);
+  const activeDeals = AppState.deals.filter(d => d.stage !== 'closed' && d.stage !== 'lost').length;
+  const pendingTasks = AppState.tasks.filter(t => !t.completed).length;
+  const kpis = [
+    { label: 'Total Revenue', value: '$' + (totalRevenue / 1000).toFixed(0) + 'K', change: '+12.5%', up: true, icon: '💰', color: '#dcfce7' },
+    { label: 'Active Deals', value: activeDeals, change: '+3 this week', up: true, icon: '📊', color: '#dbeafe' },
+    { label: 'Pending Tasks', value: pendingTasks, change: '-2 from yesterday', up: true, icon: '✅', color: '#fef3c7' },
+    { label: 'Total Contacts', value: 30, change: '+8 this month', up: true, icon: '👥', color: '#fce7f3' }
+  ];
+  document.getElementById('kpiGrid').innerHTML = kpis.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-header"><span class="kpi-label">${k.label}</span><div class="kpi-icon" style="background:${k.color};font-size:18px;">${k.icon}</div></div>
+      <div class="kpi-value">${k.value}</div>
+      <div class="kpi-change ${k.up ? 'up' : 'down'}">${k.up ? '↑' : '↓'} ${k.change}</div>
+    </div>`).join('');
+  renderActivityFeed();
+  renderTopPerformers();
+  setTimeout(() => { drawRevenueChart(); drawDealStageChart(); }, 50);
+}
+
+function renderActivityFeed() {
+  document.getElementById('activityFeed').innerHTML = AppState.activities.map(a => `
+    <div class="activity-item">
+      <div class="activity-avatar" style="background:${a.avatar}">${a.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div class="activity-content">
+        <div class="activity-text"><strong>${a.name}</strong> ${a.action} <strong>${a.target}</strong></div>
+        <div class="activity-time">${a.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTopPerformers() {
+  const performers = ['Alex Johnson','Sarah Williams','Mike Brown','Emily Davis'];
+  const colors = ['#6366f1','#ec4899','#f59e0b','#22c55e'];
+  const values = [85, 72, 68, 54];
+  document.getElementById('topPerformers').innerHTML = performers.map((p, i) => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;">
+      <div style="width:32px;height:32px;border-radius:50%;background:${colors[i]};display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:700;flex-shrink:0;">${p.split(' ').map(n=>n[0]).join('')}</div>
+      <div style="flex:1;"><div style="font-size:13px;font-weight:600;">${p}</div><div style="font-size:11px;color:var(--text-muted);">${values[i]}% target</div></div>
+      <div class="progress-bar" style="width:80px;"><div class="progress-fill" style="width:${values[i]}%;background:${colors[i]};"></div></div>
+    </div>`).join('');
+}
+
+// ===== CHARTS =====
+function drawRevenueChart() {
+  const canvas = document.getElementById('revenueChart');
+  if (!canvas || !canvas.offsetParent) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const w = rect.width, h = rect.height;
+  const data = [12, 19, 15, 25, 22, 30, 28, 35, 32, 40, 38, 45];
+  const labels = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const maxVal = Math.max(...data) * 1.1;
+  const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+  const chartW = w - padding.left - padding.right;
+  const chartH = h - padding.top - padding.bottom;
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = '#f1f5f9'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = padding.top + (chartH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w - padding.right, y); ctx.stroke();
+    ctx.fillStyle = '#94a3b8'; ctx.font = '11px -apple-system, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText('$' + Math.round(maxVal - (maxVal / 4) * i) + 'K', padding.left - 8, y + 4);
+  }
+  ctx.fillStyle = '#94a3b8'; ctx.textAlign = 'center';
+  labels.forEach((label, i) => {
+    const x = padding.left + (chartW / (labels.length - 1)) * i;
+    ctx.fillText(label, x, h - 10);
+  });
+  const gradient = ctx.createLinearGradient(0, padding.top, 0, h - padding.bottom);
+  gradient.addColorStop(0, 'rgba(59,130,246,0.3)');
+  gradient.addColorStop(1, 'rgba(59,130,246,0)');
+  ctx.beginPath(); ctx.moveTo(padding.left, h - padding.bottom);
+  data.forEach((val, i) => {
+    const x = padding.left + (chartW / (data.length - 1)) * i;
+    const y = padding.top + chartH - (val / maxVal) * chartH;
+    if (i === 0) ctx.lineTo(x, y);
+    else {
+      const prevX = padding.left + (chartW / (data.length - 1)) * (i - 1);
+      const prevY = padding.top + chartH - (data[i-1] / maxVal) * chartH;
+      const cpX = (prevX + x) / 2;
+      ctx.bezierCurveTo(cpX, prevY, cpX, y, x, y);
+    }
+  });
+  ctx.lineTo(w - padding.right, h - padding.bottom); ctx.closePath();
+  ctx.fillStyle = gradient; ctx.fill();
+  ctx.beginPath();
+  data.forEach((val, i) => {
+    const x = padding.left + (chartW / (data.length - 1)) * i;
+    const y = padding.top + chartH - (val / maxVal) * chartH;
+    if (i === 0) ctx.moveTo(x, y);
+    else {
+      const prevX = padding.left + (chartW / (data.length - 1)) * (i - 1);
+      const prevY = padding.top + chartH - (data[i-1] / maxVal) * chartH;
+      const cpX = (prevX + x) / 2;
+      ctx.bezierCurveTo(cpX, prevY, cpX, y, x, y);
+    }
+  });
+  ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5; ctx.stroke();
+  data.forEach((val, i) => {
+    const x = padding.left + (chartW / (data.length - 1)) * i;
+    const y = padding.top + chartH - (val / maxVal) * chartH;
+    ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fillStyle = '#3b82f6'; ctx.fill();
+    ctx.beginPath(); ctx.arc(x, y, 2, 0, Math.PI * 2); ctx.fillStyle = 'white'; ctx.fill();
+  });
+}
+
+function drawDealStageChart() {
+  const canvas = document.getElementById('dealStageChart');
+  if (!canvas || !canvas.offsetParent) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const w = rect.width, h = rect.height;
+  const stageCounts = {};
+  AppState.deals.forEach(d => { stageCounts[d.stage] = (stageCounts[d.stage] || 0) + 1; });
+  const stages = Object.keys(stageCounts);
+  const colors = ['#6366f1','#8b5cf6','#f59e0b','#ec4899','#22c55e','#ef4444'];
+  const total = Object.values(stageCounts).reduce((s, v) => s + v, 0);
+  const cx = w / 2, cy = h / 2 - 10, radius = Math.min(w, h) / 2 - 30;
+  let startAngle = -Math.PI / 2;
+  stages.forEach((stage, i) => {
+    const count = stageCounts[stage];
+    const sliceAngle = (count / total) * Math.PI * 2;
+    const endAngle = startAngle + sliceAngle;
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.arc(cx, cy, radius, startAngle, endAngle); ctx.closePath();
+    ctx.fillStyle = colors[i % colors.length]; ctx.fill();
+    startAngle = endAngle;
+  });
+  ctx.beginPath(); ctx.arc(cx, cy, radius * 0.6, 0, Math.PI * 2); ctx.fillStyle = 'white'; ctx.fill();
+  ctx.fillStyle = '#1e293b'; ctx.font = 'bold 24px -apple-system, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(total, cx, cy + 2);
+  ctx.fillStyle = '#94a3b8'; ctx.font = '12px -apple-system, sans-serif';
+  ctx.fillText('Total Deals', cx, cy + 18);
+}
+
+function switchChartTab(btn, period) {
+  document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  drawRevenueChart();
+}
+
+// ===== INVENTORY =====
+function renderInventoryTable() {
+  const body = document.getElementById('inventoryBody');
+  if (!body) return;
+  const items = AppState.inventory;
+  if (items.length === 0) {
+    document.getElementById('inventoryEmpty').style.display = 'block';
+    document.getElementById('inventoryTable').style.display = 'none';
+    return;
+  }
+  document.getElementById('inventoryEmpty').style.display = 'none';
+  document.getElementById('inventoryTable').style.display = 'block';
+  body.innerHTML = items.map(item => `
+    <tr>
+      <td><input type="checkbox"></td>
+      <td style="font-weight:600;">${item.name}</td>
+      <td style="color:var(--text-secondary);">${item.doc}</td>
+      <td>${item.type}</td>
+      <td><span class="status-badge ${item.status}">${item.status.charAt(0).toUpperCase() + item.status.slice(1)}</span></td>
+      <td style="color:var(--text-secondary);font-size:13px;">${item.modified}</td>
+      <td style="font-size:13px;">${item.responsible}</td>
+    </tr>`).join('');
+}
+
+function filterInventory(query) {
+  const filtered = AppState.inventory.filter(item =>
+    item.name.toLowerCase().includes(query.toLowerCase()) ||
+    item.doc.toLowerCase().includes(query.toLowerCase())
+  );
+  const body = document.getElementById('inventoryBody');
+  if (!body) return;
+  body.innerHTML = filtered.map(item => `
+    <tr>
+      <td><input type="checkbox"></td>
+      <td style="font-weight:600;">${item.name}</td>
+      <td style="color:var(--text-secondary);">${item.doc}</td>
+      <td>${item.type}</td>
+      <td><span class="status-badge ${item.status}">${item.status.charAt(0).toUpperCase() + item.status.slice(1)}</span></td>
+      <td style="color:var(--text-secondary);font-size:13px;">${item.modified}</td>
+      <td style="font-size:13px;">${item.responsible}</td>
+    </tr>`).join('');
+}
+
+function sortInventory(field) {
+  AppState.inventory.sort((a, b) => {
+    if (field === 'name') return a.name.localeCompare(b.name);
+    if (field === 'doc') return a.doc.localeCompare(b.doc);
+    return 0;
+  });
+  renderInventoryTable();
+}
+
+function toggleAllInventory(checkbox) {
+  document.querySelectorAll('#inventoryBody input[type="checkbox"]').forEach(cb => cb.checked = checkbox.checked);
+}
+
+// ===== TASKS =====
+function renderTasks(filter = 'all') {
+  const list = document.getElementById('taskList');
+  if (!list) return;
+  let tasks = AppState.tasks;
+  if (filter === 'active') tasks = tasks.filter(t => !t.completed);
+  if (filter === 'completed') tasks = tasks.filter(t => t.completed);
+  list.innerHTML = tasks.map(task => `
+    <div class="task-item ${task.completed ? 'completed' : ''}" data-id="${task.id}">
+      <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTask('${task.id}')"></div>
+      <span class="task-title">${task.title}</span>
+      <span class="task-priority ${task.priority}">${task.priority}</span>
+      <span class="task-due">${task.dueDate}</span>
+    </div>`).join('');
+}
+
+function toggleTask(taskId) {
+  const task = AppState.tasks.find(t => t.id === taskId);
+  if (task) {
+    task.completed = !task.completed;
+    saveState();
+    renderTasks();
+    showToast(task.completed ? 'Task completed!' : 'Task reopened', 'success');
+  }
+}
+
+function switchTaskTab(tab, filter) {
+  document.querySelectorAll('.tasks-module .tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  renderTasks(filter);
+}
+
+// ===== NOTIFICATIONS =====
+function renderNotifications() {
+  const list = document.getElementById('notificationList');
+  if (!list) return;
+  list.innerHTML = AppState.notifications.map(n => `
+    <div class="notification-item ${n.unread ? 'unread' : ''}" onclick="this.classList.remove('unread')">
+      <div class="notification-icon-wrap" style="background:${n.bg}">${n.icon}</div>
+      <div class="notification-content">
+        <div class="notification-text">${n.text}</div>
+        <div class="notification-time">${n.time}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleNotifications() {
+  document.getElementById('notificationPanel').classList.toggle('show');
+  document.getElementById('notifDot').style.display = 'none';
+}
+
+// ===== MODALS =====
+function openModal(type) {
+  const title = document.getElementById('modalTitle');
+  const body = document.getElementById('modalBody');
+  switch (type) {
+    case 'task':
+      title.textContent = 'Add New Task';
+      body.innerHTML = `
+        <div class="form-group"><label>Task Title</label><input type="text" id="taskTitle" placeholder="What needs to be done?"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Priority</label><select id="taskPriority"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></div>
+          <div class="form-group"><label>Due Date</label><input type="date" id="taskDue"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="createTask()">Add Task</button>
+        </div>`;
+      break;
+    case 'resource':
+      title.textContent = 'Add Resource';
+      body.innerHTML = `
+        <p style="color:var(--text-secondary);font-size:14px;margin-bottom:20px;line-height:1.6;">You can add and book nearly anything: a doctor, a car, a property etc.</p>
+        <div class="form-group"><label>Resource Name</label><input type="text" id="resourceName" placeholder="e.g., Dr. Smith"></div>
+        <div class="form-group"><label>Type</label><select id="resourceType"><option value="person">Person</option><option value="room">Room</option><option value="equipment">Equipment</option></select></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="createResource()">Add Resource</button>
+        </div>`;
+      break;
+    case 'campaign':
+      title.textContent = 'Create Campaign';
+      body.innerHTML = `
+        <div class="form-group"><label>Campaign Name</label><input type="text" id="campaignName" placeholder="Enter campaign name"></div>
+        <div class="form-group"><label>Channel</label><select id="campaignChannel"><option>Email</option><option>SMS</option><option>Messenger</option></select></div>
+        <div class="form-group"><label>Message</label><textarea id="campaignMessage" placeholder="Write your campaign message..."></textarea></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">Save Draft</button>
+          <button class="btn btn-primary" onclick="createCampaign()">Launch Campaign</button>
+        </div>`;
+      break;
+    case 'inventory':
+      title.textContent = 'Create Stock Adjustment';
+      body.innerHTML = `
+        <div class="form-group"><label>Document Type</label><select id="invDocType"><option>Stock Receipt</option><option>Stock Adjustment</option><option>Transfer Order</option></select></div>
+        <div class="form-group"><label>Notes</label><textarea id="invNotes" placeholder="Add notes..."></textarea></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="createInventoryItem()">Create</button>
+        </div>`;
+      break;
+  }
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(e) {
+  if (e && e.target !== e.currentTarget) return;
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function createTask() {
+  const title = document.getElementById('taskTitle').value;
+  if (!title) { showToast('Please enter a task title', 'error'); return; }
+  const task = {
+    id: 'task-' + Date.now(), title,
+    priority: document.getElementById('taskPriority').value,
+    dueDate: new Date(document.getElementById('taskDue').value || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    completed: false, assignee: AppState.currentUser?.name || 'You'
+  };
+  AppState.tasks.push(task);
+  saveState();
+  renderTasks();
+  closeModal();
+  showToast('Task added!', 'success');
+}
+
+function createResource() {
+  const name = document.getElementById('resourceName').value;
+  if (!name) { showToast('Please enter a resource name', 'error'); return; }
+  closeModal();
+  showToast(`Resource "${name}" added successfully!`, 'success');
+}
+
+function createCampaign() {
+  const name = document.getElementById('campaignName').value;
+  if (!name) { showToast('Please enter a campaign name', 'error'); return; }
+  closeModal();
+  showToast(`Campaign "${name}" launched!`, 'success');
+}
+
+function createInventoryItem() {
+  const type = document.getElementById('invDocType').value;
+  const item = {
+    id: 'inv-' + Date.now(), name: type,
+    doc: (type.slice(0, 3).toUpperCase()) + '-' + String(Date.now()).slice(-3),
+    type, status: 'pending',
+    modified: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    responsible: AppState.currentUser?.name || 'You'
+  };
+  AppState.inventory.unshift(item);
+  saveState();
+  renderInventoryTable();
+  closeModal();
+  showToast('Stock adjustment created!', 'success');
+}
+
+// ===== GLOBAL SEARCH =====
+function openGlobalSearch() {
+  document.getElementById('searchOverlay').classList.add('show');
+  setTimeout(() => document.getElementById('globalSearchInput').focus(), 100);
+}
+function closeSearch() { document.getElementById('searchOverlay').classList.remove('show'); }
+function performGlobalSearch(query) {
+  const results = document.getElementById('searchResults');
+  if (!query.trim()) { results.innerHTML = ''; return; }
+  const q = query.toLowerCase();
+  const deals = AppState.deals.filter(d => d.title.toLowerCase().includes(q) || d.company.toLowerCase().includes(q)).slice(0, 3);
+  const tasks = AppState.tasks.filter(t => t.title.toLowerCase().includes(q)).slice(0, 3);
+  let html = '';
+  if (deals.length) {
+    html += '<div style="padding:8px 0;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;">Deals</div>';
+    deals.forEach(d => { html += `<div style="padding:8px 12px;cursor:pointer;border-radius:6px;display:flex;align-items:center;">${d.title} <span style="color:var(--text-muted);margin-left:auto;">$${d.amount.toLocaleString()}</span></div>`; });
+  }
+  if (tasks.length) {
+    html += '<div style="padding:8px 0;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;margin-top:8px;">Tasks</div>';
+    tasks.forEach(t => { html += `<div style="padding:8px 12px;cursor:pointer;border-radius:6px;">${t.title}</div>`; });
+  }
+  if (!html) html = '<div style="padding:20px;text-align:center;color:var(--text-muted);">No results found</div>';
+  results.innerHTML = html;
+}
+
+// ===== PROFILE DROPDOWN =====
+function toggleProfileDropdown() {
+  let dropdown = document.getElementById('profileDropdown');
+  if (dropdown) { dropdown.remove(); return; }
+  dropdown = document.createElement('div');
+  dropdown.id = 'profileDropdown';
+  dropdown.className = 'profile-dropdown';
+  dropdown.style.top = '56px';
+  dropdown.style.right = '20px';
+  dropdown.innerHTML = `
+    <div class="profile-dropdown-header">
+      <div class="profile-dropdown-name">${AppState.currentUser?.name || 'User'}</div>
+      <div class="profile-dropdown-email">${AppState.currentUser?.email || ''}</div>
+    </div>
+    <div class="profile-dropdown-item" onclick="navigateTo('settings');toggleProfileDropdown();">⚙️ Settings</div>
+    <div class="profile-dropdown-item" onclick="showToast('Profile page coming soon','info');toggleProfileDropdown();">👤 My Profile</div>
+    <div style="height:1px;background:var(--border);margin:4px 0;"></div>
+    <div class="profile-dropdown-item danger" onclick="logout();toggleProfileDropdown();">🚪 Sign Out</div>`;
+  document.body.appendChild(dropdown);
+}
+
+// ===== TOAST =====
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+  toast.innerHTML = `<span class="toast-icon">${icons[type]}</span><span class="toast-message">${message}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(100%)';
+    toast.style.transition = 'all 0.3s ease';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// ===== CLOCK =====
+function startClock() {
+  function update() {
+    const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    const timeStr = h + ':' + m + ' ' + ampm;
+    const mainClock = document.getElementById('clockDisplay');
+    if (mainClock) mainClock.textContent = timeStr;
+    document.querySelectorAll('.crm-clock-display').forEach(el => el.textContent = timeStr);
+  }
+  update();
+  setInterval(update, 1000);
+}
+
+// ===== BOOKING MODULE INTERACTIONS =====
+function renderBookingCalendar() {
+  const { year, month } = AppState.bookingCal;
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('bmcTitle').textContent = monthNames[month] + ' ' + year;
+
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  // Today is June 17, 2026 (Wed)
+  const todayDate = 17;
+  const todayMonth = 5; // June
+  const todayYear = 2026;
+
+  // Sundays (red): 7, 14, 21, 28 in June 2026
+  // Also July 6 should be red
+  const redDates = new Set([7, 14, 21, 28]);
+
+  let html = '';
+  // Previous month days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    html += `<div class="bmc-date other-month">${daysInPrevMonth - i}</div>`;
+  }
+  // Current month days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = (year === todayYear && month === todayMonth && d === todayDate);
+    const isRed = redDates.has(d);
+    const classes = ['bmc-date'];
+    if (isToday) classes.push('today');
+    if (isRed && !isToday) classes.push('red');
+    html += `<div class="${classes.join(' ')}" data-day="${d}" onclick="selectBookingDate(${d})">${d}</div>`;
+  }
+  // Next month days (fill to 42)
+  const totalCells = firstDay + daysInMonth;
+  const remaining = (totalCells <= 35 ? 35 : 42) - totalCells;
+  for (let d = 1; d <= remaining; d++) {
+    // July 6 should be red
+    const isRed = (d === 6);
+    html += `<div class="bmc-date other-month${isRed ? ' red' : ''}">${d}</div>`;
+  }
+  document.getElementById('bmcDates').innerHTML = html;
+}
+
+function selectBookingDate(day) {
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const { year, month } = AppState.bookingCal;
+  document.getElementById('bookingActionDate').textContent = monthNames[month] + ' ' + day;
+  document.querySelectorAll('.bmc-date').forEach(d => {
+    if (!d.classList.contains('today')) d.style.background = '';
+  });
+  const target = document.querySelector(`.bmc-date[data-day="${day}"]`);
+  if (target && !target.classList.contains('today')) {
+    target.style.background = '#eff6ff';
+  }
+  showToast(`Selected ${monthNames[month]} ${day}, ${year}`, 'info');
+}
+
+function setupBookingInteractions() {
+  // Mini calendar nav
+  document.getElementById('bmcPrev')?.addEventListener('click', () => {
+    AppState.bookingCal.month--;
+    if (AppState.bookingCal.month < 0) { AppState.bookingCal.month = 11; AppState.bookingCal.year--; }
+    renderBookingCalendar();
+  });
+  document.getElementById('bmcNext')?.addEventListener('click', () => {
+    AppState.bookingCal.month++;
+    if (AppState.bookingCal.month > 11) { AppState.bookingCal.month = 0; AppState.bookingCal.year++; }
+    renderBookingCalendar();
+  });
+  document.getElementById('bmcClose')?.addEventListener('click', () => {
+    const cal = document.getElementById('bookingMiniCalendar');
+    cal.style.display = cal.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // View toggle (Day/Week)
+  document.querySelectorAll('.booking-view-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.booking-view-toggle-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      showToast(`Switched to ${this.dataset.view} view`, 'info');
+    });
+  });
+
+  // Booking nav items
+  document.querySelectorAll('.booking-nav-item').forEach(item => {
+    item.addEventListener('click', function() {
+      document.querySelectorAll('.booking-nav-item').forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Zoom controls
+  document.getElementById('zoomIn')?.addEventListener('click', () => {
+    if (AppState.zoomLevel < 200) {
+      AppState.zoomLevel += 10;
+      document.getElementById('zoomLevel').textContent = AppState.zoomLevel + ' %';
+    }
+  });
+  document.getElementById('zoomOut')?.addEventListener('click', () => {
+    if (AppState.zoomLevel > 50) {
+      AppState.zoomLevel -= 10;
+      document.getElementById('zoomLevel').textContent = AppState.zoomLevel + ' %';
+    }
+  });
+
+  // Sidebar icon hover effects
+  document.querySelectorAll('.booking-sidebar-icon').forEach(icon => {
+    icon.addEventListener('click', function() {
+      this.style.background = 'rgba(255, 255, 255, 0.25)';
+      setTimeout(() => {
+        if (!this.classList.contains('green-circle')) this.style.background = '';
+      }, 200);
+    });
+  });
+
+  // Rocket button
+  document.querySelector('.booking-module .crm-rocket-btn')?.addEventListener('click', function() {
+    this.style.transform = 'scale(0.9) rotate(-10deg)';
+    setTimeout(() => { this.style.transform = ''; }, 200);
+    showToast('CoPilot activated!', 'success');
+  });
+}
+
+// ===== EVENT LISTENERS =====
+function setupEventListeners() {
+  document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'k') { e.preventDefault(); openGlobalSearch(); }
+    if (e.key === 'Escape') {
+      closeModal();
+      closeSearch();
+      document.getElementById('notificationPanel').classList.remove('show');
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.topbar-avatar')) {
+      const dd = document.getElementById('profileDropdown');
+      if (dd) dd.remove();
+    }
+    // CRM view tab toggling
+    if (e.target.classList.contains('crm-view-tab')) {
+      document.querySelectorAll('.crm-view-tab').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+    }
+    if (e.target.classList.contains('crm-nav-item')) {
+      document.querySelectorAll('.crm-nav-item').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+    }
+  });
+  // Search tag removal
+  document.querySelectorAll('.crm-close-x').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      this.parentElement.style.display = 'none';
+    });
+  });
+  // CRM chevron button
+  const chevronBtn = document.querySelector('.crm-chevron-btn');
+  const rightSidebar = document.querySelector('.crm-right-sidebar');
+  if (chevronBtn && rightSidebar) {
+    let sidebarVisible = true;
+    chevronBtn.addEventListener('click', function() {
+      sidebarVisible = !sidebarVisible;
+      if (sidebarVisible) {
+        rightSidebar.style.transform = 'translateX(0)';
+        chevronBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        chevronBtn.style.right = '48px';
+      } else {
+        rightSidebar.style.transform = 'translateX(100%)';
+        chevronBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+        chevronBtn.style.right = '8px';
+      }
+    });
+  }
+  // CRM sidebar icons
+  document.querySelectorAll('.crm-sidebar-icon').forEach(icon => {
+    icon.addEventListener('click', function() {
+      this.style.background = 'rgba(255, 255, 255, 0.25)';
+      setTimeout(() => {
+        if (!this.classList.contains('crm-green-circle')) this.style.background = '';
+      }, 200);
+    });
+  });
+  // CRM contact center items
+  document.querySelectorAll('.crm-contact-center-item').forEach(item => {
+    item.addEventListener('click', function() {
+      this.style.background = 'rgba(34, 211, 238, 0.2)';
+      setTimeout(() => { this.style.background = ''; }, 300);
+    });
+  });
+  // CRM add/quick-deal buttons
+  document.querySelectorAll('.crm-add-btn, .crm-quick-deal-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => { this.style.transform = ''; }, 150);
+      showToast('Quick action triggered', 'info');
+    });
+  });
+  // CRM rocket button
+  document.querySelector('.crm-module .crm-rocket-btn')?.addEventListener('click', function() {
+    this.style.transform = 'scale(0.9) rotate(-10deg)';
+    setTimeout(() => { this.style.transform = ''; }, 200);
+    showToast('CoPilot activated!', 'success');
+  });
+
+  window.addEventListener('resize', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    if (btn) btn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+    if (AppState.currentModule === 'dashboard') { drawRevenueChart(); drawDealStageChart(); }
+  });
+  const btn = document.getElementById('mobileMenuBtn');
+  if (btn) btn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+}
+
+// ===== SETTINGS =====
+function switchSettingsTab(tab, section) {
+  document.querySelectorAll('.settings-nav-item').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  const content = document.getElementById('settingsContent');
+  const sections = {
+    general: `<h4>General Settings</h4>
+      <div class="setting-row"><div class="setting-info"><h5>Dark Mode</h5><p>Toggle dark theme</p></div><div class="toggle-switch" onclick="this.classList.toggle('active');showToast('Theme saved','info')"></div></div>
+      <div class="setting-row"><div class="setting-info"><h5>Email Notifications</h5><p>Receive email updates</p></div><div class="toggle-switch active" onclick="this.classList.toggle('active');showToast('Notification saved','info')"></div></div>
+      <div class="setting-row"><div class="setting-info"><h5>Sound Alerts</h5><p>Play sound for notifications</p></div><div class="toggle-switch" onclick="this.classList.toggle('active');showToast('Sound saved','info')"></div></div>`,
+    profile: `<h4>Profile Settings</h4>
+      <div class="form-group"><label>Display Name</label><input type="text" value="${AppState.currentUser?.name || ''}"></div>
+      <div class="form-group"><label>Email</label><input type="email" value="${AppState.currentUser?.email || ''}"></div>
+      <div class="modal-footer" style="margin-top:20px;"><button class="btn btn-primary" onclick="showToast('Profile saved!','success')">Save Changes</button></div>`,
+    notifications: `<h4>Notification Preferences</h4>
+      <div class="setting-row"><div class="setting-info"><h5>Deal Updates</h5><p>Notify when deals change stage</p></div><div class="toggle-switch active" onclick="this.classList.toggle('active')"></div></div>
+      <div class="setting-row"><div class="setting-info"><h5>Task Reminders</h5><p>Remind about upcoming tasks</p></div><div class="toggle-switch active" onclick="this.classList.toggle('active')"></div></div>`,
+    security: `<h4>Security Settings</h4>
+      <div class="form-group"><label>Current Password</label><input type="password" placeholder="Enter current password"></div>
+      <div class="form-row"><div class="form-group"><label>New Password</label><input type="password" placeholder="New password"></div><div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Confirm"></div></div>
+      <div class="modal-footer" style="margin-top:20px;"><button class="btn btn-primary" onclick="showToast('Password updated!','success')">Update Password</button></div>`,
+    integrations: `<h4>Integrations</h4>
+      <div class="setting-row"><div class="setting-info"><h5>Google Calendar</h5><p>Sync events and meetings</p></div><button class="btn btn-primary" style="padding:6px 16px;font-size:12px;" onclick="showToast('Google Calendar connected!','success')">Connect</button></div>
+      <div class="setting-row"><div class="setting-info"><h5>Slack</h5><p>Get notifications in Slack</p></div><button class="btn btn-secondary" style="padding:6px 16px;font-size:12px;" onclick="showToast('Slack connected!','success')">Connect</button></div>`,
+    billing: `<h4>Billing & Subscription</h4>
+      <div style="background:#eff6ff;border-radius:var(--radius-md);padding:20px;margin-bottom:20px;">
+        <div style="font-size:14px;font-weight:600;margin-bottom:4px;">Current Plan: <span style="color:var(--primary);">Professional</span></div>
+        <div style="font-size:12px;color:var(--text-muted);">Next billing date: June 25, 2026</div>
+      </div>
+      <div class="setting-row"><div class="setting-info"><h5>Payment Method</h5><p>Visa ending in 4242</p></div><button class="btn btn-secondary" style="padding:6px 16px;font-size:12px;">Update</button></div>`
+  };
+  content.innerHTML = '<div class="settings-section">' + (sections[section] || sections.general) + '</div>';
+}
+
+// ===== INIT =====
+init();
+</script>
+</body>
+</html>

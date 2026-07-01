@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa | Money Without Borders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+HEROPESA THEME - REVOLUT-LEVEL POLISH
+========================================= */
+:root {
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --primary-dark: #7bc445;
+  --bg-body: #ffffff;
+  --bg-alt: #f8f9fa;
+  --bg-dark: #ffffff;
+  --text-main: #202124;
+  --text-secondary: #5f6368;
+  --text-muted: #70757a;
+  --text-on-primary: #0a0a0a;
+  --border: #dadce0;
+  --border-hover: #bdc1c6;
+  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+  --shadow-md: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+  --shadow-lg: 0 4px 6px 0 rgba(60,64,67,0.3), 0 8px 16px 6px rgba(60,64,67,0.15);
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 24px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --container: 1200px;
+  --header-height: 72px;
+}
+
+/* =========================================
+RESET & BASE
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-main); color: var(--text-main); line-height: 1.6; background: var(--bg-body); overflow-x: hidden; }
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, select, textarea { font-family: inherit; border: none; outline: none; background: none; }
+::selection { background: var(--primary); color: var(--text-on-primary); }
+
+/* =========================================
+UTILITIES
+========================================= */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.section { padding: 96px 0; position: relative; }
+.section-header { text-align: center; max-width: 700px; margin: 0 auto 56px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } .section-header h2 { font-size: 1.75rem; } }
+
+/* =========================================
+IMAGE PLACEHOLDERS (Clean, Professional)
+========================================= */
+.img-placeholder {
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+.img-placeholder:hover { border-color: var(--primary); }
+.img-placeholder::before {
+  content: '\f03e';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: 1.75rem;
+  margin-bottom: 10px;
+  display: block;
+  color: var(--primary);
+  opacity: 0.7;
+}
+.img-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.img-hero { min-height: 420px; border-radius: var(--radius-xl); }
+.img-card { min-height: 200px; }
+.img-sm { min-height: 140px; border-radius: var(--radius-md); }
+
+/* =========================================
+BUTTONS
+========================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 28px; border-radius: var(--radius-md); font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; transition: all var(--transition); border: 1.5px solid transparent;
+  position: relative; overflow: hidden;
+}
+.btn-primary { background: var(--primary); color: var(--text-on-primary); }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-primary:active { transform: translateY(0); }
+.btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--bg-alt); }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { color: var(--text-main); }
+.btn-sm { padding: 10px 20px; font-size: 0.9rem; }
+
+/* =========================================
+HEADER
+========================================= */
+header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); z-index: 1000;
+  transition: border-color var(--transition);
+}
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.logo { font-size: 1.35rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+.logo-accent { color: var(--primary); }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-weight: 500; font-size: 0.9rem; color: var(--text-secondary); position: relative; padding: 4px 0; }
+.nav-links a:hover { color: var(--text-main); }
+.nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+  background: var(--primary); transition: width var(--transition);
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.nav-actions .btn { padding: 10px 20px; font-size: 0.9rem; }
+.mobile-toggle { display: none; font-size: 1.25rem; cursor: pointer; color: var(--text-main); }
+@media (max-width: 1024px) {
+  .nav-links, .nav-actions .desktop-only { display: none; }
+  .mobile-toggle { display: block; }
+  .nav-links.active {
+    display: flex; flex-direction: column; position: absolute; top: var(--header-height);
+    left: 0; width: 100%; background: #fff; padding: 24px; border-bottom: 1px solid var(--border);
+    gap: 16px; animation: slideDown 0.25s ease;
+  }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+/* =========================================
+HERO SECTION
+========================================= */
+.hero {
+  padding-top: calc(var(--header-height) + 40px); padding-bottom: 72px;
+  background: linear-gradient(180deg, var(--bg-alt) 0%, var(--bg-body) 100%);
+}
+.hero-content { text-align: center; max-width: 800px; margin: 0 auto; }
+.hero-content h1 {
+  font-size: 3.25rem; font-weight: 700; line-height: 1.12; margin-bottom: 20px;
+  letter-spacing: -0.8px; color: var(--text-main);
+}
+.hero-content p { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.hero-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+.hero-trust { display: flex; justify-content: center; align-items: center; gap: 24px; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; }
+.hero-trust-item { display: flex; align-items: center; gap: 6px; }
+.hero-trust-item i { color: #f59e0b; }
+@media (max-width: 768px) {
+  .hero-content h1 { font-size: 2.3rem; }
+  .hero-content p { font-size: 1.05rem; }
+  .hero-trust { flex-direction: column; gap: 12px; }
+}
+
+/* =========================================
+STATS BAR
+========================================= */
+.stats-bar { background: var(--bg-alt); padding: 32px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.stats-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 24px; }
+.stat-item h3 { font-size: 1.75rem; font-weight: 700; margin-bottom: 4px; color: var(--text-main); }
+.stat-item p { font-size: 0.85rem; color: var(--text-muted); max-width: 140px; }
+
+/* =========================================
+VALUE PROPS
+========================================= */
+.value-props { background: var(--bg-body); }
+.value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.value-card {
+  background: var(--bg-alt); padding: 28px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border); transition: all var(--transition);
+}
+.value-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-sm); }
+.value-card i { font-size: 1.5rem; color: var(--primary); margin-bottom: 14px; }
+.value-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.value-card p { font-size: 0.92rem; color: var(--text-secondary); }
+@media (max-width: 1024px) { .value-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .value-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+RATE CALCULATOR
+========================================= */
+.rate-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.rate-card {
+  background: #fff; border-radius: var(--radius-xl); border: 1px solid var(--border);
+  padding: 32px; max-width: 680px; margin: 0 auto; box-shadow: var(--shadow-md);
+}
+.rate-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+.rate-header h3 { font-size: 1.35rem; font-weight: 600; }
+.rate-inputs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-bottom: 24px; }
+.rate-input-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+.rate-input-group input, .rate-input-group select {
+  width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: var(--radius-md);
+  font-size: 1.1rem; font-weight: 600; background: var(--bg-alt); transition: border-color var(--transition);
+}
+.rate-input-group input:focus, .rate-input-group select:focus { border-color: var(--primary); outline: none; }
+.rate-swap { font-size: 1.25rem; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 50%; transition: all var(--transition); }
+.rate-swap:hover { background: var(--bg-alt); color: var(--primary); }
+.rate-result { background: var(--bg-alt); border-radius: var(--radius-md); padding: 20px; margin-bottom: 20px; }
+.rate-result-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
+.rate-result-row.total { font-weight: 600; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 12px; }
+.rate-note { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+@media (max-width: 600px) { .rate-inputs { grid-template-columns: 1fr; } .rate-swap { justify-self: center; transform: rotate(90deg); } }
+
+/* =========================================
+WHY HEROPESA (Transparency)
+========================================= */
+.why-section { background: var(--bg-body); }
+.why-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.why-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
+.why-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
+.why-list li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; font-size: 0.95rem; color: var(--text-secondary); }
+.why-list li i { color: var(--primary); margin-top: 4px; font-size: 0.9rem; }
+.comparison-table { background: var(--bg-alt); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); }
+.comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+.comparison-row.header { background: #fff; font-weight: 600; }
+.comparison-row:last-child { border-bottom: none; }
+.comparison-row .heropesa { color: var(--primary); font-weight: 600; }
+@media (max-width: 900px) { .why-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+SECURITY
+========================================= */
+.security-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.security-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.security-card {
+  background: #fff; padding: 28px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border); text-align: center; transition: all var(--transition);
+}
+.security-card:hover { border-color: var(--primary); }
+.security-card i { font-size: 2rem; color: var(--primary); margin-bottom: 16px; }
+.security-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+.security-card p { font-size: 0.92rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .security-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+FEATURES (Personal + Platform)
+========================================= */
+.features-section { background: var(--bg-body); }
+.features-tabs { display: flex; justify-content: center; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+.tab-btn {
+  padding: 10px 20px; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer;
+  color: var(--text-secondary); transition: all var(--transition); border: 1px solid transparent;
+}
+.tab-btn.active, .tab-btn:hover { color: var(--text-main); border-color: var(--border); background: var(--bg-alt); }
+.tab-btn.active { border-color: var(--primary); color: var(--primary); }
+.tab-content { display: none; animation: fadeIn 0.3s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card {
+  background: var(--bg-alt); padding: 24px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border); transition: all var(--transition);
+}
+.feature-card:hover { border-color: var(--primary); transform: translateY(-2px); }
+.feature-card i { font-size: 1.25rem; color: var(--primary); margin-bottom: 12px; }
+.feature-card h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+.feature-card p { font-size: 0.9rem; color: var(--text-secondary); }
+@media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+INDUSTRIES
+========================================= */
+.industries-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.industries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+.ind-card {
+  background: #fff; padding: 20px; border-radius: var(--radius-md);
+  text-align: center; border: 1px solid var(--border); transition: all var(--transition);
+}
+.ind-card:hover { border-color: var(--primary); }
+.ind-card i { font-size: 1.4rem; color: var(--text-secondary); margin-bottom: 10px; transition: color var(--transition); }
+.ind-card:hover i { color: var(--primary); }
+.ind-card h5 { font-size: 0.9rem; font-weight: 500; }
+
+/* =========================================
+DEVELOPERS
+========================================= */
+.dev-section { background: var(--bg-body); }
+.dev-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.dev-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
+.dev-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
+.dev-list li { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 0.95rem; color: var(--text-secondary); }
+.dev-list li i { color: var(--primary); font-size: 0.85rem; }
+.code-block {
+  background: var(--bg-dark); border-radius: var(--radius-lg); padding: 24px;
+  font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.85rem; color: #e5e5e5;
+  overflow-x: auto; line-height: 1.7; border: 1px solid #222;
+}
+.code-block .comment { color: #6b7280; }
+.code-block .key { color: var(--primary); }
+.code-block .str { color: #a5b4fc; }
+.code-block .val { color: #9ca3af; }
+@media (max-width: 900px) { .dev-layout { grid-template-columns: 1fr; } .code-block { margin-top: 24px; } }
+
+/* =========================================
+TESTIMONIALS
+========================================= */
+.testimonials-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.test-card {
+  background: #fff; padding: 28px; border-radius: var(--radius-lg);
+  border: 1px solid var(--border); display: flex; flex-direction: column;
+}
+.test-text { font-size: 0.95rem; line-height: 1.65; margin-bottom: 20px; color: var(--text-secondary); flex-grow: 1; }
+.test-meta { display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
+.test-avatar {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--primary);
+  display: flex; align-items: center; justify-content: center; color: var(--text-on-primary);
+  font-weight: 600; font-size: 0.9rem;
+}
+.test-info h6 { font-size: 0.9rem; font-weight: 600; margin: 0; }
+.test-info span { font-size: 0.8rem; color: var(--text-muted); }
+@media (max-width: 900px) { .test-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+APP DOWNLOAD
+========================================= */
+.app-section { background: var(--bg-body); text-align: center; }
+.app-content { max-width: 600px; margin: 0 auto; }
+.app-content h3 { font-size: 2rem; font-weight: 700; margin-bottom: 16px; }
+.app-content p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 28px; }
+.app-badges { display: flex; justify-content: center; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+.app-badge {
+  background: var(--bg-dark); color: #fff; padding: 12px 20px; border-radius: var(--radius-md);
+  display: flex; align-items: center; gap: 10px; font-weight: 500; transition: all var(--transition);
+}
+.app-badge:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.app-badge i { font-size: 1.4rem; }
+.qr-placeholder {
+  width: 160px; height: 160px; margin: 0 auto 24px;
+  background: var(--bg-alt); border: 2px dashed var(--border); border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem;
+}
+
+/* =========================================
+FAQ
+========================================= */
+.faq-section { background: var(--bg-alt); border-top: 1px solid var(--border); }
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
+  margin-bottom: 12px; overflow: hidden; transition: border-color var(--transition);
+}
+.faq-item:hover { border-color: var(--border-hover); }
+.faq-q {
+  padding: 18px 20px; font-weight: 500; cursor: pointer; display: flex;
+  justify-content: space-between; align-items: center; font-size: 0.98rem;
+}
+.faq-q i { color: var(--text-muted); transition: transform 0.25s; }
+.faq-item.active .faq-q i { transform: rotate(45deg); color: var(--primary); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease;
+  padding: 0 20px; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem;
+}
+.faq-item.active .faq-a { max-height: 400px; padding: 0 20px 18px; }
+
+/* =========================================
+CTA BANNER
+========================================= */
+.cta-banner {
+  background: var(--primary); color: var(--text-on-primary); text-align: center;
+  padding: 72px 0; position: relative; overflow: hidden;
+}
+.cta-banner h3 { font-size: 2rem; font-weight: 700; margin-bottom: 14px; }
+.cta-banner p { font-size: 1.05rem; opacity: 0.95; margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; }
+.cta-banner .btn-outline { border-color: rgba(10,10,10,0.3); color: var(--text-on-primary); }
+.cta-banner .btn-outline:hover { background: rgba(10,10,10,0.1); border-color: var(--text-on-primary); }
+
+/* =========================================
+FOOTER
+========================================= */
+footer { background: #fff; padding: 72px 0 32px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.8fr repeat(4, 1fr); gap: 40px; margin-bottom: 48px; }
+.footer-brand p { color: var(--text-secondary); margin: 14px 0 18px; font-size: 0.9rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 10px; }
+.social-icons a {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--bg-alt);
+  border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); transition: all var(--transition);
+}
+.social-icons a:hover { background: var(--primary); border-color: var(--primary); color: var(--text-on-primary); }
+.footer-col h5 { font-size: 0.9rem; margin-bottom: 16px; font-weight: 600; color: var(--text-main); }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.85rem; }
+.footer-col ul li a:hover { color: var(--primary); }
+.footer-bottom {
+  border-top: 1px solid var(--border); padding-top: 24px; display: flex;
+  justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted);
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--primary); }
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+}
+
+/* =========================================
+ANIMATIONS (Subtle, Professional)
+========================================= */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* Hover lift for cards */
+.value-card, .feature-card, .security-card, .test-card, .ind-card, .billing-card {
+  will-change: transform;
+}
+
+/* Smooth button press */
+.btn:active { transform: scale(0.98); }
+
+@media (max-width: 480px) {
+  .section { padding: 64px 0; }
+  .btn { width: 100%; justify-content: center; }
+  .hero-actions { flex-direction: column; align-items: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="navbar" class="heropesa-header">
+<div class="container nav-wrapper">
+<a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+<nav class="nav-links" id="navLinks">
+<div class="nav-item">
+<a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Core Platforms</h6><ul>
+<li><a href="/erp.html">Enterprise ERP</a></li>
+<li><a href="/accounting.html">Accounting Software</a></li>
+<li><a href="/crm.html">CRM & Sales</a></li>
+<li><a href="/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/inventory.html">Inventory Control</a></li>
+</ul></div>
+<div><h6>Operations</h6><ul>
+<li><a href="/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pos.html">Point of Sale</a></li>
+<li><a href="/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/marketing-auto.html">Marketing Automation</a></li>
+</ul></div>
+<div><h6>Industry Solutions</h6><ul>
+<li><a href="/manufacturing.html">Manufacturing</a></li>
+<li><a href="/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/education.html">Education Platform</a></li>
+<li><a href="/retail.html">Retail & Commerce</a></li>
+</ul></div>
+<div><h6>AI & Automation</h6><ul>
+<li><a href="/ai-support.html">AI Customer Support</a></li>
+<li><a href="/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/ai-workflows.html">AI Workflows</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>By Industry</h6><ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+</ul></div>
+<div><h6>By Use Case</h6><ul>
+<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+<li><a href="/solutions/scaling.html">Global Scaling</a></li>
+<li><a href="/solutions/automation.html">Process Automation</a></li>
+</ul></div>
+<div><h6>By Company Size</h6><ul>
+<li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+</ul></div>
+<div><h6>Migration & Integration</h6><ul>
+<li><a href="/migration.html">Legacy System Migration</a></li>
+<li><a href="/integrations.html">Third-Party Integrations</a></li>
+<li><a href="/api.html">API & Webhooks</a></li>
+<li><a href="/implementation.html">Implementation Services</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Documentation</h6><ul>
+<li><a href="/docs.html">API Documentation</a></li>
+<li><a href="/guides.html">Business Guides</a></li>
+<li><a href="/glossary.html">Solutions Glossary</a></li>
+<li><a href="/help.html">Help Center</a></li>
+</ul></div>
+<div><h6>Learning</h6><ul>
+<li><a href="/demos.html">Product Demos</a></li>
+<li><a href="/stories.html">Customer Stories</a></li>
+<li><a href="/webinars.html">Webinars & Events</a></li>
+<li><a href="/education.html">Education Services</a></li>
+</ul></div>
+<div><h6>Technical</h6><ul>
+<li><a href="/sdks.html">SDKs & Libraries</a></li>
+<li><a href="/status.html">System Status</a></li>
+<li><a href="/changelog.html">Changelog</a></li>
+<li><a href="/sandbox.html">Developer Sandbox</a></li>
+</ul></div>
+<div><h6>Trust & Security</h6><ul>
+<li><a href="/security.html">Security Compliance</a></li>
+<li><a href="/trust.html">Trust Center</a></li>
+<li><a href="/privacy.html">Privacy Policy</a></li>
+<li><a href="/responsible-ai.html">Responsible AI</a></li>
+</ul></div>
+</div>
+</div>
+<a href="/partners.html">Partners</a>
+<a href="#pricing">Pricing</a>
+
+<!-- Mobile-only actions placed inside nav-links for proper mobile display -->
+<div class="mobile-nav-actions">
+  <a href="/login.html" class="btn btn-ghost">Log in</a>
+  <a href="#demo" class="btn btn-primary">Request Demo</a>
+</div>
+</nav>
+<div class="nav-actions">
+<!-- Functional Search Bar replacing Language Selector -->
+<div class="header-search desktop-only">
+    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); margin-right: 8px;"></i>
+    <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+</div>
+<a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+<i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+</div>
+</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content reveal">
+      <h1>The fast, affordable way to move money globally.</h1>
+      <p>Send, receive, hold, and convert money in 50+ currencies. No hidden fees. Real exchange rates. Built for lives across borders.</p>
+      <div class="hero-actions">
+        <a href="#get-started" class="btn btn-primary">Get started free <i class="fa-solid fa-arrow-right"></i></a>
+        <a href="#platform" class="btn btn-outline">Explore Platform</a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><i class="fa-solid fa-star"></i> 4.8★ App Store • 152K reviews</div>
+        <div class="hero-trust-item"><i class="fa-solid fa-star"></i> 4.8★ Google Play • 1.3M reviews</div>
+      </div>
+    </div>
+    <div class="img-placeholder img-hero reveal" style="margin-top: 48px;">
+      <span>Hero App Screenshot / Video Placeholder</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item reveal reveal-delay-1">
+        <h3>1M+</h3>
+        <p>Trusted users globally</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <h3>£12B+</h3>
+        <p>Moved monthly</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <h3>140+</h3>
+        <p>Countries supported</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <h3>50+</h3>
+        <p>Currencies</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE PROPS -->
+<section class="section value-props">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Money that works for you</h2>
+      <p>Everything you need to manage your money globally—in one place.</p>
+    </div>
+    <div class="value-grid">
+      <div class="value-card reveal">
+        <i class="fa-solid fa-paper-plane"></i>
+        <h4>Send money</h4>
+        <p>Transfer to 140+ countries at the real mid-market rate. No hidden markups.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-1">
+        <i class="fa-solid fa-download"></i>
+        <h4>Receive globally</h4>
+        <p>Get paid in USD, EUR, GBP, and more with local account details.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-2">
+        <i class="fa-solid fa-wallet"></i>
+        <h4>Hold multi-currency</h4>
+        <p>Store 50+ currencies in one account. Convert anytime at fair rates.</p>
+      </div>
+      <div class="value-card reveal reveal-delay-3">
+        <i class="fa-solid fa-credit-card"></i>
+        <h4>Spend worldwide</h4>
+        <p>Use your Heropesa card abroad with no foreign transaction fees.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RATE CALCULATOR -->
+<section class="section rate-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>See exactly what you pay</h2>
+      <p>Transparent pricing. No surprises.</p>
+    </div>
+    <div class="rate-card reveal">
+      <div class="rate-header">
+        <h3>Send money to Tanzania</h3>
+        <span style="font-size:0.85rem;color:var(--text-muted)">1 USD = 2,626.41 TZS</span>
+      </div>
+      <div class="rate-inputs">
+        <div class="rate-input-group">
+          <label>You send</label>
+          <input type="number" id="sendAmount" value="1000" min="1">
+          <select><option>USD</option><option>EUR</option><option>GBP</option></select>
+        </div>
+        <div class="rate-swap" id="swapCurrencies"><i class="fa-solid fa-arrow-right-arrow-left"></i></div>
+        <div class="rate-input-group">
+          <label>Recipient gets</label>
+          <input type="text" id="receiveAmount" value="2,560,933.60" readonly>
+          <select><option>TZS</option><option>KES</option><option>UGX</option></select>
+        </div>
+      </div>
+      <div class="rate-result">
+        <div class="rate-result-row"><span>Total fees</span><span>24.93 USD</span></div>
+        <div class="rate-result-row"><span>Exchange rate</span><span>1 USD = 2,626.41 TZS</span></div>
+        <div class="rate-result-row total"><span>Arrives by</span><span>Thursday</span></div>
+      </div>
+      <p class="rate-note">We use the real mid-market rate with no hidden markup. Fees are shown upfront. Dynamic charges may apply for less common currencies during market volatility.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HEROPESA -->
+<section class="section why-section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="why-content reveal">
+        <h3>Never pay a hidden fee again</h3>
+        <p>Banks and other providers add markups to the exchange rate to make you pay more. Not us. We always give you the real mid-market rate—the same one you see on Google or Reuters.</p>
+        <ul class="why-list">
+          <li><i class="fa-solid fa-circle-check"></i> Real mid-market rate, always</li>
+          <li><i class="fa-solid fa-circle-check"></i> Fees shown upfront, no surprises</li>
+          <li><i class="fa-solid fa-circle-check"></i> No hidden profits in the exchange rate</li>
+          <li><i class="fa-solid fa-circle-check"></i> Save up to 8x vs traditional banks</li>
+        </ul>
+        <a href="#" class="btn btn-primary">See our fees</a>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="comparison-table">
+          <div class="comparison-row header">
+            <div>Provider</div>
+            <div>Rate for 1,000 USD → TZS</div>
+            <div>You get</div>
+          </div>
+          <div class="comparison-row">
+            <div>Traditional Bank</div>
+            <div>1 USD = 2,480 TZS</div>
+            <div>2,480,000 TZS</div>
+          </div>
+          <div class="comparison-row">
+            <div>Other Apps</div>
+            <div>1 USD = 2,540 TZS</div>
+            <div>2,540,000 TZS</div>
+          </div>
+          <div class="comparison-row">
+            <div class="heropesa">Heropesa</div>
+            <div class="heropesa">1 USD = 2,626.41 TZS</div>
+            <div class="heropesa">2,560,933 TZS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECURITY -->
+<section class="section security-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Your money, protected</h2>
+      <p>Institution-grade security built into everything we do.</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-card reveal">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h4>24/7 fraud monitoring</h4>
+        <p>Our dedicated security teams work around the clock to keep your money safe.</p>
+      </div>
+      <div class="security-card reveal reveal-delay-1">
+        <i class="fa-solid fa-lock"></i>
+        <h4>Two-factor authentication</h4>
+        <p>Add an extra layer of protection to your account with biometrics or authenticator apps.</p>
+      </div>
+      <div class="security-card reveal reveal-delay-2">
+        <i class="fa-solid fa-building-columns"></i>
+        <h4>Funds safeguarded</h4>
+        <p>Your money is held with regulated financial institutions in segregated accounts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section features-section" id="personal">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Built for every need</h2>
+      <p>Personal features and enterprise tools—all on one platform.</p>
+    </div>
+    <div class="features-tabs reveal">
+      <button class="tab-btn active" data-tab="personal">Personal</button>
+      <button class="tab-btn" data-tab="platform">Platform</button>
+      <button class="tab-btn" data-tab="business">Business</button>
+    </div>
+    
+    <div class="tab-content active" id="personal">
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          <h4>Mobile-first app</h4>
+          <p>Manage your money on the go with our award-winning iOS and Android apps.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-bolt"></i>
+          <h4>Instant transfers</h4>
+          <p>Send money that arrives in seconds, not days. Perfect for urgent needs.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-percent"></i>
+          <h4>High-yield savings</h4>
+          <p>Earn competitive interest on your balances with daily payouts.</p>
+        </div>
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-users"></i>
+          <h4>Split & share</h4>
+          <p>Split bills, pay friends, and manage group expenses effortlessly.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-chart-line"></i>
+          <h4>Spending insights</h4>
+          <p>Track where your money goes with automatic categorization and analytics.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-headset"></i>
+          <h4>24/7 support</h4>
+          <p>Get help anytime via in-app chat, email, or phone with real humans.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="platform">
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-code"></i>
+          <h4>One API, global reach</h4>
+          <p>Integrate payouts, collections, and settlements across 140+ countries.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-coins"></i>
+          <h4>Stablecoin support</h4>
+          <p>Move money instantly using USDC and other regulated digital assets.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-credit-card"></i>
+          <h4>Issue cards at scale</h4>
+          <p>Create virtual and physical cards for your users with full branding control.</p>
+        </div>
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-shield-keyhole"></i>
+          <h4>Built-in compliance</h4>
+          <p>KYC, AML, and regulatory reporting handled so you can focus on growth.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-gauge-high"></i>
+          <h4>Real-time FX rates</h4>
+          <p>Access transparent, mid-market rates via API with no hidden markups.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-plug"></i>
+          <h4>Pre-built connectors</h4>
+          <p>Launch faster with integrations for Shopify, Stripe, Salesforce, and more.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tab-content" id="business">
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-building"></i>
+          <h4>Multi-entity accounts</h4>
+          <p>Manage subsidiaries, departments, and regions from one dashboard.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-file-invoice"></i>
+          <h4>Automated invoicing</h4>
+          <p>Send professional invoices in any currency with payment tracking.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-users-gear"></i>
+          <h4>Team permissions</h4>
+          <p>Control access with role-based permissions and approval workflows.</p>
+        </div>
+        <div class="feature-card reveal">
+          <i class="fa-solid fa-chart-pie"></i>
+          <h4>Advanced reporting</h4>
+          <p>Export transaction data, generate custom reports, and sync with your ERP.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-1">
+          <i class="fa-solid fa-handshake"></i>
+          <h4>Dedicated support</h4>
+          <p>Get a relationship manager and priority support for enterprise clients.</p>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <i class="fa-solid fa-globe"></i>
+          <h4>Local payment methods</h4>
+          <p>Accept M-Pesa, bank transfers, cards, and wallets in every market.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="section industries-section" id="industries">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Built for your industry</h2>
+      <p>Industry-specific solutions that deploy in days, not months.</p>
+    </div>
+    <div class="industries-grid">
+      <div class="ind-card reveal"><i class="fa-solid fa-building-columns"></i><h5>Banks & Fintechs</h5></div>
+      <div class="ind-card reveal reveal-delay-1"><i class="fa-solid fa-graduation-cap"></i><h5>Education</h5></div>
+      <div class="ind-card reveal reveal-delay-2"><i class="fa-solid fa-store"></i><h5>Marketplaces</h5></div>
+      <div class="ind-card reveal reveal-delay-3"><i class="fa-solid fa-suitcase"></i><h5>Travel</h5></div>
+      <div class="ind-card reveal"><i class="fa-solid fa-users"></i><h5>Workforce</h5></div>
+      <div class="ind-card reveal reveal-delay-1"><i class="fa-solid fa-heart-pulse"></i><h5>Healthcare</h5></div>
+      <div class="ind-card reveal reveal-delay-2"><i class="fa-solid fa-truck"></i><h5>Logistics</h5></div>
+      <div class="ind-card reveal reveal-delay-3"><i class="fa-solid fa-gamepad"></i><h5>Gaming</h5></div>
+      <div class="ind-card reveal"><i class="fa-solid fa-leaf"></i><h5>Nonprofits</h5></div>
+      <div class="ind-card reveal reveal-delay-1"><i class="fa-solid fa-house"></i><h5>Real Estate</h5></div>
+      <div class="ind-card reveal reveal-delay-2"><i class="fa-solid fa-music"></i><h5>Creator Economy</h5></div>
+      <div class="ind-card reveal reveal-delay-3"><i class="fa-solid fa-robot"></i><h5>AI Platforms</h5></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPERS -->
+<section class="section dev-section" id="developers">
+  <div class="container">
+    <div class="dev-layout">
+      <div class="reveal">
+        <h3>Built for developers. Ready for scale.</h3>
+        <p>Integrate global money movement into your product with our comprehensive APIs, SDKs, and developer tools.</p>
+        <ul class="dev-list">
+          <li><i class="fa-solid fa-check"></i> RESTful APIs with comprehensive documentation</li>
+          <li><i class="fa-solid fa-check"></i> SDKs for Node.js, Python, Java, Go, and PHP</li>
+          <li><i class="fa-solid fa-check"></i> Webhooks for real-time event notifications</li>
+          <li><i class="fa-solid fa-check"></i> Sandbox environment for safe testing</li>
+          <li><i class="fa-solid fa-check"></i> Dedicated developer support and SLAs</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Read API Docs</a>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="code-block">
+<span class="comment">// Send money with Heropesa API</span><br>
+<span class="key">import</span> { HeropesaClient } <span class="key">from</span> <span class="str">'@heropesa/sdk'</span>;<br><br>
+<span class="key">const</span> client = <span class="key">new</span> HeropesaClient({ apiKey: process.env.HEROPESA_KEY });<br><br>
+<span class="key">const</span> transfer = <span class="key">await</span> client.transfers.<span class="val">create</span>({<br>
+&nbsp;&nbsp;amount: <span class="val">1000</span>,<br>
+&nbsp;&nbsp;currency: <span class="str">'USD'</span>,<br>
+&nbsp;&nbsp;recipient: { account: <span class="str">'2547XXXXXXXX'</span>, currency: <span class="str">'TZS'</span> },<br>
+&nbsp;&nbsp;reference: <span class="str">'INV-2026-001'</span><br>
+});<br><br>
+console.<span class="val">log</span>(<span class="str">`Sent ${transfer.id} - Status: ${transfer.status}`</span>);
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Trusted by millions</h2>
+      <p>See why people and businesses choose Heropesa for global money movement.</p>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <p class="test-text">"Heropesa saved us 8x on international transfers compared to our bank. The app is intuitive, transfers are instant, and support actually responds."</p>
+        <div class="test-meta">
+          <div class="test-avatar">AK</div>
+          <div class="test-info"><h6>Amina K.</h6><span>Freelancer, Nairobi</span></div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-1">
+        <p class="test-text">"We integrated Heropesa's API in two days. Now we can payout to contractors in 30+ African countries with full transparency and compliance."</p>
+        <div class="test-meta">
+          <div class="test-avatar">JT</div>
+          <div class="test-info"><h6>James T.</h6><span>CTO, TechStart</span></div>
+        </div>
+      </div>
+      <div class="test-card reveal reveal-delay-2">
+        <p class="test-text">"As a small business owner sending inventory payments to Asia, Heropesa's real rates and low fees have saved me thousands annually."</p>
+        <div class="test-meta">
+          <div class="test-avatar">ML</div>
+          <div class="test-info"><h6>Maria L.</h6><span>Founder, Boutique Imports</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section class="section app-section" id="get-started">
+  <div class="container">
+    <div class="app-content reveal">
+      <h3>Get the app. Move money in seconds.</h3>
+      <p>Download Heropesa for iOS or Android. Sign up in minutes. Start sending today.</p>
+      <div class="app-badges">
+        <a href="#" class="app-badge"><i class="fa-brands fa-apple"></i> App Store</a>
+        <a href="#" class="app-badge"><i class="fa-brands fa-google-play"></i> Google Play</a>
+      </div>
+      <div class="qr-placeholder">
+        <span>QR Code Placeholder<br>Scan to download</span>
+      </div>
+      <a href="#" class="btn btn-primary">Sign up free</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq-section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Questions? We've got answers.</h2>
+      <p>Everything you need to know about sending money with Heropesa.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">What countries can I send to? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">You can send money to over 140 countries worldwide, including all of Africa, Europe, Asia, the Americas, and Oceania. We support local bank transfers, mobile wallets (like M-Pesa), and cash pickup options depending on the destination.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <div class="faq-q">How long do transfers take? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Most transfers arrive within seconds to minutes. Some destinations may take up to 1-2 business days depending on local banking systems. You'll always see the estimated arrival time before confirming your transfer.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-2">
+        <div class="faq-q">Are there any hidden fees? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Never. We show all fees upfront before you confirm a transfer. We use the real mid-market exchange rate with no hidden markup. The only cost is our transparent, low fee shown clearly during checkout.</div>
+      </div>
+      <div class="faq-item reveal">
+        <div class="faq-q">Is my money safe with Heropesa? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Yes. We're regulated in multiple jurisdictions and hold customer funds in segregated accounts with top-tier financial institutions. We use bank-level encryption, 2FA, and 24/7 fraud monitoring to protect your account.</div>
+      </div>
+      <div class="faq-item reveal reveal-delay-1">
+        <div class="faq-q">Can I use Heropesa for business? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Absolutely. Heropesa Platform offers APIs, multi-user accounts, invoicing, and compliance tools designed for businesses of all sizes. Contact our sales team for enterprise pricing and custom solutions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner">
+  <div class="container">
+    <h3 class="reveal">Ready to move money smarter?</h3>
+    <p class="reveal">Join over 1 million people and businesses using Heropesa to send, receive, and manage money globally.</p>
+    <div class="reveal" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <a href="#" class="btn" style="background:#fff;color:var(--text-on-primary);">Create free account</a>
+      <a href="#" class="btn btn-outline">Contact sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="company">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+        <p>Money without borders. Send, receive, hold, and convert globally with transparency and speed.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Personal</h5>
+        <ul>
+          <li><a href="#">Send money</a></li>
+          <li><a href="#">Receive money</a></li>
+          <li><a href="#">Multi-currency account</a></li>
+          <li><a href="#">Debit card</a></li>
+          <li><a href="#">Savings</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="#">API documentation</a></li>
+          <li><a href="#">Payouts & collections</a></li>
+          <li><a href="#">Card issuing</a></li>
+          <li><a href="#">Compliance tools</a></li>
+          <li><a href="#">Stablecoin support</a></li>
+          <li><a href="#">Enterprise pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">Help centre</a></li>
+          <li><a href="#">Currency converter</a></li>
+          <li><a href="#">Rate alerts</a></li>
+          <li><a href="#">Compare rates</a></li>
+          <li><a href="#">Legal</a></li>
+          <li><a href="#">Accessibility</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Licenses</a>
+        <a href="#">Complaints</a>
+      </div>
+      <div>© 2026 Heropesa Global Inc. All rights reserved.</div>
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
+      Heropesa is a financial technology platform, not a bank. Services provided by licensed partners in each jurisdiction. 
+      Funds are safeguarded in segregated accounts with regulated financial institutions. 
+      Cryptocurrency services subject to local regulations. Capital at risk for investment products.
+    </p>
+  </div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    menuToggle.classList.toggle('fa-bars', navLinks.classList.contains('active'));
+    menuToggle.classList.toggle('fa-xmark', !navLinks.classList.contains('active'));
+  });
+
+  // Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // FAQ accordion
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('active');
+      faqItems.forEach(i => i.classList.remove('active'));
+      if (!isOpen) item.classList.add('active');
+    });
+  });
+
+  // Rate calculator logic
+  const sendInput = document.getElementById('sendAmount');
+  const receiveInput = document.getElementById('receiveAmount');
+  const swapBtn = document.getElementById('swapCurrencies');
+  const RATE = 2626.41; // USD to TZS
+  
+  function calculate() {
+    const amount = parseFloat(sendInput.value) || 0;
+    const fees = amount * 0.02493; // ~2.5% fee example
+    const received = (amount - fees) * RATE;
+    receiveInput.value = received.toLocaleString('en', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  sendInput.addEventListener('input', calculate);
+  swapBtn.addEventListener('click', () => {
+    // Simple swap demo - in production would swap currencies
+    sendInput.value = '1000';
+    calculate();
+  });
+  calculate();
+
+  // Scroll reveal animation (progressive enhancement)
+  const revealElements = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealElements.forEach(el => observer.observe(el));
+  } else {
+    // Fallback: show all immediately
+    revealElements.forEach(el => el.classList.add('visible'));
+  }
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navLinks.classList.remove('active');
+        menuToggle.classList.add('fa-bars');
+        menuToggle.classList.remove('fa-xmark');
+      }
+    });
+  });
+
+  // Header shadow on scroll
+  const header = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    header.style.borderBottomColor = window.scrollY > 10 ? 'var(--border-hover)' : 'var(--border)';
+  }, { passive: true });
+});
+</script>
+</body>
+</html>

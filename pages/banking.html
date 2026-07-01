@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa Banking | Bank where you do business</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+SUBTLE GOOGLE (MATERIAL) THEME & VARIABLES
+========================================= */
+:root {
+  --google-blue: #1a73e8;
+  --google-blue-light: #e8f0fe;
+  --google-blue-hover: #1b66c9;
+  --google-red: #ea4335;
+  --google-yellow: #fbbc05;
+  --google-green: #34a853;
+  --primary: var(--google-blue);
+  --primary-hover: var(--google-blue-hover);
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa; 
+  --bg-dark: #202124;
+  --text-main: #202124; 
+  --text-secondary: #5f6368; 
+  --text-muted: #80868b;
+  --border: #dadce0; 
+  --border-hover: #bdc1c6;
+  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); 
+  --shadow-md: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15); 
+  --shadow-lg: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); 
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, sans-serif;
+  --container: 1180px;
+  --header-height: 72px;
+}
+
+/* =========================================
+RESET & BASE STYLES
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+body {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  line-height: 1.65;
+  background: var(--bg-body);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, textarea { font-family: inherit; border: none; outline: none; }
+
+/* =========================================
+UTILITIES & LAYOUT
+========================================= */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.section { padding: 80px 0; position: relative; }
+.section-header { text-align: center; max-width: 780px; margin: 0 auto 56px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.5px; color: var(--text-main); }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .section-header h2 { font-size: 1.8rem; }
+}
+
+/* =========================================
+MEDIA PLACEHOLDERS (FOR LATER USE)
+========================================= */
+.media-placeholder {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.media-placeholder:hover { box-shadow: var(--shadow-sm); }
+.media-placeholder::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2.5rem; margin-bottom: 16px; color: var(--border-hover); display: block; }
+.media-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.media-sm { min-height: 160px; }
+.media-hero { min-height: 420px; }
+
+/* =========================================
+BUTTONS & INTERACTIVE ELEMENTS
+========================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 24px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.95rem;
+  cursor: pointer; transition: all var(--transition); border: 1px solid transparent;
+  letter-spacing: 0.25px;
+}
+.btn-primary { background: var(--google-blue); color: #fff; }
+.btn-primary:hover { background: var(--google-blue-hover); box-shadow: var(--shadow-sm); }
+.btn-outline { background: #fff; color: var(--google-blue); border-color: var(--border); }
+.btn-outline:hover { background: var(--google-blue-light); border-color: var(--google-blue-light); color: var(--google-blue-hover); }
+.btn-ghost { background: transparent; color: var(--text-main); }
+.btn-ghost:hover { background: var(--bg-light); }
+
+/* =========================================
+HERO SECTION
+========================================= */
+.hero { padding-top: calc(var(--header-height) + 80px); padding-bottom: 60px; background: var(--bg-body); }
+.hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
+.hero-content h1 { font-size: 3.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 24px; letter-spacing: -1px; color: var(--text-main); }
+.hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; font-weight: 400; }
+.hero-actions { display: flex; justify-content: center; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.hero-legal { font-size: 0.75rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px; line-height: 1.5; }
+@media (max-width: 768px) { .hero-content h1 { font-size: 2.5rem; } }
+
+/* =========================================
+FEATURE CARDS
+========================================= */
+.features { background: var(--bg-light); border-top: 1px solid var(--border); }
+.feat-card { background: #fff; padding: 28px; border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); display: flex; flex-direction: column; height: 100%; }
+.feat-card:hover { box-shadow: var(--shadow-md); border-color: transparent; transform: translateY(-3px); }
+.feat-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--google-blue-light); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--google-blue); margin-bottom: 18px; }
+.feat-card h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-main); }
+.feat-card p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; flex-grow: 1; }
+.feat-card .card-link { font-size: 0.9rem; font-weight: 500; color: var(--google-blue); display: flex; align-items: center; gap: 6px; margin-top: 12px; }
+.feat-card .card-link:hover { color: var(--google-blue-hover); }
+
+/* =========================================
+STATS SECTION
+========================================= */
+.stats-section { background: var(--bg-body); border-bottom: 1px solid var(--border); }
+.stat-card { text-align: center; padding: 32px 20px; background: var(--bg-light); border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); }
+.stat-card:hover { box-shadow: var(--shadow-sm); border-color: var(--google-blue); }
+.stat-number { font-size: 2.5rem; font-weight: 400; color: var(--google-blue); margin-bottom: 8px; letter-spacing: -1px; }
+.stat-desc { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 12px; }
+.stat-source { font-size: 0.75rem; color: var(--text-muted); font-style: italic; }
+
+/* =========================================
+TESTIMONIAL
+========================================= */
+.testimonial-section { background: var(--bg-body); }
+.testimonial-box { background: var(--bg-light); padding: 40px; border-radius: var(--radius-md); border-left: 4px solid var(--google-blue); max-width: 720px; margin: 0 auto; }
+.testimonial-box p { font-size: 1.1rem; font-style: italic; color: var(--text-main); margin-bottom: 16px; line-height: 1.7; }
+.testimonial-author { font-weight: 500; color: var(--text-main); }
+.testimonial-role { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+
+/* =========================================
+PRIVACY & SECURITY
+========================================= */
+.security-section { background: var(--bg-body); border-top: 1px solid var(--border); }
+.security-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.security-text h2 { font-size: 2rem; font-weight: 500; margin-bottom: 20px; letter-spacing: -0.5px; }
+.security-text p { color: var(--text-secondary); margin-bottom: 24px; font-size: 1.05rem; line-height: 1.6; }
+@media (max-width: 900px) { .security-grid { grid-template-columns: 1fr; } .media-placeholder { order: -1; min-height: 280px; } }
+
+/* =========================================
+FAQ ACCORDION
+========================================= */
+.faq { background: var(--bg-light); border-top: 1px solid var(--border); }
+.faq-list { max-width: 760px; margin: 0 auto; }
+.faq-item { background: #fff; border-bottom: 1px solid var(--border); overflow: hidden; transition: all var(--transition); }
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-q { padding: 24px 0; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); font-size: 1.05rem; }
+.faq-q i { color: var(--text-muted); transition: transform 0.2s; font-size: 1rem; }
+.faq-item.active .faq-q i { transform: rotate(45deg); color: var(--google-blue); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+.faq-item.active .faq-a { max-height: 400px; padding: 0 0 24px 0; }
+
+/* =========================================
+CTA & NEWSLETTER
+========================================= */
+.cta-banner { background: var(--google-blue-light); color: var(--text-main); text-align: center; padding: 80px 0; border-top: 1px solid var(--border); }
+.cta-banner h2 { font-size: 2.5rem; margin-bottom: 16px; font-weight: 400; letter-spacing: -0.5px; }
+.cta-banner p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 680px; margin-left: auto; margin-right: auto; }
+.mailing-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 480px; margin: 0 auto; }
+.mailing-form input { flex: 1; min-width: 200px; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.95rem; background: #fff; }
+.mailing-form input:focus { border-color: var(--google-blue); outline: none; }
+.mailing-legal { font-size: 0.7rem; color: var(--text-muted); margin-top: 12px; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+/* =========================================
+LEGAL DISCLAIMERS
+========================================= */
+.legal-section { padding: 60px 0; background: var(--bg-light); border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted); line-height: 1.6; }
+.legal-section h5 { color: var(--text-main); font-size: 0.85rem; margin-bottom: 8px; font-weight: 500; }
+.legal-section p { margin-bottom: 16px; }
+
+/* =========================================
+HEROPSA HEADER STYLES
+========================================= */
+.heropsa-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px);
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, #4285f4 25%, #ea4335 25%, #ea4335 50%, #fbbc05 50%, #fbbc05 75%, #34a853 75%) 1;
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  transition: all var(--transition);
+}
+.heropsa-header.scrolled { box-shadow: var(--shadow-sm); }
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 100%; position: relative; }
+.logo { font-size: 1.4rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; letter-spacing: -0.5px; }
+.logo span:nth-child(1) { color: var(--text-main); }
+.logo-accent { color: var(--google-blue); font-weight: 600; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-item > a { font-weight: 500; font-size: 0.95rem; color: var(--text-secondary); position: relative; padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+.nav-item > a:hover { color: var(--text-main); }
+.nav-item .chevron { font-size: 0.7rem; color: var(--text-muted); transition: transform 0.2s; }
+.nav-item:hover .chevron { transform: rotate(180deg); color: var(--text-main); }
+.mega-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 1000px; max-width: 95vw; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-lg);
+  display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 32px;
+  opacity: 0; visibility: hidden; transition: all 0.2s ease;
+  z-index: 999; pointer-events: none;
+}
+.nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.mega-menu h6 { font-size: 0.85rem; font-weight: 500; color: var(--text-main); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+.mega-menu ul { list-style: none; padding: 0; margin: 0; }
+.mega-menu li { margin-bottom: 12px; }
+.mega-menu a { font-size: 0.95rem; color: var(--text-secondary); display: block; padding: 2px 0; transition: color var(--transition); }
+.mega-menu a:hover { color: var(--google-blue); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.header-search { display: flex; align-items: center; background: var(--bg-light); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 0 16px; transition: all var(--transition); height: 40px; }
+.header-search:focus-within { background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm); }
+.header-search i { color: var(--text-secondary); font-size: 1rem; margin-right: 8px; }
+.header-search input { background: transparent; border: none; font-size: 0.95rem; color: var(--text-main); width: 180px; outline: none; }
+.header-search input::placeholder { color: var(--text-muted); }
+.mobile-toggle { display: none; font-size: 1.4rem; cursor: pointer; color: var(--text-secondary); }
+.mobile-nav-actions { display: none; }
+
+@media (max-width: 1200px) { .mega-menu { width: 900px; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) {
+  .nav-links { display: none; flex-direction: column; position: absolute; top: var(--header-height); left: 0; width: 100%; background: #fff; padding: 24px; border-bottom: 1px solid var(--border); gap: 16px; box-shadow: var(--shadow-md); max-height: calc(100vh - var(--header-height)); overflow-y: auto; }
+  .nav-links.active { display: flex; }
+  .nav-links.active .nav-item { width: 100%; }
+  .nav-links.active .mega-menu { position: static; transform: none; width: 100%; opacity: 1; visibility: visible; box-shadow: none; border: none; padding: 16px 0 0 0; grid-template-columns: 1fr; pointer-events: auto; display: block; border-top: 1px solid var(--border); }
+  .mega-menu h6 { margin-top: 16px; }
+  .nav-actions .desktop-only { display: none; }
+  .nav-actions .nav-btn-login, .nav-actions .nav-btn-demo { display: none; }
+  .mobile-nav-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .mobile-nav-actions .btn { width: 100%; text-align: center; padding: 12px; justify-content: center; }
+  .mobile-toggle { display: block; }
+}
+@media (max-width: 768px) { .mega-menu { width: 100%; } .nav-actions { gap: 8px; } }
+
+/* =========================================
+HEROPSA FOOTER STYLES
+========================================= */
+.heropsa-footer { background: var(--bg-light); padding: 80px 0 40px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(auto-fit, minmax(140px, 1fr)); gap: 32px; margin-bottom: 64px; }
+.footer-brand { grid-column: 1 / 2; }
+.footer-brand p { color: var(--text-secondary); margin: 16px 0 24px; font-size: 0.95rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 12px; }
+.social-icons a { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition); font-size: 1.1rem; }
+.social-icons a:hover { background: var(--bg-light); color: var(--text-main); border-color: var(--border-hover); }
+.footer-col h5 { font-size: 0.95rem; margin-bottom: 20px; font-weight: 500; color: var(--text-main); }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.9rem; transition: color var(--transition); }
+.footer-col ul li a:hover { color: var(--google-blue); text-decoration: underline; }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; color: var(--text-secondary); }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--text-main); }
+
+@media (max-width: 1024px) { .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 24px; }
+  .footer-links { justify-content: center; }
+}
+
+/* =========================================
+SCROLL ANIMATIONS
+========================================= */
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
+.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 480px) {
+  .section { padding: 64px 0; }
+  .btn { width: 100%; }
+  .hero-actions { flex-direction: column; }
+  .media-placeholder { min-height: 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="navbar" class="heropsa-header">
+  <div class="container nav-wrapper">
+    <a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+    <nav class="nav-links" id="navLinks">
+      <div class="nav-item">
+        <a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Core Platforms</h6><ul>
+            <li><a href="/erp.html">Enterprise ERP</a></li>
+            <li><a href="/accounting.html">Accounting Software</a></li>
+            <li><a href="/crm.html">CRM & Sales</a></li>
+            <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+            <li><a href="/inventory.html">Inventory Control</a></li>
+          </ul></div>
+          <div><h6>Operations</h6><ul>
+            <li><a href="/supply-chain.html">Supply Chain</a></li>
+            <li><a href="/pos.html">Point of Sale</a></li>
+            <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+            <li><a href="/marketing-auto.html">Marketing Automation</a></li>
+          </ul></div>
+          <div><h6>Industry Solutions</h6><ul>
+            <li><a href="/manufacturing.html">Manufacturing</a></li>
+            <li><a href="/healthcare-os.html">Healthcare OS</a></li>
+            <li><a href="/education.html">Education Platform</a></li>
+            <li><a href="/retail.html">Retail & Commerce</a></li>
+          </ul></div>
+          <div><h6>AI & Automation</h6><ul>
+            <li><a href="/ai-support.html">AI Customer Support</a></li>
+            <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+            <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+            <li><a href="/ai-workflows.html">AI Workflows</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>By Industry</h6><ul>
+            <li><a href="/industries/retail.html">Retail</a></li>
+            <li><a href="/industries/hospitality.html">Hospitality</a></li>
+            <li><a href="/industries/healthcare.html">Healthcare</a></li>
+            <li><a href="/industries/education.html">Education</a></li>
+            <li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+          </ul></div>
+          <div><h6>By Use Case</h6><ul>
+            <li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+            <li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+            <li><a href="/solutions/scaling.html">Global Scaling</a></li>
+            <li><a href="/solutions/automation.html">Process Automation</a></li>
+          </ul></div>
+          <div><h6>By Company Size</h6><ul>
+            <li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+            <li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+            <li><a href="/solutions/enterprise.html">Enterprise</a></li>
+            <li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+          </ul></div>
+          <div><h6>Migration & Integration</h6><ul>
+            <li><a href="/migration.html">Legacy System Migration</a></li>
+            <li><a href="/integrations.html">Third-Party Integrations</a></li>
+            <li><a href="/api.html">API & Webhooks</a></li>
+            <li><a href="/implementation.html">Implementation Services</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Documentation</h6><ul>
+            <li><a href="/docs.html">API Documentation</a></li>
+            <li><a href="/guides.html">Business Guides</a></li>
+            <li><a href="/glossary.html">Solutions Glossary</a></li>
+            <li><a href="/help.html">Help Center</a></li>
+          </ul></div>
+          <div><h6>Learning</h6><ul>
+            <li><a href="/demos.html">Product Demos</a></li>
+            <li><a href="/stories.html">Customer Stories</a></li>
+            <li><a href="/webinars.html">Webinars & Events</a></li>
+            <li><a href="/education.html">Education Services</a></li>
+          </ul></div>
+          <div><h6>Technical</h6><ul>
+            <li><a href="/sdks.html">SDKs & Libraries</a></li>
+            <li><a href="/status.html">System Status</a></li>
+            <li><a href="/changelog.html">Changelog</a></li>
+            <li><a href="/sandbox.html">Developer Sandbox</a></li>
+          </ul></div>
+          <div><h6>Trust & Security</h6><ul>
+            <li><a href="/security.html">Security Compliance</a></li>
+            <li><a href="/trust.html">Trust Center</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/responsible-ai.html">Responsible AI</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <a href="/partners.html">Partners</a>
+      <a href="#pricing">Pricing</a>
+      <div class="mobile-nav-actions">
+        <a href="/login.html" class="btn btn-ghost">Log in</a>
+        <a href="#demo" class="btn btn-primary">Request Demo</a>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <div class="header-search desktop-only">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+      </div>
+      <a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+      <a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+      <i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content reveal">
+        <h1>Bank where you do business</h1>
+        <p>Take total control of your cash flow. When you take payments and bank through Heropesa, the sky’s the limit. See all you can do to set your business up for financial success at every turn.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn btn-primary">Get started</a>
+          <a href="#" class="btn btn-outline">Contact sales</a>
+        </div>
+        <p class="hero-legal reveal reveal-delay-1">Heropesa Ltd. is a financial services platform and is not an FDIC insured depository institution. Banking services are provided by Heropesa’s banking affiliate, Heropesa Financial Services Ltd. or Sutton Bank. FDIC deposit insurance coverage only protects against the failure of an FDIC-insured depository institution. See full disclosure.</p>
+      </div>
+      <!-- IMAGE PLACEHOLDER 1 -->
+      <div class="media-placeholder media-hero reveal reveal-delay-2">
+        <span>Heropesa Banking Dashboard Image / Video Placeholder</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES GRID -->
+  <section class="section features" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Your money, on your time</h2>
+        <p>Manage all your money in one place, instantly access and spend your sales revenue, and automate everyday financial chores.</p>
+      </div>
+      <div class="grid-3">
+        <div class="feat-card reveal">
+          <div class="feat-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+          <h4>Access money instantly</h4>
+          <p>Your sales revenue is available right away. Spend it instantly with your Heropesa Debit Card or easily transfer it to another account.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="feat-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+          <h4>Budget automatically</h4>
+          <p>Set aside a percentage of your daily sales automatically for taxes, emergencies, or business investments with Heropesa Savings.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-2">
+          <div class="feat-icon"><i class="fa-solid fa-handshake"></i></div>
+          <h4>Secure a loan</h4>
+          <p>Get customized loan offers based on your Heropesa sales history to help you grow your business when the time is right.</p>
+        </div>
+        <div class="feat-card reveal">
+          <div class="feat-icon"><i class="fa-solid fa-credit-card"></i></div>
+          <h4>Get a credit card</h4>
+          <p>Build your business credit and keep personal and business expenses separate with the Heropesa Credit Card.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="feat-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+          <h4>Pay bills easily</h4>
+          <p>Manage and pay all your vendors and business bills directly from your Heropesa Dashboard.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-2">
+          <div class="feat-icon"><i class="fa-brands fa-bitcoin"></i></div>
+          <h4>Convert sales revenue to bitcoin</h4>
+          <p>Automatically convert up to 50% of your daily sales revenue into bitcoin as a simple way to build a diverse investment strategy.<sup>5</sup> Choose how much to convert and when to sell.</p>
+          <a href="#" class="card-link">Explore Bitcoin Conversions <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="section testimonial-section" id="stories">
+    <div class="container">
+      <div class="testimonial-box reveal">
+        <p>“One of the reasons why we love Heropesa so much is because they offer so many financing options. It’s very crucial for our small business to succeed.”</p>
+        <div class="testimonial-author">Caroline Rodrigues</div>
+        <div class="testimonial-role">Merci Milo | Los Angeles, CA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS SECTION -->
+  <section class="section stats-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Banking access for every business</h2>
+      </div>
+      <div class="grid-4">
+        <div class="stat-card reveal">
+          <div class="stat-number">1M+</div>
+          <div class="stat-desc">business owners trust Heropesa Banking for their financial needs.</div>
+          <div class="stat-source">Internal Heropesa data, April 2025</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-number">88%</div>
+          <div class="stat-desc">of businesses with Heropesa Loans report growth.</div>
+          <div class="stat-source">Heropesa survey data, 2025</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-number">57%</div>
+          <div class="stat-desc">of self-reported Heropesa Loans recipients are women-owned businesses.</div>
+          <div class="stat-source">Internal survey data, 2025</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-3">
+          <div class="stat-number">$156</div>
+          <div class="stat-desc">average savings in monthly banking fees using Heropesa Checking.</div>
+          <div class="stat-source">Banking fee study, 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLES / BLOG ROW -->
+  <section class="section" style="background: var(--bg-light); border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Talking money</h2>
+      </div>
+      <div class="grid-3">
+        <div class="feat-card reveal">
+          <!-- IMAGE PLACEHOLDER 2 -->
+          <div class="media-placeholder media-sm" style="margin-bottom: 16px; min-height: 160px;"><span>Flower Friends SF Image Placeholder</span></div>
+          <h4>Flower Friends SF</h4>
+          <p>How Heropesa Checking Helped This Floral Design Studio Bloom</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <div class="media-placeholder media-sm" style="margin-bottom: 16px; min-height: 160px;"><span>Smart Banking Image Placeholder</span></div>
+          <h4>Smart Banking</h4>
+          <p>Smart Banking for New Business Owners</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-2">
+          <!-- IMAGE PLACEHOLDER 3 -->
+          <div class="media-placeholder media-sm" style="margin-bottom: 16px; min-height: 160px;"><span>La Pupusa Eatery Image Placeholder</span></div>
+          <h4>La Pupusa Urban Eatery</h4>
+          <p>How L.A.’s La Pupusa Urban Eatery Manages Cash Flow With Heropesa</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIVACY & SECURITY -->
+  <section class="section security-section" id="security">
+    <div class="container">
+      <div class="security-grid">
+        <div class="security-text reveal">
+          <h2>Learn more about your privacy and security</h2>
+          <p>The privacy and security of both you and your customers are top priority for Heropesa. Visit The Bottom Line or the Support Center to search for more articles and education about security and privacy at Heropesa.</p>
+          <a href="#" class="btn btn-outline">Privacy and security</a>
+        </div>
+        <!-- IMAGE PLACEHOLDER 4 -->
+        <div class="media-placeholder reveal reveal-delay-1" style="min-height: 250px;">
+          <span>Privacy & Security Graphic Placeholder</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>FAQ</h2>
+      </div>
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <div class="faq-q">Does Heropesa Checking have any fees? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">No, we do not charge any recurring fees for Heropesa Checking — no minimum balance fees, no services fees, no monthly maintenance fees, no overdraft fees. Heropesa does not charge ATM fees, but third-party ATM operator fees may apply.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Does Heropesa Savings have any fees? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">No. There are no monthly maintenance fees, sign-up fees, or fees associated with minimum balances. There are also no overdraft fees or withdrawal limit fees that are associated with traditional business savings accounts.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I sign up for a Heropesa Checking account? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Signing up for Heropesa Checking and Heropesa Debit Card is easy and takes less than two minutes. First, you need to sign up to sell with Heropesa. Then, opening your checking account is only a few more steps.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How does automated savings work? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">With automated savings, you can choose a percentage of your Heropesa sales revenue that will automatically move into a dedicated savings folder account throughout the day. Many business owners choose to automatically set aside funds for sales or income tax, emergency use, or business investment purposes in order to separate those funds from their primary business banking account.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How do I become eligible for Heropesa Loans? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Heropesa Loans are currently offered by invitation. We automatically review your activity to evaluate loan eligibility. If we spot that you’re eligible to apply for Heropesa Loans, we’ll proactively reach out to you (via email and in your Heropesa Dashboard) with a customized loan offer. You can also use the eligibility page located in your Heropesa Dashboard to gain more insight into the status of your Heropesa Loans eligibility.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">What are the potential tax implications of converting sales to bitcoin? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Bitcoin is taxed like any other financial investment, so it’s important to understand the tax implications before you buy or sell it. When you acquire bitcoin on Heropesa, we’ll provide you with a Form 1099-DA for filing your taxes. It’s your responsibility to determine any tax impact of your bitcoin transactions. Heropesa is unable to provide tax advice.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">How exactly does the bitcoin conversion feature work? <i class="fa-solid fa-plus"></i></div>
+          <div class="faq-a">Choose a percentage of your daily net card sales to automatically convert into bitcoin. We’ll withhold that amount from your sales and automatically convert it into bitcoin every day at the then-current market price. A flat 1% fee will apply to the purchase amount. Selling and sending bitcoin may result in additional fees. See Heropesa Bitcoin Terms for more information.</div>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 32px;" class="reveal">
+        <a href="#" class="btn btn-outline">Visit the Support Center for more on Heropesa Banking</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA + NEWSLETTER -->
+  <section class="cta-banner reveal">
+    <div class="container">
+      <h2>Ready to bank with Heropesa?</h2>
+      <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px;">
+        <a href="#" class="btn btn-primary">Get started</a>
+        <a href="#" class="btn btn-outline">Contact sales</a>
+      </div>
+      <div class="mailing-list" style="max-width: 480px; margin: 0 auto;">
+        <p>Get financial tips and hear how other businesses manage their cash flow with Heropesa.</p>
+        <form class="mailing-form">
+          <input type="email" placeholder="Email address" required>
+          <button type="submit" class="btn btn-primary" style="border: none;">Submit</button>
+        </form>
+        <p class="mailing-legal">*This information may be transcribed, used, and stored by third parties in accordance with our Privacy Policy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEGAL DISCLAIMERS -->
+  <section class="legal-section">
+    <div class="container" style="max-width: 900px;">
+      <p style="margin-bottom: 16px;">Heropesa, the Heropesa logo, Heropesa Financial Services, Heropesa Capital, and others are trademarks of Heropesa Ltd. and/or its subsidiaries. Heropesa Financial Services Ltd. is a wholly owned subsidiary of Heropesa Ltd.</p>
+      <p style="margin-bottom: 24px;">Heropesa Ltd. is a financial services platform and not an FDIC-insured bank. FDIC deposit insurance coverage only protects against the failure of an FDIC-insured deposit institution. If you have a Heropesa Checking Account, up to $250,000 of your balance may be covered by FDIC insurance on a pass-through basis through Sutton Bank, Member FDIC, subject to aggregation of the account holder’s funds held at Sutton Bank and if certain conditions have been met.</p>
+      
+      <h5>Heropesa Checking and Debit Card</h5>
+      <p style="margin-bottom: 16px;"><sup>1</sup> Heropesa Debit Card is issued by Sutton Bank, Member FDIC, pursuant to a license from Mastercard. Instant availability of Heropesa Payments. Funds generated through Heropesa’s payment processing services are generally available in the Heropesa Checking account balance immediately after a payment is processed. Fund availability times may vary due to technical issues. Instant availability does not apply to funds added to the Heropesa Checking account via ACH transfer. ACH credit transfers to your account may take 1–2 business days.</p>
+      
+      <h5>Heropesa Savings</h5>
+      <p style="margin-bottom: 16px;"><sup>2</sup> Heropesa Savings accounts are provided by Heropesa Financial Services Ltd. Member FDIC, and accrue an annual percentage yield (APY) of 1.00% per folder on folder balances over $10. APY is subject to change, and current as of Jan 23, 2026. No minimum deposit is required to open a Heropesa Savings account and these accounts aren’t charged monthly fees. The Heropesa Savings deposit sweep program distributes your funds among multiple FDIC-insured partner banks, meaning your eligible savings deposits have an FDIC insurance coverage of up to $2.5 million. Pending balances are not subject to FDIC insurance. The rate of our savings account is more than 2x the national average of 0.41% APY, based on the national average of savings accounts rates published in the FDIC Weekly National Rates and Rate Caps accurate as of 1/21/2025.</p>
+      
+      <h5>Heropesa Loans</h5>
+      <p style="margin-bottom: 16px;"><sup>3</sup> All loans are issued by Heropesa Financial Services Ltd. Actual fees depend upon payment card processing history, loan amount and other eligibility factors. A minimum payment is required and you must repay your loan as specified in the loan terms. Loan eligibility is not guaranteed. All loans are subject to credit approval.</p>
+      
+      <h5>Heropesa Credit Card</h5>
+      <p style="margin-bottom: 16px;"><sup>4</sup> American Express is a registered trademark of American Express. Other trademarks and brands are the property of their respective owners. Heropesa Capital is a wholly owned subsidiary of Heropesa Ltd., d/b/a Heropesa Capital of California, LLC in FL, GA, MT, and NY. Heropesa Ltd. and Heropesa Capital are not banks. Heropesa Credit Cards are issued by Celtic Bank, Member FDIC, pursuant to a license from American Express, and may be used wherever American Express is accepted. If approved, APR may vary based on creditworthiness and other factors. Subject to credit approval.</p>
+      
+      <h5>Bitcoin</h5>
+      <p style="margin-bottom: 16px;"><sup>5</sup> Heropesa Bitcoin features are offered by Heropesa Ltd. and are subject to change and may not be available in all locations. Bitcoin services are not licensable activity in all U.S. states and territories. Bitcoin is not legal tender, is not backed by the government, and accounts and value balances are not subject to Federal Deposit Insurance Corporation or Securities Investor Protection Corporation protections. Bitcoin’s value can change rapidly, which means the amount of bitcoin needed for a purchase, or the amount made from a product sale on Heropesa, may vary from moment to moment. Bitcoin transactions may experience technical issues and are generally irreversible - all payment details should be carefully verified before confirming any transaction.</p>
+      <p>Heropesa Ltd. makes no representation on the accuracy, suitability, or validity of any information provided. Heropesa Ltd. operates in New York as Block of Delaware and is licensed to engage in virtual currency business activity by the New York State Department of Financial Services. At present, Heropesa Bitcoin is not anticipated to be available to sellers that are located in New York State or outside the U.S. and may be subject to regulatory approval, where applicable.</p>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="heropsa-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+        <p>Cloud ERP built for modern businesses. Unified, intelligent, and designed to scale with your growth.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Core Platforms</h5>
+        <ul>
+          <li><a href="/business-software.html">Business Software</a></li>
+          <li><a href="/pos.html">Point of Sale</a></li>
+          <li><a href="/erp.html">Enterprise ERP</a></li>
+          <li><a href="/accounting.html">Accounting Software</a></li>
+          <li><a href="/crm.html">CRM & Sales</a></li>
+          <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+          <li><a href="/supply-chain.html">Supply Chain</a></li>
+          <li><a href="/inventory.html">Inventory Control</a></li>
+          <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Trading & Finance</h5>
+        <ul>
+          <li><a href="/trading-prop.html">Trading & Prop</a></li>
+          <li><a href="/cfd-prop.html">CFD Prop Firms</a></li>
+          <li><a href="/crypto-prop.html">Crypto Prop Solutions</a></li>
+          <li><a href="/prediction-markets.html">Prediction Market Solutions</a></li>
+          <li><a href="/sports-betting.html">Sports Betting Tech</a></li>
+          <li><a href="/payments.html">Payment Processing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Cloud & Infrastructure</h5>
+        <ul>
+          <li><a href="/cloud-infra.html">Cloud & Infrastructure</a></li>
+          <li><a href="/domains.html">Domain Registration</a></li>
+          <li><a href="/web-hosting.html">Web Hosting</a></li>
+          <li><a href="/vps-dedicated.html">VPS & Dedicated</a></li>
+          <li><a href="/cloud-computing.html">Cloud Computing</a></li>
+          <li><a href="/cdn-security.html">CDN & Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Security & AI</h5>
+        <ul>
+          <li><a href="/cybersecurity.html">Cybersecurity Suite</a></li>
+          <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+          <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+          <li><a href="/business-intel.html">Business Intelligence</a></li>
+          <li><a href="/threat-detection.html">Threat Detection</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Industries</h5>
+        <ul>
+          <li><a href="/industries/retail.html">Retail</a></li>
+          <li><a href="/industries/hospitality.html">Hospitality</a></li>
+          <li><a href="/industries/healthcare.html">Healthcare</a></li>
+          <li><a href="/industries/education.html">Education</a></li>
+          <li><a href="/industries/restaurants.html">Restaurants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <ul>
+          <li><a href="/developers.html">Developer Hub</a></li>
+          <li><a href="/docs.html">API Documentation</a></li>
+          <li><a href="/sdks.html">SDKs & Libraries</a></li>
+          <li><a href="/webhooks.html">Webhooks & Events</a></li>
+          <li><a href="/marketplace.html">App Marketplace</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company & Legal</h5>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/careers.html">Careers</a></li>
+          <li><a href="/partners.html">Partners</a></li>
+          <li><a href="/contact-sales.html">Contact Sales</a></li>
+          <li><a href="/support.html">Support Center</a></li>
+        </ul>
+      </div>
+      <!-- NEW COLUMNS ADDED -->
+      <div class="footer-col">
+        <h5>Business Types</h5>
+        <ul>
+          <li><a href="#">Hair salon</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="#">SFA</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/cookies.html">Cookie Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/licenses.html">Licenses</a>
+      </div>
+      <div>©️ 2026 Heropesa Ltd. All rights reserved.</div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
+      Heropesa Banking is a financial services platform provided by Heropesa Ltd.
+      Implementation services and partner integrations may be required for certain capabilities.
+      Contact sales for detailed compliance and regulatory information specific to your industry and region.
+    </p>
+  </div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Mobile Menu Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  if(menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('fa-bars', navLinks.classList.contains('active'));
+      menuToggle.classList.toggle('fa-xmark', !navLinks.classList.contains('active'));
+    });
+  }
+
+  // 2. Scroll Reveal Animation
+  const revealElements = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    document.body.classList.add('js-enabled');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    revealElements.forEach(el => el.classList.add('visible'));
+  }
+
+  // 3. Smooth Scroll for Anchor Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if(href === '#demo') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if(navLinks) navLinks.classList.remove('active');
+        if(menuToggle) {
+          menuToggle.classList.add('fa-bars');
+          menuToggle.classList.remove('fa-xmark');
+        }
+      }
+    });
+  });
+
+  // 4. Header shadow on scroll
+  const header = document.getElementById('navbar');
+  if(header) {
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  }
+
+  // 5. FAQ Accordion
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const q = item.querySelector('.faq-q');
+    if(q) {
+      q.addEventListener('click', () => {
+        const isOpen = item.classList.contains('active');
+        faqItems.forEach(i => i.classList.remove('active'));
+        if (!isOpen) item.classList.add('active');
+      });
+    }
+  });
+
+  // 6. Form Submission (Prevent Default for Demo)
+  const mailingForm = document.querySelector('.mailing-form');
+  if (mailingForm) {
+    mailingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you for subscribing! We will send financial tips to your email.');
+      mailingForm.reset();
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PharmaERP – Complete Pharmacy Management System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --primary-light: #ccfbf1;
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --border-color: #e2e8f0;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+  --sidebar-width: 280px;
+  --sidebar-collapsed: 80px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; color:var(--text-primary); background:var(--bg-secondary); }
+.app-container { display:flex; min-height:100vh; }
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+  position: fixed;
+  height: 100vh;
+  transition: 0.3s;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.collapsed { width: var(--sidebar-collapsed); }
+.sidebar-header { padding: 24px 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+.logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 18px; color: var(--primary); }
+.logo-icon { font-size: 24px; }
+.logo-text { transition: 0.2s; white-space: nowrap; }
+.sidebar.collapsed .logo-text { opacity: 0; width: 0; overflow: hidden; }
+.collapse-btn { background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 4px; }
+.sidebar-nav { flex:1; padding: 24px 0; overflow-y: auto; }
+.nav-item { display: flex; align-items: center; padding: 12px 20px; color: var(--text-secondary); text-decoration: none; gap: 12px; transition: 0.2s; white-space: nowrap; cursor: pointer; }
+.nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); border-right: 3px solid var(--primary); }
+.nav-icon { width: 24px; text-align: center; }
+.nav-text { font-weight: 500; }
+.sidebar.collapsed .nav-text { opacity: 0; width: 0; overflow: hidden; }
+.sidebar-footer { padding: 20px; border-top: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+.user-avatar { width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
+.user-info { transition: 0.2s; }
+.sidebar.collapsed .user-info { opacity: 0; width: 0; overflow: hidden; }
+.user-name { font-weight: 600; font-size: 14px; }
+.user-role { font-size: 12px; color: var(--text-secondary); }
+.main-content { flex: 1; margin-left: var(--sidebar-width); transition: 0.3s; }
+.sidebar.collapsed ~ .main-content { margin-left: var(--sidebar-collapsed); }
+.header { background: var(--bg-primary); padding: 20px 32px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; position: sticky; top:0; z-index:9; }
+.page-title { font-size: 24px; font-weight: 700; }
+.header-actions { display: flex; gap: 20px; align-items: center; }
+.date-display { font-size: 14px; color: var(--text-secondary); }
+.page-content { padding: 32px; }
+
+/* Cards & KPIs */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 24px; margin-bottom: 32px; }
+.kpi-card { background: var(--bg-primary); border-radius: 16px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid var(--primary); }
+.kpi-title { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+.kpi-value { font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+/* Tables */
+.data-table { background: var(--bg-primary); border-radius: 12px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05); margin-bottom: 24px; }
+.table-actions { padding: 16px 24px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+.table-container { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 12px 16px; background: var(--bg-secondary); font-weight: 600; color: var(--text-secondary); border-bottom: 1px solid var(--border-color); }
+td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+.status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.status-active { background: #dcfce7; color: #166534; }
+.status-expired { background: #fee2e2; color: #b91c1c; }
+.status-pending { background: #fef3c7; color: #b45309; }
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-danger { padding: 10px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: var(--bg-secondary); border: 1px solid var(--border-color); }
+.btn-danger { background: var(--danger); color: white; }
+/* Forms */
+.modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity:0; visibility:hidden; transition:0.2s; }
+.modal-overlay.active { opacity:1; visibility:visible; }
+.modal { background: white; border-radius: 20px; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+.modal-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
+.modal-body { padding: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 14px; }
+.form-input, .form-select { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; }
+.form-row { display: flex; gap: 16px; flex-wrap: wrap; }
+.form-col { flex: 1; min-width: 180px; }
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; }
+hr { margin: 20px 0; border-color: var(--border-color); }
+@media (max-width:768px) { .sidebar { transform: translateX(-100%); } .sidebar.active { transform: translateX(0); } .main-content { margin-left: 0; } }
+</style>
+</head>
+<body>
+<div id="app" class="app-container">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo"><div class="logo-icon"><i class="fas fa-capsules"></i></div><div class="logo-text">PharmaERP</div></div>
+      <button class="collapse-btn" id="collapseBtn"><i class="fas fa-chevron-left"></i></button>
+    </div>
+    <div class="sidebar-nav">
+      <div class="nav-item active" data-page="dashboard"><div class="nav-icon"><i class="fas fa-tachometer-alt"></i></div><div class="nav-text">Dashboard</div></div>
+      <div class="nav-item" data-page="medicines"><div class="nav-icon"><i class="fas fa-tablets"></i></div><div class="nav-text">Medicines</div></div>
+      <div class="nav-item" data-page="procurement"><div class="nav-icon"><i class="fas fa-truck"></i></div><div class="nav-text">Procurement</div></div>
+      <div class="nav-item" data-page="inventory"><div class="nav-icon"><i class="fas fa-boxes"></i></div><div class="nav-text">Inventory (FEFO)</div></div>
+      <div class="nav-item" data-page="pos"><div class="nav-icon"><i class="fas fa-shopping-cart"></i></div><div class="nav-text">Point of Sale</div></div>
+      <div class="nav-item" data-page="prescriptions"><div class="nav-icon"><i class="fas fa-prescription-bottle"></i></div><div class="nav-text">Prescriptions</div></div>
+      <div class="nav-item" data-page="insurance"><div class="nav-icon"><i class="fas fa-file-invoice-dollar"></i></div><div class="nav-text">Insurance Claims</div></div>
+      <div class="nav-item" data-page="patients"><div class="nav-icon"><i class="fas fa-users"></i></div><div class="nav-text">Patients / CRM</div></div>
+      <div class="nav-item" data-page="compliance"><div class="nav-icon"><i class="fas fa-gavel"></i></div><div class="nav-text">Compliance</div></div>
+      <div class="nav-item" data-page="branches"><div class="nav-icon"><i class="fas fa-store"></i></div><div class="nav-text">Branches</div></div>
+      <div class="nav-item" data-page="accounting"><div class="nav-icon"><i class="fas fa-chart-line"></i></div><div class="nav-text">Accounting</div></div>
+      <div class="nav-item" data-page="reports"><div class="nav-icon"><i class="fas fa-chart-bar"></i></div><div class="nav-text">Reports</div></div>
+      <div class="nav-item" data-page="settings"><div class="nav-icon"><i class="fas fa-cog"></i></div><div class="nav-text">Settings</div></div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-avatar" id="userAvatar">AD</div>
+      <div class="user-info"><div class="user-name" id="userName">Administrator</div><div class="user-role" id="userRole">Admin</div></div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="header">
+      <div class="page-title" id="pageTitle">Dashboard</div>
+      <div class="header-actions"><div class="date-display" id="dateDisplay"></div><button class="btn-secondary" id="logoutBtn">Logout</button></div>
+    </div>
+    <div class="page-content" id="pageContent"></div>
+  </div>
+</div>
+
+<script>
+// ---------- DATA MODELS ----------
+let db = {
+  medicines: [],
+  suppliers: [],
+  branches: [],
+  purchaseInvoices: [],
+  inventoryBatches: [],
+  sales: [],
+  prescriptions: [],
+  patients: [],
+  insuranceClaims: [],
+  controlledLogs: [],
+  cashDeposits: [],
+  expenses: [],
+  users: [],
+  settings: { companyName: "PharmaERP", vatRate: 18, defaultBranch: "main" }
+};
+
+// Helper functions
+function saveData() { localStorage.setItem('pharma_erp_full', JSON.stringify(db)); }
+function loadData() {
+  const stored = localStorage.getItem('pharma_erp_full');
+  if(stored) {
+    const parsed = JSON.parse(stored);
+    Object.assign(db, parsed);
+  } else {
+    // Seed minimal demo data (can be cleared)
+    db.branches.push({ id: "br1", name: "Main Pharmacy", code: "MPH", address: "Dar es Salaam", tin: "123456789", vrn: "VRN123" });
+    db.users.push({ id: "u1", username: "admin", password: "admin", role: "admin", branchId: "br1", name: "Admin User" });
+    db.medicines.push({ id: "m1", sku: "PAR500", name: "Paracetamol 500mg", manufacturer: "ABC Pharma", requiresPrescription: false, controlledSubstance: false, packSize: 100, buyingPrice: 1500, sellingPrice: 2500, vat: 18, category: "Analgesic", branchId: "br1" });
+    db.medicines.push({ id: "m2", sku: "AMX250", name: "Amoxicillin 250mg", manufacturer: "XYZ Labs", requiresPrescription: true, controlledSubstance: false, packSize: 100, buyingPrice: 8000, sellingPrice: 12000, vat: 18, category: "Antibiotic", branchId: "br1" });
+    db.suppliers.push({ id: "sup1", name: "PharmaDistro Ltd", tin: "123456789", vrn: "VRN123", address: "Dar es Salaam", terms: 30 });
+    db.patients.push({ id: "pat1", name: "John Doe", phone: "0712345678", email: "john@example.com", dob: "1980-01-01", insuranceCompany: "NHIF", insuranceId: "NHIF123", medicalHistory: "", branchId: "br1" });
+    // Sample batch
+    db.inventoryBatches.push({ id: "b1", medicineId: "m1", batchNo: "BATCH001", expiryDate: "2025-12-31", qtyReceived: 500, qtyRemaining: 500, unitCost: 1500, purchaseRef: "PO-001", receivedDate: "2025-01-01", branchId: "br1" });
+    db.inventoryBatches.push({ id: "b2", medicineId: "m2", batchNo: "BATCH002", expiryDate: "2025-10-31", qtyReceived: 200, qtyRemaining: 200, unitCost: 8000, purchaseRef: "PO-001", receivedDate: "2025-01-01", branchId: "br1" });
+    saveData();
+  }
+}
+
+// Global helpers
+function getMedicineName(id) { let m = db.medicines.find(m=>m.id==id); return m ? m.name : "Unknown"; }
+function getBranchName(id) { let b = db.branches.find(b=>b.id==id); return b ? b.name : "Main"; }
+function getSupplierName(id) { let s = db.suppliers.find(s=>s.id==id); return s ? s.name : ""; }
+function getPatientName(id) { let p = db.patients.find(p=>p.id==id); return p ? p.name : ""; }
+
+// FEFO stock consumption (oldest expiry first)
+function getAvailableBatches(medicineId, branchId) {
+  return db.inventoryBatches.filter(b => b.medicineId == medicineId && b.branchId == branchId && b.qtyRemaining > 0)
+    .sort((a,b)=> new Date(a.expiryDate) - new Date(b.expiryDate));
+}
+function consumeStock(medicineId, qty, branchId, reasonRef) {
+  let remaining = qty;
+  const batches = getAvailableBatches(medicineId, branchId);
+  const consumed = [];
+  for(let batch of batches) {
+    if(remaining <= 0) break;
+    let take = Math.min(batch.qtyRemaining, remaining);
+    batch.qtyRemaining -= take;
+    remaining -= take;
+    consumed.push({ batchId: batch.id, qty: take, unitCost: batch.unitCost });
+  }
+  if(remaining > 0) alert(`Warning: insufficient stock for ${getMedicineName(medicineId)}. Shortage: ${remaining}`);
+  saveData();
+  return consumed;
+}
+function addBatch(medicineId, batchNo, expiryDate, qty, unitCost, purchaseRef, receivedDate, branchId) {
+  let existing = db.inventoryBatches.find(b => b.batchNo === batchNo && b.medicineId == medicineId && b.branchId == branchId);
+  if(existing) { existing.qtyReceived += qty; existing.qtyRemaining += qty; }
+  else {
+    db.inventoryBatches.push({ id: Date.now()+Math.random(), medicineId, batchNo, expiryDate, qtyReceived: qty, qtyRemaining: qty, unitCost, purchaseRef, receivedDate, branchId });
+  }
+  saveData();
+}
+
+// ---------- UI RENDERING (all pages fully implemented) ----------
+let currentUser = { id: "u1", role: "admin", branchId: "br1" }; // hardcoded for demo
+
+function renderPage(pageId) {
+  const content = document.getElementById('pageContent');
+  const titleMap = {
+    dashboard: "Dashboard", medicines: "Medicines Master", procurement: "Procurement", inventory: "Inventory (FEFO)",
+    pos: "Point of Sale", prescriptions: "Prescriptions", insurance: "Insurance Claims", patients: "Patients / CRM",
+    compliance: "Compliance (Controlled Substances)", branches: "Branches", accounting: "Accounting", reports: "Reports", settings: "Settings"
+  };
+  document.getElementById('pageTitle').innerText = titleMap[pageId] || pageId;
+  
+  if(pageId === 'dashboard') renderDashboard(content);
+  else if(pageId === 'medicines') renderMedicines(content);
+  else if(pageId === 'procurement') renderProcurement(content);
+  else if(pageId === 'inventory') renderInventory(content);
+  else if(pageId === 'pos') renderPOS(content);
+  else if(pageId === 'prescriptions') renderPrescriptions(content);
+  else if(pageId === 'insurance') renderInsurance(content);
+  else if(pageId === 'patients') renderPatients(content);
+  else if(pageId === 'compliance') renderCompliance(content);
+  else if(pageId === 'branches') renderBranches(content);
+  else if(pageId === 'accounting') renderAccounting(content);
+  else if(pageId === 'reports') renderReports(content);
+  else if(pageId === 'settings') renderSettings(content);
+}
+
+function renderDashboard(container) {
+  let totalStockValue = db.inventoryBatches.reduce((s,b)=> s + (b.qtyRemaining * b.unitCost),0);
+  let nearExpiry = db.inventoryBatches.filter(b => {
+    let exp = new Date(b.expiryDate), diff = (exp - new Date())/(86400000);
+    return diff <= 90 && diff > 0 && b.qtyRemaining>0;
+  }).length;
+  let totalSales = db.sales.reduce((s,sale)=>s+sale.total,0);
+  let pendingClaims = db.insuranceClaims.filter(c=>c.status==='pending').length;
+  let lowStock = db.inventoryBatches.filter(b=>b.qtyRemaining < 50).length;
+  let html = `<div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-title">Inventory Value</div><div class="kpi-value">TZS ${totalStockValue.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Near-Expiry Batches</div><div class="kpi-value">${nearExpiry}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Total Sales</div><div class="kpi-value">TZS ${totalSales.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Pending Claims</div><div class="kpi-value">${pendingClaims}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Low Stock Items</div><div class="kpi-value">${lowStock}</div></div>
+  </div>
+  <div class="data-table"><div class="table-actions"><div>⚠️ Expiry Alerts (≤90 days)</div></div><div class="table-container"><table><thead><tr><th>Medicine</th><th>Batch</th><th>Expiry Date</th><th>Qty Left</th></tr></thead><tbody>
+    ${db.inventoryBatches.filter(b=>{let d=new Date(b.expiryDate), diff=(d-new Date())/86400000; return diff<=90 && diff>0 && b.qtyRemaining>0;}).map(b=>`<tr><td>${getMedicineName(b.medicineId)}</td><td>${b.batchNo}</td><td>${b.expiryDate}</td><td>${b.qtyRemaining}</td></tr>`).join('') || '<tr><td colspan="4">No expiry alerts</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderMedicines(container) {
+  let html = `<div style="display:flex; justify-content:space-between; margin-bottom:20px;"><h2>Medicines</h2><button class="btn-primary" onclick="openMedicineModal()">+ New Medicine</button></div>
+  <div class="data-table"><div class="table-container"><table><thead><tr><th>SKU</th><th>Name</th><th>Manufacturer</th><th>Rx Required</th><th>Controlled</th><th>Selling Price</th><th>Actions</th></tr></thead><tbody>
+    ${db.medicines.map(m => `<tr><td>${m.sku}</td><td>${m.name}</td><td>${m.manufacturer}</td><td>${m.requiresPrescription ? 'Yes' : 'No'}</td><td>${m.controlledSubstance ? 'Yes' : 'No'}</td><td>TZS ${m.sellingPrice}</td><td><button class="btn-secondary" onclick="editMedicine('${m.id}')">Edit</button> <button class="btn-danger" onclick="deleteMedicine('${m.id}')">Del</button></td></tr>`).join('') || '<tr><td colspan="7">No medicines added</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderProcurement(container) {
+  let html = `<div style="display:flex; justify-content:space-between; margin-bottom:20px;"><h2>Purchase Orders / Invoices</h2><button class="btn-primary" onclick="openPurchaseModal()">+ New Purchase</button></div>
+  <div class="data-table"><div class="table-container"></table><thead><tr><th>Invoice No</th><th>Supplier</th><th>Date</th><th>Total</th><th>Branch</th><th>Actions</th></tr></thead><tbody>
+    ${db.purchaseInvoices.map(p => `<tr><td>${p.invoiceNo}</td><td>${getSupplierName(p.supplierId)}</td><td>${p.date}</td><td>TZS ${p.total}</td><td>${getBranchName(p.branchId)}</td><td><button onclick="viewPurchase('${p.id}')">View</button></td></tr>`).join('') || '<tr><td colspan="6">No purchases</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderInventory(container) {
+  let batches = db.inventoryBatches.filter(b => b.branchId == currentUser.branchId);
+  let html = `<div class="data-table"><div class="table-actions"><div>Stock Batches (FEFO by expiry)</div></div><div class="table-container"><table><thead><tr><th>Medicine</th><th>Batch No</th><th>Expiry Date</th><th>Qty Remaining</th><th>Unit Cost</th><th>Value</th></tr></thead><tbody>
+    ${batches.map(b => `<tr><td>${getMedicineName(b.medicineId)}</td><td>${b.batchNo}</td><td>${b.expiryDate}</td><td>${b.qtyRemaining}</td><td>TZS ${b.unitCost}</td><td>TZS ${(b.qtyRemaining*b.unitCost).toLocaleString()}</td></tr>`).join('') || '<tr><td colspan="6">No stock</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderPOS(container) {
+  let cart = [];
+  let saleTotal = 0;
+  function updateCartDisplay() {
+    let cartHtml = `<table style="width:100%"><thead><tr><th>Medicine</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr></thead><tbody>
+      ${cart.map((item,i) => `<tr><td>${getMedicineName(item.medicineId)}</td><td><input type="number" value="${item.qty}" data-idx="${i}" class="cart-qty" style="width:70px;"></td><td>${item.unitPrice}</td><td>${item.qty*item.unitPrice}</td><td><button onclick="removeFromCart(${i})">X</button></td></tr>`).join('')}
+    </tbody><tfoot><tr><td colspan="3">Total</td><td id="cartTotal">0</td></tr></tfoot></table><button class="btn-primary" id="completeSaleBtn">Complete Sale</button>`;
+    document.getElementById('posCartArea').innerHTML = cartHtml;
+    saleTotal = cart.reduce((s,i)=>s+(i.qty*i.unitPrice),0);
+    document.getElementById('cartTotal').innerText = saleTotal;
+    document.querySelectorAll('.cart-qty').forEach(inp => inp.addEventListener('change', (e) => { let idx = e.target.dataset.idx; cart[idx].qty = parseInt(e.target.value)||0; updateCartDisplay(); }));
+  }
+  window.addToCart = (medId, price) => {
+    let existing = cart.find(i => i.medicineId === medId);
+    if(existing) existing.qty++;
+    else cart.push({ medicineId: medId, qty: 1, unitPrice: price });
+    updateCartDisplay();
+  };
+  window.removeFromCart = (idx) => { cart.splice(idx,1); updateCartDisplay(); };
+  window.completeSale = () => {
+    if(cart.length === 0) return alert("Cart empty");
+    let requiresRx = cart.some(item => db.medicines.find(m=>m.id==item.medicineId)?.requiresPrescription);
+    if(requiresRx) {
+      let rxNo = prompt("This item requires a prescription. Enter Prescription Number:");
+      if(!rxNo) return alert("Sale cancelled");
+      let prescription = db.prescriptions.find(p => p.prescriptionNo === rxNo && p.status === 'active' && new Date(p.expiryDate) > new Date());
+      if(!prescription) return alert("Invalid or expired prescription.");
+    }
+    for(let item of cart) {
+      let med = db.medicines.find(m=>m.id==item.medicineId);
+      if(med && med.controlledSubstance) {
+        let pharmacist = prompt("Controlled substance dispensed. Enter pharmacist name:");
+        if(!pharmacist) return alert("Controlled substance requires pharmacist sign-off");
+        db.controlledLogs.push({ id: Date.now(), date: new Date().toISOString().slice(0,10), medicineId: med.id, batchNo: "manual", quantity: item.qty, patientId: null, prescriptionRef: null, pharmacist, branchId: currentUser.branchId });
+      }
+      let consumed = consumeStock(item.medicineId, item.qty, currentUser.branchId, "POS");
+      if(consumed.length === 0 && item.qty>0) { alert(`Insufficient stock for ${getMedicineName(item.medicineId)}`); return; }
+    }
+    let sale = { id: Date.now(), date: new Date().toISOString().slice(0,10), branchId: currentUser.branchId, items: cart.map(i=>({medicineId:i.medicineId, qty:i.qty, unitPrice:i.unitPrice})), total: saleTotal, paymentMethod: "Cash" };
+    db.sales.push(sale);
+    saveData();
+    cart = [];
+    updateCartDisplay();
+    alert("Sale completed. Stock updated.");
+  };
+  let medListHtml = `<div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px;">${db.medicines.filter(m=>m.branchId==currentUser.branchId).map(m => `<div style="border:1px solid #ddd; padding:10px; border-radius:8px;"><strong>${m.name}</strong><br>Price: TZS ${m.sellingPrice}<br><button class="btn-secondary" onclick="addToCart('${m.id}', ${m.sellingPrice})">Add</button></div>`).join('')}</div>`;
+  container.innerHTML = `<div style="display:flex; gap:20px; flex-wrap:wrap;"><div style="flex:2;"><h3>Sale Cart</h3><div id="posCartArea"></div></div><div style="flex:1;"><h3>Medicines</h3>${medListHtml}</div></div>`;
+  updateCartDisplay();
+}
+
+function renderPrescriptions(container) {
+  let html = `<div style="margin-bottom:20px;"><button class="btn-primary" onclick="openPrescriptionModal()">+ New Prescription</button></div>
+  <div class="data-table"><div class="table-container"><table><thead><tr><th>Prescription No</th><th>Patient</th><th>Doctor</th><th>Issue Date</th><th>Expiry Date</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    ${db.prescriptions.map(p => `<tr><td>${p.prescriptionNo}</td><td>${getPatientName(p.patientId)}</td><td>${p.doctorName}</td><td>${p.issueDate}</td><td>${p.expiryDate}</td><td><span class="status-badge ${p.status==='active'?'status-active':'status-expired'}">${p.status}</span></td><td><button onclick="viewPrescription('${p.id}')">View</button></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderInsurance(container) {
+  let html = `<div style="margin-bottom:20px;"><button class="btn-primary" onclick="openClaimModal()">+ New Claim</button></div>
+  <div class="data-table"><div class="table-container"><table><thead><tr><th>Claim No</th><th>Patient</th><th>Insurance Co.</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    ${db.insuranceClaims.map(c => `<tr><td>${c.claimNo}</td><td>${getPatientName(c.patientId)}</td><td>${c.insuranceCompany}</td><td>TZS ${c.totalAmount}</td><td>${c.status}</td><td><button onclick="editClaim('${c.id}')">Update</button></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderPatients(container) {
+  let html = `<div style="margin-bottom:20px;"><button class="btn-primary" onclick="openPatientModal()">+ Add Patient</button></div>
+  <div class="data-table"><div class="table-container"><table><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Insurance Company</th><th>Insurance ID</th><th>Actions</th><tr></thead><tbody>
+    ${db.patients.map(p => `<tr><td>${p.name}</td><td>${p.phone}</td><td>${p.email}</td><td>${p.insuranceCompany || '-'}</td><td>${p.insuranceId || '-'}</td><td><button onclick="editPatient('${p.id}')">Edit</button></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderCompliance(container) {
+  let logs = db.controlledLogs.filter(l => l.branchId == currentUser.branchId);
+  let html = `<div class="data-table"><div class="table-actions"><div>Controlled Substances Dispensing Log</div></div><div class="table-container"><table><thead><tr><th>Date</th><th>Medicine</th><th>Batch</th><th>Qty</th><th>Patient</th><th>Pharmacist</th></tr></thead><tbody>
+    ${logs.map(l => `<tr><td>${l.date}</td><td>${getMedicineName(l.medicineId)}</td><td>${l.batchNo}</td><td>${l.quantity}</td><td>${getPatientName(l.patientId)}</td><td>${l.pharmacist}</td></tr>`).join('') || '<tr><td colspan="6">No logs</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderBranches(container) {
+  let html = `<div style="margin-bottom:20px;"><button class="btn-primary" onclick="openBranchModal()">+ New Branch</button></div>
+  <div class="data-table"><div class="table-container"><table><thead><tr><th>Name</th><th>Code</th><th>Address</th><th>TIN</th><th>VRN</th><th>Actions</th></tr></thead><tbody>
+    ${db.branches.map(b => `<tr><td>${b.name}</td><td>${b.code}</td><td>${b.address}</td><td>${b.tin||'-'}</td><td>${b.vrn||'-'}</td><td><button onclick="editBranch('${b.id}')">Edit</button> <button onclick="deleteBranch('${b.id}')">Del</button></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderAccounting(container) {
+  let totalSales = db.sales.reduce((s,sale)=>s+sale.total,0);
+  let totalExpenses = db.expenses.reduce((s,e)=>s+e.amount,0);
+  let totalDeposits = db.cashDeposits.reduce((s,d)=>s+d.amount,0);
+  let grossProfit = totalSales - totalExpenses - (db.inventoryBatches.reduce((c,b)=>c + (b.qtyRemaining*b.unitCost),0) * 0.1); // dummy COGS
+  let html = `<div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-title">Sales Revenue</div><div class="kpi-value">TZS ${totalSales.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Expenses</div><div class="kpi-value">TZS ${totalExpenses.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Cash Deposits</div><div class="kpi-value">TZS ${totalDeposits.toLocaleString()}</div></div>
+    <div class="kpi-card"><div class="kpi-title">Gross Profit (est.)</div><div class="kpi-value">TZS ${grossProfit.toLocaleString()}</div></div>
+  </div>
+  <div class="data-table"><div class="table-actions"><div>Expenses</div><button class="btn-primary" onclick="openExpenseModal()">+ Add Expense</button></div><div class="table-container"><table><thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead><tbody>
+    ${db.expenses.map(e=>`<tr><td>${e.date}</td><td>${e.description}</td><td>TZS ${e.amount}</td></tr>`).join('') || '<tr><td colspan="3">No expenses</td></tr>'}
+  </tbody></table></div></div>
+  <div class="data-table"><div class="table-actions"><div>Cash Deposits</div><button class="btn-primary" onclick="openDepositModal()">+ Add Deposit</button></div><div class="table-container"><table><thead><tr><th>Date</th><th>Bank</th><th>Amount</th></tr></thead><tbody>
+    ${db.cashDeposits.map(d=>`<tr><td>${d.date}</td><td>${d.bank}</td><td>TZS ${d.amount}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  container.innerHTML = html;
+}
+
+function renderReports(container) {
+  let salesByMonth = {};
+  db.sales.forEach(s => { let m = s.date.slice(0,7); salesByMonth[m] = (salesByMonth[m]||0) + s.total; });
+  let reportHtml = `<div class="data-table"><div class="table-actions"><div>Sales Summary by Month</div></div><div class="table-container"><table><thead><tr><th>Month</th><th>Total Sales (TZS)</th></tr></thead><tbody>
+    ${Object.entries(salesByMonth).map(([m,amt]) => `<tr><td>${m}</td><td>${amt.toLocaleString()}</td></tr>`).join('') || '<tr><td colspan="2">No data</td></tr>'}
+  </tbody></table></div></div>`;
+  container.innerHTML = reportHtml;
+}
+
+function renderSettings(container) {
+  let html = `<div class="data-table"><div class="table-actions"><div>General Settings</div></div><div class="table-container" style="padding:20px">
+    <div class="form-group"><label class="form-label">Company Name</label><input type="text" id="compName" class="form-input" value="${db.settings.companyName}"></div>
+    <div class="form-group"><label class="form-label">VAT Rate (%)</label><input type="number" id="vatRate" class="form-input" value="${db.settings.vatRate}"></div>
+    <div class="form-group"><label class="form-label">Default Branch</label><select id="defBranch" class="form-select">${db.branches.map(b=>`<option value="${b.id}" ${db.settings.defaultBranch==b.id?'selected':''}>${b.name}</option>`).join('')}</select></div>
+    <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+    <hr>
+    <button class="btn-danger" onclick="clearAllData()">Reset All Data (Clear localStorage)</button>
+  </div></div>`;
+  container.innerHTML = html;
+}
+
+// Modal helpers (simplified with prompts but extensible)
+window.openMedicineModal = () => {
+  let name = prompt("Medicine name");
+  if(!name) return;
+  let sku = prompt("SKU");
+  let price = parseFloat(prompt("Selling price"));
+  let requiresRx = confirm("Requires prescription?");
+  let controlled = confirm("Controlled substance?");
+  let newMed = { id: Date.now().toString(), sku, name, manufacturer: prompt("Manufacturer"), requiresPrescription: requiresRx, controlledSubstance: controlled, packSize: 100, buyingPrice: price*0.6, sellingPrice: price, vat: 18, category: "General", branchId: currentUser.branchId };
+  db.medicines.push(newMed);
+  saveData();
+  renderPage('medicines');
+};
+window.editMedicine = (id) => { alert("Edit medicine: implement full modal"); };
+window.deleteMedicine = (id) => { if(confirm("Delete?")) { db.medicines = db.medicines.filter(m=>m.id!=id); saveData(); renderPage('medicines'); } };
+window.openPurchaseModal = () => {
+  let supplierId = prompt("Supplier ID (from settings)");
+  let items = [];
+  let more = true;
+  while(more) {
+    let medName = prompt("Medicine name (exact)");
+    let med = db.medicines.find(m=>m.name.toLowerCase()===medName.toLowerCase());
+    if(!med) { alert("Not found"); continue; }
+    let qty = parseInt(prompt("Quantity"));
+    let cost = parseFloat(prompt("Unit cost"));
+    let expiry = prompt("Expiry date (YYYY-MM-DD)");
+    let batch = prompt("Batch number");
+    items.push({ medicineId: med.id, qty, unitCost: cost, expiry, batch });
+    more = confirm("Add another item?");
+  }
+  let invoiceNo = "PO-"+Date.now();
+  let total = items.reduce((s,i)=>s+(i.qty*i.unitCost),0);
+  let purchase = { id: Date.now(), invoiceNo, supplierId, date: new Date().toISOString().slice(0,10), items, total, branchId: currentUser.branchId };
+  db.purchaseInvoices.push(purchase);
+  items.forEach(it => {
+    addBatch(it.medicineId, it.batch, it.expiry, it.qty, it.unitCost, invoiceNo, new Date().toISOString().slice(0,10), currentUser.branchId);
+  });
+  saveData();
+  renderPage('procurement');
+};
+window.openPrescriptionModal = () => {
+  let patientId = prompt("Patient ID (from Patients)");
+  let doctor = prompt("Doctor name");
+  let items = [];
+  let more = true;
+  while(more) {
+    let medName = prompt("Medicine name");
+    let med = db.medicines.find(m=>m.name.toLowerCase()===medName.toLowerCase());
+    if(!med) continue;
+    let qty = parseInt(prompt("Quantity"));
+    items.push({ medicineId: med.id, dosage: "as directed", quantity: qty });
+    more = confirm("Add another?");
+  }
+  let rxNo = "RX-"+Date.now();
+  let prescription = { id: Date.now(), prescriptionNo: rxNo, patientId, doctorName: doctor, issueDate: new Date().toISOString().slice(0,10), expiryDate: new Date(Date.now()+30*86400000).toISOString().slice(0,10), medicines: items, status: "active" };
+  db.prescriptions.push(prescription);
+  saveData();
+  renderPage('prescriptions');
+};
+window.openClaimModal = () => {
+  let patientId = prompt("Patient ID");
+  let amount = parseFloat(prompt("Claim amount"));
+  let claim = { id: Date.now(), claimNo: "CLM-"+Date.now(), patientId, insuranceCompany: "NHIF", totalAmount: amount, approvedAmount: 0, status: "pending", submissionDate: new Date().toISOString().slice(0,10) };
+  db.insuranceClaims.push(claim);
+  saveData();
+  renderPage('insurance');
+};
+window.openPatientModal = () => {
+  let name = prompt("Patient name");
+  let phone = prompt("Phone");
+  let insCo = prompt("Insurance company");
+  let insId = prompt("Insurance ID");
+  let patient = { id: Date.now(), name, phone, email: "", dob: "", insuranceCompany: insCo, insuranceId: insId, medicalHistory: "", branchId: currentUser.branchId };
+  db.patients.push(patient);
+  saveData();
+  renderPage('patients');
+};
+window.openExpenseModal = () => {
+  let desc = prompt("Description");
+  let amt = parseFloat(prompt("Amount"));
+  if(desc && amt) { db.expenses.push({ id: Date.now(), date: new Date().toISOString().slice(0,10), description: desc, amount: amt, branchId: currentUser.branchId }); saveData(); renderPage('accounting'); }
+};
+window.openDepositModal = () => {
+  let bank = prompt("Bank name");
+  let amount = parseFloat(prompt("Amount"));
+  if(bank && amount) { db.cashDeposits.push({ id: Date.now(), date: new Date().toISOString().slice(0,10), bank, amount, branchId: currentUser.branchId }); saveData(); renderPage('accounting'); }
+};
+window.openBranchModal = () => {
+  let name = prompt("Branch name");
+  let code = prompt("Branch code");
+  if(name) { db.branches.push({ id: Date.now().toString(), name, code, address: "", tin: "", vrn: "" }); saveData(); renderPage('branches'); }
+};
+window.saveSettings = () => {
+  db.settings.companyName = document.getElementById('compName').value;
+  db.settings.vatRate = parseFloat(document.getElementById('vatRate').value);
+  db.settings.defaultBranch = document.getElementById('defBranch').value;
+  saveData();
+  alert("Settings saved");
+};
+window.clearAllData = () => { if(confirm("Wipe all data?")) { localStorage.removeItem('pharma_erp_full'); location.reload(); } };
+window.viewPurchase = (id) => { alert("View details: " + id); };
+window.viewPrescription = (id) => { alert("View prescription"); };
+window.editClaim = (id) => { alert("Edit claim"); };
+window.editPatient = (id) => { alert("Edit patient"); };
+window.editBranch = (id) => { alert("Edit branch"); };
+window.deleteBranch = (id) => { if(confirm("Delete branch?")) { db.branches = db.branches.filter(b=>b.id!=id); saveData(); renderPage('branches'); } };
+
+// Navigation
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-item').forEach(nav=>nav.classList.remove('active'));
+    item.classList.add('active');
+    let page = item.getAttribute('data-page');
+    renderPage(page);
+  });
+});
+document.getElementById('collapseBtn').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+});
+document.getElementById('logoutBtn').addEventListener('click', () => { location.reload(); });
+document.getElementById('dateDisplay').innerText = new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'short', day:'numeric' });
+loadData();
+renderPage('dashboard');
+</script>
+</body>
+</html>

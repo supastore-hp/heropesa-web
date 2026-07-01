@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Local Business POS</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- Minimalist Black & White Theme Variables --- */
+        :root {
+            --main-bg: #ffffff; --sidebar-bg: #f9fafb; --text-main: #202124;
+            --text-muted: #70757a; --border-color: #e5e7eb; --active-bg: #f3f4f6;
+            --accent-black: #000000; --error-red: #ea4335; --success-green: #34a853;
+            --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+            --shadow-md: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+            --shadow-lg: 0 4px 6px 0 rgba(60,64,67,0.3), 0 8px 16px 6px rgba(60,64,67,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--main-bg); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; font-size: 14px; }
+        
+        /* --- Form Elements Reset --- */
+        input, select, textarea { appearance: none; -webkit-appearance: none; }
+
+        /* --- Custom Toast & Alerts (Replacing Native Prompts) --- */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { background: var(--accent-black); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 500; box-shadow: var(--shadow-lg); transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateX(0); }
+        .toast.error { background: var(--error-red); }
+        
+        .confirm-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); z-index: 9999; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+        .confirm-overlay.active { display: flex; opacity: 1; }
+        .confirm-box { background: var(--main-bg); padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: var(--shadow-lg); transform: translateY(20px); transition: transform 0.2s; text-align: center; }
+        .confirm-overlay.active .confirm-box { transform: translateY(0); }
+        
+        /* --- Auth Page --- */
+        #auth-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--sidebar-bg); z-index: 9000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-container { display: flex; width: 100%; max-width: 900px; height: 600px; background: var(--main-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-md); flex-direction: row; }
+        .auth-banner { flex: 1; background: var(--accent-black); color: white; padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .auth-banner h1 { font-size: 32px; font-weight: 700; margin-bottom: 20px; }
+        .auth-form-area { flex: 1; padding: 40px; display: flex; flex-direction: column; justify-content: center; overflow-y: auto; }
+        .auth-tabs { display: flex; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .auth-tab { cursor: pointer; font-weight: 600; color: var(--text-muted); transition: color 0.2s; }
+        .auth-tab.active { color: var(--accent-black); border-bottom: 2px solid var(--accent-black); padding-bottom: 11px; margin-bottom: -12px; }
+
+        /* --- Buttons & Inputs --- */
+        .form-group { margin-bottom: 20px; width: 100%; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); text-transform: uppercase; }
+        .form-control { width: 100%; padding: 12px 15px; background: var(--main-bg); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 8px; outline: none; transition: all 0.2s; font-size: 14px; }
+        .form-control:focus { border-color: var(--accent-black); box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
+        
+        .btn-black { background: var(--accent-black); color: white; border: 1px solid var(--accent-black); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+        .btn-black:hover { background: #333; }
+        .btn-outline { background: transparent; color: var(--accent-black); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-outline:hover { border-color: var(--accent-black); }
+
+        /* --- Layout --- */
+        #app-wrapper { display: none; width: 100%; height: 100%; position: relative; }
+        .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); z-index: 40; }
+
+        /* --- Sidebar --- */
+        .sidebar { width: 260px; background-color: var(--sidebar-bg); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; height: 100%; overflow-y: auto; z-index: 50; transition: transform 0.3s ease; }
+        .brand { font-size: 20px; font-weight: 700; padding: 24px 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border-color); }
+        .nav-container { padding: 16px; flex: 1; overflow-y: auto; }
+        .menu-label { font-size: 11px; color: var(--text-muted); margin: 16px 0 8px 12px; text-transform: uppercase; font-weight: 600; }
+        .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+        .nav-item { padding: 10px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; color: var(--text-muted); font-weight: 500; transition: all 0.2s ease; font-size: 13px; }
+        .nav-item i { margin-right: 12px; width: 16px; text-align: center; }
+        .nav-item:hover, .nav-item.active { background-color: var(--active-bg); color: var(--accent-black); font-weight: 600; }
+
+        .sidebar-footer { padding: 16px; border-top: 1px solid var(--border-color); }
+        .lang-switch { display: flex; background: var(--active-bg); border-radius: 6px; overflow: hidden; margin-bottom: 15px; }
+        .lang-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 12px; font-weight: 600; }
+        .lang-btn.active { background: var(--border-color); color: var(--accent-black); }
+
+        /* --- Topbar (Mobile Only) --- */
+        .mobile-topbar { display: none; height: 60px; border-bottom: 1px solid var(--border-color); background: var(--main-bg); align-items: center; padding: 0 20px; justify-content: space-between; width: 100%; z-index: 30; }
+        .menu-toggle { background: none; border: none; font-size: 20px; color: var(--text-main); cursor: pointer; }
+
+        /* --- Main Content --- */
+        .main-content { flex: 1; overflow-y: auto; background-color: var(--main-bg); position: relative; display: flex; flex-direction: column; }
+        .content-inner { padding: 40px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .page-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; flex-wrap: wrap; gap: 15px; }
+        .page-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .header-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+        /* Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px; }
+        .stat-card { padding: 24px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--main-bg); display: flex; flex-direction: column; min-height: 120px; }
+        .stat-card .title { font-size: 12px; text-transform: uppercase; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: var(--accent-black); }
+        .stat-card .currency { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-right: 4px; }
+
+        /* Tables */
+        .table-wrapper { border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: var(--main-bg); margin-bottom: 30px; }
+        .table-header-bar { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; background: var(--sidebar-bg); flex-wrap: wrap; gap: 10px; }
+        .table-responsive { overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        th { background-color: var(--main-bg); color: var(--text-muted); font-weight: 600; font-size: 11px; padding: 12px 16px; text-transform: uppercase; border-bottom: 1px solid var(--border-color); }
+        td { padding: 16px; border-bottom: 1px solid var(--border-color); font-size: 13px; color: var(--text-main); }
+        tr:last-child td { border-bottom: none; }
+        .no-data { padding: 40px; text-align: center; color: var(--text-muted); }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+        .badge-success { background: #dcfce7; color: #166534; }
+        .badge-danger { background: #fee2e2; color: #991b1b; }
+
+        /* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); z-index: 8000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; padding: 20px; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-card { background: var(--main-bg); border: 1px solid var(--border-color); width: 100%; max-width: 500px; border-radius: 12px; padding: 24px; max-height: 90vh; overflow-y: auto; transform: translateY(20px); transition: transform 0.2s; }
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+
+        /* --- Analytics Bars --- */
+        .chart-container { height: 200px; display: flex; align-items: flex-end; gap: 10px; padding: 20px 0; border-bottom: 1px solid var(--border-color); }
+        .chart-bar { flex: 1; background: var(--border-color); border-radius: 4px 4px 0 0; position: relative; transition: height 0.3s; min-height: 5px; }
+        .chart-bar:hover { background: var(--accent-black); }
+        .chart-label { position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--text-muted); }
+
+        /* --- Media Queries for Mobile Responsiveness --- */
+        @media (max-width: 768px) {
+            .auth-container { flex-direction: column; height: auto; border-radius: 0; border: none; }
+            .auth-banner { padding: 30px 20px; text-align: center; }
+            
+            .mobile-topbar { display: flex; }
+            .sidebar { position: fixed; left: 0; top: 0; transform: translateX(-100%); width: 280px; box-shadow: var(--shadow-lg); }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-overlay.active { display: block; }
+            
+            .content-inner { padding: 20px; }
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .header-controls { width: 100%; }
+            .header-controls button { flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-container"></div>
+    <div class="confirm-overlay" id="custom-confirm">
+        <div class="confirm-box">
+            <h3 style="margin-bottom: 10px;" id="confirm-title" data-i18n="confirm_action">Are you sure?</h3>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;" id="confirm-msg">This action cannot be undone.</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button class="btn-outline" onclick="closeConfirm()" data-i18n="cancel">Cancel</button>
+                <button class="btn-black" id="confirm-btn" style="background: var(--error-red); border-color: var(--error-red);" data-i18n="delete">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="auth-overlay">
+        <div class="auth-container">
+            <div class="auth-banner">
+                <h1><i class="fas fa-layer-group"></i> Supabook</h1>
+                <p data-i18n="auth_desc">Your localized business recording system. Manage POS, accounting, customers and inventory</p>
+            </div>
+            <div class="auth-form-area" id="auth-box">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" onclick="toggleAuth('login')" data-i18n="login">Login</div>
+                    <div class="auth-tab" onclick="toggleAuth('signup')" data-i18n="signup">Create Account</div>
+                </div>
+                
+                <form id="login-form" autocomplete="off" onsubmit="event.preventDefault(); performAuth('login');">
+                    <div class="form-group">
+                        <label data-i18n="email">Email Address</label>
+                        <input type="email" id="auth-email" class="form-control" placeholder="admin@enterprise.com" value="admin@enterprise.com" autocomplete="off" spellcheck="false">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="password">Password</label>
+                        <input type="password" id="auth-pass" class="form-control" placeholder="••••••••" value="password123" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-black" style="width: 100%;"><span data-i18n="signin">Sign In</span> <i class="fas fa-arrow-right"></i></button>
+                </form>
+
+                <form id="signup-form" style="display: none;" autocomplete="off" onsubmit="event.preventDefault(); performAuth('signup');">
+                    <div class="form-group">
+                        <label data-i18n="company_name">Company Name</label>
+                        <input type="text" class="form-control" placeholder="Acme Corp Tanzania" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="email">Email Address</label>
+                        <input type="email" class="form-control" placeholder="hello@company.com" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label data-i18n="password">Password</label>
+                        <input type="password" class="form-control" placeholder="••••••••" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-black" style="width: 100%;"><span data-i18n="register">Register</span> <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-wrapper">
+        <div class="mobile-overlay" onclick="toggleMobileMenu()"></div>
+        
+        <div class="sidebar" id="sidebar">
+            <div class="brand"><i class="fas fa-layer-group"></i> Supabook</div>
+            
+            <div class="nav-container">
+                <div class="menu-label" data-i18n="core_modules">SECTIONS</div>
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="switchPage('dashboard', this)"><i class="fas fa-chart-pie"></i> <span data-i18n="nav_dash">Dashboard</span></li>
+                    <li class="nav-item" onclick="switchPage('pos', this)"><i class="fas fa-cash-register"></i> <span data-i18n="nav_pos">Point of Sale</span></li>
+                    <li class="nav-item" onclick="switchPage('inventory', this)"><i class="fas fa-box"></i> <span data-i18n="nav_inv">Inventory</span></li>
+                    <li class="nav-item" onclick="switchPage('expenses', this)"><i class="fas fa-receipt"></i> <span data-i18n="nav_exp">Expenses</span></li>
+                </ul>
+
+                <div class="menu-label" data-i18n="crm_finance">CRM & FINANCE</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="switchPage('customers', this)"><i class="fas fa-users"></i> <span data-i18n="nav_cust">Customers</span></li>
+                    <li class="nav-item" onclick="switchPage('suppliers', this)"><i class="fas fa-truck"></i> <span data-i18n="nav_supp">Suppliers</span></li>
+                    <li class="nav-item" onclick="switchPage('debts', this)"><i class="fas fa-hand-holding-usd"></i> <span data-i18n="nav_debts">Debts Ledger</span></li>
+                </ul>
+
+                <div class="menu-label" data-i18n="business_tools">BUSINESS TOOLS</div>
+                <ul class="nav-menu">
+                    <li class="nav-item" onclick="switchPage('analytics', this)"><i class="fas fa-chart-line"></i> <span data-i18n="nav_analytics">Analytics</span></li>
+                    <li class="nav-item" onclick="switchPage('reports', this)"><i class="fas fa-file-invoice"></i> <span data-i18n="nav_reports">Reports</span></li>
+                    <li class="nav-item" onclick="switchPage('store', this)"><i class="fas fa-globe"></i> <span data-i18n="nav_store">Online Store</span></li>
+                    <li class="nav-item" onclick="switchPage('notes', this)"><i class="fas fa-file-alt"></i> <span data-i18n="nav_notes">Notes</span></li>
+                    <li class="nav-item" onclick="switchPage('settings', this)"><i class="fas fa-cog"></i> <span data-i18n="nav_settings">Settings</span></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="lang-switch">
+                    <button class="lang-btn active" onclick="setLang('en')">ENG</button>
+                    <button class="lang-btn" onclick="setLang('sw')">SWA</button>
+                </div>
+                <div class="nav-item" onclick="logout()" style="color: var(--error-red); cursor:pointer;"><i class="fas fa-sign-out-alt"></i> <span data-i18n="nav_logout">Sign Out</span></div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="mobile-topbar">
+                <div class="brand" style="border:none; padding:0; font-size:18px;"><i class="fas fa-layer-group"></i> EN-CORE</div>
+                <button class="menu-toggle" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+            </div>
+
+            <div class="content-inner">
+                
+                <div id="page-dashboard" class="page-section active">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_dash">Dashboard</div>
+                        <div class="header-controls">
+                            
+                        </div>
+                    </div>
+                    <div class="cards-grid">
+                        <div class="stat-card"><div class="title" data-i18n="total_rev">Total Revenue</div><div class="value"><span class="currency">TZS</span><span id="dash-rev">0</span></div></div>
+                        <div class="stat-card"><div class="title" data-i18n="total_exp">Total Expenses</div><div class="value"><span class="currency">TZS</span><span id="dash-exp">0</span></div></div>
+                        <div class="stat-card"><div class="title" data-i18n="active_inv">Active Inventory</div><div class="value" id="dash-inv">0</div></div>
+                    </div>
+                </div>
+
+                <div id="page-pos" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_pos">Point of Sale</div>
+                        <button class="btn-black" onclick="openFormModal('pos')"><i class="fas fa-plus"></i> <span data-i18n="new_sale">New Sale</span></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div class="table-header-bar"><input type="text" class="form-control" style="max-width: 300px; margin:0;" placeholder="Search..." autocomplete="off"></div>
+                        <div class="table-responsive"><table id="table-pos"><thead><tr><th data-i18n="id">ID</th><th data-i18n="date">Date</th><th data-i18n="customer">Customer</th><th data-i18n="product">Product</th><th data-i18n="amount">Amount</th><th data-i18n="status">Status</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="page-inventory" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_inv">Inventory</div>
+                        <button class="btn-black" onclick="openFormModal('inventory')"><i class="fas fa-plus"></i> <span data-i18n="add_prod">Add Product</span></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div class="table-responsive"><table id="table-inventory"><thead><tr><th data-i18n="sku">SKU</th><th data-i18n="product">Product Name</th><th data-i18n="stock">Stock</th><th data-i18n="buy">Buy Price</th><th data-i18n="sell">Sell Price</th><th data-i18n="action">Action</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="page-expenses" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_exp">Expenses</div>
+                        <button class="btn-black" onclick="openFormModal('expense')"><i class="fas fa-plus"></i> <span data-i18n="rec_exp">Record Expense</span></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div class="table-responsive"><table id="table-expenses"><thead><tr><th data-i18n="date">Date</th><th data-i18n="category">Category</th><th data-i18n="desc">Description</th><th data-i18n="amount">Amount</th><th data-i18n="action">Action</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="page-customers" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_cust">Customers</div>
+                        <button class="btn-black" onclick="openFormModal('customer')"><i class="fas fa-user-plus"></i> <span data-i18n="add_cust">Add Customer</span></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div class="table-responsive"><table id="table-customers"><thead><tr><th data-i18n="name">Name</th><th data-i18n="phone">Phone</th><th data-i18n="debt">Debt (Borrowed)</th><th data-i18n="action">Action</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="page-suppliers" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_supp">Suppliers</div>
+                        <button class="btn-black" onclick="openFormModal('supplier')"><i class="fas fa-truck-loading"></i> <span data-i18n="add_supp">Add Supplier</span></button>
+                    </div>
+                    <div class="table-wrapper">
+                        <div class="table-responsive"><table id="table-suppliers"><thead><tr><th data-i18n="name">Supplier Name</th><th data-i18n="phone">Phone</th><th data-i18n="owed">Amount Owed</th><th data-i18n="action">Action</th></tr></thead><tbody></tbody></table></div>
+                    </div>
+                </div>
+
+                <div id="page-debts" class="page-section">
+                    <div class="page-header"><div class="page-title" data-i18n="nav_debts">Debts Ledger</div></div>
+                    <div class="cards-grid">
+                        <div class="stat-card" style="border-left: 4px solid var(--success-green);"><div class="title" data-i18n="cust_owe">Customers Owe You</div><div class="value"><span class="currency">TZS</span><span id="debt-in">0</span></div></div>
+                        <div class="stat-card" style="border-left: 4px solid var(--error-red);"><div class="title" data-i18n="you_owe">You Owe Suppliers</div><div class="value"><span class="currency">TZS</span><span id="debt-out">0</span></div></div>
+                    </div>
+                </div>
+
+                <div id="page-analytics" class="page-section">
+                    <div class="page-header"><div class="page-title" data-i18n="nav_analytics">Analytics</div></div>
+                    <div class="table-wrapper" style="padding: 20px;">
+                        <h4 style="margin-bottom: 20px;" data-i18n="sales_trend">Sales Trend (Simulated)</h4>
+                        <div class="chart-container">
+                            <div class="chart-bar" style="height: 30%;"><span class="chart-label">Mon</span></div>
+                            <div class="chart-bar" style="height: 50%;"><span class="chart-label">Tue</span></div>
+                            <div class="chart-bar" style="height: 20%;"><span class="chart-label">Wed</span></div>
+                            <div class="chart-bar" style="height: 80%; background: var(--text-main);"><span class="chart-label">Thu</span></div>
+                            <div class="chart-bar" style="height: 60%;"><span class="chart-label">Fri</span></div>
+                            <div class="chart-bar" style="height: 90%;"><span class="chart-label">Sat</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-reports" class="page-section">
+                    <div class="page-header"><div class="page-title" data-i18n="nav_reports">Reports</div></div>
+                    <div class="table-wrapper" style="padding: 40px; text-align: center;">
+                        <i class="fas fa-file-pdf" style="font-size: 40px; color: var(--border-color); margin-bottom: 20px;"></i>
+                        <h3 style="margin-bottom: 10px;" data-i18n="gen_report">Generate Master Report</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;" data-i18n="rep_desc">Download a complete PDF of sales, inventory, and debts.</p>
+                        <button class="btn-black" onclick="showToast(translations[currentLang].downloading, 'success')"><i class="fas fa-download"></i> <span data-i18n="download">Download PDF</span></button>
+                    </div>
+                </div>
+
+                <div id="page-store" class="page-section">
+                    <div class="page-header"><div class="page-title" data-i18n="nav_store">Online Store</div></div>
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; text-align: center;">
+                        <div style="background: var(--active-bg); border-radius: 50%; width: 150px; height: 150px; display:flex; align-items:center; justify-content:center; margin-bottom: 30px;">
+                             <i class="fas fa-mobile-alt" style="font-size: 60px; color: var(--accent-black);"></i>
+                        </div>
+                        <h2 style="font-size: 22px; font-weight: 600; margin-bottom: 15px;" data-i18n="shop_title">Start Selling Online</h2>
+                        <p style="color: var(--text-muted); margin-bottom: 30px; max-width: 400px;" data-i18n="shop_desc">Generate a public storefront link for your inventory instantly.</p>
+                        <button class="btn-black" onclick="showToast(translations[currentLang].store_created, 'success')"><i class="fas fa-globe"></i> <span data-i18n="create_shop">Create My Store</span></button>
+                    </div>
+                </div>
+
+                <div id="page-notes" class="page-section">
+                    <div class="page-header">
+                        <div class="page-title" data-i18n="nav_notes">Notes</div>
+                        <button class="btn-black" onclick="openFormModal('note')"><i class="fas fa-edit"></i> <span data-i18n="new_note">New Note</span></button>
+                    </div>
+                    <div class="cards-grid" id="notes-grid"></div>
+                </div>
+
+                <div id="page-settings" class="page-section">
+                    <div class="page-header"><div class="page-title" data-i18n="nav_settings">Settings</div></div>
+                    <div class="cards-grid" style="grid-template-columns: 1fr;">
+                        <div class="table-wrapper" style="padding: 24px; max-width: 600px;">
+                            <h3 style="margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;" data-i18n="biz_profile">Business Profile</h3>
+                            <form autocomplete="off" onsubmit="event.preventDefault(); showToast(translations[currentLang].saved, 'success');">
+                                <div class="form-group"><label data-i18n="company_name">Company Name</label><input type="text" class="form-control" value="Acme Corp" autocomplete="off"></div>
+                                <div class="form-group"><label data-i18n="phone">Phone</label><input type="text" class="form-control" value="+255 700 000 000" autocomplete="off"></div>
+                                <button type="submit" class="btn-black" data-i18n="save_changes">Save Changes</button>
+                            </form>
+                        </div>
+                        <div class="table-wrapper" style="padding: 24px; max-width: 600px;">
+                            <h3 style="margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;" data-i18n="security">Security</h3>
+                            <form autocomplete="off" onsubmit="event.preventDefault(); showToast(translations[currentLang].pass_updated, 'success'); this.reset();">
+                                <div class="form-group"><label data-i18n="new_pass">New Password</label><input type="password" class="form-control" autocomplete="new-password"></div>
+                                <button type="submit" class="btn-outline" data-i18n="update_pass">Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="dynamic-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="font-size: 18px; font-weight: 700;" id="modal-title">Form</h3>
+                <button class="btn-outline" style="padding: 5px 10px; border:none;" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="modal-form" autocomplete="off" onsubmit="event.preventDefault(); if(currentSubmitAction) currentSubmitAction();">
+                <div id="modal-body"></div>
+                <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+                    <button type="button" class="btn-outline" onclick="closeModal()" data-i18n="cancel">Cancel</button>
+                    <button type="submit" class="btn-black" id="modal-save-btn" data-i18n="save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. LOCAL STORAGE DB ---
+        let db = { sales: [], inventory: [], expenses: [], notes: [], customers: [], suppliers: [] };
+        function initDB() { const stored = localStorage.getItem('ent_core_db'); if(stored) db = JSON.parse(stored); else saveDB(); }
+        function saveDB() { localStorage.setItem('ent_core_db', JSON.stringify(db)); }
+
+        // --- 2. TRANSLATION DICTIONARY (i18n) ---
+        const translations = {
+            en: {
+                login: "Login", signup: "Create Account", email: "Email Address", password: "Password",
+                company_name: "Company Name", signin: "Sign In", register: "Register",
+                auth_desc: "Your localized enterprise command center. Manage POS, accounting, inventory, and fleets securely.",
+                core_modules: "CORE MODULES", crm_finance: "CRM & FINANCE", business_tools: "BUSINESS TOOLS",
+                nav_dash: "Dashboard", nav_pos: "Point of Sale", nav_inv: "Inventory", nav_exp: "Expenses",
+                nav_cust: "Customers", nav_supp: "Suppliers", nav_debts: "Debts Ledger", nav_analytics: "Analytics",
+                nav_reports: "Reports", nav_store: "Online Store", nav_notes: "Notes", nav_settings: "Settings", nav_logout: "Sign Out",
+                total_rev: "Total Revenue", total_exp: "Total Expenses", active_inv: "Active Inventory", sync: "Sync Data",
+                new_sale: "New Sale", id: "ID", date: "Date", customer: "Customer", product: "Product", amount: "Amount", status: "Status",
+                add_prod: "Add Product", sku: "SKU", stock: "Stock", buy: "Buy Price", sell: "Sell Price", action: "Action",
+                rec_exp: "Record Expense", category: "Category", desc: "Description",
+                add_cust: "Add Customer", name: "Name", phone: "Phone", debt: "Debt (Borrowed)",
+                add_supp: "Add Supplier", owed: "Amount Owed", cust_owe: "Customers Owe You", you_owe: "You Owe Suppliers",
+                sales_trend: "Sales Trend (Simulated)", gen_report: "Generate Master Report", rep_desc: "Download a complete PDF of sales, inventory, and debts.",
+                download: "Download PDF", shop_title: "Start Selling Online", shop_desc: "Generate a public storefront link for your inventory instantly.",
+                create_shop: "Create My Store", new_note: "New Note", biz_profile: "Business Profile", save_changes: "Save Changes",
+                security: "Security", new_pass: "New Password", update_pass: "Update Password", cancel: "Cancel", save: "Save", delete: "Delete",
+                confirm_action: "Are you sure?", req_fields: "Please fill required fields", saved: "Saved successfully", synced: "Data Synced",
+                downloading: "Downloading report...", store_created: "Storelink generated!", pass_updated: "Password Updated"
+            },
+            sw: {
+                login: "Ingia", signup: "Tengeneza Akaunti", email: "Barua Pepe", password: "Nywila",
+                company_name: "Jina la Kampuni", signin: "Ingia Ndani", register: "Jisajili",
+                auth_desc: "Kituo chako cha kudhibiti biashara. Simamia mauzo, stoo, na madeni kwa usalama.",
+                core_modules: "MODULI KUU", crm_finance: "WATEJA NA FEDHA", business_tools: "ZANA ZA BIASHARA",
+                nav_dash: "Muhtasari", nav_pos: "Mauzo (POS)", nav_inv: "Bidhaa / Stoo", nav_exp: "Matumizi",
+                nav_cust: "Wateja", nav_supp: "Wasambazaji", nav_debts: "Daftari la Madeni", nav_analytics: "Uchambuzi",
+                nav_reports: "Ripoti", nav_store: "Duka la Mtandao", nav_notes: "Nukuu", nav_settings: "Mipangilio", nav_logout: "Toka",
+                total_rev: "Jumla ya Mapato", total_exp: "Jumla ya Matumizi", active_inv: "Bidhaa Zilizopo", sync: "Sasisha Data",
+                new_sale: "Uzo Jipya", id: "Na.", date: "Tarehe", customer: "Mteja", product: "Bidhaa", amount: "Kiasi", status: "Hali",
+                add_prod: "Ongeza Bidhaa", sku: "Namba (SKU)", stock: "Idadi", buy: "Bei ya Kununua", sell: "Bei ya Kuuza", action: "Hatua",
+                rec_exp: "Rekodi Matumizi", category: "Kundi", desc: "Maelezo",
+                add_cust: "Ongeza Mteja", name: "Jina", phone: "Simu", debt: "Deni (Anadaiwa)",
+                add_supp: "Ongeza Msambazaji", owed: "Deni (Unadaiwa)", cust_owe: "Wateja Wanaokudaiwa", you_owe: "Madeni Yako",
+                sales_trend: "Mwenendo wa Mauzo", gen_report: "Tengeneza Ripoti Kuu", rep_desc: "Pakua PDF kamili ya mauzo, stoo, na madeni.",
+                download: "Pakua PDF", shop_title: "Anza Kuuza Mtandaoni", shop_desc: "Tengeneza link ya duka lako la mtandaoni mara moja.",
+                create_shop: "Tengeneza Duka", new_note: "Nukuu Mpya", biz_profile: "Profaili ya Biashara", save_changes: "Hifadhi Mabadiliko",
+                security: "Usalama", new_pass: "Nywila Mpya", update_pass: "Badili Nywila", cancel: "Ghairi", save: "Hifadhi", delete: "Futa",
+                confirm_action: "Una uhakika?", req_fields: "Tafadhali jaza taarifa muhimu", saved: "Imehifadhiwa kikamilifu", synced: "Data Imesasishwa",
+                downloading: "Inapakua ripoti...", store_created: "Link ya duka imetengenezwa!", pass_updated: "Nywila imebadilishwa"
+            }
+        };
+
+        let currentLang = 'en';
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) {
+                    if(el.tagName === 'INPUT' && el.hasAttribute('placeholder')) el.placeholder = translations[lang][key];
+                    else el.innerHTML = translations[lang][key];
+                }
+            });
+        }
+
+        // --- 3. CUSTOM UI COMPONENTS ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        let confirmActionCb = null;
+        function customConfirm(msgKey, callback) {
+            confirmActionCb = callback;
+            document.getElementById('confirm-msg').innerText = msgKey;
+            document.getElementById('custom-confirm').classList.add('active');
+        }
+        function closeConfirm() { document.getElementById('custom-confirm').classList.remove('active'); confirmActionCb = null; }
+        document.getElementById('confirm-btn').addEventListener('click', () => { if(confirmActionCb) confirmActionCb(); closeConfirm(); });
+
+        function toggleMobileMenu() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.querySelector('.mobile-overlay').classList.toggle('active');
+        }
+
+        function switchPage(pageId, element) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if(element) element.classList.add('active');
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            if(window.innerWidth <= 768) toggleMobileMenu();
+            updateUI();
+        }
+
+        function toggleAuth(type) {
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('login-form').style.display = type === 'login' ? 'block' : 'none';
+            document.getElementById('signup-form').style.display = type === 'signup' ? 'block' : 'none';
+        }
+
+        function performAuth() {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('app-wrapper').style.display = 'flex';
+            initDB(); updateUI();
+        }
+        function logout() { document.getElementById('app-wrapper').style.display = 'none'; document.getElementById('auth-overlay').style.display = 'flex'; }
+
+        // --- 4. CRUD & FORMS ---
+        let currentSubmitAction = null;
+        function openFormModal(type) {
+            const mTitle = document.getElementById('modal-title');
+            const mBody = document.getElementById('modal-body');
+            document.getElementById('modal-form').reset();
+            
+            const t = translations[currentLang];
+
+            if (type === 'pos') {
+                mTitle.innerText = t.new_sale;
+                let opts = db.inventory.map(b => `<option value="${b.name}">${b.name} (TZS ${b.sell.toLocaleString()})</option>`).join('');
+                if(!opts) opts = `<option value="">-- No Inventory --</option>`;
+                mBody.innerHTML = `
+                    <div class="form-group"><label>${t.customer}</label><input type="text" id="inp-client" class="form-control" placeholder="Walk-in" autocomplete="off"></div>
+                    <div class="form-group"><label>${t.product}</label><select id="inp-prod" class="form-control" required>${opts}</select></div>
+                    <div class="form-group"><label>${t.amount}</label><input type="number" id="inp-amount" class="form-control" required autocomplete="off"></div>
+                `;
+                currentSubmitAction = () => {
+                    if(!document.getElementById('inp-prod').value) return showToast("Add inventory first", "error");
+                    db.sales.push({ id: 'INV-' + Math.floor(Math.random()*9000), date: new Date().toLocaleDateString(), client: document.getElementById('inp-client').value || 'Walk-in', product: document.getElementById('inp-prod').value, amount: parseFloat(document.getElementById('inp-amount').value), status: `<span class="badge badge-success">Paid</span>` });
+                    finalizeSubmission();
+                };
+            } 
+            else if (type === 'inventory') {
+                mTitle.innerText = t.add_prod;
+                mBody.innerHTML = `
+                    <div class="form-group"><label>${t.product}</label><input type="text" id="inp-name" class="form-control" required autocomplete="off"></div>
+                    <div class="form-group"><label>${t.stock}</label><input type="number" id="inp-stock" class="form-control" required autocomplete="off"></div>
+                    <div style="display:flex; gap:10px;">
+                        <div class="form-group"><label>${t.buy}</label><input type="number" id="inp-buy" class="form-control" required autocomplete="off"></div>
+                        <div class="form-group"><label>${t.sell}</label><input type="number" id="inp-sell" class="form-control" required autocomplete="off"></div>
+                    </div>
+                `;
+                currentSubmitAction = () => {
+                    db.inventory.push({ sku: 'SKU-' + Math.floor(Math.random()*9000), name: document.getElementById('inp-name').value, stock: document.getElementById('inp-stock').value, buy: parseFloat(document.getElementById('inp-buy').value), sell: parseFloat(document.getElementById('inp-sell').value) });
+                    finalizeSubmission();
+                };
+            }
+            else if (type === 'expense') {
+                mTitle.innerText = t.rec_exp;
+                mBody.innerHTML = `
+                    <div class="form-group"><label>${t.category}</label><input type="text" id="inp-cat" class="form-control" required autocomplete="off"></div>
+                    <div class="form-group"><label>${t.amount}</label><input type="number" id="inp-amt" class="form-control" required autocomplete="off"></div>
+                `;
+                currentSubmitAction = () => {
+                    db.expenses.push({ id: Date.now(), date: new Date().toLocaleDateString(), category: document.getElementById('inp-cat').value, desc: '-', amount: parseFloat(document.getElementById('inp-amt').value) });
+                    finalizeSubmission();
+                };
+            }
+            else if (type === 'customer') {
+                mTitle.innerText = t.add_cust;
+                mBody.innerHTML = `
+                    <div class="form-group"><label>${t.name}</label><input type="text" id="inp-name" class="form-control" required autocomplete="off"></div>
+                    <div class="form-group"><label>${t.phone}</label><input type="text" id="inp-phone" class="form-control" autocomplete="off"></div>
+                    <div class="form-group"><label>${t.debt}</label><input type="number" id="inp-debt" class="form-control" value="0" autocomplete="off"></div>
+                `;
+                currentSubmitAction = () => {
+                    db.customers.push({ id: Date.now(), name: document.getElementById('inp-name').value, phone: document.getElementById('inp-phone').value || '-', debt: parseFloat(document.getElementById('inp-debt').value) || 0 });
+                    finalizeSubmission();
+                };
+            }
+            else if (type === 'supplier') {
+                mTitle.innerText = t.add_supp;
+                mBody.innerHTML = `
+                    <div class="form-group"><label>${t.name}</label><input type="text" id="inp-name" class="form-control" required autocomplete="off"></div>
+                    <div class="form-group"><label>${t.phone}</label><input type="text" id="inp-phone" class="form-control" autocomplete="off"></div>
+                    <div class="form-group"><label>${t.owed}</label><input type="number" id="inp-owed" class="form-control" value="0" autocomplete="off"></div>
+                `;
+                currentSubmitAction = () => {
+                    db.suppliers.push({ id: Date.now(), name: document.getElementById('inp-name').value, phone: document.getElementById('inp-phone').value || '-', owed: parseFloat(document.getElementById('inp-owed').value) || 0 });
+                    finalizeSubmission();
+                };
+            }
+            else if (type === 'note') {
+                mTitle.innerText = t.new_note;
+                mBody.innerHTML = `<div class="form-group"><label>Title</label><input type="text" id="inp-title" class="form-control" required autocomplete="off"></div>`;
+                currentSubmitAction = () => {
+                    db.notes.push({ id: Date.now(), title: document.getElementById('inp-title').value });
+                    finalizeSubmission();
+                };
+            }
+
+            document.getElementById('dynamic-modal').classList.add('active');
+        }
+
+        function finalizeSubmission() {
+            saveDB(); closeModal(); updateUI(); showToast(translations[currentLang].saved);
+        }
+        function closeModal() { document.getElementById('dynamic-modal').classList.remove('active'); }
+
+        function deleteRecord(table, identifier) {
+            customConfirm("Delete this record?", () => {
+                db[table] = db[table].filter(item => item.id !== identifier && item.sku !== identifier);
+                saveDB(); updateUI(); showToast("Deleted", "success");
+            });
+        }
+
+        // --- 5. RENDER LOGIC ---
+        function updateUI() {
+            const tSales = db.sales.reduce((s, i) => s + i.amount, 0);
+            const tExp = db.expenses.reduce((s, i) => s + i.amount, 0);
+            const tDebtIn = db.customers.reduce((s, i) => s + i.debt, 0);
+            const tDebtOut = db.suppliers.reduce((s, i) => s + i.owed, 0);
+
+            if(document.getElementById('dash-rev')) document.getElementById('dash-rev').innerText = tSales.toLocaleString();
+            if(document.getElementById('dash-exp')) document.getElementById('dash-exp').innerText = tExp.toLocaleString();
+            if(document.getElementById('dash-inv')) document.getElementById('dash-inv').innerText = db.inventory.length;
+            if(document.getElementById('debt-in')) document.getElementById('debt-in').innerText = tDebtIn.toLocaleString();
+            if(document.getElementById('debt-out')) document.getElementById('debt-out').innerText = tDebtOut.toLocaleString();
+
+            const delBtn = (tbl, id) => `<button type="button" onclick="deleteRecord('${tbl}', '${id}')" style="background:none; border:none; color:var(--error-red); cursor:pointer;"><i class="fas fa-trash"></i></button>`;
+
+            renderTable('table-pos', db.sales, ['id', 'date', 'client', 'product', 'amount', 'status']);
+            renderTable('table-inventory', db.inventory, ['sku', 'name', 'stock', 'buy', 'sell', 'action'], r => r.action = delBtn('inventory', r.sku));
+            renderTable('table-expenses', db.expenses, ['date', 'category', 'desc', 'amount', 'action'], r => r.action = delBtn('expenses', r.id));
+            renderTable('table-customers', db.customers, ['name', 'phone', 'debt', 'action'], r => r.action = delBtn('customers', r.id));
+            renderTable('table-suppliers', db.suppliers, ['name', 'phone', 'owed', 'action'], r => r.action = delBtn('suppliers', r.id));
+
+            const notesGrid = document.getElementById('notes-grid');
+            if(notesGrid) {
+                notesGrid.innerHTML = db.notes.slice().reverse().map(n => `
+                    <div class="stat-card" style="min-height:auto;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <div style="font-weight:600;">${n.title}</div>
+                            ${delBtn('notes', n.id)}
+                        </div>
+                    </div>`).join('') || `<div class="no-data" style="grid-column: 1/-1;">No Notes</div>`;
+            }
+        }
+
+        function renderTable(id, data, cols, processor) {
+            const tbody = document.querySelector(`#${id} tbody`);
+            if(!tbody) return;
+            if(data.length === 0) return tbody.innerHTML = `<tr><td colspan="${cols.length}"><div class="no-data">No data</div></td></tr>`;
+            
+            tbody.innerHTML = data.slice().reverse().map(orig => {
+                let r = {...orig}; if(processor) processor(r);
+                return `<tr>${cols.map(c => `<td>${typeof r[c] === 'number' ? r[c].toLocaleString() : (r[c] || '-')}</td>`).join('')}</tr>`;
+            }).join('');
+        }
+    </script>
+</body>
+</html>

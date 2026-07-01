@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa Engineering Accounting Software | Cloud Financial Management</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+SUBTLE GOOGLE (MATERIAL) THEME & VARIABLES
+========================================= */
+:root {
+  --google-blue: #1a73e8;
+  --google-blue-light: #e8f0fe;
+  --google-blue-hover: #1b66c9;
+  --google-red: #ea4335;
+  --google-yellow: #fbbc05;
+  --google-green: #34a853;
+  --primary: var(--google-blue);
+  --primary-hover: var(--google-blue-hover);
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa; 
+  --bg-dark: #202124;
+  --text-main: #202124; 
+  --text-secondary: #5f6368; 
+  --text-muted: #80868b;
+  --border: #dadce0; 
+  --border-hover: #bdc1c6;
+  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15); 
+  --shadow-md: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15); 
+  --shadow-lg: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15); 
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, sans-serif;
+  --container: 1180px;
+  --header-height: 72px;
+}
+
+/* =========================================
+RESET & BASE STYLES
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+body {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  line-height: 1.65;
+  background: var(--bg-body);
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, textarea { font-family: inherit; border: none; outline: none; }
+
+/* =========================================
+UTILITIES & LAYOUT
+========================================= */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.section { padding: 80px 0; position: relative; }
+.section-header { text-align: center; max-width: 780px; margin: 0 auto 56px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.5px; color: var(--text-main); }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .section-header h2 { font-size: 1.8rem; }
+}
+
+/* =========================================
+MEDIA PLACEHOLDERS (FOR LATER USE)
+========================================= */
+.media-placeholder {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.media-placeholder:hover { box-shadow: var(--shadow-sm); }
+.media-placeholder::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2.5rem; margin-bottom: 16px; color: var(--border-hover); display: block; }
+.media-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.media-sm { min-height: 160px; }
+.media-hero { min-height: 420px; }
+
+/* =========================================
+BUTTONS & INTERACTIVE ELEMENTS
+========================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 24px; border-radius: var(--radius-sm); font-weight: 500; font-size: 0.95rem;
+  cursor: pointer; transition: all var(--transition); border: 1px solid transparent;
+  letter-spacing: 0.25px;
+}
+.btn-primary { background: var(--google-blue); color: #fff; }
+.btn-primary:hover { background: var(--google-blue-hover); box-shadow: var(--shadow-sm); }
+.btn-outline { background: #fff; color: var(--google-blue); border-color: var(--border); }
+.btn-outline:hover { background: var(--google-blue-light); border-color: var(--google-blue-light); color: var(--google-blue-hover); }
+.btn-ghost { background: transparent; color: var(--text-main); }
+.btn-ghost:hover { background: var(--bg-light); }
+
+/* =========================================
+HERO SECTION
+========================================= */
+.hero { padding-top: calc(var(--header-height) + 80px); padding-bottom: 60px; background: var(--bg-body); }
+.hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
+.hero-content h1 { font-size: 3.5rem; font-weight: 400; line-height: 1.2; margin-bottom: 24px; letter-spacing: -1px; color: var(--text-main); }
+.hero-content p { font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 40px; font-weight: 400; }
+.hero-actions { display: flex; justify-content: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap; }
+.hero-trust { display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--text-secondary); font-size: 0.9rem; }
+.hero-trust i { color: var(--google-blue); font-size: 1.1rem; }
+@media (max-width: 768px) { .hero-content h1 { font-size: 2.5rem; } }
+
+/* =========================================
+QUICK NAV / TOC
+========================================= */
+.quick-nav { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem auto 2.5rem; max-width: 900px; }
+.quick-nav a { padding: 0.4rem 1rem; border: 1px solid var(--border); border-radius: 50px; font-size: 0.85rem; font-weight: 500; transition: all 0.2s; color: var(--text-secondary); }
+.quick-nav a:hover { border-color: var(--google-blue); background: var(--google-blue-light); color: var(--google-blue); }
+
+/* =========================================
+TAG CLOUD
+========================================= */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1.5rem 0; justify-content: center; }
+.tag { padding: 0.45rem 0.9rem; background: var(--google-blue-light); border: 1px solid var(--border); font-size: 0.85rem; font-weight: 500; border-radius: 4px; color: var(--google-blue); }
+
+/* =========================================
+SPECIFIC SECTIONS (ADAPTED TO MATERIAL THEME)
+========================================= */
+.overview { background: var(--bg-body); border-bottom: 1px solid var(--border); }
+.overview-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+.overview-text h2 { font-size: 1.8rem; font-weight: 500; margin-bottom: 16px; color: var(--text-main); }
+.overview-text h3 { font-size: 1.4rem; font-weight: 500; margin-bottom: 12px; margin-top: 24px; color: var(--text-main); }
+.overview-text h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-main); }
+.overview-text p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+@media (max-width: 900px) { .overview-grid { grid-template-columns: 1fr; } .media-placeholder { order: -1; min-height: 280px; } }
+
+.features { background: var(--bg-light); border-top: 1px solid var(--border); }
+.feat-card { background: #fff; padding: 28px; border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); height: 100%; }
+.feat-card:hover { border-color: transparent; transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.feat-card h4 { font-size: 1.1rem; font-weight: 500; margin-bottom: 8px; color: var(--text-main); }
+.feat-card p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; }
+
+.benefits { background: var(--bg-body); }
+.challenges { background: var(--bg-light); border-top: 1px solid var(--border); }
+.challenge-card { background: #fff; padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border); transition: all var(--transition); }
+.challenge-card:hover { box-shadow: var(--shadow-sm); border-color: transparent; }
+.challenge-card h5 { font-size: 1.05rem; font-weight: 500; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+.challenge-card h5 i { color: var(--google-blue); }
+.challenge-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+@media (max-width: 900px) { .challenges-grid { grid-template-columns: 1fr; } }
+
+.testimonial-section { background: var(--bg-body); text-align: center; }
+.testimonial-card { max-width: 800px; margin: 0 auto; padding: 40px; background: var(--bg-dark); border-radius: var(--radius-md); border: none; color: #fff; }
+.testimonial-quote { font-size: 1.25rem; font-weight: 400; line-height: 1.6; margin-bottom: 24px; color: #fff; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.testimonial-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.9rem; }
+.testimonial-info h6 { font-size: 0.95rem; font-weight: 500; margin: 0; color: #fff; }
+.testimonial-info span { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+
+.success-section { background: var(--bg-light); border-top: 1px solid var(--border); }
+.pricing { background: var(--bg-body); }
+.pricing-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 40px; max-width: 700px; margin: 0 auto; }
+.pricing-card p { text-align: center; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.75; }
+.resources { background: var(--bg-light); border-top: 1px solid var(--border); }
+
+/* =========================================
+HEROPSA HEADER STYLES
+========================================= */
+.heropsa-header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(12px);
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, #4285f4 25%, #ea4335 25%, #ea4335 50%, #fbbc05 50%, #fbbc05 75%, #34a853 75%) 1;
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  transition: all var(--transition);
+}
+.heropsa-header.scrolled { box-shadow: var(--shadow-sm); }
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 100%; position: relative; }
+.logo { font-size: 1.4rem; font-weight: 500; color: var(--text-secondary); display: flex; align-items: center; gap: 4px; letter-spacing: -0.5px; }
+.logo span:nth-child(1) { color: var(--text-main); }
+.logo-accent { color: var(--google-blue); font-weight: 600; }
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-item > a { font-weight: 500; font-size: 0.95rem; color: var(--text-secondary); position: relative; padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+.nav-item > a:hover { color: var(--text-main); }
+.nav-item .chevron { font-size: 0.7rem; color: var(--text-muted); transition: transform 0.2s; }
+.nav-item:hover .chevron { transform: rotate(180deg); color: var(--text-main); }
+.mega-menu {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+  width: 1000px; max-width: 95vw; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 32px; box-shadow: var(--shadow-lg);
+  display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 32px;
+  opacity: 0; visibility: hidden; transition: all 0.2s ease;
+  z-index: 999; pointer-events: none;
+}
+.nav-item:hover .mega-menu { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.mega-menu h6 { font-size: 0.85rem; font-weight: 500; color: var(--text-main); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+.mega-menu ul { list-style: none; padding: 0; margin: 0; }
+.mega-menu li { margin-bottom: 12px; }
+.mega-menu a { font-size: 0.95rem; color: var(--text-secondary); display: block; padding: 2px 0; transition: color var(--transition); }
+.mega-menu a:hover { color: var(--google-blue); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.header-search { display: flex; align-items: center; background: var(--bg-light); border: 1px solid transparent; border-radius: var(--radius-sm); padding: 0 16px; transition: all var(--transition); height: 40px; }
+.header-search:focus-within { background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm); }
+.header-search i { color: var(--text-secondary); font-size: 1rem; margin-right: 8px; }
+.header-search input { background: transparent; border: none; font-size: 0.95rem; color: var(--text-main); width: 180px; outline: none; }
+.header-search input::placeholder { color: var(--text-muted); }
+.mobile-toggle { display: none; font-size: 1.4rem; cursor: pointer; color: var(--text-secondary); }
+.mobile-nav-actions { display: none; }
+
+@media (max-width: 1200px) { .mega-menu { width: 900px; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) {
+  .nav-links { display: none; flex-direction: column; position: absolute; top: var(--header-height); left: 0; width: 100%; background: #fff; padding: 24px; border-bottom: 1px solid var(--border); gap: 16px; box-shadow: var(--shadow-md); max-height: calc(100vh - var(--header-height)); overflow-y: auto; }
+  .nav-links.active { display: flex; }
+  .nav-links.active .nav-item { width: 100%; }
+  .nav-links.active .mega-menu { position: static; transform: none; width: 100%; opacity: 1; visibility: visible; box-shadow: none; border: none; padding: 16px 0 0 0; grid-template-columns: 1fr; pointer-events: auto; display: block; border-top: 1px solid var(--border); }
+  .mega-menu h6 { margin-top: 16px; }
+  .nav-actions .desktop-only { display: none; }
+  .nav-actions .nav-btn-login, .nav-actions .nav-btn-demo { display: none; }
+  .mobile-nav-actions { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .mobile-nav-actions .btn { width: 100%; text-align: center; padding: 12px; justify-content: center; }
+  .mobile-toggle { display: block; }
+}
+@media (max-width: 768px) { .mega-menu { width: 100%; } .nav-actions { gap: 8px; } }
+
+/* =========================================
+HEROPSA FOOTER STYLES
+========================================= */
+.heropsa-footer { background: var(--bg-light); padding: 80px 0 40px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr repeat(auto-fit, minmax(140px, 1fr)); gap: 32px; margin-bottom: 64px; }
+.footer-brand { grid-column: 1 / 2; }
+.footer-brand p { color: var(--text-secondary); margin: 16px 0 24px; font-size: 0.95rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 12px; }
+.social-icons a { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition); font-size: 1.1rem; }
+.social-icons a:hover { background: var(--bg-light); color: var(--text-main); border-color: var(--border-hover); }
+.footer-col h5 { font-size: 0.95rem; margin-bottom: 20px; font-weight: 500; color: var(--text-main); }
+.footer-col ul li { margin-bottom: 12px; }
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.9rem; transition: color var(--transition); }
+.footer-col ul li a:hover { color: var(--google-blue); text-decoration: underline; }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 32px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.9rem; color: var(--text-secondary); }
+.footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--text-main); }
+
+@media (max-width: 1024px) { .footer-brand { grid-column: 1 / -1; } }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; text-align: center; gap: 24px; }
+  .footer-links { justify-content: center; }
+}
+
+/* =========================================
+SCROLL ANIMATIONS
+========================================= */
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
+.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 480px) {
+  .section { padding: 64px 0; }
+  .btn { width: 100%; }
+  .hero-actions { flex-direction: column; }
+  .media-placeholder { min-height: 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="navbar" class="heropsa-header">
+  <div class="container nav-wrapper">
+    <a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+    <nav class="nav-links" id="navLinks">
+      <div class="nav-item">
+        <a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Core Platforms</h6><ul>
+            <li><a href="/erp.html">Enterprise ERP</a></li>
+            <li><a href="/accounting.html">Accounting Software</a></li>
+            <li><a href="/crm.html">CRM & Sales</a></li>
+            <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+            <li><a href="/inventory.html">Inventory Control</a></li>
+          </ul></div>
+          <div><h6>Operations</h6><ul>
+            <li><a href="/supply-chain.html">Supply Chain</a></li>
+            <li><a href="/pos.html">Point of Sale</a></li>
+            <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+            <li><a href="/marketing-auto.html">Marketing Automation</a></li>
+          </ul></div>
+          <div><h6>Industry Solutions</h6><ul>
+            <li><a href="/manufacturing.html">Manufacturing</a></li>
+            <li><a href="/healthcare-os.html">Healthcare OS</a></li>
+            <li><a href="/education.html">Education Platform</a></li>
+            <li><a href="/retail.html">Retail & Commerce</a></li>
+          </ul></div>
+          <div><h6>AI & Automation</h6><ul>
+            <li><a href="/ai-support.html">AI Customer Support</a></li>
+            <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+            <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+            <li><a href="/ai-workflows.html">AI Workflows</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>By Industry</h6><ul>
+            <li><a href="/industries/retail.html">Retail</a></li>
+            <li><a href="/industries/hospitality.html">Hospitality</a></li>
+            <li><a href="/industries/healthcare.html">Healthcare</a></li>
+            <li><a href="/industries/education.html">Education</a></li>
+            <li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+          </ul></div>
+          <div><h6>By Use Case</h6><ul>
+            <li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+            <li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+            <li><a href="/solutions/scaling.html">Global Scaling</a></li>
+            <li><a href="/solutions/automation.html">Process Automation</a></li>
+          </ul></div>
+          <div><h6>By Company Size</h6><ul>
+            <li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+            <li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+            <li><a href="/solutions/enterprise.html">Enterprise</a></li>
+            <li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+          </ul></div>
+          <div><h6>Migration & Integration</h6><ul>
+            <li><a href="/migration.html">Legacy System Migration</a></li>
+            <li><a href="/integrations.html">Third-Party Integrations</a></li>
+            <li><a href="/api.html">API & Webhooks</a></li>
+            <li><a href="/implementation.html">Implementation Services</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+        <div class="mega-menu">
+          <div><h6>Documentation</h6><ul>
+            <li><a href="/docs.html">API Documentation</a></li>
+            <li><a href="/guides.html">Business Guides</a></li>
+            <li><a href="/glossary.html">Solutions Glossary</a></li>
+            <li><a href="/help.html">Help Center</a></li>
+          </ul></div>
+          <div><h6>Learning</h6><ul>
+            <li><a href="/demos.html">Product Demos</a></li>
+            <li><a href="/stories.html">Customer Stories</a></li>
+            <li><a href="/webinars.html">Webinars & Events</a></li>
+            <li><a href="/education.html">Education Services</a></li>
+          </ul></div>
+          <div><h6>Technical</h6><ul>
+            <li><a href="/sdks.html">SDKs & Libraries</a></li>
+            <li><a href="/status.html">System Status</a></li>
+            <li><a href="/changelog.html">Changelog</a></li>
+            <li><a href="/sandbox.html">Developer Sandbox</a></li>
+          </ul></div>
+          <div><h6>Trust & Security</h6><ul>
+            <li><a href="/security.html">Security Compliance</a></li>
+            <li><a href="/trust.html">Trust Center</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
+            <li><a href="/responsible-ai.html">Responsible AI</a></li>
+          </ul></div>
+        </div>
+      </div>
+      <a href="/partners.html">Partners</a>
+      <a href="#pricing">Pricing</a>
+      <div class="mobile-nav-actions">
+        <a href="/login.html" class="btn btn-ghost">Log in</a>
+        <a href="#demo" class="btn btn-primary">Request Demo</a>
+      </div>
+    </nav>
+    <div class="nav-actions">
+      <div class="header-search desktop-only">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+      </div>
+      <a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+      <a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+      <i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content reveal">
+        <div class="hero-trust">
+          <i class="fa-solid fa-compass-drafting"></i>
+          <span>Industries > Engineering Accounting</span>
+        </div>
+        <h1>Heropesa Engineering Accounting Software</h1>
+        <p>Heropesa’s cloud accounting software unifies project financials, resource schedules, and real-time insights, giving civil and mechanical engineering firms unmatched control of margins, cash flow, and personnel.</p>
+        <div class="hero-actions">
+          <a href="#features" class="btn btn-primary">Explore Features <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#" class="btn btn-outline">Watch Overview</a>
+        </div>
+      </div>
+      <!-- IMAGE PLACEHOLDER 1 -->
+      <div class="media-placeholder media-hero reveal" style="margin-top: 48px;">
+        <span>Engineering Accounting Software Thumbnail</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUICK NAV -->
+  <div class="container">
+    <nav class="quick-nav">
+      <a href="#what-is">What is Heropesa Engineering Accounting Software?</a>
+      <a href="#features">Features</a>
+      <a href="#benefits">Benefits</a>
+      <a href="#challenges">Challenges</a>
+      <a href="#suitesuccess">SuiteSuccess</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </div>
+
+  <!-- WHAT IS SECTION -->
+  <section id="what-is" class="section overview">
+    <div class="container">
+      <div class="overview-grid">
+        <div class="overview-text reveal">
+          <h2>What is Heropesa Engineering Accounting Software?</h2>
+          <p>Heropesa engineering accounting software merges core financial management with project-level cost tracking, employee time capture, resource scheduling, and compliance controls. By connecting all their financial, project, and client data, engineering firms can automate manual work, spot overruns earlier, and close their books faster. This efficiency allows accounting teams to provide timely, accurate financial insights that support informed decision-making and improved project profitability.</p>
+          <h3>Keep project finances accurate and up to date</h3>
+          <h4>Automated tracking</h4>
+          <p>With Heropesa, every transaction—from field purchase orders to CAD-designer timesheets—flows automatically to the general ledger, project P&Ls, and dashboards.</p>
+        </div>
+        <!-- IMAGE PLACEHOLDER 2 -->
+        <div class="reveal reveal-delay-1">
+          <div class="media-placeholder">
+            <span>Automated tracking Thumbnail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section id="features" class="section features">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Heropesa Engineering Accounting Software features</h2>
+        <p>Heropesa brings project-centric finance, operations, and compliance into one platform tailored for engineering firms.</p>
+      </div>
+      <div class="tag-cloud reveal">
+        <span class="tag">Project accounting and job costing</span>
+        <span class="tag">Resource management and scheduling</span>
+        <span class="tag">General ledger</span>
+        <span class="tag">Cash management</span>
+        <span class="tag">Accounts receivable and project billing</span>
+        <span class="tag">Accounts payable and procurement</span>
+        <span class="tag">Tax and regulatory compliance</span>
+        <span class="tag">Close management</span>
+        <span class="tag">Real-time reporting and dashboards</span>
+      </div>
+      <div class="overview-grid" style="margin-top: 48px; align-items: center;">
+        <div class="reveal">
+          <div class="feat-card" style="border: none; padding: 0; background: transparent;">
+            <h4>Project accounting and job costing</h4>
+            <p>Track labor, materials, subcontractors, and overhead against budgets in real time. Heropesa’s cost codes and WIP dashboards help project managers compare estimates with actual spending, safeguard margins, and support change orders, even for complex, multiphase projects.</p>
+          </div>
+        </div>
+        <!-- IMAGE PLACEHOLDER 3 -->
+        <div class="reveal reveal-delay-1">
+          <div class="media-placeholder">
+            <span>Project accounting and job costing Thumbnail</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL / CTA BLOCK -->
+  <section class="section" style="background: var(--bg-light); border-top: 1px solid var(--border);">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Transform your business with Heropesa Engineering Accounting Software</h2>
+      </div>
+      <div class="testimonial-card reveal">
+        <p class="testimonial-quote">"With Heropesa, the visibility that owners have to see the financial statements and real-time data, and the functionality of being able to get data that is relevant very quickly is unlike anything else that I’ve worked with. I’ve learned so much in the short time that I’ve used it."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JJ</div>
+          <div class="testimonial-info">
+            <h6>James Johnson</h6>
+            <span>Chief Financial Officer, Lam-Wood Systems</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section id="benefits" class="section benefits">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Heropesa Engineering Accounting Software benefits</h2>
+      </div>
+      <div class="grid-3">
+        <div class="feat-card reveal">
+          <h4>Boost project profitability</h4>
+          <p>Live cost tracking and automated billing capture every billable hour and expense.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <h4>Accelerate cash flow</h4>
+          <p>Faster invoicing helps reduce DSO, while clear cash position forecasts let firms fund new work without excess debt.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-2">
+          <h4>Firmwide visibility</h4>
+          <p>Unified dashboards align partners, project managers, and finance teams around one set of numbers, enabling better informed, more strategic decisions.</p>
+        </div>
+        <div class="feat-card reveal">
+          <h4>Mobile accessibility</h4>
+          <p>Access project data, approve expenses, and update timesheets from any device to keep on-site teams connected and productive.</p>
+        </div>
+        <div class="feat-card reveal reveal-delay-1">
+          <h4>Scalability for growth</h4>
+          <p>Flexible architecture supports engineering firms as they expand services, enter new markets, or acquire other businesses.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGES SECTION -->
+  <section id="challenges" class="section challenges">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Challenges Heropesa Engineering Accounting Software solves</h2>
+      </div>
+      <div class="grid-2">
+        <div class="challenge-card reveal">
+          <h5><i class="fa-solid fa-clock"></i> Manual time and billing</h5>
+          <p>Integrated time capture and automated invoices help prevent backlogs and revenue leakage.</p>
+        </div>
+        <div class="challenge-card reveal reveal-delay-1">
+          <h5><i class="fa-solid fa-puzzle-piece"></i> Disjointed systems</h5>
+          <p>Replace standalone accounting, timesheet, and project software with one cloud platform.</p>
+        </div>
+        <div class="challenge-card reveal">
+          <h5><i class="fa-solid fa-chart-line"></i> Unpredictable margins</h5>
+          <p>Real-time job costing highlights overruns early and supports timely change order management.</p>
+        </div>
+        <div class="challenge-card reveal reveal-delay-1">
+          <h5><i class="fa-solid fa-users"></i> Resource bottlenecks</h5>
+          <p>Centralized scheduling balances workloads and maximizes utilization of specialized engineers.</p>
+        </div>
+        <div class="challenge-card reveal">
+          <h5><i class="fa-solid fa-file-contract"></i> Audit complexity</h5>
+          <p>Automated compliance tracking and detailed project documentation simplify audit preparation while supporting industry-specific regulatory adherence.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUITESUCCESS -->
+  <section id="suitesuccess" class="section success-section">
+    <div class="container" style="max-width: 850px; margin: 0 auto;">
+      <div class="section-header reveal">
+        <h2>SuiteSuccess – Your proven path to success</h2>
+      </div>
+      <p class="reveal" style="text-align: center; color: var(--text-secondary); line-height: 1.75; font-size: 1.05rem;">Leveraging more than 25 years of experience working with tens of thousands of organizations, across all industries and business sizes, our SuiteSuccess customer lifecycle methodology helps customers transform their business. It starts by building an AI-powered, integrated business suite with industry-specific solutions. Then we engage with your business to ensure that we’re addressing your specific needs and guiding you along the way on how to best consume and optimize Heropesa to solve challenges of today and the future. This approach helps ensure customers experience faster time-to-value, better ROI, and greater employee adoption.</p>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section pricing">
+    <div class="container" style="max-width: 850px; margin: 0 auto;">
+      <div class="section-header reveal">
+        <h2>How much does Heropesa Engineering Accounting Software cost?</h2>
+      </div>
+      <p class="reveal" style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">Companies of every size, from prerevenue startups to fast-growing businesses, have made the move to Heropesa. Looking for a better way to run your business but wondering about the cost?</p>
+      <div class="pricing-card reveal">
+        <p>Users subscribe to Heropesa for an annual fee. Your license is made up of three main components: core platform, optional modules, and number of users. There is also a one-time implementation fee for initial setup. As your business grows, you can easily activate new modules and add users — that’s the beauty of cloud software.</p>
+        <div style="text-align: center; margin-top: 24px;">
+          <a href="#" class="btn btn-primary">Get Custom Pricing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources" class="section resources">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Resources</h2>
+      </div>
+      <div class="tag-cloud reveal" style="margin-bottom: 32px;">
+        <span class="tag">Data sheets</span>
+        <span class="tag">Customer stories</span>
+        <span class="tag">Product demos</span>
+        <span class="tag">Essential learning</span>
+      </div>
+      <div class="overview-grid" style="margin-top: 32px;">
+        <div class="reveal">
+          <h3>Data sheets</h3>
+          <p>Access specifications, features and benefits of Heropesa Engineering Accounting Software.</p>
+          <ul style="margin-top: 16px; list-style: none; padding: 0;">
+            <li style="margin-bottom: 12px;"><a href="#" style="color: var(--google-blue); font-weight: 500;">Heropesa ERP <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7em;"></i></a></li>
+            <li><a href="#" style="color: var(--google-blue); font-weight: 500;">Heropesa SuiteProjects <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.7em;"></i></a></li>
+          </ul>
+          <p style="margin-top: 24px; font-size: 0.85rem; color: var(--text-muted);">Please note that some capabilities described on the page require partner integrations.</p>
+        </div>
+        <!-- IMAGE PLACEHOLDER 4 -->
+        <div class="reveal reveal-delay-1">
+          <div class="media-placeholder" style="min-height: 250px;">
+            <span>Resources Data Sheets Thumbnails</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="heropsa-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+        <p>Cloud ERP built for modern businesses. Unified, intelligent, and designed to scale with your growth.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Core Platforms</h5>
+        <ul>
+          <li><a href="/business-software.html">Business Software</a></li>
+          <li><a href="/pos.html">Point of Sale</a></li>
+          <li><a href="/erp.html">Enterprise ERP</a></li>
+          <li><a href="/accounting.html">Accounting Software</a></li>
+          <li><a href="/crm.html">CRM & Sales</a></li>
+          <li><a href="/hr-payroll.html">HR & Payroll</a></li>
+          <li><a href="/supply-chain.html">Supply Chain</a></li>
+          <li><a href="/inventory.html">Inventory Control</a></li>
+          <li><a href="/analytics-bi.html">Analytics & BI</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Trading & Finance</h5>
+        <ul>
+          <li><a href="/trading-prop.html">Trading & Prop</a></li>
+          <li><a href="/cfd-prop.html">CFD Prop Firms</a></li>
+          <li><a href="/crypto-prop.html">Crypto Prop Solutions</a></li>
+          <li><a href="/prediction-markets.html">Prediction Market Solutions</a></li>
+          <li><a href="/sports-betting.html">Sports Betting Tech</a></li>
+          <li><a href="/payments.html">Payment Processing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Cloud & Infrastructure</h5>
+        <ul>
+          <li><a href="/cloud-infra.html">Cloud & Infrastructure</a></li>
+          <li><a href="/domains.html">Domain Registration</a></li>
+          <li><a href="/web-hosting.html">Web Hosting</a></li>
+          <li><a href="/vps-dedicated.html">VPS & Dedicated</a></li>
+          <li><a href="/cloud-computing.html">Cloud Computing</a></li>
+          <li><a href="/cdn-security.html">CDN & Security</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Security & AI</h5>
+        <ul>
+          <li><a href="/cybersecurity.html">Cybersecurity Suite</a></li>
+          <li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+          <li><a href="/automation-rpa.html">Automation & RPA</a></li>
+          <li><a href="/business-intel.html">Business Intelligence</a></li>
+          <li><a href="/threat-detection.html">Threat Detection</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Industries</h5>
+        <ul>
+          <li><a href="/industries/retail.html">Retail</a></li>
+          <li><a href="/industries/hospitality.html">Hospitality</a></li>
+          <li><a href="/industries/healthcare.html">Healthcare</a></li>
+          <li><a href="/industries/education.html">Education</a></li>
+          <li><a href="/industries/restaurants.html">Restaurants</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <ul>
+          <li><a href="/developers.html">Developer Hub</a></li>
+          <li><a href="/docs.html">API Documentation</a></li>
+          <li><a href="/sdks.html">SDKs & Libraries</a></li>
+          <li><a href="/webhooks.html">Webhooks & Events</a></li>
+          <li><a href="/marketplace.html">App Marketplace</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company & Legal</h5>
+        <ul>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/careers.html">Careers</a></li>
+          <li><a href="/partners.html">Partners</a></li>
+          <li><a href="/contact-sales.html">Contact Sales</a></li>
+          <li><a href="/support.html">Support Center</a></li>
+        </ul>
+      </div>
+      <!-- NEW COLUMNS ADDED -->
+      <div class="footer-col">
+        <h5>Business Types</h5>
+        <ul>
+          <li><a href="#">Hair salon</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="#">SFA</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+        <a href="/cookies.html">Cookie Policy</a>
+        <a href="/accessibility.html">Accessibility</a>
+        <a href="/licenses.html">Licenses</a>
+      </div>
+      <div>©️ 2026 Heropesa Ltd. All rights reserved.</div>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
+      Heropesa Engineering Accounting Software is a cloud-based business management platform.
+      Implementation services and partner integrations may be required for certain capabilities.
+      Contact sales for detailed compliance and regulatory information specific to your industry and region.
+    </p>
+  </div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Mobile Menu Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  if(menuToggle) {
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.classList.toggle('fa-bars', navLinks.classList.contains('active'));
+      menuToggle.classList.toggle('fa-xmark', !navLinks.classList.contains('active'));
+    });
+  }
+
+  // 2. Scroll Reveal Animation
+  const revealElements = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    document.body.classList.add('js-enabled');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    revealElements.forEach(el => el.classList.add('visible'));
+  }
+
+  // 3. Smooth Scroll for Anchor Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if(href === '#demo') return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if(navLinks) navLinks.classList.remove('active');
+        if(menuToggle) {
+          menuToggle.classList.add('fa-bars');
+          menuToggle.classList.remove('fa-xmark');
+        }
+      }
+    });
+  });
+
+  // 4. Header shadow on scroll
+  const header = document.getElementById('navbar');
+  if(header) {
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }, { passive: true });
+  }
+});
+</script>
+</body>
+</html>

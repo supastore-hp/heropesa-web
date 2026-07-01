@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heropesa | Nail Salons</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* =========================================
+   MINIMALIST THEME & VARIABLES
+   ========================================= */
+:root {
+  --primary: #0a0a0a;
+  --primary-hover: #2a2a2a;
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-dark: #111111;
+  --text-main: #0a0a0a;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --border: #e5e5e5;
+  --border-hover: #cccccc;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: 0.2s ease;
+  --font-main: 'Inter', system-ui, sans-serif;
+  --container: 1180px;
+  --header-height: 64px;
+}
+
+/* =========================================
+   RESET & BASE STYLES
+   ========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { font-family: var(--font-main); color: var(--text-main); line-height: 1.65; background: var(--bg-body); overflow-x: hidden; }
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, textarea { font-family: inherit; border: none; outline: none; }
+.skip-link { position: absolute; top: -40px; left: 0; background: #fff; padding: 8px 12px; border: 1px solid var(--border); z-index: 9999; }
+.skip-link:focus { top: 0; }
+
+/* =========================================
+   UTILITIES & LAYOUT
+   ========================================= */
+.container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+.section { padding: 100px 0; position: relative; }
+.section-header { text-align: center; max-width: 780px; margin: 0 auto 64px; }
+.section-header h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.5px; color: var(--text-main); }
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } .section-header h2 { font-size: 1.8rem; } }
+
+/* =========================================
+   MEDIA PLACEHOLDERS
+   ========================================= */
+.media-placeholder {
+  background: var(--bg-light);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  min-height: 300px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+.media-placeholder:hover { border-color: var(--border-hover); }
+.media-placeholder::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2rem; margin-bottom: 12px; display: block; }
+.media-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.media-sm { min-height: 160px; }
+.media-hero { min-height: 420px; }
+.media-row { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; }
+.media-row-item { min-width: 220px; height: 140px; border-radius: var(--radius-md); }
+
+/* =========================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ========================================= */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 24px; border-radius: var(--radius-md); font-weight: 500; font-size: 0.95rem;
+  cursor: pointer; transition: all var(--transition); border: 1.5px solid transparent;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--bg-light); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--text-main); color: var(--text-main); }
+.floating-cta { position: fixed; bottom: 30px; right: 30px; z-index: 999; box-shadow: var(--shadow-lg); }
+
+/* =========================================
+   HEADER & NAVIGATION
+   ========================================= */
+header {
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border); z-index: 1000;
+}
+.nav-wrapper { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.logo { font-size: 1.25rem; font-weight: 700; color: var(--text-main); letter-spacing: -0.3px; display: flex; align-items: center; gap: 8px; }
+.logo i { color: var(--text-main); }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { font-weight: 500; font-size: 0.9rem; color: var(--text-secondary); }
+.nav-links a:hover { color: var(--text-main); }
+.nav-actions { display: flex; align-items: center; gap: 16px; }
+.nav-actions .search-icon { font-size: 1rem; color: var(--text-muted); cursor: pointer; }
+.mobile-toggle { display: none; font-size: 1.25rem; cursor: pointer; color: var(--text-main); }
+@media (max-width: 1024px) {
+  .nav-links, .nav-actions .search-icon { display: none; }
+  .mobile-toggle { display: block; }
+  .nav-links.active { display: flex; flex-direction: column; position: absolute; top: var(--header-height); left: 0; width: 100%; background: #fff; padding: 20px; border-bottom: 1px solid var(--border); gap: 16px; }
+}
+
+/* =========================================
+   HERO SECTION
+   ========================================= */
+.hero { padding-top: calc(var(--header-height) + 60px); padding-bottom: 80px; background: var(--bg-body); }
+.hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
+.hero-content h1 { font-size: 3rem; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.8px; color: var(--text-main); }
+.hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; }
+.hero-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
+@media (max-width: 768px) { .hero-content h1 { font-size: 2.2rem; } }
+
+/* =========================================
+   INDUSTRY TAGS
+   ========================================= */
+.industry-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 32px; }
+.ind-tag { padding: 6px 14px; background: var(--bg-light); border: 1px solid var(--border); border-radius: 20px; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); }
+.ind-tag:hover { border-color: var(--text-main); color: var(--text-main); background: #fff; }
+
+/* =========================================
+   CARD & LIST STYLES
+   ========================================= */
+.card { background: var(--bg-light); padding: 28px; border-radius: var(--radius-lg); border: 1px solid transparent; transition: all var(--transition); display: flex; flex-direction: column; height: 100%; }
+.card:hover { border-color: var(--border); transform: translateY(-3px); box-shadow: var(--shadow-sm); background: #fff; }
+.card-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-main); margin-bottom: 18px; }
+.card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+.card p { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; flex-grow: 1; }
+.card-link { font-size: 0.85rem; font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 5px; }
+.card-link:hover i { transform: translateX(3px); transition: transform 0.2s; }
+
+.feature-list { margin-bottom: 28px; }
+.feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-secondary); }
+.feature-list li i { color: var(--text-main); margin-top: 4px; font-size: 0.85rem; }
+
+/* =========================================
+   PRICING TIERS
+   ========================================= */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.tier-card { background: var(--bg-light); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); transition: all var(--transition); position: relative; }
+.tier-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); background: #fff; }
+.tier-card.best-value { border: 2px solid var(--primary); }
+.tier-card.best-value::before { content: 'Best Value'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+.tier-header { text-align: center; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
+.tier-header h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: 4px; }
+.tier-header .price { font-size: 2rem; font-weight: 700; color: var(--text-main); }
+.tier-header .period { font-size: 0.85rem; color: var(--text-muted); }
+.tier-features li { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 10px; }
+.tier-features li i { color: var(--text-main); font-size: 0.75rem; }
+@media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+   TESTIMONIAL
+   ========================================= */
+.testimonial-box {
+  background: var(--bg-light);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary);
+  max-width: 720px;
+  margin: 0 auto;
+}
+.testimonial-box p { font-size: 1.1rem; font-style: italic; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; }
+.testimonial-author { font-weight: 600; color: var(--text-main); }
+.testimonial-role { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+
+/* =========================================
+   MAILING LIST & NEWSLETTER
+   ========================================= */
+.mailing-list { text-align: center; max-width: 520px; margin: 0 auto; }
+.mailing-list p { margin-bottom: 20px; color: var(--text-secondary); }
+.mailing-form { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.mailing-form input {
+  flex: 1; min-width: 200px; padding: 12px 14px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.95rem;
+}
+.mailing-legal { font-size: 0.7rem; color: var(--text-muted); margin-top: 12px; }
+
+/* =========================================
+   FAQ ACCORDION
+   ========================================= */
+.faq { background: var(--bg-light); border-top: 1px solid var(--border); }
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 12px; overflow: hidden; transition: border-color var(--transition); }
+.faq-item:hover { border-color: var(--border-hover); }
+.faq-q { padding: 18px 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); font-size: 0.98rem; }
+.faq-q i { color: var(--text-muted); transition: transform 0.25s; font-size: 0.85rem; }
+.faq-item.active .faq-q i { transform: rotate(45deg); color: var(--text-main); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 20px; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+.faq-item.active .faq-a { max-height: 300px; padding: 0 20px 18px; }
+
+/* =========================================
+   CTA BANNER
+   ========================================= */
+.cta-banner { background: var(--primary); color: #fff; text-align: center; padding: 80px 0; }
+.cta-banner h2 { font-size: 2.2rem; margin-bottom: 14px; font-weight: 600; }
+.cta-banner p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 28px; max-width: 680px; margin-left: auto; margin-right: auto; }
+.cta-banner .btn-outline { border-color: rgba(255,255,255,0.4); color: #fff; }
+.cta-banner .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+/* =========================================
+   FOOTER
+   ========================================= */
+footer { background: #fff; padding: 80px 0 32px; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.8fr repeat(3, 1fr); gap: 48px; margin-bottom: 48px; }
+.footer-brand p { color: var(--text-secondary); margin: 14px 0 18px; font-size: 0.92rem; line-height: 1.6; max-width: 280px; }
+.social-icons { display: flex; gap: 10px; }
+.social-icons a { width: 34px; height: 34px; border-radius: 50%; background: var(--bg-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); }
+.social-icons a:hover { background: var(--bg-light); border-color: var(--text-main); color: var(--text-main); }
+.footer-col h5 { font-size: 0.95rem; margin-bottom: 18px; color: var(--text-main); font-weight: 600; }
+.footer-col ul li { margin-bottom: 10px; }
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.9rem; }
+.footer-col ul li a:hover { color: var(--text-main); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.82rem; color: var(--text-muted); }
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-links a:hover { color: var(--text-main); }
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } .footer-links { justify-content: center; } }
+
+/* =========================================
+   SCROLL ANIMATIONS
+   ========================================= */
+.reveal { opacity: 0; transform: translateY(16px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+@media (max-width: 480px) {
+  .section { padding: 64px 0; }
+  .btn { width: 100%; }
+  .hero-actions { flex-direction: column; }
+  .media-placeholder { min-height: 240px; }
+}
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to Content</a>
+<!-- HEADER -->
+<header id="navbar" class="heropesa-header">
+<div class="container nav-wrapper">
+<a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
+<nav class="nav-links" id="navLinks">
+<div class="nav-item">
+<a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Core Platforms</h6><ul>
+<li><a href="/erp.html">Enterprise ERP</a></li>
+<li><a href="/accounting.html">Accounting Software</a></li>
+<li><a href="/crm.html">CRM & Sales</a></li>
+<li><a href="/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/inventory.html">Inventory Control</a></li>
+</ul></div>
+<div><h6>Operations</h6><ul>
+<li><a href="/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pos.html">Point of Sale</a></li>
+<li><a href="/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/marketing-auto.html">Marketing Automation</a></li>
+</ul></div>
+<div><h6>Industry Solutions</h6><ul>
+<li><a href="/manufacturing.html">Manufacturing</a></li>
+<li><a href="/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/education.html">Education Platform</a></li>
+<li><a href="/retail.html">Retail & Commerce</a></li>
+</ul></div>
+<div><h6>AI & Automation</h6><ul>
+<li><a href="/ai-support.html">AI Customer Support</a></li>
+<li><a href="/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/ai-workflows.html">AI Workflows</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>By Industry</h6><ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+</ul></div>
+<div><h6>By Use Case</h6><ul>
+<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+<li><a href="/solutions/scaling.html">Global Scaling</a></li>
+<li><a href="/solutions/automation.html">Process Automation</a></li>
+</ul></div>
+<div><h6>By Company Size</h6><ul>
+<li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+</ul></div>
+<div><h6>Migration & Integration</h6><ul>
+<li><a href="/migration.html">Legacy System Migration</a></li>
+<li><a href="/integrations.html">Third-Party Integrations</a></li>
+<li><a href="/api.html">API & Webhooks</a></li>
+<li><a href="/implementation.html">Implementation Services</a></li>
+</ul></div>
+</div>
+</div>
+<div class="nav-item">
+<a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
+<div class="mega-menu">
+<div><h6>Documentation</h6><ul>
+<li><a href="/docs.html">API Documentation</a></li>
+<li><a href="/guides.html">Business Guides</a></li>
+<li><a href="/glossary.html">Solutions Glossary</a></li>
+<li><a href="/help.html">Help Center</a></li>
+</ul></div>
+<div><h6>Learning</h6><ul>
+<li><a href="/demos.html">Product Demos</a></li>
+<li><a href="/stories.html">Customer Stories</a></li>
+<li><a href="/webinars.html">Webinars & Events</a></li>
+<li><a href="/education.html">Education Services</a></li>
+</ul></div>
+<div><h6>Technical</h6><ul>
+<li><a href="/sdks.html">SDKs & Libraries</a></li>
+<li><a href="/status.html">System Status</a></li>
+<li><a href="/changelog.html">Changelog</a></li>
+<li><a href="/sandbox.html">Developer Sandbox</a></li>
+</ul></div>
+<div><h6>Trust & Security</h6><ul>
+<li><a href="/security.html">Security Compliance</a></li>
+<li><a href="/trust.html">Trust Center</a></li>
+<li><a href="/privacy.html">Privacy Policy</a></li>
+<li><a href="/responsible-ai.html">Responsible AI</a></li>
+</ul></div>
+</div>
+</div>
+<a href="/partners.html">Partners</a>
+<a href="#pricing">Pricing</a>
+
+<!-- Mobile-only actions placed inside nav-links for proper mobile display -->
+<div class="mobile-nav-actions">
+  <a href="/login.html" class="btn btn-ghost">Log in</a>
+  <a href="#demo" class="btn btn-primary">Request Demo</a>
+</div>
+</nav>
+<div class="nav-actions">
+<!-- Functional Search Bar replacing Language Selector -->
+<div class="header-search desktop-only">
+    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); margin-right: 8px;"></i>
+    <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
+</div>
+<a href="/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+<i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
+</div>
+</div>
+</header>
+
+<main id="main-content">
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content reveal">
+      <div class="industry-tags reveal" style="margin-bottom: 24px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+        <span class="ind-tag">Beauty</span>
+        <span class="ind-tag">Nail Salons</span>
+      </div>
+      <h1>Nail salon software that puts you in control</h1>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">Get Started</a>
+        <a href="#" class="btn btn-outline">Contact Sales</a>
+      </div>
+    </div>
+    <!-- MEDIA PLACEHOLDER: Hero nail salon image/video -->
+    <div class="media-placeholder media-hero reveal reveal-delay-2" style="margin-top: 40px;">
+      <span>Hero Nail Salon Image/Video Placeholder</span>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE ROW PLACEHOLDERS -->
+<section style="padding: 20px 0; background: var(--bg-light); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="media-row reveal">
+      <div class="media-placeholder media-row-item"><span>Person checking calendar</span></div>
+      <div class="media-placeholder media-row-item"><span>Payment on Heropesa Terminal</span></div>
+      <div class="media-placeholder media-row-item"><span>Person with piercing</span></div>
+      <div class="media-placeholder media-row-item"><span>Nail salon with Heropesa Stands</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALENDAR & BOOKING SECTION -->
+<section class="section" id="calendar">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Make the most of every hour</h2>
+    </div>
+    <div class="grid-2">
+      <div class="card reveal">
+        <h4>Smooth calendar management</h4>
+        <ul class="feature-list">
+          <li><i class="fa-solid fa-check"></i> Drag and drop, color code, and assign specific booths, resources, and techs to bookings within your calendar.</li>
+          <li><i class="fa-solid fa-check"></i> Spend less time managing bookings with automated confirmations and reminders and let the AI-powered automated messaging manage any rescheduling.</li>
+          <li><i class="fa-solid fa-check"></i> Add unlimited tech calendars and sync them across multiple locations.</li>
+        </ul>
+      </div>
+      <div class="card reveal reveal-delay-1" id="payments">
+        <h4>Take payments at the booth, front desk, or on the go</h4>
+        <ul class="feature-list">
+          <li><i class="fa-solid fa-check"></i> Take payments using just your phone — no hardware needed.</li>
+          <li><i class="fa-solid fa-check"></i> Accept every major type of payment your clients prefer, whether that's tap, chip, card on file, Apple Pay, Google Pay, Cash App Pay, or Afterpay.</li>
+          <li><i class="fa-solid fa-check"></i> Access your funds instantly with Heropesa Checking.<sup>¹</sup></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKINGS & CLIENT GROWTH -->
+<section class="section" id="bookings" style="background: var(--bg-light); border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="grid-2">
+      <div class="card reveal">
+        <h4>Keep every booth booked and busy</h4>
+        <ul class="feature-list">
+          <li><i class="fa-solid fa-check"></i> Make it easy for clients to book and rebook you anytime from anywhere with an online booking site.</li>
+          <li><i class="fa-solid fa-check"></i> Add a Book Now button to your Instagram and Facebook profiles.</li>
+          <li><i class="fa-solid fa-check"></i> Get discovered and booked on Heropesa Go.</li>
+          <li><i class="fa-solid fa-check"></i> Maximize your techs' limited time with cancellation and no-show policies and waitlists.</li>
+        </ul>
+      </div>
+      <div class="card reveal reveal-delay-1" id="growth">
+        <h4>Turn walk-ins into regulars</h4>
+        <ul class="feature-list">
+          <li><i class="fa-solid fa-check"></i> Send automated<sup>²</sup> and one-off email and text campaigns for seasonal offers, retail products, and more.</li>
+          <li><i class="fa-solid fa-check"></i> Sell gift cards online and in person to reach even more customers.</li>
+          <li><i class="fa-solid fa-check"></i> Drive repeat business with a loyalty program that rewards returning customers.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="section">
+  <div class="container">
+    <div class="testimonial-box reveal">
+      <p>"Heropesa has been on my side since day one operating as a one-woman show, and has supported me as my business has grown from one team member to 34. Having everything in one place has unlocked our power to grow so quickly."</p>
+      <div class="testimonial-author">Rachel Dang</div>
+      <div class="testimonial-role">Urban Nail Box | Seattle, WA</div>
+      <a href="#" class="btn btn-outline" style="margin-top: 20px;">See all stories</a>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH TOOLS -->
+<section class="section" style="background: var(--bg-light); border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Everything you need to keep things growing</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card reveal">
+        <h4>Bank through Heropesa<sup>3</sup></h4>
+        <p>Manage all of your shop's finances — payments, business banking accounts, cash flow, and more — together in one place.</p>
+        <a href="#" class="card-link">Explore Heropesa Banking <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <h4>Grow your client base</h4>
+        <p>Expand your shop's reach and keep clients coming back with customized, automated email and text campaigns.</p>
+        <a href="#" class="card-link">Explore Heropesa Marketing <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <h4>Add new revenue streams</h4>
+        <p>Sell aftercare, merch, and other retail products online and in-store with inventory management and a customizable eCommerce site.</p>
+        <a href="#" class="card-link">Explore Heropesa Websites <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Get one plan to run your entire business</h2>
+      <a href="#" class="btn btn-outline" style="margin-top: 16px;">Learn more</a>
+    </div>
+    <div class="pricing-grid">
+      <div class="tier-card reveal">
+        <div class="tier-header">
+          <h4>Heropesa Free</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">Game-changing access to business essentials.</p>
+          <div class="price">$0<span class="period">/mo. per location</span></div>
+        </div>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-check"></i> Online booking site and integrations</li>
+          <li><i class="fa-solid fa-check"></i> Appointment reminders</li>
+          <li><i class="fa-solid fa-check"></i> Unlimited calendars</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="width: 100%; margin-top: 20px;">Get started</a>
+        <a href="#" class="card-link" style="justify-content: center; margin-top: 12px;">See all features <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="tier-card best-value reveal reveal-delay-1">
+        <div class="tier-header">
+          <h4>Heropesa Plus</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">Fully loaded for every aspect of business.</p>
+          <div class="price">$49<span class="period">/mo. per location</span></div>
+        </div>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-check"></i> Cancellation policy and no-show fees</li>
+          <li><i class="fa-solid fa-check"></i> Multi-staff appointment booking</li>
+          <li><i class="fa-solid fa-check"></i> Waitlist</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Try free for 30 days</a>
+        <a href="#" class="card-link" style="justify-content: center; margin-top: 12px;">See all features <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="tier-card reveal reveal-delay-2">
+        <div class="tier-header">
+          <h4>Heropesa Premium</h4>
+          <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 8px;">The best of the best with 24/7 support.</p>
+          <div class="price">$149<span class="period">/mo. per location</span></div>
+        </div>
+        <ul class="tier-features">
+          <li><i class="fa-solid fa-check"></i> Future bookings report</li>
+          <li><i class="fa-solid fa-check"></i> Service cost tracking</li>
+          <li><i class="fa-solid fa-check"></i> Resource management</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="width: 100%; margin-top: 20px;">Try free for 30 days</a>
+        <a href="#" class="card-link" style="justify-content: center; margin-top: 12px;">See all features <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+    <div class="card reveal" style="margin-top: 40px; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+      <h4 style="font-size: 1.3rem; margin-bottom: 8px;">Heropesa Pro</h4>
+      <p style="color: var(--text-secondary); margin-bottom: 16px;">Get custom pricing</p>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">If you process over $250,000 per year, talk to our team to see if you're eligible for custom pricing and processing fees. You can also ask about hardware discounts, onboarding and implementation support, technical specialists, and account management.</p>
+      <a href="#" class="btn btn-outline">Talk to our team</a>
+    </div>
+  </div>
+</section>
+
+<!-- HARDWARE SECTION -->
+<section class="section" style="background: var(--bg-light); border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Hardware that suits your style</h2>
+      <a href="#" class="btn btn-outline" style="margin-top: 16px;">See all hardware</a>
+    </div>
+    <div class="grid-4">
+      <div class="card reveal">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Heropesa Handheld</span></div>
+        <h4>Heropesa Handheld</h4>
+        <p>Power your day, manage appointments, and check out anywhere with a pocketable POS.</p>
+        <a href="#" class="card-link">Explore Heropesa Handheld <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Heropesa Register</span></div>
+        <h4>Heropesa Register</h4>
+        <p>Run your entire business right out of the box with a fully integrated, two-screen solution.</p>
+        <a href="#" class="card-link">Explore Heropesa Register <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Heropesa Stand</span></div>
+        <h4>Heropesa Stand</h4>
+        <p>Simplify checkout in just one swivel with an iPad POS you already know how to use.</p>
+        <a href="#" class="card-link">Explore Heropesa Stand <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="card reveal reveal-delay-3">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Heropesa Terminal</span></div>
+        <h4>Heropesa Terminal</h4>
+        <p>Take payments, print receipts, and much more on a compact, countertop device.</p>
+        <a href="#" class="card-link">Explore Heropesa Terminal <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES / INSPIRATION -->
+<section class="section">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>Get inspired</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card reveal">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Keep Appointments on Schedule</span></div>
+        <h4>How to Keep Salon Appointments on Schedule When You're Busy</h4>
+      </div>
+      <div class="card reveal reveal-delay-1">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Optimize Social Bookings</span></div>
+        <h4>How to Optimize Your Bookings on Social Media</h4>
+      </div>
+      <div class="card reveal reveal-delay-2">
+        <div class="media-placeholder media-sm" style="margin-bottom: 16px;"><span>Balancing Appointments</span></div>
+        <h4>The Art of Balancing Regular and Walk-In Appointments</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq" id="support">
+  <div class="container">
+    <div class="section-header reveal">
+      <h2>FAQ</h2>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q">What is nail salon software and what does it do? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Nail salon software helps manage appointments, payments, client communication, inventory, and marketing in one unified platform. Heropesa Appointments combines scheduling, POS, and business tools to streamline salon operations.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I use Heropesa to power my entire nail salon? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Yes. Heropesa handles everything from online booking and tableside payments to inventory tracking, staff scheduling, marketing campaigns, and financial reporting — all from one intuitive system.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Is Heropesa right for my business? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">If you need online booking, payment processing, client management, or marketing tools, Heropesa is built for you. Start free and upgrade as you grow—no long-term contracts required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What payment methods are supported by Heropesa POS? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Heropesa accepts all major payment types: tap, chip, swipe, card on file, Apple Pay, Google Pay, Cash App Pay, Afterpay, and more — even when offline.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How can I switch from my current booking solution? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Our onboarding specialists can help import your appointments, client lists, and service menus. Most salons transition seamlessly within a few days.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How does Heropesa manage tipping for my nail technicians? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Heropesa Supports customizable tip prompts at checkout, tip pooling, and automatic tip distribution to staff. All tips are tracked and reported in your dashboard.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can I book appointments and take payments from my website? <i class="fa-solid fa-plus"></i></div>
+        <div class="faq-a">Yes. You can embed Heropesa Appointments booking widgets directly into your website or use our free customizable booking site. Payments are processed securely in real time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA + NEWSLETTER -->
+<section class="cta-banner reveal">
+  <div class="container">
+    <h2>Try Heropesa</h2>
+    <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 40px;">
+      <a href="#" class="btn" style="background: #fff; color: var(--primary);">Get started</a>
+      <a href="#" class="btn btn-outline">Contact sales</a>
+    </div>
+    <div class="mailing-list" style="max-width: 480px;">
+      <p>Learn about new features and hear stories from other nail salons.</p>
+      <form class="mailing-form">
+        <input type="email" placeholder="Email address" required>
+        <button type="submit" class="btn" style="background: #fff; color: var(--primary); border: none;">Submit</button>
+      </form>
+      <p class="mailing-legal">*This information may be transcribed, used, and stored by third parties in accordance with our Privacy Policy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LEGAL DISCLAIMERS -->
+<section style="padding: 40px 0; background: var(--bg-light); border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-muted);">
+  <div class="container">
+    <p style="margin-bottom: 12px;"><sup>¹</sup> Heropesa Checking is provided by Sutton Bank, Member FDIC. Heropesa Debit Card is issued by Sutton Bank, Member FDIC, pursuant to a license from Mastercard International Incorporated, and may be used wherever Mastercard is accepted. Accounts are FDIC-insured up to $250,000.</p>
+    <p style="margin-bottom: 12px;"><sup>²</sup> Requires a separate subscription to Heropesa Marketing.</p>
+    <p style="margin-bottom: 12px;"><sup>3</sup> Banking services are provided by Heropesa Banking affiliate, Heropesa Financial Services Ltd. or Sutton Bank; Members FDIC. Savings accounts are provided by Heropesa Financial Services Ltd. Member FDIC. Accrue annual percentage yield (APY) of 1.75% per folder on folder balances over $10. APY subject to change, current as of 10/10/22. No minimum deposit is required to open an account. Accounts will not be charged monthly fees. Accounts are FDIC-insured up to $2,500,000.</p>
+  </div>
+</section>
+</main>
+
+<!-- FLOATING CTA -->
+<a href="#" class="btn btn-primary floating-cta">Book a meeting with Heropesa sales</a>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo"><i class="fa-solid fa-Heropesa"></i> Heropesa</a>
+        <p>Enterprise-grade software for modern businesses. Unified, intelligent, and built to scale globally.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Products</h5>
+        <ul>
+          <li><a href="#">Point of sale</a></li>
+          <li><a href="#">Payments</a></li>
+          <li><a href="#">Websites</a></li>
+          <li><a href="#">Kiosk</a></li>
+          <li><a href="#">Invoices</a></li>
+          <li><a href="#">Marketing</a></li>
+          <li><a href="#">Loyalty</a></li>
+          <li><a href="#">Customer Directory</a></li>
+          <li><a href="#">Banking</a></li>
+          <li><a href="#">Staff</a></li>
+          <li><a href="#">Payroll</a></li>
+          <li><a href="#">Buy Now, Pay Later</a></li>
+          <li><a href="#">Hardware</a></li>
+          <li><a href="#">Business software & solutions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Business Types</h5>
+        <ul>
+          <li><a href="#">Food & Beverage</a></li>
+          <li><a href="#">Quick Service</a></li>
+          <li><a href="#">Full Service</a></li>
+          <li><a href="#">Bars & Breweries</a></li>
+          <li><a href="#">Retail</a></li>
+          <li><a href="#">Beauty Salon</a></li>
+          <li><a href="#">Barbershop</a></li>
+          <li><a href="#">Hair Salon</a></li>
+          <li><a href="#">Nail Salon</a></li>
+          <li><a href="#">Day Spa</a></li>
+          <li><a href="#">Tattoo & Piercing</a></li>
+          <li><a href="#">Med spa</a></li>
+          <li><a href="#">Fitness</a></li>
+          <li><a href="#">Professional Services</a></li>
+          <li><a href="#">Home & Repair</a></li>
+          <li><a href="#">Franchises</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources & Support</h5>
+        <ul>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Why Heropesa?</a></li>
+          <li><a href="#">The Bottom Line</a></li>
+          <li><a href="#">Sales</a></li>
+          <li><a href="#">Support</a></li>
+          <li><a href="#">Heropesa Community</a></li>
+          <li><a href="#">Developer Platform</a></li>
+          <li><a href="#">Merchant Services</a></li>
+          <li><a href="#">Rent Hardware</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>Customer support: 1 (855) 700-6000</li>
+          <li>Sales: 1 (833) 959-5325</li>
+          <li style="margin-top: 16px;"><strong>Heropesa</strong></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Press & Media</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Referrals</a></li>
+          <li><a href="#">Partners</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding: 16px 0; border-top: 1px solid var(--border); margin-bottom: 24px; font-size: 0.78rem; color: var(--text-muted);">
+      Translation Notice: Some content may have been translated using AI to help serve our global community. While all of our content is reviewed by humans, occasionally pre-reviewed content may be live. If you have any questions, please do not hesitate to reach out to Heropesa Support in your preferred language.
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="#">United States (English)</a>
+        <a href="#">Privacy Notice</a>
+        <a href="#">Security</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Government</a>
+        <a href="#">Licenses</a>
+        <a href="#">Heropesa Capital Licenses</a>
+        <a href="#">Consumer Health Privacy</a>
+        <a href="#">Hardware Compliance Certifications</a>
+        <a href="#">Heropesa Ltd.</a>
+      </div>
+      <div>© 2026 Heropesa Ltd.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- JAVASCRIPT -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Sticky Header Shadow
+  const header = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    header.style.borderBottomColor = window.scrollY > 10 ? 'var(--border-hover)' : 'var(--border)';
+  });
+
+  // 2. Mobile Menu Toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    menuToggle.classList.toggle('fa-bars', navLinks.classList.contains('active'));
+    menuToggle.classList.toggle('fa-xmark', !navLinks.classList.contains('active'));
+  });
+
+  // 3. FAQ Accordion
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => {
+    const q = item.querySelector('.faq-q');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('active');
+      faqItems.forEach(i => i.classList.remove('active'));
+      if (!isOpen) item.classList.add('active');
+    });
+  });
+
+  // 4. Scroll Reveal Animation
+  const revealElements = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // 5. Smooth Scroll for Anchor Links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        navLinks.classList.remove('active');
+        menuToggle.classList.add('fa-bars');
+        menuToggle.classList.remove('fa-xmark');
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up | Heropesa Ecosystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+
+/* Material Design Google Color Accents */
+.color-blue { color: #1a73e8 !important; }
+.color-red { color: #ea4335 !important; }
+.color-yellow { color: #fbbc05 !important; }
+.color-green { color: #34a853 !important; }
+.bg-blue-light { background-color: rgba(26, 115, 232, 0.08) !important; border-color: rgba(26, 115, 232, 0.3) !important; color: #1a73e8 !important; }
+.bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
+.bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
+.bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
+
+:root {
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa;
+  --text-main: #202124;
+  --text-secondary: #5f6368;
+  --text-muted: #70757a;
+  --border: #dadce0;
+  --border-focus: #1a73e8;
+  --radius: 4px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.signup-container {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-section {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.logo-section a {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+.logo-accent {
+  color: var(--text-muted);
+}
+
+.form-header {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.form-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-header p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.form-group.full-width {
+  grid-column: span 2;
+}
+
+@media (max-width: 480px) {
+  .form-group.full-width {
+    grid-column: span 1;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: var(--text-secondary);
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-wrapper i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 11px 14px 11px 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  transition: all var(--transition);
+  outline: none;
+  background: #fff;
+}
+
+.form-input:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(10, 10, 10, 0.05);
+}
+
+.form-select {
+  width: 100%;
+  padding: 11px 14px 11px 42px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  transition: all var(--transition);
+  outline: none;
+  background: #fff;
+  appearance: none;
+}
+
+.form-select:focus {
+  border-color: var(--border-focus);
+}
+
+.select-wrapper::after {
+  content: '\f078';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.8rem;
+}
+
+.terms-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+.terms-check input {
+  margin-top: 2px;
+}
+
+.terms-check a {
+  color: var(--text-main);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms-check a:hover {
+  text-decoration: underline;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.login-prompt {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.login-link {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Back Link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color var(--transition);
+}
+
+.back-link:hover {
+  color: var(--text-main);
+}
+</style>
+</head>
+<body>
+
+<div>
+  <a href="/index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+  
+  <div class="signup-container">
+    <div class="logo-section">
+      <a href="/index.html">Hero<span class="logo-accent">pesa</span></a>
+    </div>
+    
+    <div class="form-header">
+      <h2>Start Your Free Trial</h2>
+      <p>No credit card required. Get 30 days of full platform access.</p>
+    </div>
+    
+    <form id="signupForm" onsubmit="handleSignup(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="firstName">First Name</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-user"></i>
+            <input class="form-input" type="text" id="firstName" required placeholder="John">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="lastName">Last Name</label>
+          <div class="input-wrapper">
+            <i class="fa-regular fa-user"></i>
+            <input class="form-input" type="text" id="lastName" required placeholder="Doe">
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="email">Work Email</label>
+        <div class="input-wrapper">
+          <i class="fa-regular fa-envelope"></i>
+          <input class="form-input" type="email" id="email" required placeholder="john.doe@company.com">
+        </div>
+      </div>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="companySize">Company Size</label>
+          <div class="input-wrapper select-wrapper">
+            <i class="fa-solid fa-users"></i>
+            <select class="form-select" id="companySize" required>
+              <option value="">Select size</option>
+              <option value="1-9">1 - 9 employees</option>
+              <option value="10-49">10 - 49 employees</option>
+              <option value="50-249">50 - 249 employees</option>
+              <option value="250+">250+ employees</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="phone">Phone Number</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input class="form-input" type="tel" id="phone" required placeholder="+1 (555) 000-0000">
+          </div>
+        </div>
+      </div>
+      
+      <label class="terms-check">
+        <input type="checkbox" required>
+        <span>I agree to the <a href="/terms.html">Terms of Service</a> and acknowledge the <a href="/privacy.html">Privacy Policy</a>.</span>
+      </label>
+      
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span>Create Account</span> <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+    
+    <div class="login-prompt">
+      Already have an account? <a href="/login.html" class="login-link">Sign in</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function handleSignup(e) {
+  e.preventDefault();
+  const firstName = document.getElementById('firstName').value;
+  const email = document.getElementById('email').value;
+  const submitBtn = document.getElementById('submitBtn');
+  
+  submitBtn.disabled = true;
+  submitBtn.style.opacity = '0.7';
+  submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Initializing setup...';
+  
+  setTimeout(() => {
+    alert('Mock registration successful! Dynamic workspace configured for: ' + firstName + ' (' + email + ')');
+    window.location.href = '/index.html';
+  }, 1500);
+}
+</script>
+
+</body>
+</html>
