@@ -1467,6 +1467,14 @@ LOGIN SCREEN
 <div class="login-card">
 <h1 id="loginStoreName">POS.com</h1>
 <p class="subtitle">Retail Management System</p>
+
+<!-- Form Switcher Tabs -->
+<div style="display: flex; justify-content: space-around; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+  <span id="tabLogin" style="cursor: pointer; font-weight: 600; color: var(--primary-color);" onclick="showAuthTab('login')">Sign In</span>
+  <span id="tabRegister" style="cursor: pointer; font-weight: 600; color: var(--text-muted);" onclick="showAuthTab('register')">Register</span>
+</div>
+
+<!-- Sign In Form -->
 <form id="loginForm">
 <div class="form-group">
 <label>Username</label>
@@ -1477,8 +1485,26 @@ LOGIN SCREEN
 <input type="password" id="loginPass" class="form-control" placeholder="Enter password" required>
 </div>
 <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+<div class="login-hint" style="margin-top: 15px; text-align: center;">Default: <strong>owner / owner123</strong></div>
 </form>
-<div class="login-hint">Default: <strong>owner / owner123</strong></div>
+
+<!-- Register Form (hidden by default) -->
+<form id="registerForm" style="display: none;">
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" id="registerName" class="form-control" placeholder="Enter your full name" required>
+</div>
+<div class="form-group">
+<label>Username</label>
+<input type="text" id="registerUser" class="form-control" placeholder="Choose a username" required>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="registerPass" class="form-control" placeholder="Create a password" required>
+</div>
+<button type="submit" class="btn btn-primary btn-block">Create Account</button>
+</form>
+
 </div>
 </div>
 <!-- ============================================================
@@ -4403,7 +4429,81 @@ renderNav();
 navigate('dashboard');
 }
 };
+function showAuthTab(tab) {
+  var loginForm = document.getElementById('loginForm');
+  var registerForm = document.getElementById('registerForm');
+  var tabLogin = document.getElementById('tabLogin');
+  var tabRegister = document.getElementById('tabRegister');
+  if (tab === 'login') {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
+    tabLogin.style.color = 'var(--primary-color)';
+    tabRegister.style.color = 'var(--text-muted)';
+  } else {
+    loginForm.style.display = 'none';
+    registerForm.style.display = 'block';
+    tabLogin.style.color = 'var(--text-muted)';
+    tabRegister.style.color = 'var(--primary-color)';
+  }
+}
+document.getElementById('registerForm').onsubmit = async function(e) {
+  e.preventDefault();
+  var name = document.getElementById('registerName').value.trim();
+  var u = document.getElementById('registerUser').value.trim();
+  var p = document.getElementById('registerPass').value;
+  
+  const btn = document.querySelector('#registerForm button');
+  btn.disabled = true;
+  btn.textContent = 'Registering...';
+  
+  try {
+    const res = await fetch('http://localhost:3000/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p, name: name })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Registration failed');
+    
+    // Save session
+    session = {
+      token: data.token,
+      user: data.user
+    };
+    saveSession(session);
+    
+    // Sync state
+    state = await apiCall('/sync');
+    
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    document.getElementById('userName').textContent = session.user.name;
+    document.getElementById('userRole').textContent = session.user.role;
+    document.getElementById('userAvatar').textContent = session.user.name.charAt(0).toUpperCase();
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString(undefined, {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
+    });
+    applyTheme();
+    renderNav();
+    navigate('dashboard');
+    toast('Account created and logged in!', 'success');
+  } catch (error) {
+    toast(error.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Create Account';
+  }
+};
 (async function initSession() {
+const urlParams = new URLSearchParams(window.location.search);
+const activeTab = urlParams.get('tab');
+if (activeTab === 'register') {
+  showAuthTab('register');
+} else {
+  showAuthTab('login');
+}
 if (session) {
 try {
   state = await apiCall('/sync');
