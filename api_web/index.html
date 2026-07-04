@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero API - Next-Gen Global Payouts</title>
+    <style>
+        /* --- RGB COLOR THEME & VARIABLES --- */
+        :root {
+            /* Core Backgrounds */
+            --bg-base: rgb(10, 12, 16);
+            --bg-surface: rgba(20, 24, 32, 0.7);
+            --bg-surface-solid: rgb(20, 24, 32);
+            
+            /* Text Colors */
+            --text-main: rgb(240, 246, 252);
+            --text-muted: rgb(139, 148, 158);
+            
+            /* RGB Accents */
+            --rgb-blue: rgb(0, 150, 255);
+            --rgb-blue-glow: rgba(0, 150, 255, 0.4);
+            --rgb-green: rgb(0, 230, 118);
+            --rgb-green-glow: rgba(0, 230, 118, 0.3);
+            --rgb-red: rgb(255, 45, 85);
+            
+            /* Gradients & Borders */
+            --rgb-gradient: linear-gradient(135deg, rgb(0, 150, 255), rgb(0, 230, 118));
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-glow: rgba(0, 150, 255, 0.2);
+            
+            /* Shadows */
+            --shadow-neon: 0 0 20px var(--rgb-blue-glow);
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        
+        body { background-color: var(--bg-base); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; cursor: pointer; transition: all 0.3s ease; }
+        a:hover { color: var(--rgb-blue); text-shadow: 0 0 8px var(--rgb-blue-glow); }
+        ul { list-style: none; }
+        
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .text-center { text-align: center; }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        
+        /* Typography Highlights */
+        .text-gradient {
+            background: var(--rgb-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Animations */
+        .fade-in-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; border: none; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-outline { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-subtle); color: var(--text-main); backdrop-filter: blur(10px); }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--rgb-blue); box-shadow: var(--shadow-neon); }
+        .btn-primary { background: var(--rgb-gradient); color: rgb(10, 12, 16); box-shadow: 0 4px 15px rgba(0, 230, 118, 0.3); font-weight: 700; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(0, 150, 255, 0.5); filter: brightness(1.1); }
+
+        /* --- HEADER & NAV --- */
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 20px 0; background: linear-gradient(to bottom, rgba(10,12,16,0.9) 0%, rgba(10,12,16,0) 100%); }
+        .nav-wrapper { background: var(--bg-surface); backdrop-filter: blur(16px); padding: 12px 24px; border-radius: 100px; border: 1px solid var(--border-subtle); box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
+        .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.5rem; color: var(--text-main); letter-spacing: -0.5px; }
+        .logo svg { width: 28px; height: 28px; filter: drop-shadow(0 0 8px var(--rgb-blue)); }
+        .nav-links { display: flex; gap: 30px; font-weight: 500; font-size: 0.9rem; color: var(--text-muted); }
+        
+        /* --- HERO SECTION --- */
+        .hero { padding: 180px 20px 100px; text-align: center; position: relative; }
+        .hero::before { content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(0,150,255,0.15) 0%, rgba(10,12,16,0) 70%); z-index: -1; pointer-events: none; }
+        .hero h1 { font-size: 4rem; font-weight: 900; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1.5px; }
+        .hero p { font-size: 1.25rem; color: var(--text-muted); max-width: 700px; margin: 0 auto 40px; }
+        .hero-actions { display: flex; justify-content: center; gap: 20px; margin-bottom: 80px; }
+        
+        /* --- DASHBOARD MOCKUP --- */
+        .dashboard-mockup { max-width: 1000px; margin: 0 auto; background: var(--bg-surface-solid); border-radius: var(--radius-lg); border: 1px solid var(--border-glow); box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(255,255,255,0.05); overflow: hidden; transform: perspective(1200px) rotateX(4deg); transition: transform 0.5s ease, box-shadow 0.5s ease; }
+        .dashboard-mockup:hover { transform: perspective(1200px) rotateX(0deg); box-shadow: 0 30px 60px rgba(0,150,255,0.15), inset 0 0 0 1px rgba(255,255,255,0.1); }
+        .dash-header { background: rgba(10, 12, 16, 0.8); padding: 16px 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-subtle); }
+        .mac-dots { display: flex; gap: 8px; }
+        .mac-dots span { width: 12px; height: 12px; border-radius: 50%; }
+        .mac-dots .red { background: var(--rgb-red); box-shadow: 0 0 8px var(--rgb-red); } 
+        .mac-dots .yellow { background: rgb(255, 204, 0); } 
+        .mac-dots .green { background: var(--rgb-green); box-shadow: 0 0 8px var(--rgb-green); }
+        .dash-url { background: rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.85rem; padding: 8px 20px; border-radius: 6px; flex-grow: 1; text-align: center; font-family: monospace; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.02); }
+        .dash-body { padding: 40px; text-align: left; background: radial-gradient(circle at top left, rgba(0,150,255,0.05), transparent 50%); }
+        .dash-body h3 { font-size: 1.8rem; margin-bottom: 8px; font-weight: 700; }
+        .dash-body > p { color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; }
+        
+        .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .stat-card { background: rgba(255, 255, 255, 0.02); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); transition: background 0.3s; position: relative; overflow: hidden; }
+        .stat-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(0, 150, 255, 0.3); }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--rgb-gradient); opacity: 0; transition: opacity 0.3s; }
+        .stat-card:hover::before { opacity: 1; }
+        .stat-card h4 { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-card .value { font-size: 2rem; font-weight: 800; margin-bottom: 12px; color: var(--text-main); }
+        .stat-card .trend { font-size: 0.8rem; color: var(--rgb-green); font-weight: 600; display: flex; align-items: center; gap: 6px; background: var(--rgb-green-glow); padding: 4px 8px; border-radius: 4px; width: fit-content; }
+
+        /* --- LOGOS SECTION --- */
+        .logos-section { padding: 80px 0; border-bottom: 1px solid var(--border-subtle); text-align: center; }
+        .logos-section p { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+        .logos-wrapper { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; align-items: center; }
+        .logo-item { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; color: rgba(255,255,255,0.3); transition: all 0.3s; filter: grayscale(100%); cursor: default; }
+        .logo-item:hover { color: var(--text-main); filter: grayscale(0%); text-shadow: 0 0 15px rgba(255,255,255,0.3); transform: scale(1.05); }
+
+        /* --- WHY US & COVERAGE --- */
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .badge { background: rgba(0, 150, 255, 0.1); color: var(--rgb-blue); border: 1px solid var(--rgb-blue-glow); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; display: inline-block; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+        .section-header h2 { font-size: 3rem; font-weight: 900; margin-bottom: 20px; letter-spacing: -1px; }
+        .section-header p { font-size: 1.15rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; }
+
+        .coverage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; padding: 40px 0 80px; }
+        .country-card { background: var(--bg-surface-solid); padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; transition: all 0.3s; cursor: pointer; }
+        .country-card:hover { transform: translateY(-5px); border-color: var(--rgb-blue); box-shadow: var(--shadow-neon); background: rgba(0, 150, 255, 0.05); }
+        .country-info { display: flex; align-items: center; gap: 16px; font-weight: 600; font-size: 1.1rem; }
+        .flag { font-size: 1.8rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(0, 230, 118, 0.1); color: var(--rgb-green); padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid var(--rgb-green-glow); text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-dot { width: 8px; height: 8px; background: var(--rgb-green); border-radius: 50%; box-shadow: 0 0 8px var(--rgb-green); animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0); }
+        }
+
+        /* --- PRESS / INSIGHTS --- */
+        .press-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; padding: 20px 0 80px; }
+        .press-card { background: var(--bg-surface-solid); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-subtle); transition: all 0.3s; cursor: pointer; display: flex; flex-direction: column; }
+        .press-card:hover { transform: translateY(-8px); border-color: var(--rgb-green); box-shadow: 0 15px 30px rgba(0, 230, 118, 0.1); }
+        .press-img { height: 220px; background-color: rgb(20, 24, 32); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .press-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-surface-solid), transparent); opacity: 0.8; }
+        .press-img.rgb-grad { background: var(--rgb-gradient); }
+        .press-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: opacity 0.3s; }
+        .press-card:hover .press-img img { opacity: 1; }
+        
+        .code-block { background: rgb(10, 12, 16); padding: 20px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; color: rgb(200, 200, 200); border: 1px solid rgba(255,255,255,0.1); z-index: 1; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .code-block span.key { color: var(--rgb-blue); }
+        .code-block span.string { color: var(--rgb-green); }
+        
+        .press-content { padding: 30px; flex-grow: 1; display: flex; flex-direction: column; }
+        .press-content h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; line-height: 1.4; color: var(--text-main); }
+        .press-content p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; }
+        .press-content .read-more { color: var(--rgb-blue); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 5px; }
+
+        /* --- BOTTOM CTA --- */
+        .cta-section { margin: 40px 20px 80px; background: linear-gradient(180deg, rgba(20,24,32,0.8) 0%, rgb(10,12,16) 100%); border: 1px solid var(--border-glow); border-radius: var(--radius-lg); padding: 100px 20px; text-align: center; position: relative; overflow: hidden; box-shadow: inset 0 0 100px rgba(0,150,255,0.05); }
+        .cta-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--rgb-gradient); }
+        .cta-section h2 { font-size: 3.5rem; font-weight: 900; margin-bottom: 24px; letter-spacing: -1px; }
+        .cta-section p { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* --- FOOTER --- */
+        footer { padding: 80px 20px 40px; border-top: 1px solid var(--border-subtle); background: rgb(6, 8, 12); }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; padding-bottom: 60px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .footer-logo-area a { font-weight: 600; display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px; border: 1px solid var(--border-subtle); border-radius: 8px; margin-bottom: 30px; background: rgba(255,255,255,0.02); }
+        .footer-logo-area a:hover { border-color: var(--rgb-blue); background: rgba(0, 150, 255, 0.05); }
+        .system-status { display: inline-flex; align-items: center; gap: 10px; background: rgba(0, 230, 118, 0.05); color: var(--rgb-green); padding: 10px 20px; border-radius: 100px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--rgb-green-glow); }
+        .footer-links h4 { font-size: 1.1rem; margin-bottom: 24px; color: var(--text-main); font-weight: 700; letter-spacing: 1px; }
+        .footer-links ul { display: flex; flex-direction: column; gap: 16px; }
+        .footer-links a { color: var(--text-muted); font-size: 0.95rem; }
+        .footer-links a:hover { color: var(--rgb-green); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 40px; color: rgb(100, 100, 100); font-size: 0.9rem; font-family: monospace; }
+
+        /* --- MODAL (DARK THEME) --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+        .modal { background: var(--bg-surface-solid); padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--rgb-blue); box-shadow: 0 0 40px var(--rgb-blue-glow); max-width: 400px; width: 90%; text-align: center; transform: scale(0.9) translateY(20px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal.active, .modal-overlay.active { display: flex; opacity: 1; transform: scale(1) translateY(0); }
+        .modal h3 { margin-bottom: 12px; font-size: 1.5rem; color: var(--text-main); }
+        .modal p { color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem; }
+        .modal-action-text { display: block; margin-bottom: 30px; color: var(--rgb-green); font-family: monospace; font-size: 1.1rem; background: rgba(0,230,118,0.1); padding: 10px; border-radius: 6px; }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .press-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+        }
+        @media (max-width: 600px) {
+            .stat-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+            .cta-section h2 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-wrapper">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24" fill="url(#grad1)"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgb(0,150,255);stop-opacity:1" /><stop offset="100%" style="stop-color:rgb(0,230,118);stop-opacity:1" /></linearGradient></defs><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                Hero
+            </a>
+            <ul class="nav-links">
+                <li><a href="#how-it-works">How it Works</a></li>
+                <li><a href="#products">Products ⌄</a></li>
+                <li><a href="#coverage">Coverage ⌄</a></li>
+                <li><a href="#blogs">Blogs</a></li>
+                <li><a href="#docs">API Docs</a></li>
+            </ul>
+            <button class="btn btn-outline action-btn" data-action="INITIATE_SALES_CHAT">Talk to Sales</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero container fade-in-up">
+            <h1>Global Payouts & Collections, <br><span class="text-gradient">Redefined.</span></h1>
+            <p>Move money instantly across the US, UK, Europe, Asia and Africa. Payout, collect, and settle in local currency or stablecoins — all through one powerful API.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary action-btn" data-action="OPEN_SALES_MODAL">Talk to Sales ↗</button>
+                <button class="btn btn-outline action-btn" data-action="SCROLL_TO_DOCS">How it Works</button>
+            </div>
+
+            <div class="dashboard-mockup">
+                <div class="dash-header">
+                    <div class="mac-dots">
+                        <span class="red"></span><span class="yellow"></span><span class="green"></span>
+                    </div>
+                    <div class="dash-url">🔒 api.hero.network/dashboard</div>
+                </div>
+                <div class="dash-body">
+                    <h3>Welcome back, Admin</h3>
+                    <p>System metrics and live liquidity data synchronized.</p>
+                    
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <h4>Total Volume</h4>
+                            <div class="value">$1,204,428</div>
+                            <div class="trend">↑ 14.2% (+$150k)</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>API Calls</h4>
+                            <div class="value">892,345</div>
+                            <div class="trend">↑ 22.4% (Live)</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Net Revenue</h4>
+                            <div class="value">$45,787</div>
+                            <div class="trend">↑ 8.1% (+$3.4k)</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Latency</h4>
+                            <div class="value">24ms</div>
+                            <div class="trend" style="color:var(--rgb-blue); background:var(--rgb-blue-glow); border:1px solid rgba(0,150,255,0.3)">Optimal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="logos-section container fade-in-up">
+            <p>Infrastructure trusted by global leaders</p>
+            <div class="logos-wrapper">
+                <div class="logo-item hover-color" style="--hover-c: rgb(255, 45, 85);">MoneyGram</div>
+                <div class="logo-item hover-color" style="--hover-c: rgb(0, 150, 255);">d·local</div>
+                <div class="logo-item hover-color" style="--hover-c: rgb(255, 100, 0);">cadana</div>
+                <div class="logo-item hover-color" style="--hover-c: rgb(0, 230, 118);">Mama Money</div>
+                <div class="logo-item hover-color" style="--hover-c: rgb(150, 150, 150);">trans</div>
+            </div>
+        </section>
+
+        <section class="container fade-in-up" style="padding: 100px 0 40px;">
+            <div class="section-header">
+                <span class="badge">The Architecture</span>
+                <h2>Built for the <span>Modern Economy</span></h2>
+                <p>Emerging markets require robust engineering. We built Hero to handle reliable payouts, seamless collections, and next-gen stablecoin liquidity natively.</p>
+            </div>
+        </section>
+
+        <section id="coverage" class="container fade-in-up">
+            <div class="section-header" style="text-align: left; margin-bottom: 20px;">
+                <span class="badge" style="background: rgba(0,230,118,0.1); color: var(--rgb-green); border-color: var(--rgb-green-glow);">Network</span>
+                <h2 style="font-size: 2.5rem;">Global <span class="text-gradient">Nodes</span></h2>
+            </div>
+            
+            <div class="coverage-grid">
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🌎</span> USDG Core</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🇨🇲</span> Cameroon (XAF)</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🇬🇭</span> Ghana (GHS)</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+                <div class="country-card" style="opacity: 0.6;">
+                    <div class="country-info"><span class="flag">🇮🇳</span> India (INR)</div>
+                    <div class="status-badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border-color:rgba(255,255,255,0.1);"><span class="status-dot" style="background:var(--text-muted); animation:none; box-shadow:none;"></span> Beta</div>
+                </div>
+                <div class="country-card" style="opacity: 0.6;">
+                    <div class="country-info"><span class="flag">🇲🇽</span> Mexico (MXN)</div>
+                    <div class="status-badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border-color:rgba(255,255,255,0.1);"><span class="status-dot" style="background:var(--text-muted); animation:none; box-shadow:none;"></span> Beta</div>
+                </div>
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🇺🇬</span> Uganda (UGX)</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🇹🇿</span> Tanzania (TZS)</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+                <div class="country-card">
+                    <div class="country-info"><span class="flag">🇸🇳</span> Senegal (XOF)</div>
+                    <div class="status-badge"><span class="status-dot"></span> Live</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container fade-in-up" style="padding-top: 60px;">
+            <div class="flex justify-between items-center" style="margin-bottom: 40px;">
+                <h2 style="font-size: 2.5rem; font-weight: 900;">Intelligence <span style="color:var(--text-muted); font-weight: 300;">//</span> Logs</h2>
+                <a href="#" class="btn btn-outline" style="padding: 8px 16px;">View Archives ↗</a>
+            </div>
+            
+            <div class="press-grid">
+                <div class="press-card action-btn" data-action="LOAD_ARTICLE_1">
+                    <div class="press-img">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Data Abstract">
+                    </div>
+                    <div class="press-content">
+                        <h3>Enabling the Next Billion with Stablecoins</h3>
+                        <p>Stablecoins aren't the product, they're the rail. Discover the network infrastructure powering borderless scaling.</p>
+                        <div class="read-more">Decrypt Article →</div>
+                    </div>
+                </div>
+                <div class="press-card action-btn" data-action="EXECUTE_API_DOCS">
+                    <div class="press-img rgb-grad">
+                        <div class="code-block">
+                            <span class="key">await</span> hero.transfer({<br>
+                            &nbsp;&nbsp;asset: <span class="string">"TZS"</span>,<br>
+                            &nbsp;&nbsp;amount: <span class="string">25000</span>,<br>
+                            &nbsp;&nbsp;destination: <span class="string">"WALLET_ID"</span><br>
+                            });
+                        </div>
+                    </div>
+                    <div class="press-content">
+                        <h3>Why Emerging Market Payments are 1% Built</h3>
+                        <p>Payment reliability shouldn't be a bottleneck. Learn how the Hero API unifies fragmented global liquidity.</p>
+                        <div class="read-more">View Documentation →</div>
+                    </div>
+                </div>
+                <div class="press-card action-btn" data-action="LOAD_ARTICLE_3">
+                    <div class="press-img">
+                         <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Blockchain node">
+                    </div>
+                    <div class="press-content">
+                        <h3>Heropesa Expands Core Banking Integrations</h3>
+                        <p>Heropesa establishes new protocol bridges with Tier 1 banking infrastructure across East Africa.</p>
+                        <div class="read-more">Decrypt Article →</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section fade-in-up">
+            <h2>Initialize Global Protocol</h2>
+            <p>Deploy reliable cross-border payments in minutes. Join the network building the financial rails for the next billion users.</p>
+            <button class="btn btn-primary action-btn" data-action="LAUNCH_DEMO_ENVIRONMENT" style="font-size: 1.1rem; padding: 16px 40px; border-radius: 100px;">Generate API Keys</button>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid fade-in-up">
+            <div class="footer-logo-area">
+                <a href="mailto:devs@hero.network" style="font-family: monospace;">> ping devs@hero.network ↗</a><br>
+                <div class="system-status"><span class="status-dot"></span> Core Systems Online & Synced</div>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Modules</h4>
+                <ul>
+                    <li><a href="#">Engine Architecture</a></li>
+                    <li><a href="#">Liquidity Pools</a></li>
+                    <li><a href="#">Payout Networks</a></li>
+                    <li><a href="#">Virtual Ledgers</a></li>
+                    <li><a href="#">API Reference</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h4>Network</h4>
+                <ul>
+                    <li><a href="#">System Status</a></li>
+                    <li><a href="#">Security Protocols</a></li>
+                    <li><a href="#">Node Coverage</a></li>
+                    <li><a href="#">Developer Portal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom fade-in-up">
+            <span>[HERO_PROTOCOL_v2.0]</span> © 2026. SECURE CONNECTION ESTABLISHED.
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="interactive-modal">
+        <div class="modal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--rgb-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px; margin: 0 auto 15px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <h3 id="modal-title">Action Received</h3>
+            <p id="modal-desc">Frontend simulation intercepted the following command:</p>
+            <strong class="modal-action-text" id="modal-action-text">COMMAND_NULL</strong>
+            <button class="btn btn-outline" style="width: 100%; border-color: var(--rgb-blue);" onclick="closeModal()">Terminate Output</button>
+        </div>
+    </div>
+
+    <script>
+        // Hover color logic for logos
+        document.querySelectorAll('.logo-item.hover-color').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.color = this.style.getPropertyValue('--hover-c');
+            });
+            item.addEventListener('mouseleave', function() {
+                this.style.color = '';
+            });
+        });
+
+        // Scroll Animations
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up').forEach(section => observer.observe(section));
+
+        // Modal Logic
+        const modalOverlay = document.getElementById('interactive-modal');
+        const modalActionText = document.getElementById('modal-action-text');
+
+        document.querySelectorAll('.action-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modalActionText.innerText = `> ${btn.getAttribute('data-action')}`;
+                
+                modalOverlay.style.display = 'flex';
+                setTimeout(() => modalOverlay.classList.add('active'), 10);
+            });
+        });
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => modalOverlay.style.display = 'none', 300); 
+        }
+
+        modalOverlay.addEventListener('click', (e) => {
+            if(e.target === modalOverlay) closeModal();
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                if (this.getAttribute('href') === '#') return;
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
