@@ -1,2494 +1,1574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="google-site-verification" content="_KzutRP1hl5nYlJSs12dZ4YX2cUeLsY-jdi-XjwlUNA" />
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heropesa ERP | AI-Powered Cloud Business Management</title>
+<title>Heropesa | General Ledger</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
 /* =========================================
-MINIMALIST THEME & VARIABLES (FROM SAAS.TXT)
+DESIGN TOKENS (inherited from saas.txt)
 ========================================= */
-.color-blue { color: #1a73e8 !important; }
-.color-red { color: #ea4335 !important; }
-.color-yellow { color: #fbbc05 !important; }
-.color-green { color: #34a853 !important; }
-.bg-blue-light { background-color: rgba(26, 115, 232, 0.08) !important; border-color: rgba(26, 115, 232, 0.3) !important; color: #1a73e8 !important; }
-.bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
-.bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
-.bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
 :root {
---primary: #1a73e8;
---primary-hover: #1557b0;
---bg-body: #ffffff;
---bg-light: #f8f9fa;
---bg-dark: #ffffff;
---text-main: #202124;
---text-secondary: #5f6368;
---text-muted: #70757a;
---border: #dadce0;
---border-hover: #bdc1c6;
---shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
---shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
---shadow-lg: 0 4px 6px 0 rgba(60, 64, 67, 0.3), 0 8px 16px 6px rgba(60, 64, 67, 0.15);
---radius-sm: 4px;
---radius-md: 4px;
---radius-lg: 8px;
---radius-xl: 16px;
---transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---font-main: 'Inter', system-ui, sans-serif;
---container: 1180px;
---header-height: 72px;
+  --primary: #1a73e8;
+  --primary-hover: #1557b0;
+  --primary-soft: rgba(26, 115, 232, 0.08);
+  --bg-body: #ffffff;
+  --bg-light: #f8f9fa;
+  --bg-surface: #ffffff;
+  --text-main: #202124;
+  --text-secondary: #5f6368;
+  --text-muted: #70757a;
+  --border: #dadce0;
+  --border-hover: #bdc1c6;
+  --divider: #e8eaed;
+  --color-blue: #1a73e8;
+  --color-red: #ea4335;
+  --color-yellow: #fbbc05;
+  --color-green: #34a853;
+  --color-purple: #9334e6;
+  --color-teal: #00897b;
+  --shadow-sm: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+  --shadow-md: 0 1px 3px 0 rgba(60,64,67,.3), 0 4px 8px 3px rgba(60,64,67,.15);
+  --shadow-lg: 0 4px 6px 0 rgba(60,64,67,.3), 0 8px 16px 6px rgba(60,64,67,.15);
+  --shadow-xl: 0 8px 12px 0 rgba(60,64,67,.2), 0 16px 32px 8px rgba(60,64,67,.12);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --header-height: 64px;
+  --sidebar-width: 248px;
+  --sidebar-collapsed: 68px;
 }
-/* =========================================
-RESET & BASE STYLES
-========================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html {
-scroll-behavior: smooth;
-font-size: 16px;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-overflow-x: hidden;
-max-width: 100vw;
-}
-body {
-font-family: var(--font-main);
-color: var(--text-main);
-line-height: 1.65;
-background: var(--bg-body);
-overflow-x: hidden;
-max-width: 100vw;
-}
-body.no-scroll { overflow: hidden; }
-a { text-decoration: none; color: inherit; transition: color var(--transition); }
+html { font-size: 14px; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font-main); color: var(--text-main); background: var(--bg-light); line-height: 1.55; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
 ul, ol { list-style: none; }
-img, svg, video { max-width: 100%; display: block; }
-button, input, textarea, select { font-family: inherit; border: none; outline: none; }
-::selection { background: var(--primary); color: #fff; }
+button, input, select, textarea { font-family: inherit; border: none; outline: none; background: transparent; }
+button { cursor: pointer; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
 /* =========================================
-UTILITIES & LAYOUT
-========================================= */
-.container {
-max-width: var(--container);
-margin: 0 auto;
-padding: 0 24px;
-width: 100%;
-box-sizing: border-box;
-}
-.section { padding: 100px 0; position: relative; }
-.section-header {
-text-align: center;
-max-width: 780px;
-margin: 0 auto 64px;
-}
-.section-header h2 {
-font-size: 2.25rem;
-font-weight: 700;
-margin-bottom: 14px;
-letter-spacing: -0.5px;
-color: var(--text-main);
-}
-.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
-.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
-.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) {
-.grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-.section-header h2 { font-size: 1.8rem; }
-}
-/* =========================================
-BUTTONS & INTERACTIVE ELEMENTS
-========================================= */
-.btn {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-padding: 12px 24px;
-border-radius: var(--radius-md);
-font-weight: 500;
-font-size: 0.95rem;
-cursor: pointer;
-transition: all var(--transition);
-border: 1.5px solid transparent;
-white-space: nowrap;
-flex-shrink: 0;
-min-height: 44px;
-text-decoration: none;
-line-height: 1.2;
-}
-.btn:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover {
-background: var(--primary-hover);
-transform: translateY(-1px);
-box-shadow: var(--shadow-md);
-}
-.btn-primary:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
-.btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
-.btn-outline:hover {
-border-color: var(--primary);
-color: var(--primary);
-background: var(--bg-light);
-}
-.btn-outline:active { background: rgba(26, 115, 232, 0.08); }
-.btn-ghost { background: transparent; color: var(--text-secondary); border: 1.5px solid var(--border); }
-.btn-ghost:hover { border-color: var(--text-main); color: var(--text-main); }
-.btn[disabled], .btn:disabled {
-opacity: 0.5;
-cursor: not-allowed;
-pointer-events: none;
-}
-/* =========================================
-HEROPESA HEADER STYLES
+TOP HEADER (exact saas.txt)
 ========================================= */
 .heropesa-header {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: var(--header-height);
-background: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(12px);
-border-top: 4px solid;
-border-image: linear-gradient(to right, #4285f4 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
-border-bottom: 1px solid var(--border);
-z-index: 1000;
-transition: all var(--transition);
+  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+  background: rgba(255,255,255,.98); backdrop-filter: blur(12px);
+  border-top: 4px solid;
+  border-image: linear-gradient(to right, #4285f4 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
+  border-bottom: 1px solid var(--border); z-index: 1000;
 }
-.heropesa-header.scrolled {
-background: rgba(255, 255, 255, 0.98);
-box-shadow: var(--shadow-sm);
-border-bottom-color: var(--border-hover);
-}
-.nav-wrapper {
-display: flex;
-align-items: center;
-justify-content: space-between;
-height: 100%;
-position: relative;
-}
-.logo {
-font-size: 1.35rem;
-font-weight: 700;
-color: var(--text-main);
-display: flex;
-align-items: center;
-gap: 8px;
-flex-shrink: 0;
-}
-.logo:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+.nav-wrapper { max-width: 100%; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 100%; }
+.logo { font-size: 1.25rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
 .logo-accent { color: var(--primary); }
-/* ---- Primary Nav ---- */
-.nav-links {
-display: flex;
-gap: 24px;
-align-items: center;
-}
-.nav-item { position: relative; }
-.nav-item > a, .nav-direct-link {
-font-weight: 500;
-font-size: 0.9rem;
-color: var(--text-secondary);
-position: relative;
-padding: 4px 0;
-display: flex;
-align-items: center;
-gap: 4px;
-transition: color var(--transition);
-cursor: pointer;
-background: transparent;
-border: none;
-min-height: 44px;
-}
-.nav-item > a:hover, .nav-direct-link:hover { color: var(--text-main); }
-.nav-item > a:focus-visible, .nav-direct-link:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 4px;
-border-radius: 2px;
-}
-.nav-item > a::after, .nav-direct-link::after {
-content: '';
-position: absolute;
-bottom: -2px;
-left: 0;
-width: 0;
-height: 2px;
-background: var(--primary);
-transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-border-radius: 2px;
-}
-.nav-item > a:hover::after, .nav-direct-link:hover::after { width: 100%; }
-.nav-item .chevron {
-font-size: 0.65rem;
-opacity: 0.7;
-transition: transform 0.2s var(--transition);
-}
-.nav-item:hover .chevron, .nav-item[aria-expanded="true"] .chevron { transform: rotate(180deg); }
-.nav-item > a.active, .nav-direct-link.active { color: var(--primary); }
-.nav-item > a.active::after, .nav-direct-link.active::after { width: 100%; }
-/* ---- Mega Menu ---- */
-.mega-menu {
-position: fixed;
-top: var(--header-height);
-left: 50%;
-transform: translateX(-50%) translateY(8px);
-width: min(1000px, calc(100vw - 48px));
-max-width: 95vw;
-background: #fff;
-border: 1px solid var(--border);
-border-radius: var(--radius-lg);
-padding: 32px;
-box-shadow: var(--shadow-lg);
-display: grid;
-grid-template-columns: repeat(4, minmax(180px, 1fr));
-gap: 24px;
-opacity: 0;
-visibility: hidden;
-transition: opacity 0.25s var(--transition), transform 0.25s var(--transition), visibility 0.25s;
-z-index: 999;
-pointer-events: none;
-}
-.nav-item::after {
-content: '';
-position: absolute;
-top: 100%;
-left: -8px;
-width: calc(100% + 16px);
-height: 32px;
-background: transparent;
-pointer-events: auto;
-z-index: 998;
-}
-.nav-item:hover .mega-menu,
-.nav-item:focus-within .mega-menu,
-.nav-item[aria-expanded="true"] .mega-menu {
-opacity: 1;
-visibility: visible;
-transform: translateX(-50%) translateY(0);
-pointer-events: auto;
-}
-.mega-menu h6 {
-font-size: 0.75rem;
-font-weight: 600;
-color: var(--text-main);
-letter-spacing: 0.06em;
-text-transform: uppercase;
-margin-bottom: 12px;
-}
-.mega-menu ul { list-style: none; padding: 0; margin: 0; }
-.mega-menu li { margin-bottom: 8px; }
-.mega-menu a {
-font-size: 0.85rem;
-color: var(--text-secondary);
-display: block;
-padding: 4px 0;
-transition: color var(--transition), padding-left var(--transition);
-position: relative;
-cursor: pointer;
-}
-.mega-menu a:hover { color: var(--primary); padding-left: 4px; }
-.mega-menu a:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-border-radius: 2px;
-}
-.mega-menu a.active { color: var(--primary); font-weight: 500; }
-.mega-menu a.active::after {
-content: '';
-position: absolute;
-bottom: -2px;
-left: 0;
-width: 100%;
-height: 2px;
-background: var(--primary);
-border-radius: 2px;
-}
-/* ---- Nav Actions & Buttons ---- */
-.nav-actions {
-display: flex;
-align-items: center;
-gap: 12px;
-flex-shrink: 0;
-}
-.nav-actions .btn {
-padding: 10px 22px;
-font-size: 0.9rem;
-font-weight: 600;
-border-radius: var(--radius-md);
-min-height: 40px;
-flex-shrink: 0;
-white-space: nowrap;
-}
-.nav-actions .btn-ghost {
-border: 1.5px solid var(--border);
-color: var(--text-secondary);
-background: transparent;
-}
-.nav-actions .btn-ghost:hover {
-border-color: var(--primary);
-color: var(--primary);
-background: var(--bg-light);
-}
-.nav-actions .btn-primary {
-background: var(--primary);
-color: #fff;
-border: 1.5px solid var(--primary);
-}
-.nav-actions .btn-primary:hover {
-background: var(--primary-hover);
-border-color: var(--primary-hover);
-transform: translateY(-1px);
-box-shadow: var(--shadow-md);
-}
-/* ---- Functional Header Search ---- */
-.header-search {
-display: flex;
-align-items: center;
-background: var(--bg-light);
-border: 1px solid var(--border);
-border-radius: var(--radius-md);
-padding: 0 12px;
-transition: all var(--transition);
-flex-shrink: 1;
-min-width: 140px;
-max-width: 220px;
-}
-.header-search:focus-within {
-border-color: var(--primary);
-background: #fff;
-box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
-}
-.header-search input {
-background: transparent;
-border: none;
-padding: 10px 0;
-font-size: 0.9rem;
-color: var(--text-main);
-width: 100%;
-outline: none;
-min-width: 80px;
-}
-.header-search input::placeholder { color: var(--text-muted); }
-.header-search i { flex-shrink: 0; }
-/* ---- Mobile Toggle (Hamburger) ---- */
-.mobile-toggle {
-display: none;
-width: 44px;
-height: 44px;
-cursor: pointer;
-color: var(--text-main);
-background: transparent;
-border: none;
-position: relative;
-flex-shrink: 0;
-border-radius: var(--radius-md);
-transition: background var(--transition);
-}
-.mobile-toggle:hover { background: var(--bg-light); }
-.mobile-toggle:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.hamburger-box {
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-width: 22px;
-height: 16px;
-}
-.hamburger-line {
-position: absolute;
-left: 0;
-width: 100%;
-height: 2px;
-background: var(--text-main);
-border-radius: 2px;
-transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
-}
-.hamburger-line:nth-child(1) { top: 0; }
-.hamburger-line:nth-child(2) { top: 7px; }
-.hamburger-line:nth-child(3) { top: 14px; }
-.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
-top: 7px;
-transform: rotate(45deg);
-}
-.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
-opacity: 0;
-}
-.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
-top: 7px;
-transform: rotate(-45deg);
-}
+.app-header-center { flex: 1; display: flex; align-items: center; gap: 16px; padding: 0 24px; min-width: 0; }
+.breadcrumbs { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--text-muted); flex-shrink: 0; }
+.breadcrumbs a { color: var(--text-secondary); transition: color var(--transition); }
+.breadcrumbs a:hover { color: var(--primary); }
+.breadcrumbs .sep { color: var(--border-hover); }
+.breadcrumbs .current { color: var(--text-main); font-weight: 500; }
+.global-search { flex: 1; max-width: 520px; display: flex; align-items: center; gap: 8px; background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0 12px; height: 38px; transition: all var(--transition); }
+.global-search:focus-within { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px var(--primary-soft); }
+.global-search i { color: var(--text-muted); font-size: 0.9rem; }
+.global-search input { flex: 1; font-size: 0.875rem; color: var(--text-main); height: 100%; }
+.global-search input::placeholder { color: var(--text-muted); }
+.global-search .kbd { font-size: 0.7rem; color: var(--text-muted); background: #fff; border: 1px solid var(--border); border-radius: 3px; padding: 2px 6px; font-family: ui-monospace, monospace; }
+.app-header-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.icon-btn { width: 36px; height: 36px; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition); position: relative; }
+.icon-btn:hover { background: var(--bg-light); color: var(--text-main); }
+.icon-btn .badge { position: absolute; top: 4px; right: 4px; min-width: 16px; height: 16px; background: var(--color-red); color: #fff; font-size: 0.65rem; font-weight: 600; border-radius: 8px; padding: 0 4px; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+.header-divider { width: 1px; height: 24px; background: var(--border); margin: 0 6px; }
+.switcher { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: var(--radius-md); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); transition: all var(--transition); cursor: pointer; }
+.switcher:hover { background: var(--bg-light); color: var(--text-main); }
+.profile-btn { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; border-radius: 20px; transition: all var(--transition); }
+.profile-btn:hover { background: var(--bg-light); }
+.avatar { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #4285f4, #9334e6); color: #fff; font-weight: 600; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+.avatar-lg { width: 44px; height: 44px; font-size: 1rem; }
+
 /* =========================================
-MOBILE DRAWER
+APP LAYOUT
 ========================================= */
-.mobile-drawer-backdrop {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.4);
-backdrop-filter: blur(4px);
-opacity: 0;
-visibility: hidden;
-transition: opacity 0.3s ease, visibility 0.3s ease;
-z-index: 999;
-}
-.mobile-drawer-backdrop.active {
-opacity: 1;
-visibility: visible;
-}
-.mobile-drawer {
-position: fixed;
-top: 0;
-right: 0;
-width: min(380px, 90vw);
-height: 100%;
-background: #fff;
-z-index: 1001;
-transform: translateX(100%);
-transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-display: flex;
-flex-direction: column;
-overflow: hidden;
-box-shadow: var(--shadow-lg);
-}
-.mobile-drawer.active {
-transform: translateX(0);
-}
-.mobile-drawer-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 16px 20px;
-border-bottom: 1px solid var(--border);
-min-height: var(--header-height);
-flex-shrink: 0;
-}
-.mobile-drawer-header .logo { font-size: 1.2rem; }
-.mobile-drawer-close {
-width: 44px;
-height: 44px;
-display: flex;
-align-items: center;
-justify-content: center;
-background: transparent;
-border: none;
-cursor: pointer;
-color: var(--text-main);
-font-size: 1.25rem;
-border-radius: var(--radius-md);
-transition: background var(--transition);
-}
-.mobile-drawer-close:hover { background: var(--bg-light); }
-.mobile-drawer-close:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.mobile-search {
-padding: 16px 20px;
-border-bottom: 1px solid var(--border);
-flex-shrink: 0;
-}
-.mobile-search-input {
-display: flex;
-align-items: center;
-background: var(--bg-light);
-border: 1px solid var(--border);
-border-radius: var(--radius-md);
-padding: 0 14px;
-transition: all var(--transition);
-width: 100%;
-}
-.mobile-search-input:focus-within {
-border-color: var(--primary);
-background: #fff;
-box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
-}
-.mobile-search-input input {
-background: transparent;
-border: none;
-padding: 12px 10px;
-font-size: 0.95rem;
-color: var(--text-main);
-width: 100%;
-outline: none;
-}
-.mobile-search-input input::placeholder { color: var(--text-muted); }
-.mobile-search-input i { color: var(--text-muted); flex-shrink: 0; }
-.mobile-drawer-body {
-flex: 1;
-overflow-y: auto;
-padding: 8px 0;
--webkit-overflow-scrolling: touch;
-}
-.mobile-nav-accordion { padding: 0; }
-.mobile-nav-item {
-border-bottom: 1px solid var(--border);
-}
-.mobile-nav-item:last-child { border-bottom: none; }
-.mobile-nav-trigger {
-display: flex;
-align-items: center;
-justify-content: space-between;
-width: 100%;
-padding: 16px 20px;
-background: transparent;
-border: none;
-cursor: pointer;
-color: var(--text-main);
-font-size: 1rem;
-font-weight: 500;
-text-align: left;
-min-height: 52px;
-transition: background var(--transition);
-}
-.mobile-nav-trigger:hover { background: var(--bg-light); }
-.mobile-nav-trigger:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: -2px;
-}
-.mobile-nav-trigger .chevron {
-font-size: 0.75rem;
-color: var(--text-muted);
-transition: transform 0.3s ease;
-}
-.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger .chevron {
-transform: rotate(180deg);
-color: var(--primary);
-}
-.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger {
-color: var(--primary);
-}
-.mobile-nav-submenu {
-max-height: 0;
-overflow: hidden;
-transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-background: var(--bg-light);
-}
-.mobile-nav-item[aria-expanded="true"] .mobile-nav-submenu {
-max-height: 2000px;
-}
-.mobile-nav-submenu-inner { padding: 8px 20px 16px; }
-.mobile-submenu-group { margin-bottom: 16px; }
-.mobile-submenu-group:last-child { margin-bottom: 0; }
-.mobile-submenu-group h6 {
-font-size: 0.7rem;
-font-weight: 600;
-color: var(--text-muted);
-text-transform: uppercase;
-letter-spacing: 0.08em;
-margin-bottom: 8px;
-padding: 0 4px;
-}
-.mobile-submenu-group ul { list-style: none; padding: 0; margin: 0; }
-.mobile-submenu-group li { margin-bottom: 2px; }
-.mobile-submenu-group a {
-display: block;
-padding: 10px 12px;
-font-size: 0.9rem;
-color: var(--text-secondary);
-border-radius: var(--radius-sm);
-transition: all var(--transition);
-min-height: 40px;
-display: flex;
-align-items: center;
-}
-.mobile-submenu-group a:hover {
-background: #fff;
-color: var(--primary);
-}
-.mobile-submenu-group a:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.mobile-submenu-group a.active {
-color: var(--primary);
-font-weight: 500;
-background: rgba(26, 115, 232, 0.08);
-}
-.mobile-direct-links { padding: 8px 20px; border-bottom: 1px solid var(--border); }
-.mobile-direct-links a {
-display: flex;
-align-items: center;
-padding: 14px 0;
-font-size: 1rem;
-font-weight: 500;
-color: var(--text-main);
-min-height: 48px;
-transition: color var(--transition);
-}
-.mobile-direct-links a:hover { color: var(--primary); }
-.mobile-direct-links a:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.mobile-drawer-footer {
-padding: 16px 20px;
-border-top: 1px solid var(--border);
-flex-shrink: 0;
-background: #fff;
-}
-.mobile-drawer-footer .btn {
-width: 100%;
-min-height: 48px;
-font-size: 1rem;
-font-weight: 600;
-}
+.app-shell { display: grid; grid-template-columns: var(--sidebar-width) 1fr; min-height: 100vh; padding-top: var(--header-height); transition: grid-template-columns var(--transition-slow); }
+.app-shell.sidebar-collapsed { grid-template-columns: var(--sidebar-collapsed) 1fr; }
+
+/* SIDEBAR */
+.sidebar { background: var(--bg-surface); border-right: 1px solid var(--border); height: calc(100vh - var(--header-height)); position: sticky; top: var(--header-height); display: flex; flex-direction: column; overflow: hidden; }
+.sidebar-top { padding: 12px; border-bottom: 1px solid var(--divider); }
+.sidebar-search { display: flex; align-items: center; gap: 8px; background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0 10px; height: 34px; transition: all var(--transition); }
+.sidebar-search:focus-within { border-color: var(--primary); background: #fff; }
+.sidebar-search i { color: var(--text-muted); font-size: 0.8rem; }
+.sidebar-search input { flex: 1; font-size: 0.8rem; height: 100%; }
+.sidebar-search input::placeholder { color: var(--text-muted); }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 8px; }
+.nav-section-label { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 12px 10px 6px; white-space: nowrap; overflow: hidden; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-md); color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all var(--transition); position: relative; white-space: nowrap; overflow: hidden; }
+.nav-item i.icon { width: 18px; text-align: center; font-size: 0.95rem; flex-shrink: 0; }
+.nav-item .label { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.nav-item .chevron { font-size: 0.65rem; color: var(--text-muted); transition: transform var(--transition); }
+.nav-item .nav-badge { font-size: 0.65rem; font-weight: 600; padding: 1px 6px; background: var(--primary-soft); color: var(--primary); border-radius: 10px; }
+.nav-item .nav-badge.danger { background: rgba(234,67,53,.1); color: var(--color-red); }
+.nav-item:hover { background: var(--bg-light); color: var(--text-main); }
+.nav-item.active { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.nav-item.active i.icon { color: var(--primary); }
+.sidebar-footer { padding: 10px; border-top: 1px solid var(--divider); }
+.collapse-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px; border-radius: var(--radius-md); color: var(--text-muted); font-size: 0.8rem; transition: all var(--transition); }
+.collapse-btn:hover { background: var(--bg-light); color: var(--text-main); }
+.app-shell.sidebar-collapsed .sidebar-search, .app-shell.sidebar-collapsed .nav-section-label, .app-shell.sidebar-collapsed .nav-item .label, .app-shell.sidebar-collapsed .nav-item .chevron, .app-shell.sidebar-collapsed .nav-item .nav-badge { display: none; }
+.app-shell.sidebar-collapsed .nav-item { justify-content: center; padding: 10px; }
+
 /* =========================================
-RESPONSIVE HEADER
+MAIN CONTENT
 ========================================= */
-@media (max-width: 1200px) {
-.mega-menu {
-width: min(900px, calc(100vw - 48px));
-grid-template-columns: repeat(3, 1fr);
-}
-}
-@media (max-width: 1024px) {
-.nav-links { display: none; }
-.nav-actions .desktop-only { display: none !important; }
-.mobile-toggle { display: flex; align-items: center; justify-content: center; }
-.header-search { display: none; }
-}
-@media (max-width: 768px) {
-.mega-menu {
-width: 100%;
-grid-template-columns: 1fr 1fr !important;
-}
-.nav-actions { gap: 6px; }
-.nav-actions .btn {
-padding: 6px 12px;
-font-size: 0.78rem;
-min-height: 32px;
-border-radius: var(--radius-sm);
-}
-.logo { font-size: 1.15rem; }
-}
-@media (max-width: 480px) {
-.nav-actions { gap: 4px; }
-.nav-actions .btn {
-padding: 4px 10px;
-font-size: 0.7rem;
-min-height: 28px;
-gap: 4px;
-}
-.logo { font-size: 1rem; }
-}
+.main-content { padding: 24px 28px 48px; min-width: 0; }
+.page-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.page-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.3px; }
+.page-subtitle { font-size: 0.875rem; color: var(--text-secondary); margin-top: 4px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 500; transition: all var(--transition); border: 1px solid transparent; white-space: nowrap; min-height: 34px; }
+.btn-primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn-primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.btn-outline { background: #fff; color: var(--text-main); border-color: var(--border); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+.btn-ghost { color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--bg-light); color: var(--text-main); }
+.btn-danger { background: #fff; color: var(--color-red); border-color: var(--color-red); }
+.btn-danger:hover { background: var(--color-red); color: #fff; }
+.btn-sm { padding: 5px 10px; font-size: 0.78rem; min-height: 28px; }
+
 /* =========================================
-HEROPESA FOOTER STYLES
+VIEW SWITCHER (Dashboard / List)
 ========================================= */
-.heropesa-footer {
-background: #fff;
-padding: 72px 0 32px;
-border-top: 1px solid var(--border);
-}
-.footer-grid {
-display: grid;
-grid-template-columns: 1.8fr repeat(7, 1fr);
-gap: 32px;
-margin-bottom: 48px;
-}
-.footer-brand p {
-color: var(--text-secondary);
-margin: 14px 0 18px;
-font-size: 0.9rem;
-line-height: 1.6;
-max-width: 280px;
-}
+.view-switcher { display: inline-flex; background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 2px; }
+.view-btn { padding: 5px 12px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); transition: all var(--transition); display: inline-flex; align-items: center; gap: 6px; }
+.view-btn.active { background: #fff; color: var(--text-main); box-shadow: var(--shadow-sm); }
+
+/* =========================================
+KPI CARDS
+========================================= */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kpi-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; transition: all var(--transition); position: relative; overflow: hidden; cursor: pointer; }
+.kpi-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+.kpi-card .kpi-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.kpi-card .kpi-label { font-size: 0.72rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi-card .kpi-icon { width: 30px; height: 30px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+.kpi-card .kpi-value { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.kpi-card .kpi-trend { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; }
+.trend-up { color: var(--color-green); font-weight: 600; }
+.trend-down { color: var(--color-red); font-weight: 600; }
+.trend-neutral { color: var(--text-muted); font-weight: 500; }
+.bg-blue-soft { background: var(--primary-soft); color: var(--primary); }
+.bg-green-soft { background: rgba(52,168,83,.1); color: var(--color-green); }
+.bg-red-soft { background: rgba(234,67,53,.1); color: var(--color-red); }
+.bg-yellow-soft { background: rgba(251,188,5,.12); color: #b06000; }
+.bg-purple-soft { background: rgba(147,52,230,.1); color: var(--color-purple); }
+.bg-teal-soft { background: rgba(0,137,123,.1); color: var(--color-teal); }
+
+/* =========================================
+PANELS & TABS
+========================================= */
+.panel { background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.panel-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--divider); }
+.panel-title { font-size: 0.95rem; font-weight: 600; }
+.panel-subtitle { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.panel-body { padding: 18px; }
+.panel-body.flush { padding: 0; }
+.content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 24px; }
+@media (max-width: 1100px) { .content-grid { grid-template-columns: 1fr; } }
+
+/* =========================================
+TOOLBAR (search, filters, actions)
+========================================= */
+.toolbar { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--divider); flex-wrap: wrap; background: var(--bg-surface); }
+.toolbar-search { display: flex; align-items: center; gap: 8px; background: var(--bg-light); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0 10px; height: 32px; flex: 1; max-width: 320px; transition: all var(--transition); }
+.toolbar-search:focus-within { border-color: var(--primary); background: #fff; }
+.toolbar-search i { color: var(--text-muted); font-size: 0.8rem; }
+.toolbar-search input { flex: 1; font-size: 0.82rem; height: 100%; }
+.toolbar-search input::placeholder { color: var(--text-muted); }
+.filter-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 16px; background: var(--bg-light); border: 1px solid var(--border); font-size: 0.78rem; color: var(--text-secondary); cursor: pointer; transition: all var(--transition); }
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+.filter-chip.active { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); font-weight: 500; }
+.filter-chip i { font-size: 0.7rem; }
+.toolbar-divider { width: 1px; height: 24px; background: var(--divider); }
+
+/* =========================================
+DATA TABLE
+========================================= */
+.data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.data-table th { text-align: left; padding: 10px 14px; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; background: var(--bg-light); border-bottom: 1px solid var(--divider); position: sticky; top: 0; cursor: pointer; user-select: none; }
+.data-table th:hover { color: var(--text-main); }
+.data-table th .sort-icon { font-size: 0.65rem; margin-left: 4px; opacity: 0.4; }
+.data-table th.sorted .sort-icon { opacity: 1; color: var(--primary); }
+.data-table td { padding: 11px 14px; border-bottom: 1px solid var(--divider); vertical-align: middle; }
+.data-table tr { transition: background var(--transition); }
+.data-table tbody tr:hover { background: var(--bg-light); }
+.data-table tbody tr.selected { background: var(--primary-soft); }
+.data-table tbody tr:last-child td { border-bottom: none; }
+.table-scroll { max-height: 520px; overflow-y: auto; }
+.table-footer { display: flex; align-items: center; justify-content: space-between; padding: 10px 18px; border-top: 1px solid var(--divider); font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 10px; }
+.pagination { display: flex; align-items: center; gap: 4px; }
+.page-btn { min-width: 28px; height: 28px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--text-secondary); transition: all var(--transition); }
+.page-btn:hover { background: var(--bg-light); color: var(--text-main); }
+.page-btn.active { background: var(--primary); color: #fff; }
+.checkbox-cell { width: 32px; }
+.checkbox { width: 16px; height: 16px; border: 1.5px solid var(--border-hover); border-radius: 3px; cursor: pointer; appearance: none; transition: all var(--transition); position: relative; }
+.checkbox:checked { background: var(--primary); border-color: var(--primary); }
+.checkbox:checked::after { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 0.7rem; font-weight: 700; }
+
+.status-pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: 600; }
+.status-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status-posted { background: rgba(52,168,83,.1); color: var(--color-green); }
+.status-draft { background: rgba(112,117,122,.1); color: var(--text-muted); }
+.status-pending { background: rgba(251,188,5,.15); color: #b06000; }
+.status-approved { background: rgba(26,115,232,.1); color: var(--primary); }
+.status-reversed { background: rgba(234,67,53,.1); color: var(--color-red); }
+
+.amount { font-variant-numeric: tabular-nums; font-weight: 500; }
+.amount.positive { color: var(--color-green); }
+.amount.negative { color: var(--color-red); }
+.link-btn { color: var(--primary); font-weight: 500; cursor: pointer; transition: color var(--transition); }
+.link-btn:hover { color: var(--primary-hover); text-decoration: underline; }
+
+/* Bulk actions bar */
+.bulk-bar { display: none; align-items: center; gap: 12px; padding: 10px 18px; background: var(--primary-soft); border-bottom: 1px solid var(--primary); font-size: 0.82rem; color: var(--primary); font-weight: 500; }
+.bulk-bar.active { display: flex; }
+.bulk-bar .bulk-count { font-weight: 700; }
+.bulk-bar .bulk-actions { display: flex; gap: 6px; margin-left: auto; }
+
+/* =========================================
+MODAL
+========================================= */
+.modal-overlay { position: fixed; inset: 0; background: rgba(32,33,36,.5); backdrop-filter: blur(4px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal { background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); width: 100%; max-width: 900px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; transform: translateY(10px) scale(0.98); transition: transform var(--transition-slow); }
+.modal-overlay.active .modal { transform: translateY(0) scale(1); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--divider); }
+.modal-header h3 { font-size: 1.05rem; font-weight: 600; }
+.modal-close { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); font-size: 1.1rem; }
+.modal-close:hover { background: var(--bg-light); color: var(--text-main); }
+.modal-body { flex: 1; overflow-y: auto; padding: 20px; }
+.modal-footer { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 14px 20px; border-top: 1px solid var(--divider); background: var(--bg-light); }
+
+/* Form */
+.form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.form-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.form-grid.cols-1 { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+.form-label { font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); }
+.form-label .required { color: var(--color-red); }
+.form-input, .form-select { padding: 8px 10px; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--text-main); transition: all var(--transition); background: #fff; min-height: 34px; }
+.form-input:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.form-input[readonly] { background: var(--bg-light); color: var(--text-muted); }
+.form-helper { font-size: 0.72rem; color: var(--text-muted); }
+.form-error { font-size: 0.72rem; color: var(--color-red); display: none; }
+.form-group.invalid .form-input { border-color: var(--color-red); }
+.form-group.invalid .form-error { display: block; }
+
+/* Journal lines editor */
+.lines-editor { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-top: 14px; }
+.lines-editor-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--bg-light); border-bottom: 1px solid var(--divider); font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); }
+.lines-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.lines-table th { padding: 8px 10px; text-align: left; font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; background: var(--bg-light); border-bottom: 1px solid var(--divider); }
+.lines-table td { padding: 4px 6px; border-bottom: 1px solid var(--divider); }
+.lines-table input, .lines-table select { width: 100%; padding: 6px 8px; border: 1px solid transparent; border-radius: 3px; font-size: 0.8rem; transition: all var(--transition); background: transparent; }
+.lines-table input:focus, .lines-table select:focus { border-color: var(--primary); background: #fff; }
+.lines-table input:hover, .lines-table select:hover { background: var(--bg-light); }
+.lines-table .row-num { width: 32px; color: var(--text-muted); font-size: 0.75rem; text-align: center; }
+.lines-table .row-actions { width: 32px; text-align: center; }
+.line-delete { color: var(--text-muted); cursor: pointer; transition: color var(--transition); }
+.line-delete:hover { color: var(--color-red); }
+.add-line-btn { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px; width: 100%; color: var(--primary); font-size: 0.8rem; font-weight: 500; transition: background var(--transition); }
+.add-line-btn:hover { background: var(--bg-light); }
+
+/* Balance footer */
+.balance-footer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 14px; background: var(--bg-light); border-top: 1px solid var(--divider); }
+.balance-item { display: flex; flex-direction: column; gap: 2px; }
+.balance-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.04em; }
+.balance-value { font-size: 1.05rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.balance-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; }
+.balance-status.balanced { background: rgba(52,168,83,.1); color: var(--color-green); }
+.balance-status.unbalanced { background: rgba(234,67,53,.1); color: var(--color-red); }
+
+/* =========================================
+DRAWER (Journal Detail)
+========================================= */
+.drawer-overlay { position: fixed; inset: 0; background: rgba(32,33,36,.4); backdrop-filter: blur(3px); z-index: 9998; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+.drawer-overlay.active { opacity: 1; pointer-events: auto; }
+.drawer { position: fixed; top: 0; right: 0; width: min(640px, 90vw); height: 100vh; background: #fff; box-shadow: var(--shadow-xl); z-index: 9999; transform: translateX(100%); transition: transform var(--transition-slow); display: flex; flex-direction: column; }
+.drawer.active { transform: translateX(0); }
+.drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--divider); }
+.drawer-header h3 { font-size: 1.05rem; font-weight: 600; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
+.drawer-section { margin-bottom: 24px; }
+.drawer-section-title { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.detail-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.detail-item { display: flex; flex-direction: column; gap: 3px; }
+.detail-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 500; letter-spacing: 0.04em; }
+.detail-value { font-size: 0.88rem; color: var(--text-main); font-weight: 500; }
+
+/* Timeline */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 2px; background: var(--divider); }
+.timeline-item { position: relative; padding-bottom: 16px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before { content: ''; position: absolute; left: -20px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--primary); }
+.timeline-item.completed::before { background: var(--color-green); border-color: var(--color-green); }
+.timeline-item.pending::before { background: #fff; border-color: var(--border-hover); }
+.timeline-title { font-size: 0.85rem; font-weight: 500; color: var(--text-main); }
+.timeline-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+/* =========================================
+TOAST
+========================================= */
+.toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 8px; }
+.toast { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--primary); border-radius: var(--radius-md); padding: 12px 16px; min-width: 280px; max-width: 380px; box-shadow: var(--shadow-lg); display: flex; gap: 10px; align-items: flex-start; animation: toastIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.toast.success { border-left-color: var(--color-green); }
+.toast.error { border-left-color: var(--color-red); }
+.toast.warning { border-left-color: var(--color-yellow); }
+.toast-icon { font-size: 1rem; margin-top: 2px; }
+.toast.success .toast-icon { color: var(--color-green); }
+.toast.error .toast-icon { color: var(--color-red); }
+.toast.warning .toast-icon { color: var(--color-yellow); }
+.toast-body { flex: 1; }
+.toast-title { font-size: 0.85rem; font-weight: 600; margin-bottom: 2px; }
+.toast-msg { font-size: 0.78rem; color: var(--text-secondary); }
+@keyframes toastIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+/* =========================================
+COMMAND PALETTE
+========================================= */
+.command-overlay { position: fixed; inset: 0; background: rgba(32,33,36,.4); backdrop-filter: blur(6px); z-index: 9999; display: flex; align-items: flex-start; justify-content: center; padding-top: 12vh; opacity: 0; pointer-events: none; transition: opacity var(--transition); }
+.command-overlay.active { opacity: 1; pointer-events: auto; }
+.command-box { width: 100%; max-width: 580px; background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); overflow: hidden; transform: translateY(-10px) scale(0.98); transition: transform var(--transition-slow); }
+.command-overlay.active .command-box { transform: translateY(0) scale(1); }
+.command-input-wrap { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--divider); }
+.command-input-wrap i { color: var(--text-muted); }
+.command-input { flex: 1; font-size: 0.95rem; }
+.command-input::placeholder { color: var(--text-muted); }
+.command-results { max-height: 400px; overflow-y: auto; padding: 6px; }
+.command-group-label { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; padding: 10px 12px 6px; letter-spacing: 0.06em; }
+.command-item { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition); }
+.command-item:hover, .command-item.selected { background: var(--bg-light); }
+.command-item i { width: 18px; color: var(--text-muted); font-size: 0.85rem; }
+.command-item .cmd-label { flex: 1; font-size: 0.85rem; }
+.command-item .cmd-hint { font-size: 0.72rem; color: var(--text-muted); }
+.command-footer { padding: 8px 14px; border-top: 1px solid var(--divider); display: flex; gap: 14px; font-size: 0.7rem; color: var(--text-muted); }
+.command-footer kbd { background: var(--bg-light); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; font-family: ui-monospace, monospace; font-size: 0.65rem; margin-right: 4px; }
+
+/* =========================================
+EMPTY STATE
+========================================= */
+.empty-state { padding: 60px 20px; text-align: center; }
+.empty-state-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--bg-light); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 1.5rem; color: var(--text-muted); }
+.empty-state h4 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.empty-state p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px; max-width: 360px; margin-left: auto; margin-right: auto; }
+
+/* =========================================
+FOOTER (exact saas.txt)
+========================================= */
+.heropesa-footer { background: #fff; padding: 72px 0 32px; border-top: 1px solid var(--border); }
+.footer-container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.footer-grid { display: grid; grid-template-columns: 1.8fr repeat(4, 1fr); gap: 32px; margin-bottom: 48px; }
+.footer-brand p { color: var(--text-secondary); margin: 14px 0 18px; font-size: 0.9rem; line-height: 1.6; max-width: 280px; }
 .social-icons { display: flex; gap: 10px; }
-.social-icons a {
-width: 36px;
-height: 36px;
-border-radius: 50%;
-background: var(--bg-light);
-border: 1px solid var(--border);
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--text-muted);
-transition: all var(--transition);
-}
+.social-icons a { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-light); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all var(--transition); }
 .social-icons a:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
-.social-icons a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; color: var(--text-main); }
+.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; }
 .footer-col ul li { margin-bottom: 9px; }
-.footer-col ul li a {
-color: var(--text-secondary);
-font-size: 0.82rem;
-transition: color var(--transition), padding-left var(--transition);
-display: inline-block;
-position: relative;
-}
-.footer-col ul li a:hover { color: var(--primary); padding-left: 2px; }
-.footer-col ul li a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
-.footer-col ul li a::after {
-content: '';
-position: absolute;
-bottom: -2px;
-left: 0;
-width: 0;
-height: 1.5px;
-background: var(--primary);
-transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-border-radius: 2px;
-}
-.footer-col ul li a:hover::after { width: 100%; }
-.footer-col ul li a.active { color: var(--primary); font-weight: 500; }
-.footer-col ul li a.active::after { width: 100%; }
-.footer-links a { position: relative; display: inline-block; }
-.footer-links a::after {
-content: '';
-position: absolute;
-bottom: -2px;
-left: 0;
-width: 0;
-height: 1.5px;
-background: var(--primary);
-transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-border-radius: 2px;
-}
-.footer-links a:hover::after { width: 100%; }
-.footer-links a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
-.footer-links a.active { color: var(--primary); font-weight: 500; }
-.footer-links a.active::after { width: 100%; }
-.footer-bottom {
-border-top: 1px solid var(--border);
-padding-top: 24px;
-display: flex;
-justify-content: space-between;
-flex-wrap: wrap;
-gap: 16px;
-font-size: 0.8rem;
-color: var(--text-muted);
-}
+.footer-col ul li a { color: var(--text-secondary); font-size: 0.82rem; transition: color var(--transition); }
+.footer-col ul li a:hover { color: var(--primary); }
+.footer-bottom { border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted); }
 .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
 .footer-links a { color: var(--text-muted); transition: color var(--transition); }
 .footer-links a:hover { color: var(--primary); }
-@media (max-width: 1200px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; text-align: center; } .footer-links { justify-content: center; } }
+
+/* =========================================
+RESPONSIVE
+========================================= */
+@media (max-width: 1024px) {
+  .app-shell { grid-template-columns: var(--sidebar-collapsed) 1fr; }
+  .sidebar-search, .nav-section-label, .nav-item .label, .nav-item .chevron, .nav-item .nav-badge { display: none; }
+  .nav-item { justify-content: center; padding: 10px; }
+  .app-header-center .breadcrumbs { display: none; }
+}
 @media (max-width: 768px) {
-.footer-grid { grid-template-columns: repeat(2, 1fr); }
-.footer-col:nth-child(n+4) { grid-column: span 2; }
+  .app-shell { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main-content { padding: 16px; }
+  .global-search { display: none; }
+  .switcher .name, .profile-btn .name { display: none; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .balance-footer { grid-template-columns: repeat(2, 1fr); }
 }
-@media (max-width: 600px) {
-.footer-grid { grid-template-columns: 1fr; }
-.footer-col:nth-child(n+4) { grid-column: span 1; }
-.footer-bottom { flex-direction: column; text-align: center; }
-.footer-links { justify-content: center; }
-}
-/* =========================================
-DEMO MODAL OVERLAY
-========================================= */
-.demo-modal-overlay {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background: rgba(0, 0, 0, 0.4);
-backdrop-filter: blur(4px);
-display: flex;
-align-items: center;
-justify-content: center;
-opacity: 0;
-pointer-events: none;
-transition: opacity 0.3s ease;
-z-index: 99999;
-padding: 20px;
-}
-.demo-modal-overlay.active { opacity: 1; pointer-events: auto; }
-.demo-modal-container {
-background: #ffffff;
-border: 1px solid #e5e5e5;
-border-radius: 12px;
-padding: 32px;
-width: 100%;
-max-width: 460px;
-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-transform: scale(0.9);
-transition: transform 0.3s ease;
-position: relative;
-box-sizing: border-box;
-max-height: 90vh;
-overflow-y: auto;
-}
-.demo-modal-overlay.active .demo-modal-container { transform: scale(1); }
-.demo-modal-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 24px;
-}
-.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
-.demo-modal-close {
-background: transparent;
-border: none;
-font-size: 1.5rem;
-cursor: pointer;
-color: #888888;
-transition: color 0.2s;
-line-height: 1;
-width: 44px;
-height: 44px;
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: var(--radius-md);
-}
-.demo-modal-close:hover { color: #0a0a0a; background: var(--bg-light); }
-.demo-modal-close:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.demo-form-group { margin-bottom: 16px; text-align: left; }
-.demo-form-group label {
-display: block;
-font-size: 0.85rem;
-font-weight: 500;
-margin-bottom: 6px;
-color: #555555;
-}
-.demo-form-group input, .demo-form-group select {
-width: 100%;
-padding: 10px 12px;
-border: 1px solid #e5e5e5;
-border-radius: 6px;
-font-size: 0.92rem;
-outline: none;
-transition: border-color 0.25s;
-box-sizing: border-box;
-min-height: 44px;
-}
-.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
-.demo-form-group input:focus-visible, .demo-form-group select:focus-visible {
-outline: 2px solid var(--primary);
-outline-offset: 2px;
-}
-.demo-submit-btn {
-width: 100%;
-padding: 12px;
-background: #0a0a0a;
-color: #ffffff;
-border: none;
-border-radius: 6px;
-font-weight: 500;
-font-size: 0.95rem;
-cursor: pointer;
-transition: background-color 0.25s;
-margin-top: 8px;
-min-height: 44px;
-}
-.demo-submit-btn:hover { background: #222222; }
-.demo-submit-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.demo-success-state { text-align: center; padding: 20px 0; }
-.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
-.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
-.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
-.demo-close-btn {
-padding: 10px 24px;
-background: #0a0a0a;
-color: #ffffff;
-border: none;
-border-radius: 6px;
-font-weight: 500;
-cursor: pointer;
-min-height: 44px;
-}
-.demo-close-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-/* =========================================
-SEARCH HIGHLIGHT
-========================================= */
-.search-highlight mark { background: transparent; color: inherit; font-weight: 600; }
-.search-highlight {
-background-color: #fff3cd;
-border-radius: 2px;
-padding: 0 2px;
-transition: background-color 0.3s;
-}
-.search-highlight.active-match { background-color: #fdcb6e; }
-/* =========================================
-SCROLL ANIMATIONS
-========================================= */
-.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
-.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-/* =========================================
-MISC & RESPONSIVE FIXES
-========================================= */
-@media (max-width: 480px) {
-.section { padding: 64px 0; }
-.btn { width: 100%; }
-}
-@media (max-width: 360px) {
-.container { padding: 0 16px; }
-}
-/* Skip to content link */
-.skip-link {
-position: absolute;
-top: -100px;
-left: 16px;
-background: var(--primary);
-color: #fff;
-padding: 12px 20px;
-border-radius: var(--radius-md);
-z-index: 10000;
-font-weight: 500;
-transition: top 0.2s;
-}
-.skip-link:focus {
-top: 16px;
-}
-.sr-only {
-position: absolute;
-width: 1px;
-height: 1px;
-padding: 0;
-margin: -1px;
-overflow: hidden;
-clip: rect(0, 0, 0, 0);
-white-space: nowrap;
-border: 0;
-}
-
-/* =========================================
-ADDITIONAL SECTIONS CSS (FROM SAAS2.TXT)
-========================================= */
-.hero {
-padding-top: calc(var(--header-height) + 40px); padding-bottom: 72px;
-background: linear-gradient(180deg, var(--bg-light) 0%, var(--bg-body) 100%);
-}
-.hero-content { text-align: center; max-width: 800px; margin: 0 auto; }
-.hero-content h1 {
-font-size: 2.75rem; font-weight: 700; line-height: 1.15; margin-bottom: 20px;
-letter-spacing: -0.8px; color: var(--text-main);
-}
-.hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; max-width: 650px; margin-left: auto; margin-right: auto; }
-.hero-stats { display: inline-flex; align-items: center; gap: 8px; background: var(--bg-light); padding: 8px 16px; border-radius: var(--radius-md); font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px; }
-.hero-stats i { color: var(--primary); }
-.hero-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-.hero-trust { display: flex; justify-content: center; align-items: center; gap: 20px; color: var(--text-muted); font-size: 0.9rem; flex-wrap: wrap; }
-@media (max-width: 768px) {
-.hero-content h1 { font-size: 2.1rem; }
-.hero-content p { font-size: 1.05rem; }
-}
-
-.img-placeholder {
-background: var(--bg-light);
-border: 1px solid var(--border);
-border-radius: var(--radius-lg);
-display: flex;
-align-items: center;
-justify-content: center;
-color: var(--text-muted);
-font-size: 0.85rem;
-position: relative;
-overflow: hidden;
-transition: border-color var(--transition);
-}
-.img-placeholder:hover { border-color: var(--primary); }
-.img-placeholder::before {
-content: '\f03e';
-font-family: 'Font Awesome 6 Free';
-font-weight: 900;
-font-size: 1.75rem;
-margin-bottom: 10px;
-display: block;
-color: var(--primary);
-opacity: 0.7;
-}
-.img-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.img-hero { min-height: 420px; border-radius: var(--radius-xl); }
-.img-card { min-height: 200px; }
-.img-sm { min-height: 140px; border-radius: var(--radius-md); }
-
-.ai-section { background: var(--bg-body); }
-.ai-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
-.ai-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
-.ai-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
-.ai-features li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; font-size: 0.95rem; color: var(--text-secondary); }
-.ai-features li i { color: var(--primary); margin-top: 4px; font-size: 0.9rem; }
-.testimonial-mini {
-background: var(--bg-light); padding: 24px; border-radius: var(--radius-lg);
-border-left: 3px solid var(--primary); margin-top: 24px;
-}
-.testimonial-mini p { font-size: 0.95rem; font-style: italic; color: var(--text-main); margin-bottom: 12px; }
-.testimonial-mini .author { font-size: 0.85rem; color: var(--text-secondary); }
-.testimonial-mini .author strong { color: var(--text-main); font-weight: 600; }
-@media (max-width: 900px) { .ai-layout { grid-template-columns: 1fr; } }
-
-.benefits-section { background: var(--bg-light); border-top: 1px solid var(--border); }
-.benefits-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.benefit-card {
-background: #fff; padding: 28px; border-radius: var(--radius-lg);
-border: 1px solid var(--border); transition: all var(--transition);
-}
-.benefit-card:hover { border-color: var(--primary); transform: translateY(-2px); }
-.benefit-card i { font-size: 1.4rem; color: var(--primary); margin-bottom: 14px; }
-.benefit-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
-.benefit-card p { font-size: 0.92rem; color: var(--text-secondary); }
-@media (max-width: 900px) { .benefits-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .benefits-grid { grid-template-columns: 1fr; } }
-
-.features-section { background: var(--bg-body); }
-.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.feature-card {
-background: var(--bg-light); padding: 24px; border-radius: var(--radius-lg);
-border: 1px solid var(--border); transition: all var(--transition);
-display: flex; flex-direction: column; height: 100%;
-}
-.feature-card:hover { border-color: var(--primary); }
-.feature-card h4 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-.feature-card h4 i { color: var(--primary); }
-.feature-card p { font-size: 0.9rem; color: var(--text-secondary); flex-grow: 1; }
-@media (max-width: 900px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
-
-.challenges-section { background: var(--bg-light); border-top: 1px solid var(--border); }
-.challenges-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; align-items: center; }
-.challenges-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; }
-.challenges-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
-.challenge-item {
-background: #fff; padding: 20px; border-radius: var(--radius-md);
-border: 1px solid var(--border); margin-bottom: 16px;
-}
-.challenge-item h5 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-.challenge-item h5 i { color: var(--primary); }
-.challenge-item p { font-size: 0.9rem; color: var(--text-secondary); }
-@media (max-width: 900px) { .challenges-grid { grid-template-columns: 1fr; } }
-
-.success-section { background: var(--bg-body); }
-.success-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
-.success-content h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 16px; }
-.success-content p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 24px; }
-.success-steps { counter-reset: step; }
-.success-step {
-display: flex; gap: 16px; margin-bottom: 24px; position: relative; padding-left: 48px;
-}
-.success-step::before {
-counter-increment: step; content: counter(step);
-position: absolute; left: 0; top: 0;
-width: 32px; height: 32px; border-radius: 50%;
-background: var(--primary); color: #fff;
-display: flex; align-items: center; justify-content: center;
-font-weight: 600; font-size: 0.9rem;
-}
-.success-step h5 { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
-.success-step p { font-size: 0.92rem; color: var(--text-secondary); }
-@media (max-width: 900px) { .success-layout { grid-template-columns: 1fr; } }
-
-.pricing-section { background: var(--bg-light); border-top: 1px solid var(--border); }
-.pricing-card {
-background: #fff; border-radius: var(--radius-xl); border: 1px solid var(--border);
-padding: 40px; max-width: 700px; margin: 0 auto; box-shadow: var(--shadow-md);
-}
-.pricing-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 16px; text-align: center; }
-.pricing-card > p { text-align: center; color: var(--text-secondary); margin-bottom: 32px; }
-.pricing-components { margin-bottom: 32px; }
-.pricing-component {
-display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; padding-bottom: 16px;
-border-bottom: 1px solid var(--border);
-}
-.pricing-component:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.pricing-component i { color: var(--primary); font-size: 1.1rem; margin-top: 2px; }
-.pricing-component h5 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-.pricing-component p { font-size: 0.9rem; color: var(--text-secondary); }
-.pricing-note { font-size: 0.85rem; color: var(--text-muted); text-align: center; line-height: 1.5; }
-
-.resources-section { background: var(--bg-body); }
-.resources-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.resource-card {
-background: var(--bg-light); padding: 24px; border-radius: var(--radius-lg);
-border: 1px solid var(--border); transition: all var(--transition);
-display: flex; align-items: center; gap: 16px;
-}
-.resource-card:hover { border-color: var(--primary); transform: translateY(-2px); }
-.resource-card i { font-size: 1.5rem; color: var(--primary); }
-.resource-card h5 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-.resource-card p { font-size: 0.9rem; color: var(--text-secondary); }
-@media (max-width: 900px) { .resources-grid { grid-template-columns: 1fr; } }
-
-.cta-banner {
-background: var(--primary); color: #fff; text-align: center;
-padding: 72px 0; position: relative; overflow: hidden;
-}
-.cta-banner h3 { font-size: 2rem; font-weight: 700; margin-bottom: 14px; }
-.cta-banner p { font-size: 1.05rem; opacity: 0.95; margin-bottom: 28px; max-width: 600px; margin-left: auto; margin-right: auto; }
-.cta-banner .btn-outline { border-color: rgba(255,255,255,0.3); color: #fff; }
-.cta-banner .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
 </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- =========================================
-HEADER
-========================================= -->
-<header id="navbar" class="heropesa-header" role="banner">
-<div class="container nav-wrapper">
-<a href="/index.html" class="logo" aria-label="Heropesa Home">Heropesa<span class="logo-accent"> </span></a>
-<nav class="nav-links" id="navLinks" aria-label="Main navigation">
-<!-- Products -->
-<div class="nav-item" data-nav="products">
-<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Products <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
-<div class="mega-menu" role="menu" aria-label="Products menu">
-<div>
-<h6>Core Platforms</h6>
-<ul>
-<li><a href="/pages/erpldg.html" role="menuitem">Enterprise ERP</a></li>
-<li><a href="/pages/accounting.html" role="menuitem">Accounting Software</a></li>
-<li><a href="/pages/crmldg.html" role="menuitem">CRM &amp; Sales</a></li>
-<li><a href="/pages/hr-payroll.html" role="menuitem">HR &amp; Payroll</a></li>
-<li><a href="/pages/inventory.html" role="menuitem">Inventory Control</a></li>
-</ul>
-</div>
-<div>
-<h6>Operations</h6>
-<ul>
-<li><a href="/pages/supply-chain.html" role="menuitem">Supply Chain</a></li>
-<li><a href="/pages/posldg.html" role="menuitem">Point of Sale</a></li>
-<li><a href="/pages/analytics-bi.html" role="menuitem">Analytics &amp; BI</a></li>
-<li><a href="/pages/marketing-auto.html" role="menuitem">Marketing Automation</a></li>
-</ul>
-</div>
-<div>
-<h6>Industry Solutions</h6>
-<ul>
-<li><a href="/pages/manufacturing.html" role="menuitem">Manufacturing</a></li>
-<li><a href="/pages/healthcare-os.html" role="menuitem">Healthcare OS</a></li>
-<li><a href="/pages/education.html" role="menuitem">Education Platform</a></li>
-<li><a href="/pages/retail.html" role="menuitem">Retail &amp; Commerce</a></li>
-</ul>
-</div>
-<div>
-<h6>AI &amp; Automation</h6>
-<ul>
-<li><a href="/pages/ai-support.html" role="menuitem">AI Customer Support</a></li>
-<li><a href="/pages/automation-rpa.html" role="menuitem">Automation &amp; RPA</a></li>
-<li><a href="/pages/enterprise-ai.html" role="menuitem">Enterprise AI</a></li>
-<li><a href="/pages/ai-workflows.html" role="menuitem">AI Workflows</a></li>
-</ul>
-</div>
-</div>
-</div>
-<!-- Solutions -->
-<div class="nav-item" data-nav="solutions">
-<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Solutions <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
-<div class="mega-menu" role="menu" aria-label="Solutions menu">
-<div>
-<h6>By Industry</h6>
-<ul>
-<li><a href="/industries/retail.html" role="menuitem">Retail</a></li>
-<li><a href="/industries/hospitality.html" role="menuitem">Hospitality</a></li>
-<li><a href="/industries/healthcare.html" role="menuitem">Healthcare</a></li>
-<li><a href="/industries/education.html" role="menuitem">Education</a></li>
-<li><a href="/industries/fashion.html" role="menuitem">Fashion &amp; Apparel</a></li>
-</ul>
-</div>
-<div>
-<h6>By Use Case</h6>
-<ul>
-<li><a href="/solutions/inventory.html" role="menuitem">Inventory Optimization</a></li>
-<li><a href="/solutions/compliance.html" role="menuitem">Compliance &amp; Governance</a></li>
-<li><a href="/solutions/scaling.html" role="menuitem">Global Scaling</a></li>
-<li><a href="/solutions/automation.html" role="menuitem">Process Automation</a></li>
-</ul>
-</div>
-<div>
-<h6>By Company Size</h6>
-<ul>
-<li><a href="/solutions/startups.html" role="menuitem">Startups &amp; SMBs</a></li>
-<li><a href="/solutions/mid-market.html" role="menuitem">Mid-Market</a></li>
-<li><a href="/solutions/enterprise.html" role="menuitem">Enterprise</a></li>
-<li><a href="/solutions/multi-entity.html" role="menuitem">Multi-Entity Groups</a></li>
-</ul>
-</div>
-<div>
-<h6>Migration &amp; Integration</h6>
-<ul>
-<li><a href="/pages/migration.html" role="menuitem">Legacy System Migration</a></li>
-<li><a href="/pages/integrations.html" role="menuitem">Third-Party Integrations</a></li>
-<li><a href="/pages/api.html" role="menuitem">API &amp; Webhooks</a></li>
-<li><a href="/pages/implementation.html" role="menuitem">Implementation Services</a></li>
-</ul>
-</div>
-</div>
-</div>
-<!-- Resources -->
-<div class="nav-item" data-nav="resources">
-<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Resources <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
-<div class="mega-menu" role="menu" aria-label="Resources menu">
-<div>
-<h6>Documentation</h6>
-<ul>
-<li><a href="/pages/docs.html" role="menuitem">API Documentation</a></li>
-<li><a href="/pages/guides.html" role="menuitem">Business Guides</a></li>
-<li><a href="/pages/glossary.html" role="menuitem">Solutions Glossary</a></li>
-<li><a href="/pages/help.html" role="menuitem">Help Center</a></li>
-</ul>
-</div>
-<div>
-<h6>Learning</h6>
-<ul>
-<li><a href="/pages/demos.html" role="menuitem">Product Demos</a></li>
-<li><a href="/pages/stories.html" role="menuitem">Customer Stories</a></li>
-<li><a href="/pages/webinars.html" role="menuitem">Webinars &amp; Events</a></li>
-<li><a href="/pages/education.html" role="menuitem">Education Services</a></li>
-</ul>
-</div>
-<div>
-<h6>Technical</h6>
-<ul>
-<li><a href="/pages/sdks.html" role="menuitem">SDKs &amp; Libraries</a></li>
-<li><a href="/pages/status.html" role="menuitem">System Status</a></li>
-<li><a href="/pages/changelog.html" role="menuitem">Changelog</a></li>
-<li><a href="/pages/sandbox.html" role="menuitem">Developer Sandbox</a></li>
-</ul>
-</div>
-<div>
-<h6>Trust &amp; Security</h6>
-<ul>
-<li><a href="/pages/security.html" role="menuitem">Security Compliance</a></li>
-<li><a href="/pages/trust.html" role="menuitem">Trust Center</a></li>
-<li><a href="/pages/privacy.html" role="menuitem">Privacy Policy</a></li>
-<li><a href="/pages/responsible-ai.html" role="menuitem">Responsible AI</a></li>
-</ul>
-</div>
-</div>
-</div>
-<!-- Partners (direct link) -->
-<a href="/pages/partners.html" class="nav-direct-link">Partners</a>
-<!-- Pricing (direct link) -->
-<a href="/pages/erpldg.html#pricing" class="nav-direct-link">Pricing</a>
-</nav>
-<div class="nav-actions">
-<!-- Search (Desktop) -->
-<div class="header-search desktop-only" role="search">
-<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-<input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search page content" />
-</div>
-<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
-<button class="mobile-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileDrawer">
-<span class="hamburger-box" aria-hidden="true">
-<span class="hamburger-line"></span>
-<span class="hamburger-line"></span>
-<span class="hamburger-line"></span>
-</span>
-</button>
-</div>
-</div>
+<!-- HEADER (exact saas.txt) -->
+<header class="heropesa-header" role="banner">
+  <div class="nav-wrapper">
+    <a href="/index.html" class="logo" aria-label="Heropesa Home">Heropesa<span class="logo-accent">.</span></a>
+    <div class="app-header-center">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="#"><i class="fa-solid fa-house" style="font-size:0.75rem"></i></a>
+        <span class="sep">/</span>
+        <a href="#">Accounting</a>
+        <span class="sep">/</span>
+        <span class="current">General Ledger</span>
+      </nav>
+      <div class="global-search" role="search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input type="text" placeholder="Search journals, accounts, references…" aria-label="Global search" />
+        <span class="kbd">⌘K</span>
+      </div>
+    </div>
+    <div class="app-header-right">
+      <button class="icon-btn" title="Quick Create" aria-label="Quick create"><i class="fa-solid fa-plus"></i></button>
+      <button class="icon-btn" title="Help" aria-label="Help"><i class="fa-regular fa-circle-question"></i></button>
+      <div class="header-divider"></div>
+      <button class="switcher" title="Company"><i class="fa-solid fa-building" style="font-size:0.8rem;color:var(--text-muted)"></i><span class="name">HeroPesa Holdings</span><i class="fa-solid fa-chevron-down" style="font-size:0.6rem"></i></button>
+      <button class="switcher" title="Fiscal Year"><i class="fa-regular fa-calendar" style="font-size:0.8rem;color:var(--text-muted)"></i><span class="name">FY 2026</span></button>
+      <button class="switcher" title="Currency"><span>USD</span><i class="fa-solid fa-chevron-down" style="font-size:0.6rem"></i></button>
+      <div class="header-divider"></div>
+      <button class="icon-btn" title="Notifications" aria-label="Notifications"><i class="fa-regular fa-bell"></i><span class="badge">7</span></button>
+      <div class="header-divider"></div>
+      <button class="profile-btn" aria-label="User menu">
+        <div class="avatar">DM</div>
+        <span class="name">Daniel M.</span>
+        <i class="fa-solid fa-chevron-down" style="font-size:0.6rem;color:var(--text-muted)"></i>
+      </button>
+    </div>
+  </div>
 </header>
 
-<!-- =========================================
-MOBILE DRAWER
-========================================= -->
-<div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
-<aside class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
-<div class="mobile-drawer-header">
-<a href="/index.html" class="logo" aria-label="Heropesa Home">Hero<span class="logo-accent">pesa</span></a>
-<button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
-<i class="fa-solid fa-xmark" aria-hidden="true"></i>
-</button>
+<!-- APP SHELL -->
+<div class="app-shell" id="appShell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" aria-label="Module navigation">
+    <div class="sidebar-top">
+      <div class="sidebar-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search modules…" />
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">General Ledger</div>
+      <a href="#" class="nav-item active"><i class="icon fa-solid fa-gauge-high"></i><span class="label">Dashboard</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-book"></i><span class="label">Journal Entries</span><span class="nav-badge">247</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-list"></i><span class="label">Chart of Accounts</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-rotate"></i><span class="label">Recurring Journals</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-user-check"></i><span class="label">Approvals</span><span class="nav-badge danger">3</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-calendar-days"></i><span class="label">Financial Periods</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-sitemap"></i><span class="label">Financial Dimensions</span></a>
+
+      <div class="nav-section-label">Reports</div>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-scale-balanced"></i><span class="label">Trial Balance</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-chart-column"></i><span class="label">Account Activity</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-file-lines"></i><span class="label">Journal Register</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-magnifying-glass-chart"></i><span class="label">Audit Trail</span></a>
+
+      <div class="nav-section-label">Configuration</div>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-gear"></i><span class="label">GL Settings</span></a>
+      <a href="#" class="nav-item"><i class="icon fa-solid fa-file-import"></i><span class="label">Import / Export</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="collapse-btn" id="collapseBtn" title="Collapse sidebar">
+        <i class="fa-solid fa-angles-left"></i>
+        <span class="label">Collapse</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">General Ledger</h1>
+        <p class="page-subtitle">Financial engine · FY 2026 · Period Jul 2026 · Consolidated USD</p>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+        <div class="view-switcher" role="tablist">
+          <button class="view-btn active" data-view="dashboard" role="tab"><i class="fa-solid fa-gauge-high"></i> Dashboard</button>
+          <button class="view-btn" data-view="list" role="tab"><i class="fa-solid fa-list"></i> Journals</button>
+        </div>
+        <button class="btn btn-outline" id="importBtn"><i class="fa-solid fa-file-import"></i> Import</button>
+        <button class="btn btn-outline" id="exportBtn"><i class="fa-solid fa-download"></i> Export</button>
+        <button class="btn btn-primary" id="newJournalBtn"><i class="fa-solid fa-plus"></i> New Journal</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD VIEW -->
+    <div id="dashboardView">
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Total Assets</span>
+            <div class="kpi-icon bg-blue-soft"><i class="fa-solid fa-vault"></i></div>
+          </div>
+          <div class="kpi-value">$12.4M</div>
+          <div class="kpi-trend"><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 6.2%</span><span style="color:var(--text-muted)">vs last month</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Total Liabilities</span>
+            <div class="kpi-icon bg-red-soft"><i class="fa-solid fa-file-invoice"></i></div>
+          </div>
+          <div class="kpi-value">$4.8M</div>
+          <div class="kpi-trend"><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 2.1%</span><span style="color:var(--text-muted)">vs last month</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Equity</span>
+            <div class="kpi-icon bg-green-soft"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+          </div>
+          <div class="kpi-value">$7.6M</div>
+          <div class="kpi-trend"><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 8.4%</span><span style="color:var(--text-muted)">vs last month</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Revenue (MTD)</span>
+            <div class="kpi-icon bg-teal-soft"><i class="fa-solid fa-arrow-trend-up"></i></div>
+          </div>
+          <div class="kpi-value">$4.82M</div>
+          <div class="kpi-trend"><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 12.4%</span><span style="color:var(--text-muted)">vs budget</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Expenses (MTD)</span>
+            <div class="kpi-icon bg-yellow-soft"><i class="fa-solid fa-receipt"></i></div>
+          </div>
+          <div class="kpi-value">$2.64M</div>
+          <div class="kpi-trend"><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 3.8%</span><span style="color:var(--text-muted)">vs budget</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Net Profit</span>
+            <div class="kpi-icon bg-green-soft"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+          <div class="kpi-value">$1.24M</div>
+          <div class="kpi-trend"><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 8.1%</span><span style="color:var(--text-muted)">margin 25.7%</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Journals Posted Today</span>
+            <div class="kpi-icon bg-blue-soft"><i class="fa-solid fa-check-double"></i></div>
+          </div>
+          <div class="kpi-value">47</div>
+          <div class="kpi-trend"><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 18%</span><span style="color:var(--text-muted)">vs avg</span></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-head">
+            <span class="kpi-label">Pending Approval</span>
+            <div class="kpi-icon bg-purple-soft"><i class="fa-solid fa-clock"></i></div>
+          </div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-trend"><span class="trend-neutral">2 high priority</span></div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="content-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Debit vs Credit — Last 8 Months</div>
+              <div class="panel-subtitle">Total journal activity by month</div>
+            </div>
+            <button class="btn btn-sm btn-ghost">View Report <i class="fa-solid fa-arrow-right" style="font-size:0.65rem"></i></button>
+          </div>
+          <div style="padding: 18px; height: 260px;">
+            <div style="display:flex;align-items:flex-end;gap:10px;height:100%;padding-bottom:24px;position:relative;">
+              <div style="position:absolute;left:0;right:0;bottom:24px;height:1px;background:var(--divider)"></div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:55%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:38%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Dec</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:62%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:42%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Jan</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:70%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:45%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Feb</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:75%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:48%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Mar</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:82%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:52%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Apr</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:78%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:50%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">May</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:85%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:55%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Jun</div>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;">
+                <div style="width:100%;max-width:32px;display:flex;flex-direction:column-reverse;gap:2px;">
+                  <div style="height:90%;background:var(--primary);border-radius:3px 3px 0 0"></div>
+                  <div style="height:58%;background:var(--color-red);opacity:0.85;border-radius:3px 3px 0 0"></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-muted)">Jul</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;font-size:0.75rem;color:var(--text-secondary);">
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:var(--primary);border-radius:2px"></span> Debit</div>
+              <div style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;background:var(--color-red);border-radius:2px"></span> Credit</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Account Balance Distribution</div>
+              <div class="panel-subtitle">By account category</div>
+            </div>
+          </div>
+          <div style="padding:18px;">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.8rem;">
+                  <span style="font-weight:500">Assets</span>
+                  <span style="color:var(--text-muted)">$12.4M · 58%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-light);border-radius:3px;overflow:hidden">
+                  <div style="width:58%;height:100%;background:var(--primary);border-radius:3px"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.8rem;">
+                  <span style="font-weight:500">Liabilities</span>
+                  <span style="color:var(--text-muted)">$4.8M · 22%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-light);border-radius:3px;overflow:hidden">
+                  <div style="width:22%;height:100%;background:var(--color-red);border-radius:3px"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.8rem;">
+                  <span style="font-weight:500">Equity</span>
+                  <span style="color:var(--text-muted)">$7.6M · 35%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-light);border-radius:3px;overflow:hidden">
+                  <div style="width:35%;height:100%;background:var(--color-green);border-radius:3px"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.8rem;">
+                  <span style="font-weight:500">Revenue</span>
+                  <span style="color:var(--text-muted)">$4.8M · 22%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-light);border-radius:3px;overflow:hidden">
+                  <div style="width:22%;height:100%;background:var(--color-teal);border-radius:3px"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.8rem;">
+                  <span style="font-weight:500">Expenses</span>
+                  <span style="color:var(--text-muted)">$2.6M · 12%</span>
+                </div>
+                <div style="height:6px;background:var(--bg-light);border-radius:3px;overflow:hidden">
+                  <div style="width:12%;height:100%;background:var(--color-yellow);border-radius:3px"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent activity + Quick actions -->
+      <div class="content-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Recent Journal Activity</div>
+              <div class="panel-subtitle">Latest postings across all modules</div>
+            </div>
+            <button class="btn btn-sm btn-outline" id="viewAllJournalsBtn">View All</button>
+          </div>
+          <div class="panel-body flush">
+            <div style="display:flex;flex-direction:column;">
+              <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--divider);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''" data-journal="GL-000247">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(52,168,83,.1);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--color-green);flex-shrink:0"><i class="fa-solid fa-check"></i></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:0.82rem;font-weight:500"><strong style="color:var(--primary)">GL-000247</strong> · Monthly payroll accrual</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:flex;gap:8px;align-items:center">
+                    <span>Sarah Kim</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>General Ledger</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>2 minutes ago</span>
+                  </div>
+                </div>
+                <div style="text-align:right"><div class="amount">$184,500</div><span class="status-pill status-posted">Posted</span></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--divider);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''" data-journal="GL-000246">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(26,115,232,.1);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--primary);flex-shrink:0"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:0.82rem;font-weight:500"><strong style="color:var(--primary)">GL-000246</strong> · Customer payment — Acme Corp</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:flex;gap:8px;align-items:center">
+                    <span>James Ochieng</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>Accounts Receivable</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>18 minutes ago</span>
+                  </div>
+                </div>
+                <div style="text-align:right"><div class="amount positive">$24,500</div><span class="status-pill status-posted">Posted</span></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--divider);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''" data-journal="GL-000245">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(251,188,5,.15);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:#b06000;flex-shrink:0"><i class="fa-solid fa-clock"></i></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:0.82rem;font-weight:500"><strong style="color:var(--primary)">GL-000245</strong> · Supplier invoice — CloudHost Ltd</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:flex;gap:8px;align-items:center">
+                    <span>Amina Ndiaye</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>Accounts Payable</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>1 hour ago</span>
+                  </div>
+                </div>
+                <div style="text-align:right"><div class="amount negative">$12,840</div><span class="status-pill status-approved">Approved</span></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:12px 18px;border-bottom:1px solid var(--divider);cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''" data-journal="GL-000244">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(52,168,83,.1);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--color-green);flex-shrink:0"><i class="fa-solid fa-warehouse"></i></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:0.82rem;font-weight:500"><strong style="color:var(--primary)">GL-000244</strong> · Depreciation — Q3 fixed assets</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:flex;gap:8px;align-items:center">
+                    <span>System</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>Fixed Assets</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>3 hours ago</span>
+                  </div>
+                </div>
+                <div style="text-align:right"><div class="amount">$38,200</div><span class="status-pill status-posted">Posted</span></div>
+              </div>
+              <div style="display:flex;gap:12px;padding:12px 18px;cursor:pointer;transition:background var(--transition);" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''" data-journal="GL-000243">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(147,52,230,.1);display:flex;align-items:center;justify-content:center;font-size:0.8rem;color:var(--color-purple);flex-shrink:0"><i class="fa-solid fa-building-columns"></i></div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:0.82rem;font-weight:500"><strong style="color:var(--primary)">GL-000243</strong> · Bank fee — wire transfer charges</div>
+                  <div style="font-size:0.72rem;color:var(--text-muted);margin-top:2px;display:flex;gap:8px;align-items:center">
+                    <span>Rachel Thompson</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>Cash Management</span><span style="width:3px;height:3px;border-radius:50%;background:var(--border-hover)"></span>
+                    <span>5 hours ago</span>
+                  </div>
+                </div>
+                <div style="text-align:right"><div class="amount negative">$285</div><span class="status-pill status-pending">Pending</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">Quick Actions</div>
+          </div>
+          <div class="panel-body">
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="new-journal"><i class="fa-solid fa-pen-to-square" style="color:var(--primary)"></i> New Journal</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="trial-balance"><i class="fa-solid fa-scale-balanced" style="color:var(--primary)"></i> Trial Balance</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="coa"><i class="fa-solid fa-list" style="color:var(--primary)"></i> Chart of Accounts</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="recurring"><i class="fa-solid fa-rotate" style="color:var(--primary)"></i> Recurring</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="periods"><i class="fa-solid fa-calendar-days" style="color:var(--primary)"></i> Periods</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="close-period"><i class="fa-solid fa-lock" style="color:var(--primary)"></i> Close Period</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="import"><i class="fa-solid fa-file-import" style="color:var(--primary)"></i> Import</button>
+              <button class="btn btn-outline" style="justify-content:flex-start" data-action="audit"><i class="fa-solid fa-magnifying-glass-chart" style="color:var(--primary)"></i> Audit Trail</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIST VIEW (Journals table) -->
+    <div id="listView" style="display:none">
+      <div class="panel">
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="journalSearch" placeholder="Search journals, accounts, references…" />
+          </div>
+          <button class="filter-chip active"><i class="fa-solid fa-filter"></i> All <span style="color:var(--text-muted);font-size:0.7rem">(247)</span></button>
+          <button class="filter-chip">Posted <span style="color:var(--text-muted);font-size:0.7rem">(189)</span></button>
+          <button class="filter-chip">Pending <span style="color:var(--text-muted);font-size:0.7rem">(42)</span></button>
+          <button class="filter-chip">Draft <span style="color:var(--text-muted);font-size:0.7rem">(16)</span></button>
+          <div class="toolbar-divider"></div>
+          <button class="btn btn-sm btn-ghost" title="Saved views"><i class="fa-regular fa-bookmark"></i> Saved Views</button>
+          <button class="btn btn-sm btn-ghost" title="Columns"><i class="fa-solid fa-table-columns"></i> Columns</button>
+        </div>
+
+        <!-- Bulk actions bar -->
+        <div class="bulk-bar" id="bulkBar">
+          <span><span class="bulk-count" id="bulkCount">0</span> selected</span>
+          <div class="bulk-actions">
+            <button class="btn btn-sm btn-outline"><i class="fa-solid fa-check"></i> Approve</button>
+            <button class="btn btn-sm btn-outline"><i class="fa-solid fa-paper-plane"></i> Post</button>
+            <button class="btn btn-sm btn-outline"><i class="fa-solid fa-download"></i> Export</button>
+            <button class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i> Delete</button>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-scroll">
+          <table class="data-table" id="journalTable">
+            <thead>
+              <tr>
+                <th class="checkbox-cell"><input type="checkbox" class="checkbox" id="selectAll" aria-label="Select all" /></th>
+                <th class="sorted">Journal # <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Date <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Description <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Source <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Account <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th style="text-align:right">Debit <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th style="text-align:right">Credit <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Status <i class="fa-solid fa-sort sort-icon"></i></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="journalTbody"></tbody>
+          </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="table-footer">
+          <div>Showing <strong>1–10</strong> of <strong>247</strong> journals</div>
+          <div class="pagination">
+            <button class="page-btn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">…</button>
+            <button class="page-btn">25</button>
+            <button class="page-btn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>
-<div class="mobile-search" role="search">
-<div class="mobile-search-input">
-<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-<input type="text" id="mobileSearchInput" placeholder="Search..." aria-label="Search page content" />
+
+<!-- NEW JOURNAL MODAL -->
+<div class="modal-overlay" id="journalModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">Create Journal Entry</h3>
+      <button class="modal-close" data-close-modal aria-label="Close">&times;</button>
+    </div>
+    <div class="modal-body">
+      <!-- Header fields -->
+      <div class="form-grid cols-3">
+        <div class="form-group">
+          <label class="form-label">Journal Number</label>
+          <input type="text" class="form-input" value="GL-000248" readonly />
+          <span class="form-helper">Auto-generated</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Journal Date <span class="required">*</span></label>
+          <input type="date" class="form-input" value="2026-07-05" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Posting Date <span class="required">*</span></label>
+          <input type="date" class="form-input" value="2026-07-05" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Journal Type <span class="required">*</span></label>
+          <select class="form-select">
+            <option>Standard Journal</option>
+            <option>Adjustment Journal</option>
+            <option>Accrual Journal</option>
+            <option>Reversal Journal</option>
+            <option>Allocation Journal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Source Module</label>
+          <select class="form-select">
+            <option>Manual</option>
+            <option>Accounts Receivable</option>
+            <option>Accounts Payable</option>
+            <option>Payroll</option>
+            <option>Fixed Assets</option>
+            <option>Inventory</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Currency</label>
+          <select class="form-select">
+            <option>USD — US Dollar</option>
+            <option>EUR — Euro</option>
+            <option>GBP — British Pound</option>
+            <option>KES — Kenyan Shilling</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Description <span class="required">*</span></label>
+          <input type="text" class="form-input" id="journalDesc" placeholder="Enter a clear description for this journal entry" required />
+        </div>
+      </div>
+
+      <!-- Journal lines -->
+      <div class="lines-editor">
+        <div class="lines-editor-header">
+          <span>Journal Lines</span>
+          <span style="font-size:0.72rem;color:var(--text-muted)">Tab to navigate · Enter to add row</span>
+        </div>
+        <table class="lines-table">
+          <thead>
+            <tr>
+              <th style="width:32px">#</th>
+              <th style="min-width:180px">Account</th>
+              <th>Description</th>
+              <th style="text-align:right;min-width:110px">Debit</th>
+              <th style="text-align:right;min-width:110px">Credit</th>
+              <th style="min-width:120px">Department</th>
+              <th style="width:32px"></th>
+            </tr>
+          </thead>
+          <tbody id="linesBody">
+            <tr data-line="1">
+              <td class="row-num">1</td>
+              <td><select class="account-select"><option value="">Select account…</option><option value="1100">1100 — Accounts Receivable</option><option value="1200">1200 — Inventory</option><option value="2100">2100 — Accounts Payable</option><option value="4000">4000 — Sales Revenue</option><option value="5000">5000 — Cost of Goods Sold</option><option value="6100">6100 — Salaries Expense</option><option value="6200">6200 — Rent Expense</option><option value="6400">6400 — Bank Charges</option></select></td>
+              <td><input type="text" placeholder="Line description" /></td>
+              <td><input type="number" class="debit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+              <td><input type="number" class="credit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+              <td><select><option>Finance</option><option>Sales</option><option>Operations</option><option>Marketing</option><option>IT</option></select></td>
+              <td class="row-actions"><span class="line-delete" title="Delete line"><i class="fa-solid fa-xmark"></i></span></td>
+            </tr>
+            <tr data-line="2">
+              <td class="row-num">2</td>
+              <td><select class="account-select"><option value="">Select account…</option><option value="1100">1100 — Accounts Receivable</option><option value="1200">1200 — Inventory</option><option value="2100">2100 — Accounts Payable</option><option value="4000">4000 — Sales Revenue</option><option value="5000">5000 — Cost of Goods Sold</option><option value="6100">6100 — Salaries Expense</option><option value="6200">6200 — Rent Expense</option><option value="6400">6400 — Bank Charges</option></select></td>
+              <td><input type="text" placeholder="Line description" /></td>
+              <td><input type="number" class="debit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+              <td><input type="number" class="credit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+              <td><select><option>Finance</option><option>Sales</option><option>Operations</option><option>Marketing</option><option>IT</option></select></td>
+              <td class="row-actions"><span class="line-delete" title="Delete line"><i class="fa-solid fa-xmark"></i></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="add-line-btn" id="addLineBtn"><i class="fa-solid fa-plus"></i> Add Line</button>
+      </div>
+
+      <!-- Balance footer -->
+      <div class="balance-footer">
+        <div class="balance-item">
+          <span class="balance-label">Total Debit</span>
+          <span class="balance-value" id="totalDebit">$0.00</span>
+        </div>
+        <div class="balance-item">
+          <span class="balance-label">Total Credit</span>
+          <span class="balance-value" id="totalCredit">$0.00</span>
+        </div>
+        <div class="balance-item">
+          <span class="balance-label">Difference</span>
+          <span class="balance-value" id="difference" style="color:var(--color-red)">$0.00</span>
+        </div>
+        <div class="balance-item" style="justify-content:flex-end">
+          <span class="balance-label">Status</span>
+          <span class="balance-status balanced" id="balanceStatus"><i class="fa-solid fa-check-circle"></i> Balanced</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" data-close-modal>Cancel</button>
+      <button class="btn btn-outline" id="saveDraftBtn"><i class="fa-regular fa-floppy-disk"></i> Save Draft</button>
+      <button class="btn btn-outline" id="submitApprovalBtn"><i class="fa-solid fa-paper-plane"></i> Submit for Approval</button>
+      <button class="btn btn-primary" id="postJournalBtn"><i class="fa-solid fa-check"></i> Post Journal</button>
+    </div>
+  </div>
 </div>
-</div>
-<div class="mobile-drawer-body">
-<nav class="mobile-nav-accordion" aria-label="Mobile navigation">
-<!-- Products Accordion -->
-<div class="mobile-nav-item" aria-expanded="false">
-<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-products">
-<span>Products</span>
-<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
-</button>
-<div class="mobile-nav-submenu" id="mobile-submenu-products" role="region">
-<div class="mobile-nav-submenu-inner">
-<div class="mobile-submenu-group">
-<h6>Core Platforms</h6>
-<ul>
-<li><a href="/pages/erpldg.html">Enterprise ERP</a></li>
-<li><a href="/pages/accounting.html">Accounting Software</a></li>
-<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
-<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
-<li><a href="/pages/inventory.html">Inventory Control</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Operations</h6>
-<ul>
-<li><a href="/pages/supply-chain.html">Supply Chain</a></li>
-<li><a href="/pages/posldg.html">Point of Sale</a></li>
-<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
-<li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Industry Solutions</h6>
-<ul>
-<li><a href="/pages/manufacturing.html">Manufacturing</a></li>
-<li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
-<li><a href="/pages/education.html">Education Platform</a></li>
-<li><a href="/pages/retail.html">Retail &amp; Commerce</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>AI &amp; Automation</h6>
-<ul>
-<li><a href="/pages/ai-support.html">AI Customer Support</a></li>
-<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
-<li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
-<li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<!-- Solutions Accordion -->
-<div class="mobile-nav-item" aria-expanded="false">
-<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-solutions">
-<span>Solutions</span>
-<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
-</button>
-<div class="mobile-nav-submenu" id="mobile-submenu-solutions" role="region">
-<div class="mobile-nav-submenu-inner">
-<div class="mobile-submenu-group">
-<h6>By Industry</h6>
-<ul>
-<li><a href="/industries/retail.html">Retail</a></li>
-<li><a href="/industries/hospitality.html">Hospitality</a></li>
-<li><a href="/industries/healthcare.html">Healthcare</a></li>
-<li><a href="/industries/education.html">Education</a></li>
-<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>By Use Case</h6>
-<ul>
-<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
-<li><a href="/solutions/compliance.html">Compliance &amp; Governance</a></li>
-<li><a href="/solutions/scaling.html">Global Scaling</a></li>
-<li><a href="/solutions/automation.html">Process Automation</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>By Company Size</h6>
-<ul>
-<li><a href="/solutions/startups.html">Startups &amp; SMBs</a></li>
-<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
-<li><a href="/solutions/enterprise.html">Enterprise</a></li>
-<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Migration &amp; Integration</h6>
-<ul>
-<li><a href="/pages/migration.html">Legacy System Migration</a></li>
-<li><a href="/pages/integrations.html">Third-Party Integrations</a></li>
-<li><a href="/pages/api.html">API &amp; Webhooks</a></li>
-<li><a href="/pages/implementation.html">Implementation Services</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<!-- Resources Accordion -->
-<div class="mobile-nav-item" aria-expanded="false">
-<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-resources">
-<span>Resources</span>
-<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
-</button>
-<div class="mobile-nav-submenu" id="mobile-submenu-resources" role="region">
-<div class="mobile-nav-submenu-inner">
-<div class="mobile-submenu-group">
-<h6>Documentation</h6>
-<ul>
-<li><a href="/pages/docs.html">API Documentation</a></li>
-<li><a href="/pages/guides.html">Business Guides</a></li>
-<li><a href="/pages/glossary.html">Solutions Glossary</a></li>
-<li><a href="/pages/help.html">Help Center</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Learning</h6>
-<ul>
-<li><a href="/pages/demos.html">Product Demos</a></li>
-<li><a href="/pages/stories.html">Customer Stories</a></li>
-<li><a href="/pages/webinars.html">Webinars &amp; Events</a></li>
-<li><a href="/pages/education.html">Education Services</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Technical</h6>
-<ul>
-<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
-<li><a href="/pages/status.html">System Status</a></li>
-<li><a href="/pages/changelog.html">Changelog</a></li>
-<li><a href="/pages/sandbox.html">Developer Sandbox</a></li>
-</ul>
-</div>
-<div class="mobile-submenu-group">
-<h6>Trust &amp; Security</h6>
-<ul>
-<li><a href="/pages/security.html">Security Compliance</a></li>
-<li><a href="/pages/trust.html">Trust Center</a></li>
-<li><a href="/pages/privacy.html">Privacy Policy</a></li>
-<li><a href="/pages/responsible-ai.html">Responsible AI</a></li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</nav>
-<div class="mobile-direct-links">
-<a href="/pages/partners.html">Partners</a>
-<a href="/pages/erpldg.html#pricing">Pricing</a>
-<a href="/pages/developers.html">Developers</a>
-<a href="/pages/contact-sales.html">Contact Sales</a>
-</div>
-</div>
-<div class="mobile-drawer-footer">
-<a href="#demo" class="btn btn-primary" id="mobileDemoBtn">Request Demo</a>
-</div>
+
+<!-- JOURNAL DETAIL DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="journalDrawer" role="dialog" aria-label="Journal details">
+  <div class="drawer-header">
+    <div>
+      <h3 id="drawerJournalNum">GL-000247</h3>
+      <div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px" id="drawerJournalDesc">Monthly payroll accrual</div>
+    </div>
+    <button class="modal-close" id="closeDrawer" aria-label="Close drawer">&times;</button>
+  </div>
+  <div class="drawer-body">
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+      <span class="status-pill status-posted" id="drawerStatus">Posted</span>
+      <button class="btn btn-sm btn-outline"><i class="fa-solid fa-print"></i> Print</button>
+      <button class="btn btn-sm btn-outline"><i class="fa-solid fa-download"></i> Export</button>
+      <button class="btn btn-sm btn-outline"><i class="fa-solid fa-rotate"></i> Reverse</button>
+      <button class="btn btn-sm btn-outline"><i class="fa-regular fa-copy"></i> Duplicate</button>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title"><i class="fa-solid fa-circle-info"></i> Journal Information</div>
+      <div class="detail-grid">
+        <div class="detail-item"><span class="detail-label">Journal Date</span><span class="detail-value">Jul 05, 2026</span></div>
+        <div class="detail-item"><span class="detail-label">Posting Date</span><span class="detail-value">Jul 05, 2026</span></div>
+        <div class="detail-item"><span class="detail-label">Journal Type</span><span class="detail-value">Standard Journal</span></div>
+        <div class="detail-item"><span class="detail-label">Source Module</span><span class="detail-value">Payroll</span></div>
+        <div class="detail-item"><span class="detail-label">Currency</span><span class="detail-value">USD</span></div>
+        <div class="detail-item"><span class="detail-label">Fiscal Period</span><span class="detail-value">Jul 2026</span></div>
+        <div class="detail-item"><span class="detail-label">Created By</span><span class="detail-value">Sarah Kim</span></div>
+        <div class="detail-item"><span class="detail-label">Posted By</span><span class="detail-value">Sarah Kim</span></div>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title"><i class="fa-solid fa-list"></i> Journal Lines</div>
+      <table class="data-table" style="font-size:0.78rem">
+        <thead>
+          <tr>
+            <th>Account</th>
+            <th>Description</th>
+            <th style="text-align:right">Debit</th>
+            <th style="text-align:right">Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>6100</strong> — Salaries Expense</td>
+            <td>July payroll accrual</td>
+            <td style="text-align:right" class="amount">$184,500.00</td>
+            <td style="text-align:right">—</td>
+          </tr>
+          <tr>
+            <td><strong>2150</strong> — Accrued Payroll</td>
+            <td>July payroll accrual</td>
+            <td style="text-align:right">—</td>
+            <td style="text-align:right" class="amount">$184,500.00</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr style="background:var(--bg-light);font-weight:600">
+            <td colspan="2" style="text-align:right">Totals</td>
+            <td style="text-align:right" class="amount">$184,500.00</td>
+            <td style="text-align:right" class="amount">$184,500.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title"><i class="fa-solid fa-route"></i> Approval Workflow</div>
+      <div class="timeline">
+        <div class="timeline-item completed">
+          <div class="timeline-title">Created by Sarah Kim</div>
+          <div class="timeline-meta">Jul 05, 2026 · 09:14 AM</div>
+        </div>
+        <div class="timeline-item completed">
+          <div class="timeline-title">Approved by Finance Manager</div>
+          <div class="timeline-meta">Jul 05, 2026 · 09:32 AM · Daniel Mwangi</div>
+        </div>
+        <div class="timeline-item completed">
+          <div class="timeline-title">Posted to General Ledger</div>
+          <div class="timeline-meta">Jul 05, 2026 · 09:33 AM · Auto-posted</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-section">
+      <div class="drawer-section-title"><i class="fa-solid fa-link"></i> Related Records</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a href="#" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-md);transition:background var(--transition)" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''">
+          <i class="fa-solid fa-file-invoice" style="color:var(--primary)"></i>
+          <div style="flex:1"><div style="font-size:0.82rem;font-weight:500">Payroll Run · July 2026</div><div style="font-size:0.72rem;color:var(--text-muted)">Payroll Module · PR-2026-07</div></div>
+          <i class="fa-solid fa-arrow-right" style="font-size:0.7rem;color:var(--text-muted)"></i>
+        </a>
+        <a href="#" style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--radius-md);transition:background var(--transition)" onmouseover="this.style.background='var(--bg-light)'" onmouseout="this.style.background=''">
+          <i class="fa-solid fa-users" style="color:var(--primary)"></i>
+          <div style="flex:1"><div style="font-size:0.82rem;font-weight:500">24 Employees Affected</div><div style="font-size:0.72rem;color:var(--text-muted)">HR Module</div></div>
+          <i class="fa-solid fa-arrow-right" style="font-size:0.7rem;color:var(--text-muted)"></i>
+        </a>
+      </div>
+    </div>
+  </div>
 </aside>
 
-<!-- =========================================
-MAIN CONTENT
-========================================= -->
-<main id="main-content">
-<!-- HERO -->
-<section class="hero">
-<div class="container">
-<div class="hero-content reveal">
-<div class="hero-stats"><i class="fa-solid fa-users"></i> Join 43,000+ customers worldwide</div>
-<h1>AI-Powered Cloud ERP for Modern Business</h1>
-<p>Heropesa ERP is an all-in-one, cloud business management solution that automates core processes and provides real-time visibility into operational and financial performance—effortlessly managing multiple subsidiaries, business units, and legal entities.</p>
-<div class="hero-actions">
-<a href="#demo" class="btn btn-primary">Schedule a Demo <i class="fa-solid fa-arrow-right"></i></a>
-<a href="#features" class="btn btn-outline">Explore Features</a>
+<!-- COMMAND PALETTE -->
+<div class="command-overlay" id="commandOverlay">
+  <div class="command-box">
+    <div class="command-input-wrap">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" class="command-input" placeholder="Type a command or search…" autocomplete="off" />
+      <kbd style="font-size:0.7rem;color:var(--text-muted);background:var(--bg-light);border:1px solid var(--border);border-radius:3px;padding:2px 6px">ESC</kbd>
+    </div>
+    <div class="command-results">
+      <div class="command-group-label">Actions</div>
+      <div class="command-item"><i class="fa-solid fa-pen-to-square"></i><span class="cmd-label">Create new journal entry</span><span class="cmd-hint">⌘J</span></div>
+      <div class="command-item"><i class="fa-solid fa-scale-balanced"></i><span class="cmd-label">Run trial balance</span></div>
+      <div class="command-item"><i class="fa-solid fa-file-import"></i><span class="cmd-label">Import journals from CSV</span></div>
+      <div class="command-group-label">Go to</div>
+      <div class="command-item"><i class="fa-solid fa-list"></i><span class="cmd-label">Chart of Accounts</span></div>
+      <div class="command-item"><i class="fa-solid fa-rotate"></i><span class="cmd-label">Recurring Journals</span></div>
+      <div class="command-item"><i class="fa-solid fa-calendar-days"></i><span class="cmd-label">Financial Periods</span></div>
+      <div class="command-group-label">Recent</div>
+      <div class="command-item"><i class="fa-solid fa-clock-rotate-left"></i><span class="cmd-label">GL-000247 · Monthly payroll accrual</span><span class="cmd-hint">2m ago</span></div>
+      <div class="command-item"><i class="fa-solid fa-clock-rotate-left"></i><span class="cmd-label">GL-000246 · Customer payment — Acme Corp</span><span class="cmd-hint">18m ago</span></div>
+    </div>
+    <div class="command-footer">
+      <span><kbd>↑↓</kbd> Navigate</span>
+      <span><kbd>↵</kbd> Select</span>
+      <span><kbd>esc</kbd> Close</span>
+    </div>
+  </div>
 </div>
-<div class="hero-trust">
-<span><i class="fa-solid fa-check-circle"></i> Cloud-native architecture</span>
-<span><i class="fa-solid fa-check-circle"></i> Real-time visibility</span>
-<span><i class="fa-solid fa-check-circle"></i> Global compliance ready</span>
-</div>
-</div>
-<div class="img-placeholder img-hero reveal" style="margin-top: 48px;">
-<span>ERP Dashboard Preview Placeholder</span>
-</div>
-</div>
-</section>
 
-<!-- AI ADVANTAGE -->
-<section class="section ai-section">
-<div class="container">
-<div class="ai-layout">
-<div class="reveal">
-<h3>Grow Your Business with AI-Powered ERP</h3>
-<p>As a unified suite, Heropesa centralizes your data from all business functions to provide an ideal foundation for getting the most out of AI. AI functionality is embedded throughout, offering new ways to simplify tasks, suggest actions, and uncover business insights that result in more informed and better decisions.</p>
-<ul class="ai-features">
-<li><i class="fa-solid fa-circle-check color-green"></i> Intelligent automation for routine financial tasks</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Predictive analytics for demand forecasting</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Natural language queries for instant insights</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Smart recommendations for inventory optimization</li>
-</ul>
-<div class="testimonial-mini">
-<p>"The company could have handled the growth without an ERP system, but we would have been forced to hire a lot more people."</p>
-<div class="author"><strong>Ian Larkin</strong>, Controller, CentralReach</div>
-</div>
-</div>
-<div class="reveal reveal-delay-1">
-<div class="img-placeholder img-card">
-<span>AI Analytics Dashboard Placeholder</span>
-</div>
-</div>
-</div>
-</div>
-</section>
+<div class="toast-container" id="toastContainer"></div>
 
-<!-- BENEFITS -->
-<section class="section benefits-section" id="benefits">
-<div class="container">
-<div class="section-header reveal">
-<h2>Key Benefits of Heropesa ERP</h2>
-<p>Deliver wide-ranging value by automating business processes and gaining greater control over resources.</p>
-</div>
-<div class="benefits-grid">
-<div class="benefit-card reveal">
-<i class="fa-solid fa-file-invoice-dollar"></i>
-<h4>Automate Financial Processes</h4>
-<p>Improve financial operations, efficiency, and productivity with automated AR/AP, tax management, and real-time cash flow visibility.</p>
-</div>
-<div class="benefit-card reveal reveal-delay-1">
-<i class="fa-solid fa-boxes-stacked"></i>
-<h4>Gain Inventory Visibility</h4>
-<p>Monitor inventory levels across locations, minimize carrying costs, and deliver orders on time with intelligent stock management.</p>
-</div>
-<div class="benefit-card reveal reveal-delay-2">
-<i class="fa-solid fa-truck-fast"></i>
-<h4>Supply Chain Optimization</h4>
-<p>Control the flow of goods across the value chain—from suppliers to customers—with end-to-end visibility and proactive alerts.</p>
-</div>
-<div class="benefit-card reveal">
-<i class="fa-solid fa-cart-shopping"></i>
-<h4>Flawless Order Management</h4>
-<p>Error-proof your order management and procurement with automated workflows, validation rules, and real-time status tracking.</p>
-</div>
-<div class="benefit-card reveal reveal-delay-1">
-<i class="fa-solid fa-warehouse"></i>
-<h4>Increase Warehouse Efficiency</h4>
-<p>Optimize putaway processes, reduce picking errors, and accelerate fulfillment with intelligent warehouse management tools.</p>
-</div>
-<div class="benefit-card reveal reveal-delay-2">
-<i class="fa-solid fa-globe"></i>
-<h4>Global Business Management</h4>
-<p>Manage multiple subsidiaries, currencies, and compliance requirements from a single, unified platform.</p>
-</div>
-</div>
-</div>
-</section>
-
-<!-- FEATURES -->
-<section class="section features-section" id="features">
-<div class="container">
-<div class="section-header reveal">
-<h2>Comprehensive ERP Features</h2>
-<p>Everything you need to run your business—from accounting to warehouse operations—in one integrated suite.</p>
-</div>
-<div class="features-grid">
-<div class="feature-card reveal">
-<h4><i class="fa-solid fa-calculator"></i> Accounting Software</h4>
-<p>Transform your general ledger, optimize AR, automate AP, and streamline tax management with a complete view of financial performance.</p>
-</div>
-<div class="feature-card reveal reveal-delay-1">
-<h4><i class="fa-solid fa-chart-pie"></i> Financial Management</h4>
-<p>Real-time financial reporting, budgeting, forecasting, and consolidation across all business entities.</p>
-</div>
-<div class="feature-card reveal reveal-delay-2">
-<h4><i class="fa-solid fa-globe"></i> Global Business Management</h4>
-<p>Multi-subsidiary, multi-currency, and multi-language support with automated intercompany transactions and compliance.</p>
-</div>
-<div class="feature-card reveal">
-<h4><i class="fa-solid fa-bullseye"></i> Enterprise Performance Management</h4>
-<p>Strategic planning, budgeting, forecasting, and financial close automation for better business decisions.</p>
-</div>
-<div class="feature-card reveal reveal-delay-1">
-<h4><i class="fa-solid fa-box-open"></i> Inventory Management</h4>
-<p>Track stock levels, automate reorder points, manage lots and serials, and optimize inventory across warehouses.</p>
-</div>
-<div class="feature-card reveal reveal-delay-2">
-<h4><i class="fa-solid fa-truck"></i> Order Management</h4>
-<p>Streamline order entry, fulfillment, and returns with automated workflows and real-time visibility.</p>
-</div>
-<div class="feature-card reveal">
-<h4><i class="fa-solid fa-network-wired"></i> Supply Chain Management</h4>
-<p>End-to-end supply chain visibility, demand planning, supplier collaboration, and risk mitigation.</p>
-</div>
-<div class="feature-card reveal reveal-delay-1">
-<h4><i class="fa-solid fa-warehouse"></i> Warehouse Management</h4>
-<p>Optimize receiving, putaway, picking, packing, and shipping with mobile-enabled warehouse operations.</p>
-</div>
-<div class="feature-card reveal reveal-delay-2">
-<h4><i class="fa-solid fa-handshake"></i> Procurement</h4>
-<p>Streamline purchasing with automated requisitions, approvals, purchase orders, and vendor management.</p>
-</div>
-</div>
-</div>
-</section>
-
-<!-- CHALLENGES -->
-<section class="section challenges-section" id="challenges">
-<div class="container">
-<div class="challenges-grid">
-<div class="reveal reveal-delay-1">
-<div class="img-placeholder img-card">
-<span>Challenge Resolution Workflow Placeholder</span>
-</div>
-</div>
-<div class="reveal">
-<h3>Challenges Heropesa ERP Solves</h3>
-<p>Overcome the most common obstacles facing growing businesses with intelligent, integrated solutions.</p>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-gears"></i> Manual Processes</h5>
-<p>Automate and streamline manual processes that waste time and resources, freeing your team for higher-value work.</p>
-</div>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-database"></i> Data Accessibility</h5>
-<p>Quickly and easily access real-time data across the organization with unified dashboards and role-based views.</p>
-</div>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-file-circle-check"></i> Data Integrity</h5>
-<p>Provide stakeholders with timely, accurate financial statements, inventory reports, and operational metrics.</p>
-</div>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-target"></i> Meeting Expectations</h5>
-<p>Deliver promised order accuracy, on-time delivery, and cost savings with automated workflows and visibility.</p>
-</div>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-scale-balanced"></i> Balancing Supply & Demand</h5>
-<p>Manage supply chains in the face of rapid change, rising costs, and shifting buyer behavior with predictive tools.</p>
-</div>
-<div class="challenge-item">
-<h5><i class="fa-solid fa-chart-line"></i> Inventory Insights</h5>
-<p>Plan and balance inventory to meet demand with intelligent forecasting and automated replenishment.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- SUITE SUCCESS -->
-<section class="section success-section" id="suite-success">
-<div class="container">
-<div class="success-layout">
-<div class="reveal">
-<h3>SuiteSuccess – Your Proven Path to Success</h3>
-<p>Leveraging more than 25 years of experience working with tens of thousands of organizations, our implementation methodology helps customers transform their business with faster time-to-value, better ROI, and greater employee adoption.</p>
-<div class="success-steps">
-<div class="success-step">
-<div>
-<h5>AI-Powered Foundation</h5>
-<p>Start with an integrated business suite built for your industry, with pre-configured workflows and intelligent automation.</p>
-</div>
-</div>
-<div class="success-step">
-<div>
-<h5>Tailored Implementation</h5>
-<p>Our experts engage with your team to configure Heropesa for your specific processes, entities, and compliance requirements.</p>
-</div>
-</div>
-<div class="success-step">
-<div>
-<h5>Continuous Optimization</h5>
-<p>Ongoing guidance helps you consume and optimize Heropesa to solve today's challenges and prepare for future growth.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="reveal reveal-delay-1">
-<div class="img-placeholder img-card">
-<span>Implementation Journey Visualization Placeholder</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- PRICING -->
-<section class="section pricing-section" id="pricing">
-<div class="container">
-<div class="section-header reveal">
-<h2>Transparent, Scalable Pricing</h2>
-<p>Flexible licensing designed to grow with your business—from startup to enterprise.</p>
-</div>
-<div class="pricing-card reveal">
-<h3>How Heropesa ERP is Priced</h3>
-<p>Companies of every size—from pre-revenue startups to fast-growing enterprises—run their operations on Heropesa. Your subscription includes everything you need to start, with the flexibility to scale.</p>
-<div class="pricing-components">
-<div class="pricing-component">
-<i class="fa-solid fa-cube"></i>
-<div>
-<h5>Core Platform</h5>
-<p>Access to the foundational ERP system with financials, inventory, order management, and reporting.</p>
-</div>
-</div>
-<div class="pricing-component">
-<i class="fa-solid fa-puzzle-piece"></i>
-<div>
-<h5>Optional Modules</h5>
-<p>Add specialized capabilities like Advanced Inventory, WMS, Supply Chain, or EPM as your needs evolve.</p>
-</div>
-</div>
-<div class="pricing-component">
-<i class="fa-solid fa-users"></i>
-<div>
-<h5>User Licenses</h5>
-<p>Scale your team access with flexible user tiers. Add seats anytime as your organization grows.</p>
-</div>
-</div>
-</div>
-<p class="pricing-note">A one-time implementation fee covers initial setup, data migration, and team training. As a cloud platform, Heropesa eliminates upfront infrastructure costs and delivers continuous updates at no extra charge.</p>
-<div style="text-align: center; margin-top: 32px;">
-<a href="#demo" class="btn btn-primary">Get Custom Pricing</a>
-</div>
-</div>
-</div>
-</section>
-
-<!-- RESOURCES -->
-<section class="section resources-section" id="resources">
-<div class="container">
-<div class="section-header reveal">
-<h2>Learn More About Heropesa ERP</h2>
-<p>Access specifications, customer stories, and expert insights to inform your decision.</p>
-</div>
-<div class="resources-grid">
-<a href="#" class="resource-card reveal">
-<i class="fa-solid fa-file-pdf"></i>
-<div>
-<h5>Data Sheets</h5>
-<p>Access specifications, features, and technical capabilities of Heropesa ERP.</p>
-</div>
-</a>
-<a href="#" class="resource-card reveal reveal-delay-1">
-<i class="fa-solid fa-users"></i>
-<div>
-<h5>Customer Stories</h5>
-<p>See how businesses like yours transformed operations with Heropesa ERP.</p>
-</div>
-</a>
-<a href="#" class="resource-card reveal reveal-delay-2">
-<i class="fa-solid fa-play-circle"></i>
-<div>
-<h5>Product Demos</h5>
-<p>Watch guided tours of key features and workflows in action.</p>
-</div>
-</a>
-<a href="#" class="resource-card reveal">
-<i class="fa-solid fa-book"></i>
-<div>
-<h5>Guides & Blogs</h5>
-<p>Expert insights on ERP implementation, best practices, and industry trends.</p>
-</div>
-</a>
-<a href="#" class="resource-card reveal reveal-delay-1">
-<i class="fa-solid fa-graduation-cap"></i>
-<div>
-<h5>Essential Learning</h5>
-<p>Documentation, tutorials, and training resources to accelerate team adoption.</p>
-</div>
-</a>
-<a href="#" class="resource-card reveal reveal-delay-2">
-<i class="fa-solid fa-globe"></i>
-<div>
-<h5>Global Business Management</h5>
-<p>Manage multi-entity, multi-currency operations with built-in compliance.</p>
-</div>
-</a>
-</div>
-</div>
-</section>
-
-<!-- CTA BANNER -->
-<section class="cta-banner" id="demo">
-<div class="container">
-<h3 class="reveal">Ready to Transform Your Business?</h3>
-<p class="reveal">Join thousands of companies who trust Heropesa ERP to streamline operations, gain visibility, and accelerate growth.</p>
-<div class="reveal" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
-<a href="#demo" class="btn" style="background:#fff;color:var(--primary);">Schedule a Demo</a>
-<a href="#demo" class="btn btn-outline">Contact Sales</a>
-</div>
-</div>
-</section>
-</main>
-
-<!-- =========================================
-FOOTER
-========================================= -->
+<!-- FOOTER (exact saas.txt) -->
 <footer class="heropesa-footer" role="contentinfo">
-<div class="container">
-<div class="footer-grid">
-<div class="footer-brand">
-<a href="/index.html" class="logo">Hero<span class="logo-accent">pesa</span></a>
-<p>Cloud ERP built for modern manufacturers. Unified, intelligent, and designed to scale with your production needs.</p>
-<div class="social-icons">
-<a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
-<a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
-<a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
-<a href="#" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
-</div>
-</div>
-<div class="footer-col">
-<h5>Core Platforms</h5>
-<ul>
-<li><a href="/pages/business-software.html">Business Software</a></li>
-<li><a href="/pages/posldg.html">Point of Sale</a></li>
-<li><a href="/pages/erpldg.html">Enterprise ERP</a></li>
-<li><a href="/pages/accounting.html">Accounting Software</a></li>
-<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
-<li><a href="/pages/businessmanagementsystems.html">Business Management Systems</a></li>
-<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
-<li><a href="/pages/supply-chain.html">Supply Chain</a></li>
-<li><a href="/pages/inventory.html">Inventory Control</a></li>
-<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
-<li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
-<li><a href="/pages/education.html">Education Platform</a></li>
-<li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
-<li><a href="/pages/ai-support.html">AI Customer Support</a></li>
-<li><a href="/pages/bulk-messaging.html">Bulk Messaging</a></li>
-<li><a href="/pages/collaboration-tool.html">Collaboration Tool</a></li>
-<li><a href="/pages/help-desk.html">Help Desk</a></li>
-<li><a href="/pages/insights.html">Insights</a></li>
-<li><a href="/pages/web-builder.html">Web builder</a></li>
-<li><a href="/pages/learning-lms.html">Learning (LMS)</a></li>
-<li><a href="/pages/drive.html">Drive</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Trading &amp; Finance</h5>
-<ul>
-<li><a href="/pages/trading-prop.html">Trading &amp; Prop</a></li>
-<li><a href="/pages/cfd-prop.html">CFD Prop Firms</a></li>
-<li><a href="/pages/crypto-prop.html">Crypto Prop Solutions</a></li>
-<li><a href="/pages/prediction-markets.html">Prediction Market Solutions</a></li>
-<li><a href="/pages/sports-betting.html">Sports Betting Tech</a></li>
-<li><a href="/pages/lotterysoftware.html">Lottery &amp; Casino Softwares</a></li>
-<li><a href="/pages/payments.html">Payment Processing</a></li>
-<li><a href="/pages/trader-dash.html">Trader Dashboards</a></li>
-<li><a href="/pages/trading-analytics.html">Trading Analytics</a></li>
-<li><a href="/pages/compliance-monitoring.html">Compliance Monitoring</a></li>
-<li><a href="/pages/kyc-aml.html">KYC &amp; AML</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Cloud &amp; Infrastructure</h5>
-<ul>
-<li><a href="/pages/cloud-infra.html">Cloud &amp; Infrastructure</a></li>
-<li><a href="/pages/domains.html">Domain Registration</a></li>
-<li><a href="/pages/web-hosting.html">Web Hosting</a></li>
-<li><a href="/pages/vps-dedicated.html">VPS &amp; Dedicated</a></li>
-<li><a href="/pages/cloud-computing.html">Cloud Computing</a></li>
-<li><a href="/pages/cdn-security.html">CDN &amp; Security</a></li>
-<li><a href="/pages/backup.html">Backup &amp; Recovery</a></li>
-<li><a href="/pages/enterprise-email.html">Enterprise Email</a></li>
-<li><a href="/pages/dev-apis.html">Developer APIs</a></li>
-<li><a href="/pages/monitoring.html">Monitoring &amp; Logs</a></li>
-<li><a href="/pages/infra-status.html">Infrastructure Status</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Security &amp; AI</h5>
-<ul>
-<li><a href="/pages/cybersecurity.html">Cybersecurity Suite</a></li>
-<li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
-<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
-<li><a href="/pages/cctv-physical.html">CCTV &amp; Physical Security</a></li>
-<li><a href="/pages/business-intel.html">Business Intelligence</a></li>
-<li><a href="/pages/threat-detection.html">Threat Detection</a></li>
-<li><a href="/pages/compliance-gov.html">Compliance &amp; Governance</a></li>
-<li><a href="/pages/identity-access.html">Identity &amp; Access</a></li>
-<li><a href="/pages/soc-monitoring.html">SOC Monitoring</a></li>
-<li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Industries</h5>
-<ul>
-<li><a href="/industries/retail.html">Retail</a></li>
-<li><a href="/industries/hospitality.html">Hospitality</a></li>
-<li><a href="/industries/healthcare.html">Healthcare</a></li>
-<li><a href="/industries/education.html">Education</a></li>
-<li><a href="/industries/restaurants.html">Restaurants</a></li>
-<li><a href="/industries/beauty-wellness.html">Beauty &amp; Wellness</a></li>
-<li><a href="/industries/pro-services.html">Professional Services</a></li>
-<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
-<li><a href="/industries/finance.html">Finance</a></li>
-<li><a href="/industries/enterprise.html">Enterprise</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Business Types</h5>
-<ul>
-<li><a href="/pages/kioskldg.html">Kiosk</a></li>
-<li><a href="/pages/hairsalonposldg.html">Hair Salon</a></li>
-<li><a href="/pages/medspaposldg.html">Med Spa</a></li>
-<li><a href="/pages/pharmacypos.html">Pharmacy</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Developers</h5>
-<ul>
-<li><a href="/pages/developers.html">Developer Hub</a></li>
-<li><a href="/pages/docs.html">API Documentation</a></li>
-<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
-<li><a href="/pages/webhooks.html">Webhooks &amp; Events</a></li>
-<li><a href="/pages/marketplace.html">App Marketplace</a></li>
-<li><a href="/pages/console.html">Developer Console</a></li>
-<li><a href="/pages/open-source.html">Open Source</a></li>
-<li><a href="/pages/status.html">Status Page</a></li>
-<li><a href="/pages/changelog.html">Changelog</a></li>
-<li><a href="/pages/sandbox.html">Sandbox Access</a></li>
-<li><a href="/pages/cli.html">CLI Tools</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h5>Company &amp; Legal</h5>
-<ul>
-<li><a href="/pages/about.html">About Us</a></li>
-<li><a href="/pages/leadership.html">Leadership</a></li>
-<li><a href="/pages/investors.html">Investor Relations</a></li>
-<li><a href="/pages/newsroom.html">Newsroom</a></li>
-<li><a href="/pages/careers.html">Careers</a></li>
-<li><a href="/pages/partners.html">Partners</a></li>
-<li><a href="/pages/events.html">Events</a></li>
-<li><a href="/pages/contact-sales.html">Contact Sales</a></li>
-<li><a href="/pages/support.html">Support Center</a></li>
-<li><a href="/pages/offices.html">Global Offices</a></li>
-<li><a href="/pages/privacy.html">Privacy Policy</a></li>
-<li><a href="/pages/terms.html">Terms of Service</a></li>
-<li><a href="/pages/cookies.html">Cookie Preferences</a></li>
-<li><a href="/pages/dpa.html">Data Processing Addendum</a></li>
-<li><a href="/pages/security-compliance.html">Security Compliance</a></li>
-<li><a href="/pages/api-terms.html">API Terms</a></li>
-<li><a href="/pages/licenses.html">Licenses</a></li>
-<li><a href="/pages/accessibility.html">Accessibility</a></li>
-<li><a href="/pages/trust.html">Trust Center</a></li>
-<li><a href="/pages/responsible-ai.html">Responsible AI</a></li>
-<li><a href="/pages/blog.html">Blog</a></li>
-<li><a href="/pages/news.html">News</a></li>
-<li><a href="/pages/faqs.html">FAQs</a></li>
-</ul>
-</div>
-</div>
-<div class="footer-bottom">
-<div class="footer-links">
-<a href="/pages/privacy.html">Privacy Policy</a>
-<a href="/pages/terms.html">Terms of Service</a>
-<a href="/pages/cookies.html">Cookie Policy</a>
-<a href="/pages/accessibility.html">Accessibility</a>
-<a href="/pages/licenses.html">Licenses</a>
-</div>
-<div>©️ 2026 Heropesa Global Inc. All rights reserved.</div>
-</div>
-<p style="font-size:0.75rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
-Heropesa Manufacturing ERP is a cloud-based business management platform.
-Implementation services and partner integrations may be required for certain capabilities.
-Contact sales for detailed compliance and regulatory information specific to your industry and region.
-</p>
-</div>
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/index.html" class="logo">Hero<span class="logo-accent">pesa</span></a>
+        <p>Cloud ERP built for modern manufacturers. Unified, intelligent, and designed to scale with your production needs.</p>
+        <div class="social-icons">
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Core Platforms</h5>
+        <ul>
+          <li><a href="/pages/posldg.html">Point of Sale</a></li>
+          <li><a href="/pages/erpldg.html">Enterprise ERP</a></li>
+          <li><a href="/pages/accounting.html">Accounting Software</a></li>
+          <li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
+          <li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
+          <li><a href="/pages/supply-chain.html">Supply Chain</a></li>
+          <li><a href="/pages/inventory.html">Inventory Control</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Finance</h5>
+        <ul>
+          <li><a href="#">General Ledger</a></li>
+          <li><a href="#">Accounts Receivable</a></li>
+          <li><a href="#">Accounts Payable</a></li>
+          <li><a href="#">Cash &amp; Banking</a></li>
+          <li><a href="#">Fixed Assets</a></li>
+          <li><a href="#">Tax Management</a></li>
+          <li><a href="#">Financial Reports</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="/pages/docs.html">API Documentation</a></li>
+          <li><a href="/pages/help.html">Help Center</a></li>
+          <li><a href="/pages/demos.html">Product Demos</a></li>
+          <li><a href="/pages/stories.html">Customer Stories</a></li>
+          <li><a href="/pages/developers.html">Developer Hub</a></li>
+          <li><a href="/pages/status.html">System Status</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="/pages/about.html">About Us</a></li>
+          <li><a href="/pages/careers.html">Careers</a></li>
+          <li><a href="/pages/partners.html">Partners</a></li>
+          <li><a href="/pages/contact-sales.html">Contact Sales</a></li>
+          <li><a href="/pages/privacy.html">Privacy Policy</a></li>
+          <li><a href="/pages/terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="/pages/privacy.html">Privacy Policy</a>
+        <a href="/pages/terms.html">Terms of Service</a>
+        <a href="/pages/cookies.html">Cookie Policy</a>
+        <a href="/pages/accessibility.html">Accessibility</a>
+      </div>
+      <div>©️ 2026 Heropesa Global Inc. All rights reserved.</div>
+    </div>
+  </div>
 </footer>
 
-<!-- =========================================
-DEMO MODAL
-========================================= -->
-<div id="demoModal" class="demo-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle" aria-hidden="true">
-<div class="demo-modal-container">
-<div class="demo-modal-header">
-<h3 id="demoModalTitle">Schedule an Enterprise Demo</h3>
-<button class="demo-modal-close" aria-label="Close demo modal">&times;</button>
-</div>
-<form id="demoModalForm">
-<div class="demo-form-group">
-<label for="demo-name">Full Name</label>
-<input type="text" id="demo-name" required placeholder="John Doe" autocomplete="name" />
-</div>
-<div class="demo-form-group">
-<label for="demo-email">Corporate Email</label>
-<input type="email" id="demo-email" required placeholder="name@company.com" autocomplete="email" />
-</div>
-<div class="demo-form-group">
-<label for="demo-size">Company Size</label>
-<select id="demo-size" required>
-<option value="">Select size</option>
-<option>1-9 employees</option>
-<option>10-49 employees</option>
-<option>50-249 employees</option>
-<option>250+ employees</option>
-</select>
-</div>
-<div class="demo-form-group">
-<label for="demo-phone">Phone Number</label>
-<input type="tel" id="demo-phone" required placeholder="+1 (555) 000-0000" autocomplete="tel" />
-</div>
-<button type="submit" class="demo-submit-btn">Submit Request</button>
-</form>
-<div id="demoSuccessState" class="demo-success-state" style="display: none;">
-<i class="fa-solid fa-circle-check color-green" aria-hidden="true"></i>
-<h4>Request Submitted!</h4>
-<p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
-<button class="demo-close-btn">Close</button>
-</div>
-</div>
-</div>
-
-<!-- =========================================
-JAVASCRIPT
-========================================= -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-'use strict';
-// ============================================================
-// UTILITY FUNCTIONS
-// ============================================================
-function getFocusableElements(container) {
-return container.querySelectorAll(
-'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-);
-}
-function trapFocus(element) {
-const focusable = getFocusableElements(element);
-if (focusable.length === 0) return;
-const first = focusable[0];
-const last = focusable[focusable.length - 1];
-function handler(e) {
-if (e.key !== 'Tab') return;
-if (e.shiftKey) {
-if (document.activeElement === first) {
-e.preventDefault();
-last.focus();
-}
-} else {
-if (document.activeElement === last) {
-e.preventDefault();
-first.focus();
-}
-}
-}
-element.addEventListener('keydown', handler);
-return () => element.removeEventListener('keydown', handler);
-}
+/* =========================================
+MOCK DATA ENGINE
+========================================= */
+const MockJournals = [
+  { num: 'GL-000247', date: '2026-07-05', desc: 'Monthly payroll accrual', source: 'Payroll', account: '6100 · Salaries Expense', debit: 184500, credit: 0, status: 'posted' },
+  { num: 'GL-000246', date: '2026-07-05', desc: 'Customer payment — Acme Corp', source: 'Accounts Receivable', account: '1100 · Accounts Receivable', debit: 0, credit: 24500, status: 'posted' },
+  { num: 'GL-000245', date: '2026-07-04', desc: 'Supplier invoice — CloudHost Ltd', source: 'Accounts Payable', account: '2200 · Accounts Payable', debit: 12840, credit: 0, status: 'approved' },
+  { num: 'GL-000244', date: '2026-07-04', desc: 'Depreciation — Q3 fixed assets', source: 'Fixed Assets', account: '1720 · Accum. Depreciation', debit: 38200, credit: 0, status: 'posted' },
+  { num: 'GL-000243', date: '2026-07-03', desc: 'Bank fee — wire transfer charges', source: 'Cash Management', account: '6400 · Bank Charges', debit: 285, credit: 0, status: 'pending' },
+  { num: 'GL-000242', date: '2026-07-03', desc: 'Inventory adjustment — Warehouse B', source: 'Inventory', account: '1300 · Inventory', debit: 0, credit: 4120, status: 'posted' },
+  { num: 'GL-000241', date: '2026-07-02', desc: 'Intercompany loan — HeroCloud', source: 'Manual', account: '1800 · Intercompany', debit: 150000, credit: 0, status: 'draft' },
+  { num: 'GL-000240', date: '2026-07-02', desc: 'Tax provision — VAT Q2', source: 'Tax', account: '2500 · VAT Payable', debit: 0, credit: 67340, status: 'posted' },
+  { num: 'GL-000239', date: '2026-07-01', desc: 'Revenue recognition — SaaS subscriptions', source: 'Accounts Receivable', account: '4000 · Sales Revenue', debit: 0, credit: 284500, status: 'posted' },
+  { num: 'GL-000238', date: '2026-07-01', desc: 'Rent expense — HQ office', source: 'Manual', account: '6200 · Rent Expense', debit: 18500, credit: 0, status: 'posted' }
+];
 
-// ============================================================
-// 3. SCROLL REVEAL
-// ============================================================
-var revealElements = document.querySelectorAll('.reveal');
-if ('IntersectionObserver' in window) {
-document.body.classList.add('js-enabled');
-var revealObserver = new IntersectionObserver(function(entries) {
-entries.forEach(function(entry) {
-if (entry.isIntersecting) {
-entry.target.classList.add('visible');
-revealObserver.unobserve(entry.target);
-}
-});
-}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-revealElements.forEach(function(el) { revealObserver.observe(el); });
-}
-
-// ============================================================
-// 4. SMOOTH SCROLL FOR ANCHOR LINKS
-// ============================================================
-document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-anchor.addEventListener('click', function(e) {
-var href = this.getAttribute('href');
-if (!href || href === '#' || href === '#demo') {
-return;
-}
-e.preventDefault();
-try {
-var target = document.querySelector(href);
-if (target) {
-target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-closeMobileDrawer();
-}
-} catch (err) {
-console.warn('Invalid scroll selector:', href);
-}
-});
+/* =========================================
+SIDEBAR TOGGLE
+========================================= */
+const appShell = document.getElementById('appShell');
+document.getElementById('collapseBtn').addEventListener('click', () => {
+  appShell.classList.toggle('sidebar-collapsed');
 });
 
-// ============================================================
-// 5. FUNCTIONAL HEADER SEARCH
-// ============================================================
-var headerSearchInput = document.getElementById('headerSearchInput');
-var mobileSearchInput = document.getElementById('mobileSearchInput');
-var searchTimeout;
-function clearSearchHighlights() {
-document.querySelectorAll('.search-highlight').forEach(function(el) {
-var parent = el.parentNode;
-parent.replaceChild(document.createTextNode(el.textContent), el);
-parent.normalize();
-});
-}
-function performSearch(query) {
-clearSearchHighlights();
-if (query.length < 2) return;
-var walker = document.createTreeWalker(
-document.body,
-NodeFilter.SHOW_TEXT,
-null,
-false
-);
-var nodes = [];
-var node;
-while ((node = walker.nextNode())) {
-var parent = node.parentElement;
-if (!parent) continue;
-var tag = parent.tagName;
-if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(tag)) continue;
-if (parent.classList && parent.classList.contains('search-highlight')) continue;
-if (parent.closest && (parent.closest('.heropesa-header') || parent.closest('.mobile-drawer'))) continue;
-nodes.push(node);
-}
-var regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
-nodes.reverse().forEach(function(n) {
-if (regex.test(n.textContent)) {
-var span = document.createElement('span');
-span.className = 'search-highlight';
-span.innerHTML = n.textContent.replace(regex,
-'<mark style="background:transparent;color:inherit;">$1</mark>'
-);
-n.parentNode.replaceChild(span, n);
-}
-});
-var matches = document.querySelectorAll('.search-highlight');
-if (matches.length > 0) {
-matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-matches[0].classList.add('active-match');
-}
-}
-function handleSearchInput(e) {
-clearTimeout(searchTimeout);
-var query = e.target.value.trim();
-searchTimeout = setTimeout(function() {
-performSearch(query);
-}, 300);
-}
-function handleSearchKeydown(e) {
-if (e.key === 'Escape') {
-e.target.value = '';
-clearSearchHighlights();
-e.target.blur();
-}
-}
-if (headerSearchInput) {
-headerSearchInput.addEventListener('input', handleSearchInput);
-headerSearchInput.addEventListener('keydown', handleSearchKeydown);
-}
-if (mobileSearchInput) {
-mobileSearchInput.addEventListener('input', handleSearchInput);
-mobileSearchInput.addEventListener('keydown', handleSearchKeydown);
-}
-
-// ============================================================
-// 6. MOBILE DRAWER
-// ============================================================
-var menuToggle = document.getElementById('menuToggle');
-var mobileDrawer = document.getElementById('mobileDrawer');
-var mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
-var mobileDrawerClose = document.getElementById('mobileDrawerClose');
-var lastFocusedElement = null;
-var drawerFocusTrap = null;
-function openMobileDrawer() {
-lastFocusedElement = document.activeElement;
-mobileDrawer.classList.add('active');
-mobileDrawerBackdrop.classList.add('active');
-mobileDrawer.setAttribute('aria-hidden', 'false');
-mobileDrawerBackdrop.setAttribute('aria-hidden', 'false');
-menuToggle.setAttribute('aria-expanded', 'true');
-menuToggle.setAttribute('aria-label', 'Close navigation menu');
-document.body.classList.add('no-scroll');
-setTimeout(function() {
-mobileDrawerClose.focus();
-drawerFocusTrap = trapFocus(mobileDrawer);
-}, 100);
-}
-function closeMobileDrawer() {
-mobileDrawer.classList.remove('active');
-mobileDrawerBackdrop.classList.remove('active');
-mobileDrawer.setAttribute('aria-hidden', 'true');
-mobileDrawerBackdrop.setAttribute('aria-hidden', 'true');
-menuToggle.setAttribute('aria-expanded', 'false');
-menuToggle.setAttribute('aria-label', 'Open navigation menu');
-document.body.classList.remove('no-scroll');
-document.querySelectorAll('.mobile-nav-item').forEach(function(item) {
-item.setAttribute('aria-expanded', 'false');
-item.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
-});
-if (drawerFocusTrap) {
-drawerFocusTrap();
-drawerFocusTrap = null;
-}
-if (lastFocusedElement) {
-lastFocusedElement.focus();
-}
-}
-window.closeMobileDrawer = closeMobileDrawer;
-if (menuToggle) {
-menuToggle.addEventListener('click', function() {
-var isOpen = mobileDrawer.classList.contains('active');
-if (isOpen) {
-closeMobileDrawer();
-} else {
-openMobileDrawer();
-}
-});
-}
-if (mobileDrawerClose) {
-mobileDrawerClose.addEventListener('click', closeMobileDrawer);
-}
-if (mobileDrawerBackdrop) {
-mobileDrawerBackdrop.addEventListener('click', closeMobileDrawer);
-}
-document.addEventListener('keydown', function(e) {
-if (e.key === 'Escape') {
-if (mobileDrawer.classList.contains('active')) {
-closeMobileDrawer();
-}
-}
+/* =========================================
+VIEW SWITCHER
+========================================= */
+document.querySelectorAll('.view-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const view = btn.dataset.view;
+    document.getElementById('dashboardView').style.display = view === 'dashboard' ? 'block' : 'none';
+    document.getElementById('listView').style.display = view === 'list' ? 'block' : 'none';
+  });
 });
 
-// ============================================================
-// 7. MOBILE ACCORDION NAVIGATION
-// ============================================================
-var mobileNavItems = document.querySelectorAll('.mobile-nav-item');
-mobileNavItems.forEach(function(item) {
-var trigger = item.querySelector('.mobile-nav-trigger');
-if (!trigger) return;
-trigger.addEventListener('click', function() {
-var isExpanded = item.getAttribute('aria-expanded') === 'true';
-mobileNavItems.forEach(function(otherItem) {
-if (otherItem !== item) {
-otherItem.setAttribute('aria-expanded', 'false');
-otherItem.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
-}
-});
-var newState = !isExpanded;
-item.setAttribute('aria-expanded', newState ? 'true' : 'false');
-trigger.setAttribute('aria-expanded', newState ? 'true' : 'false');
-});
-});
-mobileDrawer.querySelectorAll('a').forEach(function(link) {
-link.addEventListener('click', function() {
-setTimeout(closeMobileDrawer, 150);
-});
+document.getElementById('viewAllJournalsBtn').addEventListener('click', () => {
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-view="list"]').classList.add('active');
+  document.getElementById('dashboardView').style.display = 'none';
+  document.getElementById('listView').style.display = 'block';
 });
 
-// ============================================================
-// 8. DESKTOP MEGA MENU - Keyboard & Focus Management
-// ============================================================
-var navItems = document.querySelectorAll('.nav-item');
-navItems.forEach(function(item) {
-var parentLink = item.querySelector('.nav-parent-link');
-var megaMenu = item.querySelector('.mega-menu');
-if (!parentLink || !megaMenu) return;
-parentLink.addEventListener('click', function(e) {
-e.preventDefault();
-var isExpanded = item.getAttribute('aria-expanded') === 'true';
-navItems.forEach(function(otherItem) {
-if (otherItem !== item) {
-otherItem.setAttribute('aria-expanded', 'false');
-otherItem.querySelector('.nav-parent-link').setAttribute('aria-expanded', 'false');
+/* =========================================
+RENDER JOURNAL TABLE
+========================================= */
+function formatMoney(n) {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
 }
-});
-item.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-parentLink.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
-if (!isExpanded) {
-var firstLink = megaMenu.querySelector('a');
-if (firstLink) {
-setTimeout(function() { firstLink.focus(); }, 100);
-}
-}
-});
-parentLink.addEventListener('keydown', function(e) {
-if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-e.preventDefault();
-item.setAttribute('aria-expanded', 'true');
-parentLink.setAttribute('aria-expanded', 'true');
-var firstLink = megaMenu.querySelector('a');
-if (firstLink) firstLink.focus();
-}
-});
-megaMenu.addEventListener('keydown', function(e) {
-if (e.key === 'Escape') {
-item.setAttribute('aria-expanded', 'false');
-parentLink.setAttribute('aria-expanded', 'false');
-parentLink.focus();
-}
-var links = Array.from(megaMenu.querySelectorAll('a'));
-var currentIndex = links.indexOf(document.activeElement);
-if (e.key === 'ArrowDown') {
-e.preventDefault();
-var nextIndex = (currentIndex + 1) % links.length;
-links[nextIndex].focus();
-} else if (e.key === 'ArrowUp') {
-e.preventDefault();
-var prevIndex = (currentIndex - 1 + links.length) % links.length;
-links[prevIndex].focus();
-}
-});
-});
-document.addEventListener('click', function(e) {
-if (!e.target.closest('.nav-item')) {
-navItems.forEach(function(item) {
-item.setAttribute('aria-expanded', 'false');
-var parentLink = item.querySelector('.nav-parent-link');
-if (parentLink) parentLink.setAttribute('aria-expanded', 'false');
-});
-}
-});
+function renderJournals() {
+  const tbody = document.getElementById('journalTbody');
+  tbody.innerHTML = MockJournals.map(j => `
+    <tr data-num="${j.num}">
+      <td class="checkbox-cell"><input type="checkbox" class="checkbox row-check" aria-label="Select ${j.num}" /></td>
+      <td><span class="link-btn" data-open="${j.num}">${j.num}</span></td>
+      <td>${new Date(j.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</td>
+      <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${j.desc}">${j.desc}</td>
+      <td><span style="font-size:0.75rem;color:var(--text-secondary)">${j.source}</span></td>
+      <td style="font-size:0.78rem;color:var(--text-secondary)">${j.account}</td>
+      <td style="text-align:right" class="amount">${j.debit ? formatMoney(j.debit) : '—'}</td>
+      <td style="text-align:right" class="amount">${j.credit ? formatMoney(j.credit) : '—'}</td>
+      <td><span class="status-pill status-${j.status}">${j.status.charAt(0).toUpperCase() + j.status.slice(1)}</span></td>
+      <td>
+        <button class="icon-btn" style="width:28px;height:28px" title="More actions" aria-label="More actions"><i class="fa-solid fa-ellipsis" style="font-size:0.85rem"></i></button>
+      </td>
+    </tr>
+  `).join('');
 
-// ============================================================
-// 9. SCROLL HEADER SHADOW
-// ============================================================
-var header = document.getElementById('navbar');
-if (header) {
-var scrollTicking = false;
-window.addEventListener('scroll', function() {
-if (!scrollTicking) {
-window.requestAnimationFrame(function() {
-header.classList.toggle('scrolled', window.scrollY > 10);
-scrollTicking = false;
-});
-scrollTicking = true;
+  // Wire up row clicks
+  tbody.querySelectorAll('[data-open]').forEach(el => {
+    el.addEventListener('click', () => openJournalDrawer(el.dataset.open));
+  });
+  tbody.querySelectorAll('tr').forEach(tr => {
+    tr.addEventListener('dblclick', () => {
+      const num = tr.dataset.num;
+      if (num) openJournalDrawer(num);
+    });
+  });
+
+  // Wire up checkboxes
+  tbody.querySelectorAll('.row-check').forEach(cb => {
+    cb.addEventListener('change', updateBulkBar);
+  });
 }
-}, { passive: true });
+renderJournals();
+
+/* =========================================
+BULK SELECTION
+========================================= */
+const selectAll = document.getElementById('selectAll');
+selectAll.addEventListener('change', () => {
+  document.querySelectorAll('.row-check').forEach(cb => cb.checked = selectAll.checked);
+  updateBulkBar();
+});
+function updateBulkBar() {
+  const checked = document.querySelectorAll('.row-check:checked').length;
+  document.getElementById('bulkCount').textContent = checked;
+  document.getElementById('bulkBar').classList.toggle('active', checked > 0);
+  document.querySelectorAll('#journalTbody tr').forEach(tr => {
+    const cb = tr.querySelector('.row-check');
+    tr.classList.toggle('selected', cb && cb.checked);
+  });
 }
 
-// ============================================================
-// 10. ACTIVE NAVIGATION STATE SYSTEM
-// ============================================================
-function setActiveNav() {
-var currentPath = window.location.pathname;
-var normalized = currentPath.replace(/\/$/, '').replace(/\/index\.html$/, '');
-if (normalized === '') normalized = '/';
-document.querySelectorAll('.nav-direct-link').forEach(function(link) {
-var href = link.getAttribute('href');
-if (!href) return;
-var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
-if (hrefNorm === '') hrefNorm = '/';
-if (normalized === hrefNorm) {
-link.classList.add('active');
-} else {
-link.classList.remove('active');
-}
+/* =========================================
+FILTER CHIPS
+========================================= */
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    showToast('Filter Applied', `Showing ${chip.textContent.trim().split(' ')[0]} journals`, 'info');
+  });
 });
-navItems.forEach(function(item) {
-var parentLink = item.querySelector('.nav-parent-link');
-if (!parentLink) return;
-var megaLinks = item.querySelectorAll('.mega-menu a');
-var isActive = false;
-megaLinks.forEach(function(link) {
-var href = link.getAttribute('href');
-if (!href) return;
-var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
-if (hrefNorm === '') hrefNorm = '/';
-if (normalized === hrefNorm) {
-isActive = true;
-link.classList.add('active');
-} else {
-link.classList.remove('active');
-}
-});
-if (isActive) {
-parentLink.classList.add('active');
-} else {
-parentLink.classList.remove('active');
-}
-});
-document.querySelectorAll('.footer-col a, .footer-links a').forEach(function(link) {
-var href = link.getAttribute('href');
-if (!href) return;
-var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
-if (hrefNorm === '') hrefNorm = '/';
-if (normalized === hrefNorm) {
-link.classList.add('active');
-} else {
-link.classList.remove('active');
-}
-});
-document.querySelectorAll('.mobile-submenu-group a, .mobile-direct-links a').forEach(function(link) {
-var href = link.getAttribute('href');
-if (!href) return;
-var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
-if (hrefNorm === '') hrefNorm = '/';
-if (normalized === hrefNorm) {
-link.classList.add('active');
-} else {
-link.classList.remove('active');
-}
-});
-}
-setActiveNav();
-window.addEventListener('popstate', setActiveNav);
-setTimeout(setActiveNav, 100);
 
-// ============================================================
-// 11. DEMO MODAL
-// ============================================================
-var demoModal = document.getElementById('demoModal');
-var demoModalForm = document.getElementById('demoModalForm');
-var demoSuccessState = document.getElementById('demoSuccessState');
-var demoModalFocusTrap = null;
-var demoLastFocused = null;
-function openDemoModal() {
-demoLastFocused = document.activeElement;
-demoModal.classList.add('active');
-demoModal.setAttribute('aria-hidden', 'false');
-document.body.classList.add('no-scroll');
-demoModalForm.style.display = 'block';
-demoSuccessState.style.display = 'none';
-if (mobileDrawer.classList.contains('active')) {
-closeMobileDrawer();
-}
-setTimeout(function() {
-var firstInput = demoModal.querySelector('input, button');
-if (firstInput) firstInput.focus();
-demoModalFocusTrap = trapFocus(demoModal);
-}, 100);
-}
-function closeDemoModal() {
-demoModal.classList.remove('active');
-demoModal.setAttribute('aria-hidden', 'true');
-document.body.classList.remove('no-scroll');
-if (demoModalFocusTrap) {
-demoModalFocusTrap();
-demoModalFocusTrap = null;
-}
-if (demoLastFocused) {
-demoLastFocused.focus();
-}
-}
-document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(function(link) {
-link.addEventListener('click', function(e) {
-e.preventDefault();
-openDemoModal();
+/* =========================================
+SEARCH
+========================================= */
+document.getElementById('journalSearch').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase();
+  document.querySelectorAll('#journalTbody tr').forEach(tr => {
+    const text = tr.textContent.toLowerCase();
+    tr.style.display = text.includes(q) ? '' : 'none';
+  });
 });
-});
-var mobileDemoBtn = document.getElementById('mobileDemoBtn');
-if (mobileDemoBtn) {
-mobileDemoBtn.addEventListener('click', function(e) {
-e.preventDefault();
-openDemoModal();
-});
+
+/* =========================================
+MODAL: NEW JOURNAL
+========================================= */
+const journalModal = document.getElementById('journalModal');
+function openModal() {
+  journalModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('journalDesc').focus(), 100);
 }
-var demoCloseBtn = demoModal.querySelector('.demo-modal-close');
-if (demoCloseBtn) {
-demoCloseBtn.addEventListener('click', closeDemoModal);
+function closeModal() {
+  journalModal.classList.remove('active');
+  document.body.style.overflow = '';
 }
-var demoCloseSuccessBtn = demoSuccessState.querySelector('.demo-close-btn');
-if (demoCloseSuccessBtn) {
-demoCloseSuccessBtn.addEventListener('click', closeDemoModal);
+document.getElementById('newJournalBtn').addEventListener('click', openModal);
+journalModal.querySelectorAll('[data-close-modal]').forEach(el => el.addEventListener('click', closeModal));
+journalModal.addEventListener('click', (e) => { if (e.target === journalModal) closeModal(); });
+
+/* =========================================
+JOURNAL LINES: BALANCE ENGINE
+========================================= */
+function updateBalance() {
+  let totalDebit = 0, totalCredit = 0;
+  document.querySelectorAll('.debit-input').forEach(i => totalDebit += parseFloat(i.value) || 0);
+  document.querySelectorAll('.credit-input').forEach(i => totalCredit += parseFloat(i.value) || 0);
+  const diff = Math.abs(totalDebit - totalCredit);
+  document.getElementById('totalDebit').textContent = formatMoney(totalDebit);
+  document.getElementById('totalCredit').textContent = formatMoney(totalCredit);
+  const diffEl = document.getElementById('difference');
+  diffEl.textContent = formatMoney(diff);
+  diffEl.style.color = diff === 0 ? 'var(--color-green)' : 'var(--color-red)';
+  const statusEl = document.getElementById('balanceStatus');
+  if (diff === 0 && (totalDebit > 0 || totalCredit > 0)) {
+    statusEl.className = 'balance-status balanced';
+    statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> Balanced';
+  } else {
+    statusEl.className = 'balance-status unbalanced';
+    statusEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Unbalanced';
+  }
 }
-demoModal.addEventListener('click', function(e) {
-if (e.target === this) {
-closeDemoModal();
-}
+document.querySelectorAll('.debit-input, .credit-input').forEach(i => i.addEventListener('input', updateBalance));
+
+/* =========================================
+ADD / DELETE LINES
+========================================= */
+document.getElementById('addLineBtn').addEventListener('click', () => {
+  const tbody = document.getElementById('linesBody');
+  const rowCount = tbody.querySelectorAll('tr').length + 1;
+  const tr = document.createElement('tr');
+  tr.dataset.line = rowCount;
+  tr.innerHTML = `
+    <td class="row-num">${rowCount}</td>
+    <td><select class="account-select"><option value="">Select account…</option><option value="1100">1100 — Accounts Receivable</option><option value="1200">1200 — Inventory</option><option value="2100">2100 — Accounts Payable</option><option value="4000">4000 — Sales Revenue</option><option value="5000">5000 — Cost of Goods Sold</option><option value="6100">6100 — Salaries Expense</option><option value="6200">6200 — Rent Expense</option><option value="6400">6400 — Bank Charges</option></select></td>
+    <td><input type="text" placeholder="Line description" /></td>
+    <td><input type="number" class="debit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+    <td><input type="number" class="credit-input" placeholder="0.00" style="text-align:right" step="0.01" /></td>
+    <td><select><option>Finance</option><option>Sales</option><option>Operations</option><option>Marketing</option><option>IT</option></select></td>
+    <td class="row-actions"><span class="line-delete" title="Delete line"><i class="fa-solid fa-xmark"></i></span></td>
+  `;
+  tbody.appendChild(tr);
+  tr.querySelectorAll('.debit-input, .credit-input').forEach(i => i.addEventListener('input', updateBalance));
+  tr.querySelector('.line-delete').addEventListener('click', () => { tr.remove(); updateBalance(); renumberLines(); });
+  tr.querySelector('.account-select').focus();
 });
-document.addEventListener('keydown', function(e) {
-if (e.key === 'Escape' && demoModal.classList.contains('active')) {
-closeDemoModal();
-}
+document.querySelectorAll('.line-delete').forEach(el => {
+  el.addEventListener('click', () => { el.closest('tr').remove(); updateBalance(); renumberLines(); });
 });
-if (demoModalForm) {
-demoModalForm.addEventListener('submit', function(e) {
-e.preventDefault();
-demoModalForm.style.display = 'none';
-demoSuccessState.style.display = 'block';
-setTimeout(function() {
-var closeBtn = demoSuccessState.querySelector('.demo-close-btn');
-if (closeBtn) closeBtn.focus();
-}, 100);
-});
+function renumberLines() {
+  document.querySelectorAll('#linesBody tr').forEach((tr, i) => {
+    tr.querySelector('.row-num').textContent = i + 1;
+  });
 }
 
-// ============================================================
-// 13. PREFERS REDUCED MOTION
-// ============================================================
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-document.documentElement.style.scrollBehavior = 'auto';
-}
+/* =========================================
+POST / SAVE ACTIONS
+========================================= */
+document.getElementById('saveDraftBtn').addEventListener('click', () => {
+  closeModal();
+  showToast('Draft Saved', 'Journal GL-000248 saved as draft', 'success');
 });
+document.getElementById('submitApprovalBtn').addEventListener('click', () => {
+  const diff = Math.abs(parseFloat(document.getElementById('difference').textContent.replace(/[^0-9.-]/g, '')) || 0);
+  if (diff > 0) {
+    showToast('Cannot Submit', 'Journal must be balanced before submission', 'error');
+    return;
+  }
+  const desc = document.getElementById('journalDesc').value.trim();
+  if (!desc) {
+    showToast('Missing Description', 'Please enter a journal description', 'warning');
+    return;
+  }
+  closeModal();
+  showToast('Submitted for Approval', 'Journal GL-000248 sent to Finance Manager', 'success');
+});
+document.getElementById('postJournalBtn').addEventListener('click', () => {
+  const diff = Math.abs(parseFloat(document.getElementById('difference').textContent.replace(/[^0-9.-]/g, '')) || 0);
+  if (diff > 0) {
+    showToast('Cannot Post', 'Journal must be balanced before posting', 'error');
+    return;
+  }
+  closeModal();
+  showToast('Journal Posted', 'GL-000248 posted to General Ledger successfully', 'success');
+});
+
+/* =========================================
+JOURNAL DETAIL DRAWER
+========================================= */
+const drawer = document.getElementById('journalDrawer');
+const drawerOverlay = document.getElementById('drawerOverlay');
+function openJournalDrawer(num) {
+  const j = MockJournals.find(x => x.num === num);
+  if (!j) return;
+  document.getElementById('drawerJournalNum').textContent = j.num;
+  document.getElementById('drawerJournalDesc').textContent = j.desc;
+  document.getElementById('drawerStatus').className = `status-pill status-${j.status}`;
+  document.getElementById('drawerStatus').textContent = j.status.charAt(0).toUpperCase() + j.status.slice(1);
+  drawer.classList.add('active');
+  drawerOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  drawer.classList.remove('active');
+  drawerOverlay.classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+drawerOverlay.addEventListener('click', closeDrawer);
+
+// Activity items open drawer
+document.querySelectorAll('[data-journal]').forEach(el => {
+  el.addEventListener('click', () => openJournalDrawer(el.dataset.journal));
+});
+
+/* =========================================
+COMMAND PALETTE (⌘K)
+========================================= */
+const commandOverlay = document.getElementById('commandOverlay');
+function openCommand() {
+  commandOverlay.classList.add('active');
+  setTimeout(() => commandOverlay.querySelector('input').focus(), 50);
+}
+function closeCommand() {
+  commandOverlay.classList.remove('active');
+}
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); commandOverlay.classList.contains('active') ? closeCommand() : openCommand(); }
+  if (e.key === 'Escape') {
+    if (commandOverlay.classList.contains('active')) closeCommand();
+    else if (journalModal.classList.contains('active')) closeModal();
+    else if (drawer.classList.contains('active')) closeDrawer();
+  }
+  // ⌘J = new journal
+  if ((e.metaKey || e.ctrlKey) && e.key === 'j') { e.preventDefault(); openModal(); }
+});
+commandOverlay.addEventListener('click', (e) => { if (e.target === commandOverlay) closeCommand(); });
+document.querySelectorAll('.global-search input').forEach(input => input.addEventListener('focus', openCommand));
+
+/* =========================================
+TOAST SYSTEM
+========================================= */
+function showToast(title, msg, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  const icons = { success: 'fa-circle-check', error: 'fa-circle-xmark', warning: 'fa-triangle-exclamation', info: 'fa-circle-info' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<i class="fa-solid ${icons[type]} toast-icon"></i><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0'; toast.style.transform = 'translateX(20px)'; toast.style.transition = 'all 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+/* =========================================
+QUICK ACTIONS
+========================================= */
+document.querySelectorAll('[data-action]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const action = btn.dataset.action;
+    const labels = {
+      'new-journal': ['New Journal', 'Opening journal editor…'],
+      'trial-balance': ['Trial Balance', 'Generating trial balance report…'],
+      'coa': ['Chart of Accounts', 'Opening account hierarchy…'],
+      'recurring': ['Recurring Journals', 'Opening recurring journal list…'],
+      'periods': ['Financial Periods', 'Opening period management…'],
+      'close-period': ['Close Period', 'Running period close checklist…'],
+      'import': ['Import Journals', 'Opening import wizard…'],
+      'audit': ['Audit Trail', 'Opening audit log…']
+    };
+    const [title, msg] = labels[action] || ['Action', 'Processing…'];
+    if (action === 'new-journal') openModal();
+    else showToast(title, msg, 'info');
+  });
+});
+
+/* =========================================
+IMPORT / EXPORT BUTTONS
+========================================= */
+document.getElementById('importBtn').addEventListener('click', () => showToast('Import Journals', 'Opening CSV import wizard…', 'info'));
+document.getElementById('exportBtn').addEventListener('click', () => showToast('Export Started', 'Preparing Excel export of 247 journals…', 'info'));
+
+/* =========================================
+PAGINATION
+========================================= */
+document.querySelectorAll('.page-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.querySelector('i')) return;
+    document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    showToast('Page Loaded', `Showing page ${btn.textContent}`, 'info');
+  });
+});
+
+/* =========================================
+TABLE SORT (simulation)
+========================================= */
+document.querySelectorAll('.data-table th').forEach(th => {
+  th.addEventListener('click', (e) => {
+    if (e.target.classList.contains('checkbox')) return;
+    document.querySelectorAll('.data-table th').forEach(t => t.classList.remove('sorted'));
+    th.classList.add('sorted');
+  });
+});
+
+/* =========================================
+WELCOME TOAST
+========================================= */
+setTimeout(() => showToast('General Ledger Loaded', '247 journals · 3 pending approval · Period Jul 2026 open', 'info'), 600);
 </script>
 </body>
 </html>

@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heropesa Accounting Software | Unified Cloud Business Solutions</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<meta name="google-site-verification" content="_KzutRP1hl5nYlJSs12dZ4YX2cUeLsY-jdi-XjwlUNA" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Heropesa | Cloud Accounting Software for Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
-
 /* =========================================
 MINIMALIST THEME & VARIABLES
 ========================================= */
-
-/* Material Design Google Color Accents */
 .color-blue { color: #1a73e8 !important; }
 .color-red { color: #ea4335 !important; }
 .color-yellow { color: #fbbc05 !important; }
@@ -21,7 +19,6 @@ MINIMALIST THEME & VARIABLES
 .bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
 .bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
 .bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
-
 :root {
 --primary: #1a73e8;
 --primary-hover: #1557b0;
@@ -33,9 +30,9 @@ MINIMALIST THEME & VARIABLES
 --text-muted: #70757a;
 --border: #dadce0;
 --border-hover: #bdc1c6;
---shadow-sm: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
---shadow-md: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
---shadow-lg: 0 4px 6px 0 rgba(60,64,67,0.3), 0 8px 16px 6px rgba(60,64,67,0.15);
+--shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+--shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+--shadow-lg: 0 4px 6px 0 rgba(60, 64, 67, 0.3), 0 8px 16px 6px rgba(60, 64, 67, 0.15);
 --radius-sm: 4px;
 --radius-md: 4px;
 --radius-lg: 8px;
@@ -48,761 +45,2095 @@ MINIMALIST THEME & VARIABLES
 RESET & BASE STYLES
 ========================================= */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { 
-  scroll-behavior: smooth;
-  font-size: 16px; 
-  -webkit-font-smoothing: antialiased; 
-  -moz-osx-font-smoothing: grayscale; 
-  overflow-x: hidden;
-  max-width: 100vw;
+html {
+scroll-behavior: smooth;
+font-size: 16px;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+overflow-x: hidden;
+max-width: 100vw;
 }
-body { 
-  font-family: var(--font-main); 
-  color: var(--text-main); 
-  line-height: 1.65; 
-  background: var(--bg-body); 
-  overflow-x: hidden;
-  max-width: 100vw;
+body {
+font-family: var(--font-main);
+color: var(--text-main);
+line-height: 1.65;
+background: var(--bg-body);
+overflow-x: hidden;
+max-width: 100vw;
 }
+body.no-scroll { overflow: hidden; }
 a { text-decoration: none; color: inherit; transition: color var(--transition); }
 ul, ol { list-style: none; }
 img, svg, video { max-width: 100%; display: block; }
-button, input, textarea { font-family: inherit; border: none; outline: none; }
-
+button, input, textarea, select { font-family: inherit; border: none; outline: none; }
 /* =========================================
 UTILITIES & LAYOUT
 ========================================= */
-.container { 
-  max-width: var(--container);
-  margin: 0 auto; 
-  padding: 0 24px; 
-  width: 100%;
-  box-sizing: border-box;
+.container {
+max-width: var(--container);
+margin: 0 auto;
+padding: 0 24px;
+width: 100%;
+box-sizing: border-box;
 }
 .section { padding: 100px 0; position: relative; }
-.section-header { text-align: center; max-width: 780px; margin: 0 auto 64px; }
-.section-header h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.5px; color: var(--text-main); }
+.section-header {
+text-align: center;
+max-width: 780px;
+margin: 0 auto 64px;
+}
+.section-header h2 {
+font-size: 2.25rem;
+font-weight: 700;
+margin-bottom: 14px;
+letter-spacing: -0.5px;
+color: var(--text-main);
+}
 .section-header p { font-size: 1.1rem; color: var(--text-secondary); }
 .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-
 @media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 768px) { 
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } 
-  .section-header h2 { font-size: 1.8rem; } 
+@media (max-width: 768px) {
+.grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+.section-header h2 { font-size: 1.8rem; }
 }
-
 /* =========================================
-MEDIA PLACEHOLDERS (FOR LATER USE)
+MEDIA PLACEHOLDERS
 ========================================= */
 .media-placeholder {
-  background: var(--bg-light);
-  border: 2px dashed var(--border);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  min-height: 300px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color var(--transition);
+background: var(--bg-light);
+border: 2px dashed var(--border);
+border-radius: var(--radius-lg);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+font-size: 0.9rem;
+min-height: 300px;
+position: relative;
+overflow: hidden;
+transition: border-color var(--transition);
 }
 .media-placeholder:hover { border-color: var(--border-hover); }
-.media-placeholder::before { content: '\f03e'; font-family: 'Font Awesome 6 Free'; font-weight: 900; font-size: 2rem; margin-bottom: 12px; display: block; }
-.media-placeholder span { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.media-placeholder::before {
+content: '\f03e';
+font-family: 'Font Awesome 6 Free';
+font-weight: 900;
+font-size: 2rem;
+margin-bottom: 12px;
+display: block;
+}
+.media-placeholder span {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+}
 .media-sm { min-height: 160px; }
 .media-hero { min-height: 420px; }
-
 /* =========================================
 BUTTONS & INTERACTIVE ELEMENTS
 ========================================= */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 24px; border-radius: var(--radius-md); font-weight: 500; font-size: 0.95rem;
-  cursor: pointer; transition: all var(--transition); border: 1.5px solid transparent;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+padding: 12px 24px;
+border-radius: var(--radius-md);
+font-weight: 500;
+font-size: 0.95rem;
+cursor: pointer;
+transition: all var(--transition);
+border: 1.5px solid transparent;
+white-space: nowrap;
+flex-shrink: 0;
+min-height: 44px;
+text-decoration: none;
+line-height: 1.2;
+}
+.btn:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
 }
 .btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.btn-primary:hover {
+background: var(--primary-hover);
+transform: translateY(-1px);
+box-shadow: var(--shadow-md);
+}
+.btn-primary:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
 .btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
-.btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--bg-light); }
-.btn-ghost { background: transparent; color: var(--text-secondary); border: 1px solid var(--border); }
+.btn-outline:hover {
+border-color: var(--primary);
+color: var(--primary);
+background: var(--bg-light);
+}
+.btn-outline:active { background: rgba(26, 115, 232, 0.08); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1.5px solid var(--border); }
 .btn-ghost:hover { border-color: var(--text-main); color: var(--text-main); }
-
+.btn[disabled], .btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+pointer-events: none;
+}
 /* =========================================
 HERO SECTION
 ========================================= */
-.hero { padding-top: calc(var(--header-height) + 60px); padding-bottom: 80px; background: var(--bg-body); }
+.hero {
+padding-top: calc(var(--header-height) + 60px);
+padding-bottom: 80px;
+background: var(--bg-body);
+}
 .hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
-.hero-content h1 { font-size: 3rem; font-weight: 700; line-height: 1.15; margin-bottom: 20px; letter-spacing: -0.8px; color: var(--text-main); }
+.hero-content h1 {
+font-size: 3rem;
+font-weight: 700;
+line-height: 1.15;
+margin-bottom: 20px;
+letter-spacing: -0.8px;
+color: var(--text-main);
+}
 .hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; }
-.hero-actions { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-.hero-trust { display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.85rem; }
+.hero-actions {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin-bottom: 40px;
+flex-wrap: wrap;
+}
+.hero-trust {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+color: var(--text-muted);
+font-size: 0.85rem;
+}
 .hero-trust i { color: var(--text-secondary); }
-@media (max-width: 768px) { .hero-content h1 { font-size: 2.2rem; } }
-
+@media (max-width: 768px) {
+.hero-content h1 { font-size: 2.2rem; }
+}
 /* =========================================
 STATS BAR
 ========================================= */
-.stats-bar { background: var(--bg-light); padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.stats-grid { display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap; gap: 32px; }
+.stats-bar {
+background: var(--bg-light);
+padding: 40px 0;
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+}
+.stats-grid {
+display: flex;
+justify-content: space-around;
+text-align: center;
+flex-wrap: wrap;
+gap: 32px;
+}
 .stat-item h3 { font-size: 2rem; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
 .stat-item p { font-size: 0.9rem; color: var(--text-muted); max-width: 160px; margin: 0 auto; }
-
+/* =========================================
+TRUSTED BY MARQUEE
+========================================= */
+.trusted-by {
+padding: 40px 0;
+background: var(--bg-body);
+border-bottom: 1px solid var(--border);
+overflow: hidden;
+}
+.trusted-by-title {
+text-align: center;
+font-size: 0.8rem;
+font-weight: 500;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.12em;
+margin-bottom: 24px;
+}
+.marquee {
+overflow: hidden;
+width: 100%;
+mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+-webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+display: flex;
+gap: 64px;
+width: max-content;
+animation: marqueeScroll 35s linear infinite;
+align-items: center;
+}
+.marquee-item {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+font-size: 1.15rem;
+font-weight: 600;
+color: var(--text-muted);
+white-space: nowrap;
+opacity: 0.7;
+transition: opacity var(--transition), color var(--transition);
+}
+.marquee-item i { font-size: 1.6rem; }
+.marquee-item:hover { opacity: 1; color: var(--text-main); }
+@keyframes marqueeScroll {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+@media (max-width: 768px) {
+.marquee-track { gap: 40px; animation-duration: 25s; }
+.marquee-item { font-size: 1rem; }
+.marquee-item i { font-size: 1.3rem; }
+}
 /* =========================================
 SOLUTIONS GRID
 ========================================= */
 .solutions { background: var(--bg-body); }
-.solutions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-.sol-card { background: var(--bg-light); padding: 28px; border-radius: var(--radius-lg); border: 1px solid transparent; transition: all var(--transition); display: flex; flex-direction: column; height: 100%; }
-.sol-card:hover { border-color: var(--border); transform: translateY(-3px); box-shadow: var(--shadow-sm); background: #fff; }
-.sol-icon { width: 44px; height: 44px; border-radius: var(--radius-md); background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: var(--text-main); margin-bottom: 18px; }
+.solutions-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+gap: 20px;
+}
+.sol-card {
+background: var(--bg-light);
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid transparent;
+transition: all var(--transition);
+display: flex;
+flex-direction: column;
+height: 100%;
+}
+.sol-card:hover {
+border-color: var(--border);
+transform: translateY(-3px);
+box-shadow: var(--shadow-sm);
+background: #fff;
+}
+.sol-icon {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+background: #fff;
+border: 1px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.1rem;
+color: var(--text-main);
+margin-bottom: 18px;
+}
 .sol-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
 .sol-card p { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; flex-grow: 1; }
-.sol-link { font-size: 0.85rem; font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 5px; }
+.sol-link {
+font-size: 0.85rem;
+font-weight: 500;
+color: var(--text-main);
+display: inline-flex;
+align-items: center;
+gap: 5px;
+margin-top: auto;
+}
+.sol-link:hover { color: var(--primary); }
 .sol-link:hover i { transform: translateX(3px); transition: transform 0.2s; }
-
 /* =========================================
 FEATURED SOLUTIONS (TABS)
 ========================================= */
 .featured-tabs { background: var(--bg-light); border-top: 1px solid var(--border); }
-.tabs-nav { display: flex; justify-content: center; gap: 8px; margin-bottom: 48px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-.tab-btn { padding: 8px 16px; background: transparent; border: none; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; color: var(--text-muted); transition: all var(--transition); }
+.tabs-nav {
+display: flex;
+justify-content: center;
+gap: 8px;
+margin-bottom: 48px;
+flex-wrap: wrap;
+border-bottom: 1px solid var(--border);
+padding-bottom: 16px;
+}
+.tab-btn {
+padding: 8px 16px;
+background: transparent;
+border: none;
+border-radius: var(--radius-sm);
+font-weight: 500;
+cursor: pointer;
+color: var(--text-muted);
+transition: all var(--transition);
+min-height: 44px;
+font-size: 0.95rem;
+}
+.tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .tab-btn.active, .tab-btn:hover { background: transparent; color: var(--text-main); }
 .tab-btn.active { border-bottom: 2px solid var(--text-main); }
 .tab-content { display: none; animation: fadeIn 0.4s ease; }
 .tab-content.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.featured-layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.featured-layout {
+display: grid;
+grid-template-columns: 1.1fr 0.9fr;
+gap: 48px;
+align-items: center;
+}
 .featured-text h3 { font-size: 1.8rem; margin-bottom: 14px; font-weight: 600; }
 .featured-text p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; }
 .feature-list { margin-bottom: 28px; }
-.feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-secondary); }
+.feature-list li {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-bottom: 10px;
+font-size: 0.95rem;
+color: var(--text-secondary);
+}
 .feature-list li i { color: var(--text-main); margin-top: 4px; font-size: 0.85rem; }
-@media (max-width: 900px) { .featured-layout { grid-template-columns: 1fr; } .media-placeholder { order: -1; min-height: 280px; } }
-
+@media (max-width: 900px) {
+.featured-layout { grid-template-columns: 1fr; }
+.media-placeholder { order: -1; min-height: 280px; }
+}
 /* =========================================
 TRADING & SPORTS BETTING
 ========================================= */
 .trading-section { background: var(--bg-body); border-top: 1px solid var(--border); }
 .trading-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-.trading-card { background: var(--bg-light); border: 1px solid var(--border); padding: 32px; border-radius: var(--radius-lg); transition: all var(--transition); }
+.trading-card {
+background: var(--bg-light);
+border: 1px solid var(--border);
+padding: 32px;
+border-radius: var(--radius-lg);
+transition: all var(--transition);
+}
 .trading-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); }
-.trading-card h4 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text-main); font-weight: 600; display: flex; align-items: center; gap: 10px; }
+.trading-card h4 {
+font-size: 1.2rem;
+margin-bottom: 8px;
+color: var(--text-main);
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 10px;
+}
 .trading-card p { color: var(--text-secondary); margin-bottom: 18px; font-size: 0.95rem; }
-.trading-features li { display: flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 6px; }
+.trading-features li {
+display: flex;
+align-items: center;
+gap: 8px;
+color: var(--text-secondary);
+font-size: 0.9rem;
+margin-bottom: 6px;
+}
 .trading-features li i { color: var(--text-muted); font-size: 0.75rem; }
 @media (max-width: 768px) { .trading-grid { grid-template-columns: 1fr; } }
-
 /* =========================================
 ENTERPRISE CAPABILITIES
 ========================================= */
 .capabilities { background: var(--bg-light); border-top: 1px solid var(--border); }
 .cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.cap-card { background: #fff; padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--border); transition: all var(--transition); }
+.cap-card {
+background: #fff;
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+transition: all var(--transition);
+}
 .cap-card:hover { box-shadow: var(--shadow-sm); border-color: var(--border-hover); }
 .cap-card i { font-size: 1.5rem; color: var(--text-main); margin-bottom: 14px; }
 .cap-card h4 { font-size: 1.05rem; margin-bottom: 8px; font-weight: 600; }
 .cap-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
 @media (max-width: 1024px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .cap-grid { grid-template-columns: 1fr; } }
-
 /* =========================================
 INDUSTRIES
 ========================================= */
 .industries { background: var(--bg-body); }
-.industries-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
-.ind-card { background: var(--bg-light); padding: 20px; border-radius: var(--radius-md); text-align: center; transition: all var(--transition); border: 1px solid transparent; }
+.industries-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 16px;
+}
+.ind-card {
+background: var(--bg-light);
+padding: 20px;
+border-radius: var(--radius-md);
+text-align: center;
+transition: all var(--transition);
+border: 1px solid transparent;
+}
 .ind-card:hover { background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm); }
-.ind-card i { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 10px; transition: color var(--transition); }
+.ind-card i {
+font-size: 1.5rem;
+color: var(--text-secondary);
+margin-bottom: 10px;
+transition: color var(--transition);
+}
 .ind-card:hover i { color: var(--text-main); }
 .ind-card h5 { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
-
 /* =========================================
 BILLING & LICENSING SECTION
 ========================================= */
 .billing-section { background: var(--bg-light); border-top: 1px solid var(--border); }
 .billing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
-.billing-card { background: #fff; padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--border); transition: all var(--transition); }
+.billing-card {
+background: #fff;
+padding: 32px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+transition: all var(--transition);
+}
 .billing-card:hover { border-color: var(--text-main); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
-.billing-card h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.billing-card h4 {
+font-size: 1.2rem;
+font-weight: 600;
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
 .billing-card h4 i { color: var(--text-main); }
 .billing-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
-.billing-features li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-secondary); }
+.billing-features li {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+margin-bottom: 8px;
+font-size: 0.9rem;
+color: var(--text-secondary);
+}
 .billing-features li i { color: var(--text-main); margin-top: 4px; font-size: 0.8rem; }
-.billing-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+.billing-note {
+font-size: 0.85rem;
+color: var(--text-muted);
+margin-top: 24px;
+padding-top: 16px;
+border-top: 1px solid var(--border);
+}
 @media (max-width: 900px) { .billing-grid { grid-template-columns: 1fr; } }
-
 /* =========================================
-DEVELOPER & API SECTION (UPDATED)
+DEVELOPER & API SECTION
 ========================================= */
 .dev-section { background: var(--bg-light); border-top: 1px solid var(--border); }
-.dev-content-centered {
-  text-align: center;
-  max-width: 700px;
-  margin: 0 auto;
-}
-.dev-content-centered h2 { 
-  font-size: 2rem; 
-  margin-bottom: 16px; 
-  font-weight: 600; 
-}
-.dev-content-centered p { 
-  font-size: 1.05rem; 
-  color: var(--text-secondary); 
-  margin-bottom: 28px; 
-  line-height: 1.6; 
-}
-
+.dev-content-centered { text-align: center; max-width: 700px; margin: 0 auto; }
+.dev-content-centered h2 { font-size: 2rem; margin-bottom: 16px; font-weight: 600; }
+.dev-content-centered p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.6; }
 /* =========================================
 TESTIMONIALS
 ========================================= */
 .testimonials { background: var(--bg-light); border-top: 1px solid var(--border); }
 .test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.test-card { background: #fff; padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--border); display: flex; flex-direction: column; }
+.test-card {
+background: #fff;
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+}
 .test-text { font-size: 0.98rem; line-height: 1.7; margin-bottom: 20px; color: var(--text-secondary); flex-grow: 1; }
-.test-meta { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); padding-top: 16px; }
-.test-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--bg-light); display: flex; align-items: center; justify-content: center; color: var(--text-main); font-weight: 600; font-size: 0.85rem; }
+.test-meta {
+display: flex;
+align-items: center;
+gap: 12px;
+border-top: 1px solid var(--border);
+padding-top: 16px;
+}
+.test-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--bg-light);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-main);
+font-weight: 600;
+font-size: 0.85rem;
+}
 .test-info h6 { font-size: 0.9rem; font-weight: 600; margin: 0; color: var(--text-main); }
 .test-info span { font-size: 0.8rem; color: var(--text-muted); }
 @media (max-width: 900px) { .test-grid { grid-template-columns: 1fr; } }
-
 /* =========================================
 PARTNERS & ECOSYSTEM
 ========================================= */
 .partners { background: var(--bg-body); border-top: 1px solid var(--border); }
-.partner-logos { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 40px; margin-bottom: 48px; opacity: 0.4; }
+.partner-logos {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+gap: 40px;
+margin-bottom: 48px;
+opacity: 0.4;
+}
 .partner-logos i { font-size: 2rem; color: var(--text-muted); transition: all var(--transition); }
 .partner-logos i:hover { opacity: 1; transform: scale(1.05); }
 .partner-cta { text-align: center; max-width: 600px; margin: 0 auto; }
 .partner-cta p { margin-bottom: 20px; color: var(--text-secondary); font-size: 1rem; }
-
 /* =========================================
 FAQ ACCORDION
 ========================================= */
 .faq { background: var(--bg-light); border-top: 1px solid var(--border); }
 .faq-list { max-width: 720px; margin: 0 auto; }
-.faq-item { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 12px; overflow: hidden; transition: border-color var(--transition); }
+.faq-item {
+background: #fff;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+margin-bottom: 12px;
+overflow: hidden;
+transition: border-color var(--transition);
+}
 .faq-item:hover { border-color: var(--border-hover); }
-.faq-q { padding: 18px 20px; font-weight: 500; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-main); font-size: 0.98rem; }
+.faq-q {
+padding: 18px 20px;
+font-weight: 500;
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: var(--text-main);
+font-size: 0.98rem;
+background: transparent;
+border: none;
+width: 100%;
+text-align: left;
+min-height: 44px;
+}
+.faq-q:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 .faq-q i { color: var(--text-muted); transition: transform 0.25s; font-size: 0.85rem; }
 .faq-item.active .faq-q i { transform: rotate(45deg); color: var(--text-main); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 20px; color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; }
+.faq-a {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s ease, padding 0.35s ease;
+padding: 0 20px;
+color: var(--text-secondary);
+line-height: 1.6;
+font-size: 0.95rem;
+}
 .faq-item.active .faq-a { max-height: 300px; padding: 0 20px 18px; }
-
 /* =========================================
 CTA BANNER
 ========================================= */
 .cta-banner { background: var(--primary); color: #fff; text-align: center; padding: 80px 0; }
 .cta-banner h2 { font-size: 2.2rem; margin-bottom: 14px; font-weight: 600; }
-.cta-banner p { font-size: 1.05rem; opacity: 0.9; margin-bottom: 28px; max-width: 680px; margin-left: auto; margin-right: auto; }
-.cta-banner .btn-outline { border-color: rgba(255,255,255,0.4); color: #fff; }
-.cta-banner .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
-
+.cta-banner p {
+font-size: 1.05rem;
+opacity: 0.9;
+margin-bottom: 28px;
+max-width: 680px;
+margin-left: auto;
+margin-right: auto;
+}
+.cta-banner .btn-outline { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+.cta-banner .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: #fff; }
 /* =========================================
 SCROLL ANIMATIONS
 ========================================= */
-.reveal {
-  opacity: 1;
-  transform: translateY(0);
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.js-enabled .reveal {
-  opacity: 0;
-  transform: translateY(16px);
-}
-.js-enabled .reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
+.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
-@media (max-width: 480px) {
-  .section { padding: 64px 0; }
-  .btn { width: 100%; }
-  .hero-actions { flex-direction: column; }
-  .media-placeholder { min-height: 240px; }
-}
-
 /* =========================================
-HEROPESA HEADER STYLES - START
+HEROPESA HEADER STYLES
 ========================================= */
 .heropesa-header {
-  position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
-  background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px);
-  border-top: 4px solid;
-  border-image: linear-gradient(to right, #4285f4 25%, #ea4335 25%, #ea4335 50%, #fbbc05 50%, #fbbc05 75%, #34a853 75%) 1;
-  border-bottom: 1px solid var(--border, #e5e5e5); z-index: 1000;
-  transition: all var(--transition);
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: var(--header-height);
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(12px);
+border-top: 4px solid;
+border-image: linear-gradient(to right, #4285f4 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
+border-bottom: 1px solid var(--border);
+z-index: 1000;
+transition: all var(--transition);
 }
 .heropesa-header.scrolled {
-  background: rgba(255, 255, 255, 0.98);
-  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.04));
-  border-bottom-color: var(--border-hover, #cccccc);
+background: rgba(255, 255, 255, 0.98);
+box-shadow: var(--shadow-sm);
+border-bottom-color: var(--border-hover);
 }
-.nav-wrapper { 
-  display: flex; align-items: center; justify-content: space-between; height: 100%; 
-  position: relative; /* Added for mega menu centering */
+.nav-wrapper {
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 100%;
+position: relative;
 }
-.logo { font-size: 1.35rem; font-weight: 700; color: var(--text-main, #0a0a0a); display: flex; align-items: center; gap: 8px; }
-.logo-accent { color: var(--primary, #0a0a0a); }
-
-/* Primary Nav */
-.nav-links { display: flex; gap: 24px; align-items: center; }
-.nav-item { /* Removed position: relative to allow mega menu to center relative to nav-wrapper */ }
-.nav-item > a {
-  font-weight: 500; font-size: 0.9rem; color: var(--text-secondary, #555555);
-  position: relative; padding: 4px 0; display: flex; align-items: center; gap: 4px;
+.logo {
+font-size: 1.35rem;
+font-weight: 700;
+color: var(--text-main);
+display: flex;
+align-items: center;
+gap: 8px;
+flex-shrink: 0;
 }
-.nav-item > a:hover { color: var(--text-main, #0a0a0a); }
-.nav-item > a::after {
-  content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px;
-  background: var(--primary, #0a0a0a); transition: width var(--transition);
+.logo:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+.logo-accent { color: var(--primary); }
+/* ---- Primary Nav ---- */
+.nav-links {
+display: flex;
+gap: 24px;
+align-items: center;
 }
-.nav-item > a:hover::after { width: 100%; }
-.nav-item .chevron { font-size: 0.65rem; opacity: 0.7; transition: transform 0.2s var(--transition); }
-.nav-item:hover .chevron { transform: rotate(180deg); }
-
-/* Mega Menu - FIXED: Centered relative to viewport/header */
+.nav-item { position: relative; }
+.nav-item > a, .nav-direct-link {
+font-weight: 500;
+font-size: 0.9rem;
+color: var(--text-secondary);
+position: relative;
+padding: 4px 0;
+display: flex;
+align-items: center;
+gap: 4px;
+transition: color var(--transition);
+cursor: pointer;
+background: transparent;
+border: none;
+min-height: 44px;
+}
+.nav-item > a:hover, .nav-direct-link:hover { color: var(--text-main); }
+.nav-item > a:focus-visible, .nav-direct-link:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 4px;
+border-radius: 2px;
+}
+.nav-item > a::after, .nav-direct-link::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 2px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.nav-item > a:hover::after, .nav-direct-link:hover::after { width: 100%; }
+.nav-item .chevron {
+font-size: 0.65rem;
+opacity: 0.7;
+transition: transform 0.2s var(--transition);
+}
+.nav-item:hover .chevron, .nav-item[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+.nav-item > a.active, .nav-direct-link.active { color: var(--primary); }
+.nav-item > a.active::after, .nav-direct-link.active::after { width: 100%; }
+/* ---- Mega Menu (viewport-centered, responsive sizing) ---- */
 .mega-menu {
-  position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
-  width: 1000px; max-width: 95vw; background: #fff; border: 1px solid var(--border, #e5e5e5);
-  border-radius: var(--radius-lg, 12px); padding: 32px; box-shadow: var(--shadow-lg, 0 8px 24px rgba(0,0,0,0.08));
-  display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)); gap: 24px;
-  opacity: 0; visibility: hidden; transition: all 0.25s var(--transition);
-  z-index: 999; pointer-events: none;
+position: fixed;
+top: var(--header-height);
+left: 50%;
+transform: translateX(-50%) translateY(8px);
+width: min(1000px, calc(100vw - 48px));
+max-width: 95vw;
+background: #fff;
+border: 1px solid var(--border);
+border-radius: var(--radius-lg);
+padding: 32px;
+box-shadow: var(--shadow-lg);
+display: grid;
+grid-template-columns: repeat(4, minmax(180px, 1fr));
+gap: 24px;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.25s var(--transition), transform 0.25s var(--transition), visibility 0.25s;
+z-index: 999;
+pointer-events: none;
 }
-.nav-item:hover .mega-menu {
-  opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
+/* Bridge to eliminate hover gap */
+.nav-item::after {
+content: '';
+position: absolute;
+top: 100%;
+left: -8px;
+width: calc(100% + 16px);
+height: 32px;
+background: transparent;
+pointer-events: auto;
+z-index: 998;
+}
+.nav-item:hover .mega-menu,
+.nav-item:focus-within .mega-menu,
+.nav-item[aria-expanded="true"] .mega-menu {
+opacity: 1;
+visibility: visible;
+transform: translateX(-50%) translateY(0);
+pointer-events: auto;
 }
 .mega-menu h6 {
-  font-size: 0.75rem; font-weight: 600; color: var(--text-heading, #0a0a0a);
-  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+font-size: 0.75rem;
+font-weight: 600;
+color: var(--text-main);
+letter-spacing: 0.06em;
+text-transform: uppercase;
+margin-bottom: 12px;
 }
 .mega-menu ul { list-style: none; padding: 0; margin: 0; }
 .mega-menu li { margin-bottom: 8px; }
 .mega-menu a {
-  font-size: 0.85rem; color: var(--text-secondary, #555555); display: block; padding: 2px 0;
-  transition: color var(--transition), padding-left var(--transition);
+font-size: 0.85rem;
+color: var(--text-secondary);
+display: block;
+padding: 4px 0;
+transition: color var(--transition), padding-left var(--transition);
+position: relative;
+cursor: pointer;
 }
-.mega-menu a:hover { color: var(--primary, #0a0a0a); padding-left: 4px; }
-
-/* Utility Actions & Buttons - FIXED for Desktop */
-.nav-actions { display: flex; align-items: center; gap: 12px; }
-.nav-actions .btn { 
-  padding: 10px 24px; 
-  font-size: 0.95rem; 
-  font-weight: 600; 
-  border-radius: var(--radius-md);
-  transition: all var(--transition);
+.mega-menu a:hover { color: var(--primary); padding-left: 4px; }
+.mega-menu a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+border-radius: 2px;
+}
+.mega-menu a.active { color: var(--primary); font-weight: 500; }
+.mega-menu a.active::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 100%;
+height: 2px;
+background: var(--primary);
+border-radius: 2px;
+}
+/* ---- Nav Actions & Buttons ---- */
+.nav-actions {
+display: flex;
+align-items: center;
+gap: 12px;
+flex-shrink: 0;
+}
+.nav-actions .btn {
+padding: 10px 22px;
+font-size: 0.9rem;
+font-weight: 600;
+border-radius: var(--radius-md);
+min-height: 40px;
+flex-shrink: 0;
+white-space: nowrap;
 }
 .nav-actions .btn-ghost {
-  border: 1.5px solid var(--border);
-  color: var(--text-main);
+border: 1.5px solid var(--border);
+color: var(--text-secondary);
+background: transparent;
 }
-.nav-actions .btn-ghost:hover { 
-  border-color: var(--primary); 
-  background: var(--bg-light); 
+.nav-actions .btn-ghost:hover {
+border-color: var(--primary);
+color: var(--primary);
+background: var(--bg-light);
 }
 .nav-actions .btn-primary {
-  background: var(--primary);
-  color: #fff;
-  border: 1.5px solid var(--primary);
+background: var(--primary);
+color: #fff;
+border: 1.5px solid var(--primary);
 }
-.nav-actions .btn-primary:hover { 
-  background: var(--primary-hover); 
-  border-color: var(--primary-hover);
-  transform: translateY(-1px); 
-  box-shadow: var(--shadow-md); 
+.nav-actions .btn-primary:hover {
+background: var(--primary-hover);
+border-color: var(--primary-hover);
+transform: translateY(-1px);
+box-shadow: var(--shadow-md);
 }
-
-/* Functional Header Search Bar */
+/* ---- Functional Header Search ---- */
 .header-search {
-  display: flex;
-  align-items: center;
-  background: var(--bg-light);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 0 12px;
-  transition: all var(--transition);
+display: flex;
+align-items: center;
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+padding: 0 12px;
+transition: all var(--transition);
+flex-shrink: 1;
+min-width: 140px;
+max-width: 220px;
 }
 .header-search:focus-within {
-  border-color: var(--primary);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.05);
+border-color: var(--primary);
+background: #fff;
+box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
 }
 .header-search input {
-  background: transparent;
-  border: none;
-  padding: 10px 0;
-  font-size: 0.9rem;
-  color: var(--text-main);
-  width: 160px;
-  outline: none;
+background: transparent;
+border: none;
+padding: 10px 0;
+font-size: 0.9rem;
+color: var(--text-main);
+width: 100%;
+outline: none;
+min-width: 80px;
 }
-.header-search input::placeholder {
-  color: var(--text-muted);
+.header-search input::placeholder { color: var(--text-muted); }
+.header-search i { flex-shrink: 0; }
+/* ---- Mobile Toggle (Hamburger) ---- */
+.mobile-toggle {
+display: none;
+width: 44px;
+height: 44px;
+cursor: pointer;
+color: var(--text-main);
+background: transparent;
+border: none;
+position: relative;
+flex-shrink: 0;
+border-radius: var(--radius-md);
+transition: background var(--transition);
 }
-
-/* Mobile Toggle */
-.mobile-toggle { display: none; font-size: 1.25rem; cursor: pointer; color: var(--text-main, #0a0a0a); }
-
-/* Mobile Nav Actions (Hidden on Desktop) */
-.mobile-nav-actions { display: none; }
-
-/* Responsive Header */
+.mobile-toggle:hover { background: var(--bg-light); }
+.mobile-toggle:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+.hamburger-box {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 22px;
+height: 16px;
+}
+.hamburger-line {
+position: absolute;
+left: 0;
+width: 100%;
+height: 2px;
+background: var(--text-main);
+border-radius: 2px;
+transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
+}
+.hamburger-line:nth-child(1) { top: 0; }
+.hamburger-line:nth-child(2) { top: 7px; }
+.hamburger-line:nth-child(3) { top: 14px; }
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+top: 7px;
+transform: rotate(45deg);
+}
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+opacity: 0;
+}
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+top: 7px;
+transform: rotate(-45deg);
+}
+/* =========================================
+MOBILE DRAWER
+========================================= */
+.mobile-drawer-backdrop {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+backdrop-filter: blur(4px);
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+z-index: 999;
+}
+.mobile-drawer-backdrop.active {
+opacity: 1;
+visibility: visible;
+}
+.mobile-drawer {
+position: fixed;
+top: 0;
+right: 0;
+width: min(380px, 90vw);
+height: 100%;
+background: #fff;
+z-index: 1001;
+transform: translateX(100%);
+transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
+flex-direction: column;
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+}
+.mobile-drawer.active {
+transform: translateX(0);
+}
+.mobile-drawer-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+min-height: var(--header-height);
+flex-shrink: 0;
+}
+.mobile-drawer-header .logo { font-size: 1.2rem; }
+.mobile-drawer-close {
+width: 44px;
+height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: transparent;
+border: none;
+cursor: pointer;
+color: var(--text-main);
+font-size: 1.25rem;
+border-radius: var(--radius-md);
+transition: background var(--transition);
+}
+.mobile-drawer-close:hover { background: var(--bg-light); }
+.mobile-drawer-close:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+/* Mobile Search */
+.mobile-search {
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+flex-shrink: 0;
+}
+.mobile-search-input {
+display: flex;
+align-items: center;
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+padding: 0 14px;
+transition: all var(--transition);
+width: 100%;
+}
+.mobile-search-input:focus-within {
+border-color: var(--primary);
+background: #fff;
+box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
+}
+.mobile-search-input input {
+background: transparent;
+border: none;
+padding: 12px 10px;
+font-size: 0.95rem;
+color: var(--text-main);
+width: 100%;
+outline: none;
+}
+.mobile-search-input input::placeholder { color: var(--text-muted); }
+.mobile-search-input i { color: var(--text-muted); flex-shrink: 0; }
+/* Mobile Nav Body */
+.mobile-drawer-body {
+flex: 1;
+overflow-y: auto;
+padding: 8px 0;
+-webkit-overflow-scrolling: touch;
+}
+.mobile-nav-accordion { padding: 0; }
+.mobile-nav-item {
+border-bottom: 1px solid var(--border);
+}
+.mobile-nav-item:last-child { border-bottom: none; }
+.mobile-nav-trigger {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+padding: 16px 20px;
+background: transparent;
+border: none;
+cursor: pointer;
+color: var(--text-main);
+font-size: 1rem;
+font-weight: 500;
+text-align: left;
+min-height: 52px;
+transition: background var(--transition);
+}
+.mobile-nav-trigger:hover { background: var(--bg-light); }
+.mobile-nav-trigger:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: -2px;
+}
+.mobile-nav-trigger .chevron {
+font-size: 0.75rem;
+color: var(--text-muted);
+transition: transform 0.3s ease;
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger .chevron {
+transform: rotate(180deg);
+color: var(--primary);
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger {
+color: var(--primary);
+}
+.mobile-nav-submenu {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+background: var(--bg-light);
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-submenu {
+max-height: 2000px;
+}
+.mobile-nav-submenu-inner { padding: 8px 20px 16px; }
+.mobile-submenu-group { margin-bottom: 16px; }
+.mobile-submenu-group:last-child { margin-bottom: 0; }
+.mobile-submenu-group h6 {
+font-size: 0.7rem;
+font-weight: 600;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+margin-bottom: 8px;
+padding: 0 4px;
+}
+.mobile-submenu-group ul { list-style: none; padding: 0; margin: 0; }
+.mobile-submenu-group li { margin-bottom: 2px; }
+.mobile-submenu-group a {
+display: block;
+padding: 10px 12px;
+font-size: 0.9rem;
+color: var(--text-secondary);
+border-radius: var(--radius-sm);
+transition: all var(--transition);
+min-height: 40px;
+display: flex;
+align-items: center;
+}
+.mobile-submenu-group a:hover {
+background: #fff;
+color: var(--primary);
+}
+.mobile-submenu-group a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+.mobile-submenu-group a.active {
+color: var(--primary);
+font-weight: 500;
+background: rgba(26, 115, 232, 0.08);
+}
+/* Mobile Direct Links */
+.mobile-direct-links { padding: 8px 20px; border-bottom: 1px solid var(--border); }
+.mobile-direct-links a {
+display: flex;
+align-items: center;
+padding: 14px 0;
+font-size: 1rem;
+font-weight: 500;
+color: var(--text-main);
+min-height: 48px;
+transition: color var(--transition);
+}
+.mobile-direct-links a:hover { color: var(--primary); }
+.mobile-direct-links a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+/* Mobile Drawer Footer */
+.mobile-drawer-footer {
+padding: 16px 20px;
+border-top: 1px solid var(--border);
+flex-shrink: 0;
+background: #fff;
+}
+.mobile-drawer-footer .btn {
+width: 100%;
+min-height: 48px;
+font-size: 1rem;
+font-weight: 600;
+}
+/* =========================================
+RESPONSIVE HEADER
+========================================= */
 @media (max-width: 1200px) {
-  .mega-menu { width: 900px; grid-template-columns: repeat(3, 1fr); }
+.mega-menu {
+width: min(900px, calc(100vw - 48px));
+grid-template-columns: repeat(3, 1fr);
+}
 }
 @media (max-width: 1024px) {
-  .nav-links { 
-    display: none; 
-    flex-direction: column; 
-    position: absolute; 
-    top: var(--header-height);
-    left: 0; 
-    width: 100%; 
-    background: #fff; 
-    padding: 24px; 
-    border-bottom: 1px solid var(--border, #e5e5e5);
-    gap: 16px; 
-    animation: slideDown 0.25s ease; 
-    box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.06));
-    max-height: calc(100vh - var(--header-height));
-    overflow-y: auto;
-  }
-  .nav-links.active { display: flex; }
-  
-  .nav-links.active .nav-item { width: 100%; }
-  .nav-links.active .mega-menu {
-    position: static; transform: none; width: 100%; opacity: 1; visibility: visible;
-    box-shadow: none; border: none; padding: 16px 0 0 0; grid-template-columns: 1fr;
-    pointer-events: auto; display: block;
-  }
-  .mega-menu h6 { margin-top: 16px; }
-  
-  .nav-actions .desktop-only { display: none; }
-  .nav-actions .nav-btn-login,
-  .nav-actions .nav-btn-demo { display: none; }
-  
-  .mobile-nav-actions {
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-  .nav-links.active .mobile-nav-actions { display: flex; }
-  .mobile-nav-actions .btn {
-    width: 100%;
-    text-align: center;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: 600;
-    justify-content: center;
-  }
-
-  .mobile-toggle { display: block; }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.nav-links { display: none; }
+.nav-actions .desktop-only { display: none !important; }
+.mobile-toggle { display: flex; align-items: center; justify-content: center; }
+.header-search { display: none; }
 }
 @media (max-width: 768px) {
-  .mega-menu { width: 100%; }
-  .nav-actions { gap: 8px; }
+.mega-menu {
+width: 100%;
+grid-template-columns: 1fr 1fr !important;
 }
-/* HEROPESA HEADER STYLES - END */
-
+.nav-actions { gap: 6px; }
+.nav-actions .btn {
+padding: 6px 12px;
+font-size: 0.78rem;
+min-height: 32px;
+border-radius: var(--radius-sm);
+}
+.logo { font-size: 1.15rem; }
+}
+@media (max-width: 480px) {
+.nav-actions { gap: 4px; }
+.nav-actions .btn {
+padding: 4px 10px;
+font-size: 0.7rem;
+min-height: 28px;
+gap: 4px;
+}
+.logo { font-size: 1rem; }
+}
 /* =========================================
-HEROPESA FOOTER STYLES - START
+HEROPESA FOOTER STYLES
 ========================================= */
-.heropesa-footer { background: #fff; padding: 72px 0 32px; border-top: 1px solid var(--border, #e5e5e5); }
-.footer-grid { display: grid; grid-template-columns: 1.8fr repeat(6, 1fr); gap: 32px; margin-bottom: 48px; }
-.footer-brand p { color: var(--text-secondary, #555555); margin: 14px 0 18px; font-size: 0.9rem; line-height: 1.6; max-width: 280px; }
+.heropesa-footer {
+background: #fff;
+padding: 72px 0 32px;
+border-top: 1px solid var(--border);
+}
+.footer-grid {
+display: grid;
+grid-template-columns: 1.8fr repeat(7, 1fr);
+gap: 32px;
+margin-bottom: 48px;
+}
+.footer-brand p {
+color: var(--text-secondary);
+margin: 14px 0 18px;
+font-size: 0.9rem;
+line-height: 1.6;
+max-width: 280px;
+}
 .social-icons { display: flex; gap: 10px; }
 .social-icons a {
-  width: 36px; height: 36px; border-radius: 50%; background: var(--bg-alt, #f8f9fa);
-  border: 1px solid var(--border, #e5e5e5); display: flex; align-items: center; justify-content: center;
-  color: var(--text-muted, #888888); transition: all var(--transition);
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--bg-light);
+border: 1px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all var(--transition);
 }
-.social-icons a:hover { background: var(--primary, #0a0a0a); border-color: var(--primary, #0a0a0a); color: #fff; }
-.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; color: var(--text-main, #0a0a0a); }
+.social-icons a:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.social-icons a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; color: var(--text-main); }
 .footer-col ul li { margin-bottom: 9px; }
-.footer-col ul li a { color: var(--text-secondary, #555555); font-size: 0.82rem; }
-.footer-col ul li a:hover { color: var(--primary, #0a0a0a); }
+.footer-col ul li a {
+color: var(--text-secondary);
+font-size: 0.82rem;
+transition: color var(--transition), padding-left var(--transition);
+display: inline-block;
+position: relative;
+}
+.footer-col ul li a:hover { color: var(--primary); padding-left: 2px; }
+.footer-col ul li a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+.footer-col ul li a::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1.5px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.footer-col ul li a:hover::after { width: 100%; }
+.footer-col ul li a.active { color: var(--primary); font-weight: 500; }
+.footer-col ul li a.active::after { width: 100%; }
+.footer-links a { position: relative; display: inline-block; }
+.footer-links a::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1.5px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.footer-links a:hover::after { width: 100%; }
+.footer-links a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+.footer-links a.active { color: var(--primary); font-weight: 500; }
+.footer-links a.active::after { width: 100%; }
 .footer-bottom {
-  border-top: 1px solid var(--border, #e5e5e5); padding-top: 24px; display: flex;
-  justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 0.8rem; color: var(--text-muted, #888888);
+border-top: 1px solid var(--border);
+padding-top: 24px;
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 16px;
+font-size: 0.8rem;
+color: var(--text-muted);
 }
 .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
-.footer-links a:hover { color: var(--primary, #0a0a0a); }
+.footer-links a { color: var(--text-muted); transition: color var(--transition); }
+.footer-links a:hover { color: var(--primary); }
 @media (max-width: 1200px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 768px) {
-  .footer-grid { grid-template-columns: repeat(2, 1fr); }
-  .footer-col:nth-child(n+4) { grid-column: span 2; }
+.footer-grid { grid-template-columns: repeat(2, 1fr); }
+.footer-col:nth-child(n+4) { grid-column: span 2; }
 }
 @media (max-width: 600px) {
-  .footer-grid { grid-template-columns: 1fr; }
-  .footer-col:nth-child(n+4) { grid-column: span 1; }
-  .footer-bottom { flex-direction: column; text-align: center; }
-  .footer-links { justify-content: center; }
+.footer-grid { grid-template-columns: 1fr; }
+.footer-col:nth-child(n+4) { grid-column: span 1; }
+.footer-bottom { flex-direction: column; text-align: center; }
+.footer-links { justify-content: center; }
 }
-/* HEROPESA FOOTER STYLES - END */
-
-.faq-item.active .faq-a { display: block !important; }
-.faq-item.active .fa-plus::before { content: '\f068'; }
-
+/* =========================================
+DEMO MODAL OVERLAY
+========================================= */
+.demo-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+backdrop-filter: blur(4px);
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.3s ease;
+z-index: 99999;
+padding: 20px;
+}
+.demo-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.demo-modal-container {
+background: #ffffff;
+border: 1px solid #e5e5e5;
+border-radius: 12px;
+padding: 32px;
+width: 100%;
+max-width: 460px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+transform: scale(0.9);
+transition: transform 0.3s ease;
+position: relative;
+box-sizing: border-box;
+max-height: 90vh;
+overflow-y: auto;
+}
+.demo-modal-overlay.active .demo-modal-container { transform: scale(1); }
+.demo-modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 24px;
+}
+.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
+.demo-modal-close {
+background: transparent;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+color: #888888;
+transition: color 0.2s;
+line-height: 1;
+width: 44px;
+height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: var(--radius-md);
+}
+.demo-modal-close:hover { color: #0a0a0a; background: var(--bg-light); }
+.demo-modal-close:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.demo-form-group { margin-bottom: 16px; text-align: left; }
+.demo-form-group label {
+display: block;
+font-size: 0.85rem;
+font-weight: 500;
+margin-bottom: 6px;
+color: #555555;
+}
+.demo-form-group input, .demo-form-group select {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid #e5e5e5;
+border-radius: 6px;
+font-size: 0.92rem;
+outline: none;
+transition: border-color 0.25s;
+box-sizing: border-box;
+min-height: 44px;
+}
+.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
+.demo-form-group input:focus-visible, .demo-form-group select:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+.demo-submit-btn {
+width: 100%;
+padding: 12px;
+background: #0a0a0a;
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-weight: 500;
+font-size: 0.95rem;
+cursor: pointer;
+transition: background-color 0.25s;
+margin-top: 8px;
+min-height: 44px;
+}
+.demo-submit-btn:hover { background: #222222; }
+.demo-submit-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.demo-success-state { text-align: center; padding: 20px 0; }
+.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
+.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
+.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
+.demo-close-btn {
+padding: 10px 24px;
+background: #0a0a0a;
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-weight: 500;
+cursor: pointer;
+min-height: 44px;
+}
+.demo-close-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* =========================================
+SEARCH HIGHLIGHT
+========================================= */
+.search-highlight mark { background: transparent; color: inherit; font-weight: 600; }
+.search-highlight {
+background-color: #fff3cd;
+border-radius: 2px;
+padding: 0 2px;
+transition: background-color 0.3s;
+}
+.search-highlight.active-match { background-color: #fdcb6e; }
+/* =========================================
+MISC & RESPONSIVE FIXES
+========================================= */
+@media (max-width: 480px) {
+.section { padding: 64px 0; }
+.btn { width: 100%; }
+.hero-actions { flex-direction: column; align-items: stretch; }
+.hero-actions .btn { width: 100%; }
+.media-placeholder { min-height: 240px; }
+.stats-grid { gap: 24px; }
+.stat-item h3 { font-size: 1.6rem; }
+.stat-item p { font-size: 0.85rem; }
+.cta-banner h2 { font-size: 1.6rem; }
+.cta-banner { padding: 60px 0; }
+.section-header { margin-bottom: 40px; }
+.section-header h2 { font-size: 1.6rem; }
+.featured-text h3 { font-size: 1.4rem; }
+.trading-card { padding: 24px; }
+.billing-card { padding: 24px; }
+.sol-card { padding: 22px; }
+.test-card { padding: 22px; }
+.cap-card { padding: 22px; }
+.faq-q { padding: 16px 18px; font-size: 0.92rem; }
+.faq-a { padding: 0 18px; }
+.faq-item.active .faq-a { padding: 0 18px 16px; }
+.partner-logos { gap: 24px; }
+.partner-logos i { font-size: 1.5rem; }
+}
+@media (max-width: 360px) {
+.container { padding: 0 16px; }
+.hero-content h1 { font-size: 1.8rem; }
+.hero-content p { font-size: 1rem; }
+.marquee-item { font-size: 0.9rem; }
+.marquee-item i { font-size: 1.1rem; }
+}
+/* Skip to content link */
+.skip-link {
+position: absolute;
+top: -100px;
+left: 16px;
+background: var(--primary);
+color: #fff;
+padding: 12px 20px;
+border-radius: var(--radius-md);
+z-index: 10000;
+font-weight: 500;
+transition: top 0.2s;
+}
+.skip-link:focus {
+top: 16px;
+}
+/* Visually hidden but accessible */
+.sr-only {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border: 0;
+}
 </style>
 </head>
 <body>
-<header id="navbar" class="heropesa-header">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<!-- =========================================
+HEADER
+========================================= -->
+<header id="navbar" class="heropesa-header" role="banner">
 <div class="container nav-wrapper">
-<a href="/index.html" class="logo">Heropesa<span class="logo-accent"> </span> </a>
-<nav class="nav-links" id="navLinks">
-<div class="nav-item">
-<a href="#">Products <i class="fa-solid fa-chevron-down chevron"></i></a>
-<div class="mega-menu">
-<div><h6>Core Platforms</h6><ul>
+<a href="/index.html" class="logo" aria-label="Heropesa Home">Heropesa<span class="logo-accent"> </span></a>
+<nav class="nav-links" id="navLinks" aria-label="Main navigation">
+<!-- Products -->
+<div class="nav-item" data-nav="products">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Products <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Products menu">
+<div>
+<h6>Core Platforms</h6>
+<ul>
+<li><a href="/pages/erpldg.html" role="menuitem">Enterprise ERP</a></li>
+<li><a href="/pages/accounting.html" role="menuitem">Accounting Software</a></li>
+<li><a href="/pages/crmldg.html" role="menuitem">CRM &amp; Sales</a></li>
+<li><a href="/pages/hr-payroll.html" role="menuitem">HR &amp; Payroll</a></li>
+<li><a href="/pages/inventory.html" role="menuitem">Inventory Control</a></li>
+</ul>
+</div>
+<div>
+<h6>Operations</h6>
+<ul>
+<li><a href="/pages/supply-chain.html" role="menuitem">Supply Chain</a></li>
+<li><a href="/pages/posldg.html" role="menuitem">Point of Sale</a></li>
+<li><a href="/pages/analytics-bi.html" role="menuitem">Analytics &amp; BI</a></li>
+<li><a href="/pages/marketing-auto.html" role="menuitem">Marketing Automation</a></li>
+</ul>
+</div>
+<div>
+<h6>Industry Solutions</h6>
+<ul>
+<li><a href="/pages/manufacturing.html" role="menuitem">Manufacturing</a></li>
+<li><a href="/pages/healthcare-os.html" role="menuitem">Healthcare OS</a></li>
+<li><a href="/pages/education.html" role="menuitem">Education Platform</a></li>
+<li><a href="/pages/retail.html" role="menuitem">Retail &amp; Commerce</a></li>
+</ul>
+</div>
+<div>
+<h6>AI &amp; Automation</h6>
+<ul>
+<li><a href="/pages/ai-support.html" role="menuitem">AI Customer Support</a></li>
+<li><a href="/pages/automation-rpa.html" role="menuitem">Automation &amp; RPA</a></li>
+<li><a href="/pages/enterprise-ai.html" role="menuitem">Enterprise AI</a></li>
+<li><a href="/pages/ai-workflows.html" role="menuitem">AI Workflows</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Solutions -->
+<div class="nav-item" data-nav="solutions">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Solutions <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Solutions menu">
+<div>
+<h6>By Industry</h6>
+<ul>
+<li><a href="/industries/retail.html" role="menuitem">Retail</a></li>
+<li><a href="/industries/hospitality.html" role="menuitem">Hospitality</a></li>
+<li><a href="/industries/healthcare.html" role="menuitem">Healthcare</a></li>
+<li><a href="/industries/education.html" role="menuitem">Education</a></li>
+<li><a href="/industries/fashion.html" role="menuitem">Fashion &amp; Apparel</a></li>
+</ul>
+</div>
+<div>
+<h6>By Use Case</h6>
+<ul>
+<li><a href="/solutions/inventory.html" role="menuitem">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html" role="menuitem">Compliance &amp; Governance</a></li>
+<li><a href="/solutions/scaling.html" role="menuitem">Global Scaling</a></li>
+<li><a href="/solutions/automation.html" role="menuitem">Process Automation</a></li>
+</ul>
+</div>
+<div>
+<h6>By Company Size</h6>
+<ul>
+<li><a href="/solutions/startups.html" role="menuitem">Startups &amp; SMBs</a></li>
+<li><a href="/solutions/mid-market.html" role="menuitem">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html" role="menuitem">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html" role="menuitem">Multi-Entity Groups</a></li>
+</ul>
+</div>
+<div>
+<h6>Migration &amp; Integration</h6>
+<ul>
+<li><a href="/pages/migration.html" role="menuitem">Legacy System Migration</a></li>
+<li><a href="/pages/integrations.html" role="menuitem">Third-Party Integrations</a></li>
+<li><a href="/pages/api.html" role="menuitem">API &amp; Webhooks</a></li>
+<li><a href="/pages/implementation.html" role="menuitem">Implementation Services</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Resources -->
+<div class="nav-item" data-nav="resources">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Resources <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Resources menu">
+<div>
+<h6>Documentation</h6>
+<ul>
+<li><a href="/pages/docs.html" role="menuitem">API Documentation</a></li>
+<li><a href="/pages/guides.html" role="menuitem">Business Guides</a></li>
+<li><a href="/pages/glossary.html" role="menuitem">Solutions Glossary</a></li>
+<li><a href="/pages/help.html" role="menuitem">Help Center</a></li>
+</ul>
+</div>
+<div>
+<h6>Learning</h6>
+<ul>
+<li><a href="/pages/demos.html" role="menuitem">Product Demos</a></li>
+<li><a href="/pages/stories.html" role="menuitem">Customer Stories</a></li>
+<li><a href="/pages/webinars.html" role="menuitem">Webinars &amp; Events</a></li>
+<li><a href="/pages/education.html" role="menuitem">Education Services</a></li>
+</ul>
+</div>
+<div>
+<h6>Technical</h6>
+<ul>
+<li><a href="/pages/sdks.html" role="menuitem">SDKs &amp; Libraries</a></li>
+<li><a href="/pages/status.html" role="menuitem">System Status</a></li>
+<li><a href="/pages/changelog.html" role="menuitem">Changelog</a></li>
+<li><a href="/pages/sandbox.html" role="menuitem">Developer Sandbox</a></li>
+</ul>
+</div>
+<div>
+<h6>Trust &amp; Security</h6>
+<ul>
+<li><a href="/pages/security.html" role="menuitem">Security Compliance</a></li>
+<li><a href="/pages/trust.html" role="menuitem">Trust Center</a></li>
+<li><a href="/pages/privacy.html" role="menuitem">Privacy Policy</a></li>
+<li><a href="/pages/responsible-ai.html" role="menuitem">Responsible AI</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Partners (direct link) -->
+<a href="/pages/partners.html" class="nav-direct-link">Partners</a>
+<!-- Pricing (direct link) -->
+<a href="/pages/erpldg.html#pricing" class="nav-direct-link">Pricing</a>
+</nav>
+<div class="nav-actions">
+<!-- Search (Desktop) -->
+<div class="header-search desktop-only" role="search">
+<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+<input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search page content" />
+</div>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Start Free Trial</a>
+<button class="mobile-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileDrawer">
+<span class="hamburger-box" aria-hidden="true">
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+</span>
+</button>
+</div>
+</div>
+</header>
+<!-- =========================================
+MOBILE DRAWER
+========================================= -->
+<div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+<aside class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
+<div class="mobile-drawer-header">
+<a href="/index.html" class="logo" aria-label="Heropesa Home">Hero<span class="logo-accent">pesa</span></a>
+<button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
+<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+</button>
+</div>
+<div class="mobile-search" role="search">
+<div class="mobile-search-input">
+<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+<input type="text" id="mobileSearchInput" placeholder="Search..." aria-label="Search page content" />
+</div>
+</div>
+<div class="mobile-drawer-body">
+<nav class="mobile-nav-accordion" aria-label="Mobile navigation">
+<!-- Products Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-products">
+<span>Products</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-products" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>Core Platforms</h6>
+<ul>
 <li><a href="/pages/erpldg.html">Enterprise ERP</a></li>
 <li><a href="/pages/accounting.html">Accounting Software</a></li>
-<li><a href="/pages/crmldg.html">CRM & Sales</a></li>
-<li><a href="/pages/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
+<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
 <li><a href="/pages/inventory.html">Inventory Control</a></li>
-</ul></div>
-<div><h6>Operations</h6><ul>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Operations</h6>
+<ul>
 <li><a href="/pages/supply-chain.html">Supply Chain</a></li>
 <li><a href="/pages/posldg.html">Point of Sale</a></li>
-<li><a href="/pages/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
 <li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
-</ul></div>
-<div><h6>Industry Solutions</h6><ul>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Industry Solutions</h6>
+<ul>
 <li><a href="/pages/manufacturing.html">Manufacturing</a></li>
 <li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
 <li><a href="/pages/education.html">Education Platform</a></li>
-<li><a href="/pages/retail.html">Retail & Commerce</a></li>
-</ul></div>
-<div><h6>AI & Automation</h6><ul>
+<li><a href="/pages/retail.html">Retail &amp; Commerce</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>AI &amp; Automation</h6>
+<ul>
 <li><a href="/pages/ai-support.html">AI Customer Support</a></li>
-<li><a href="/pages/automation-rpa.html">Automation & RPA</a></li>
+<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
 <li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
 <li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
-</ul></div>
+</ul>
 </div>
 </div>
-<div class="nav-item">
-<a href="#">Solutions <i class="fa-solid fa-chevron-down chevron"></i></a>
-<div class="mega-menu">
-<div><h6>By Industry</h6><ul>
+</div>
+</div>
+<!-- Solutions Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-solutions">
+<span>Solutions</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-solutions" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>By Industry</h6>
+<ul>
 <li><a href="/industries/retail.html">Retail</a></li>
 <li><a href="/industries/hospitality.html">Hospitality</a></li>
 <li><a href="/industries/healthcare.html">Healthcare</a></li>
 <li><a href="/industries/education.html">Education</a></li>
-<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
-</ul></div>
-<div><h6>By Use Case</h6><ul>
+<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>By Use Case</h6>
+<ul>
 <li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
-<li><a href="/solutions/compliance.html">Compliance & Governance</a></li>
+<li><a href="/solutions/compliance.html">Compliance &amp; Governance</a></li>
 <li><a href="/solutions/scaling.html">Global Scaling</a></li>
 <li><a href="/solutions/automation.html">Process Automation</a></li>
-</ul></div>
-<div><h6>By Company Size</h6><ul>
-<li><a href="/solutions/startups.html">Startups & SMBs</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>By Company Size</h6>
+<ul>
+<li><a href="/solutions/startups.html">Startups &amp; SMBs</a></li>
 <li><a href="/solutions/mid-market.html">Mid-Market</a></li>
 <li><a href="/solutions/enterprise.html">Enterprise</a></li>
 <li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
-</ul></div>
-<div><h6>Migration & Integration</h6><ul>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Migration &amp; Integration</h6>
+<ul>
 <li><a href="/pages/migration.html">Legacy System Migration</a></li>
 <li><a href="/pages/integrations.html">Third-Party Integrations</a></li>
-<li><a href="/pages/api.html">API & Webhooks</a></li>
+<li><a href="/pages/api.html">API &amp; Webhooks</a></li>
 <li><a href="/pages/implementation.html">Implementation Services</a></li>
-</ul></div>
+</ul>
 </div>
 </div>
-<div class="nav-item">
-<a href="#">Resources <i class="fa-solid fa-chevron-down chevron"></i></a>
-<div class="mega-menu">
-<div><h6>Documentation</h6><ul>
+</div>
+</div>
+<!-- Resources Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-resources">
+<span>Resources</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-resources" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>Documentation</h6>
+<ul>
 <li><a href="/pages/docs.html">API Documentation</a></li>
 <li><a href="/pages/guides.html">Business Guides</a></li>
 <li><a href="/pages/glossary.html">Solutions Glossary</a></li>
 <li><a href="/pages/help.html">Help Center</a></li>
-</ul></div>
-<div><h6>Learning</h6><ul>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Learning</h6>
+<ul>
 <li><a href="/pages/demos.html">Product Demos</a></li>
 <li><a href="/pages/stories.html">Customer Stories</a></li>
-<li><a href="/pages/webinars.html">Webinars & Events</a></li>
+<li><a href="/pages/webinars.html">Webinars &amp; Events</a></li>
 <li><a href="/pages/education.html">Education Services</a></li>
-</ul></div>
-<div><h6>Technical</h6><ul>
-<li><a href="/pages/sdks.html">SDKs & Libraries</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Technical</h6>
+<ul>
+<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
 <li><a href="/pages/status.html">System Status</a></li>
 <li><a href="/pages/changelog.html">Changelog</a></li>
 <li><a href="/pages/sandbox.html">Developer Sandbox</a></li>
-</ul></div>
-<div><h6>Trust & Security</h6><ul>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Trust &amp; Security</h6>
+<ul>
 <li><a href="/pages/security.html">Security Compliance</a></li>
 <li><a href="/pages/trust.html">Trust Center</a></li>
 <li><a href="/pages/privacy.html">Privacy Policy</a></li>
 <li><a href="/pages/responsible-ai.html">Responsible AI</a></li>
-</ul></div>
-</div>
-</div>
-<a href="/pages/partners.html">Partners</a>
-<a href="#pricing">Pricing</a>
-
-<!-- Mobile-only actions placed inside nav-links for proper mobile display -->
-<div class="mobile-nav-actions">
-  <a href="/pages/login.html" class="btn btn-ghost">Log in</a>
-  <a href="#demo" class="btn btn-primary">Request Demo</a>
-</div>
-</nav>
-<div class="nav-actions">
-<!-- Functional Search Bar replacing Language Selector -->
-<div class="header-search desktop-only">
-    <i class="fa-solid fa-magnifying-glass" style="color: var(--text-muted); margin-right: 8px;"></i>
-    <input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search">
-</div>
-<a href="/pages/login.html" class="btn btn-ghost nav-btn-login desktop-only">Log in</a>
-<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
-<i class="fa-solid fa-bars mobile-toggle" id="menuToggle" aria-label="Toggle menu"></i>
-</div>
-</div>
-</header>
-
-<section class="hero">
-<div class="container">
-<div class="hero-content reveal visible">
-<div class="hero-trust" style="margin-bottom: 24px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-main);">
-    <i class="fa-solid fa-calculator"></i> <span>Core Platforms</span>
-</div>
-<h1>Accounting Software</h1>
-<p>Secure, intelligent, and scalable accounting software engineered to optimize enterprise operations.</p>
-<div class="hero-actions">
-<a href="#features" class="btn btn-primary">Explore Features</a>
-<a href="/pages/contact-sales.html" class="btn btn-outline">Contact Sales</a>
-</div>
-</div>
-</div>
-</section>
-
-<section class="stats-bar">
-<div class="container">
-<div class="stats-grid">
-<div class="stat-item">
-<h3 class="color-blue">1.2M+</h3>
-<p>Global Deployments</p>
-</div>
-<div class="stat-item">
-<h3 class="color-red">99.99%</h3>
-<p>Guaranteed SLA Uptime</p>
-</div>
-<div class="stat-item">
-<h3 class="color-green">24/7/365</h3>
-<p>Global Support Coverage</p>
-</div>
-</div>
-</div>
-</section>
-
-<section class="section" id="benefits">
-<div class="container">
-<div class="section-header reveal visible">
-<h2>Built for Operations Control</h2>
-<p>Transform your operational speed, cost structures, and data visibility with a single cloud platform.</p>
-</div>
-<div class="grid-3">
-<div class="sol-card reveal visible">
-<div class="sol-icon bg-blue-light"><i class="fa-solid fa-bolt"></i></div>
-<h4>Real-time Processing</h4>
-<p>Immediate synchronization across all business units, physical facilities, and API endpoints.</p>
-</div>
-<div class="sol-card reveal visible">
-<div class="sol-icon bg-red-light"><i class="fa-solid fa-shield-halved color-blue"></i></div>
-<h4>Bank-Grade Security</h4>
-<p>State-of-the-art encryption at rest and in transit keeping your corporate intelligence secure.</p>
-</div>
-<div class="sol-card reveal visible">
-<div class="sol-icon bg-yellow-light"><i class="fa-solid fa-chart-line"></i></div>
-<h4>Unified Analytics</h4>
-<p>Direct BI integration for seamless reporting, forecasting, and data visualization.</p>
-</div>
-</div>
-</div>
-</section>
-
-<section class="section featured-tabs" id="features">
-<div class="container">
-<div class="section-header reveal visible">
-<h2>Why Choose Heropesa Core Platforms?</h2>
-<p>Discover the high-performance capabilities built directly into the Heropesa system.</p>
-</div>
-<div class="featured-layout">
-<div class="featured-text reveal visible">
-<h3>Optimized for Modern Operations</h3>
-<p>Manage, automate, and expand your operations with a reliable cloud architecture built to accommodate dynamic scales.</p>
-<ul class="feature-list">
-<li><i class="fa-solid fa-circle-check color-green"></i> Complete integration with other Heropesa platforms</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Comprehensive developer APIs and webhook monitoring</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Advanced multi-tenant permission layers</li>
-<li><i class="fa-solid fa-circle-check color-green"></i> Automated reporting dashboards and email exports</li>
 </ul>
 </div>
-<div class="media-placeholder media-hero reveal visible">
-<span>Interactive Product Mockup Placeholder</span>
 </div>
 </div>
 </div>
-</section>
+</nav>
+<div class="mobile-direct-links">
+<a href="/pages/partners.html">Partners</a>
+<a href="/pages/erpldg.html#pricing">Pricing</a>
+<a href="/pages/developers.html">Developers</a>
+<a href="/pages/contact-sales.html">Contact Sales</a>
+</div>
+</div>
+<div class="mobile-drawer-footer">
+<a href="#demo" class="btn btn-primary" id="mobileDemoBtn">Start Free Trial</a>
+</div>
+</aside>
+<!-- =========================================
+MAIN CONTENT
+========================================= -->
+<main id="main-content">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Smart Accounting Software<br />for Modern Businesses.</h1>
+                <p>Automate invoicing, simplify tax compliance, generate real-time financial reports, and reconcile bank transactions effortlessly. All in one secure, cloud-based platform.</p>
+                <div class="hero-actions">
+                    <a href="#demo" class="btn btn-primary">Start Free Trial <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    <a href="#features" class="btn btn-outline">Explore Features</a>
+                </div>
+                <div class="hero-trust">
+                    <i class="fa-solid fa-shield-halved color-blue" aria-hidden="true"></i>
+                    <span>Trusted by 50,000+ businesses for accurate, compliant financial management</span>
+                </div>
+            </div>
+            <div class="media-placeholder media-hero" style="margin-top: 40px;">
+                <span>Accounting Dashboard Preview</span>
+            </div>
+        </div>
+    </section>
 
-<section class="section" id="faq">
-<div class="container">
-<div class="section-header reveal visible">
-<h2>Frequently Asked Questions</h2>
-<p>Find answers to common inquiries regarding the Heropesa platform ecosystem.</p>
-</div>
-<div class="faq-accordion" style="max-width: 800px; margin: 0 auto;">
-<div class="faq-item" style="border-bottom: 1px solid var(--border); padding: 20px 0;">
-<h4 class="faq-q" style="cursor: pointer; display: flex; justify-content: space-between; font-weight: 600;">Is this platform scalable for enterprise deployments? <i class="fa-solid fa-plus" style="font-size: 0.8rem; margin-top: 5px;"></i></h4>
-<p class="faq-a" style="margin-top: 10px; color: var(--text-secondary); display: none;">Yes. Our architecture supports multi-tenant and dedicated cloud deployments with guaranteed uptime and auto-scaling.</p>
-</div>
-<div class="faq-item" style="border-bottom: 1px solid var(--border); padding: 20px 0;">
-<h4 class="faq-q" style="cursor: pointer; display: flex; justify-content: space-between; font-weight: 600;">How is customer support managed? <i class="fa-solid fa-plus" style="font-size: 0.8rem; margin-top: 5px;"></i></h4>
-<p class="faq-a" style="margin-top: 10px; color: var(--text-secondary); display: none;">We offer 24/7 global support via chat, email, and phone for all standard accounts, with dedicated account success managers for enterprise tiers.</p>
-</div>
-<div class="faq-item" style="border-bottom: 1px solid var(--border); padding: 20px 0;">
-<h4 class="faq-q" style="cursor: pointer; display: flex; justify-content: space-between; font-weight: 600;">Is there a trial period available? <i class="fa-solid fa-plus" style="font-size: 0.8rem; margin-top: 5px;"></i></h4>
-<p class="faq-a" style="margin-top: 10px; color: var(--text-secondary); display: none;">Yes, we offer a 30-day fully functional trial for all products. You can scale your tier at any point during or after the trial.</p>
-</div>
-</div>
-</div>
-</section>
+    <!-- STATS -->
+    <section class="stats-bar" aria-label="Platform statistics">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3 class="color-blue">$10B+</h3>
+                    <p>Invoices Processed Annually</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="color-red">50K+</h3>
+                    <p>Active Business Accounts</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="color-green">99.99%</h3>
+                    <p>Guaranteed Uptime SLA</p>
+                </div>
+                <div class="stat-item">
+                    <h3 class="color-yellow">100+</h3>
+                    <p>Global Bank Integrations</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="cta-banner">
-<div class="container">
-<h2>Ready to Scale Your Operations?</h2>
-<p>Get started with Heropesa today and experience a new era of business automation.</p>
-<div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
-<a href="/pages/signup.html" class="btn" style="background: #fff; color: var(--primary);">Start Free Trial</a>
-<a href="/pages/contact-sales.html" class="btn btn-outline">Talk to an Expert</a>
-</div>
-</div>
-</section>
+    <!-- CORE FEATURES -->
+    <section class="section solutions" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything You Need to Manage Your Finances</h2>
+                <p>From day-to-day invoicing to complex tax reporting, our accounting solution scales with your business.</p>
+            </div>
+            <div class="solutions-grid">
+                <!-- Invoicing -->
+                <div class="sol-card">
+                    <div class="sol-icon bg-blue-light"><i class="fa-solid fa-file-invoice" aria-hidden="true"></i></div>
+                    <h4>Smart Invoicing</h4>
+                    <p>Create professional, customizable invoices in seconds. Set up recurring billing, automated payment reminders, and accept online payments seamlessly.</p>
+                    <ul class="feature-list" style="margin-top:12px;">
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Recurring & automated billing</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Online payment gateways</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Customizable templates</li>
+                    </ul>
+                </div>
+                <!-- Tax -->
+                <div class="sol-card">
+                    <div class="sol-icon bg-red-light"><i class="fa-solid fa-landmark" aria-hidden="true"></i></div>
+                    <h4>Tax Management & Compliance</h4>
+                    <p>Stay compliant with automated tax calculations, real-time updates on regional tax laws, and one-click generation of tax returns and reports.</p>
+                    <ul class="feature-list" style="margin-top:12px;">
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated VAT/GST/Sales Tax</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-jurisdiction compliance</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Audit-ready tax reports</li>
+                    </ul>
+                </div>
+                <!-- Reporting -->
+                <div class="sol-card">
+                    <div class="sol-icon bg-yellow-light"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i></div>
+                    <h4>Financial Reporting</h4>
+                    <p>Gain deep insights into your business health with real-time dashboards, profit & loss statements, balance sheets, and cash flow tracking.</p>
+                    <ul class="feature-list" style="margin-top:12px;">
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Real-time P&L and Balance Sheets</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Customizable financial dashboards</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Cash flow forecasting</li>
+                    </ul>
+                </div>
+                <!-- Bank Reconciliation -->
+                <div class="sol-card">
+                    <div class="sol-icon bg-green-light"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
+                    <h4>Bank Reconciliation</h4>
+                    <p>Connect your bank accounts and credit cards to automatically import and match transactions, saving hours of manual data entry.</p>
+                    <ul class="feature-list" style="margin-top:12px;">
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Auto-feed bank transactions</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> AI-powered transaction matching</li>
+                        <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-currency support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<footer class="heropesa-footer">
+    <!-- DEEP DIVE TABS -->
+    <section class="section featured-tabs" id="deep-dive">
+        <div class="container">
+            <div class="section-header">
+                <h2>Deep Dive: Core Accounting Engines</h2>
+                <p>Explore how our modules work together to give you complete financial control.</p>
+            </div>
+            <div class="tabs-nav" role="tablist" aria-label="Accounting features">
+                <button class="tab-btn active" data-tab="tab1" role="tab" aria-selected="true" aria-controls="tab1" id="tab-btn-1">Invoicing</button>
+                <button class="tab-btn" data-tab="tab2" role="tab" aria-selected="false" aria-controls="tab2" id="tab-btn-2">Tax & Compliance</button>
+                <button class="tab-btn" data-tab="tab3" role="tab" aria-selected="false" aria-controls="tab3" id="tab-btn-3">Reporting</button>
+                <button class="tab-btn" data-tab="tab4" role="tab" aria-selected="false" aria-controls="tab4" id="tab-btn-4">Reconciliation</button>
+            </div>
+            
+            <!-- Tab 1: Invoicing -->
+            <div class="tab-content active" id="tab1" role="tabpanel" aria-labelledby="tab-btn-1">
+                <div class="featured-layout">
+                    <div class="featured-text">
+                        <h3>Get Paid Faster with Smart Invoicing</h3>
+                        <p>Eliminate manual billing errors and accelerate your cash flow. Our invoicing engine allows you to create, send, and track invoices from anywhere, with integrated payment processing.</p>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Drag-and-drop invoice builder with custom branding</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated late payment reminders and dunning</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Accept credit cards, ACH, and bank transfers</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Convert estimates to invoices in one click</li>
+                        </ul>
+                        <a href="#demo" class="btn btn-primary">Start Free Trial</a>
+                    </div>
+                    <div class="media-placeholder media-sm" style="min-height: 320px;">
+                        <span>Invoicing Dashboard Preview</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Tax -->
+            <div class="tab-content" id="tab2" role="tabpanel" aria-labelledby="tab-btn-2">
+                <div class="featured-layout">
+                    <div class="featured-text">
+                        <h3>Navigate Tax Complexity with Confidence</h3>
+                        <p>Whether you're dealing with local sales tax, VAT, or GST, our system automatically calculates, collects, and reports the right amounts, keeping you compliant across multiple jurisdictions.</p>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Real-time tax rate updates and auto-calculation</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> One-click generation of tax liability reports</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Support for global tax frameworks (VAT, GST, Sales Tax)</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Audit trails and document retention</li>
+                        </ul>
+                        <a href="#demo" class="btn btn-primary">Start Free Trial</a>
+                    </div>
+                    <div class="media-placeholder media-sm" style="min-height: 320px;">
+                        <span>Tax Compliance Dashboard Preview</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Reporting -->
+            <div class="tab-content" id="tab3" role="tabpanel" aria-labelledby="tab-btn-3">
+                <div class="featured-layout">
+                    <div class="featured-text">
+                        <h3>Real-Time Financial Insights</h3>
+                        <p>Make data-driven decisions with comprehensive financial reports. Track profitability, monitor expenses, and forecast cash flow with interactive, easy-to-read dashboards.</p>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Standard reports: P&L, Balance Sheet, Cash Flow</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Custom report builder for specific KPIs</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated scheduled reporting to stakeholders</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Export to Excel, PDF, or via API</li>
+                        </ul>
+                        <a href="#demo" class="btn btn-primary">Start Free Trial</a>
+                    </div>
+                    <div class="media-placeholder media-sm" style="min-height: 320px;">
+                        <span>Financial Reporting Preview</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Reconciliation -->
+            <div class="tab-content" id="tab4" role="tabpanel" aria-labelledby="tab-btn-4">
+                <div class="featured-layout">
+                    <div class="featured-text">
+                        <h3>Effortless Bank Reconciliation</h3>
+                        <p>Stop wasting hours on manual data entry. Connect your financial institutions to automatically feed transactions into your ledger, and use AI-powered rules to match and reconcile them instantly.</p>
+                        <ul class="feature-list">
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Secure, read-only bank connections via Open Banking</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> AI-driven transaction matching and categorization</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-entity and multi-currency reconciliation</li>
+                            <li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Exception handling and anomaly alerts</li>
+                        </ul>
+                        <a href="#demo" class="btn btn-primary">Start Free Trial</a>
+                    </div>
+                    <div class="media-placeholder media-sm" style="min-height: 320px;">
+                        <span>Bank Reconciliation Preview</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CAPABILITIES -->
+    <section class="section capabilities">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for Accuracy, Security, and Scale</h2>
+                <p>Enterprise-grade infrastructure that meets the strictest financial compliance and security standards.</p>
+            </div>
+            <div class="cap-grid">
+                <div class="color-blue cap-card">
+                    <i class="color-blue fa-solid fa-lock" aria-hidden="true"></i>
+                    <h4>Bank-Level Security</h4>
+                    <p>AES-256 encryption, SOC 2 Type II compliance, and multi-factor authentication to keep your financial data safe.</p>
+                </div>
+                <div class="color-red cap-card">
+                    <i class="color-red fa-solid fa-globe" aria-hidden="true"></i>
+                    <h4>Multi-Currency & Global</h4>
+                    <p>Operate internationally with automatic currency conversion, real-time exchange rates, and localized tax support.</p>
+                </div>
+                <div class="color-yellow cap-card">
+                    <i class="color-yellow fa-solid fa-plug" aria-hidden="true"></i>
+                    <h4>Seamless Integrations</h4>
+                    <p>Connect with your CRM, payment gateways, e-commerce platforms, and payroll systems via our open API.</p>
+                </div>
+                <div class="color-green cap-card">
+                    <i class="color-green fa-solid fa-users" aria-hidden="true"></i>
+                    <h4>Role-Based Access</h4>
+                    <p>Granular permissions ensure your team only sees what they need to, protecting sensitive financial information.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by Finance Teams Worldwide</h2>
+                <p>See how businesses are streamlining their accounting with our platform.</p>
+            </div>
+            <div class="test-grid">
+                <div class="test-card">
+                    <p class="test-text">"The automated bank reconciliation alone saves our finance team 15 hours a week. The tax compliance features give us peace of mind during audit season."</p>
+                    <div class="test-meta">
+                        <div class="test-avatar" aria-hidden="true">SJ</div>
+                        <div class="test-info">
+                            <h6>Sarah Jenkins</h6>
+                            <span>CFO, TechFlow Solutions</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <p class="test-text">"We switched to this accounting software for its robust invoicing and reporting. Getting paid faster and having real-time cash flow visibility has been a game-changer."</p>
+                    <div class="test-meta">
+                        <div class="test-avatar" aria-hidden="true">MR</div>
+                        <div class="test-info">
+                            <h6>Michael Rodriguez</h6>
+                            <span>Founder, Apex Retail Group</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="test-card">
+                    <p class="test-text">"Managing multi-currency transactions and regional tax laws used to be a nightmare. This platform handles it all automatically, allowing us to scale globally without the headache."</p>
+                    <div class="test-meta">
+                        <div class="test-avatar" aria-hidden="true">EL</div>
+                        <div class="test-info">
+                            <h6>Elena Rostova</h6>
+                            <span>Controller, GlobalTrade Inc.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section faq" id="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2>Frequently Asked Questions</h2>
+                <p>Everything you need to know about our accounting software.</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Can I migrate my data from my current accounting software? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    <div class="faq-a" role="region">Yes. We offer seamless migration tools and dedicated support to import your chart of accounts, historical transactions, and customer/vendor data from platforms like QuickBooks, Xero, and Sage.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Is the software compliant with local tax regulations? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    <div class="faq-a" role="region">Absolutely. Our system is continuously updated to reflect local, state, and federal tax laws, including VAT, GST, and Sales Tax across multiple global jurisdictions.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">How secure is my financial data? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    <div class="faq-a" role="region">We use bank-level AES-256 encryption for data at rest and TLS 1.3 for data in transit. We are SOC 2 Type II certified and undergo regular third-party security audits.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-q" aria-expanded="false">Do you offer a free trial? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+                    <div class="faq-a" role="region">Yes! We offer a 30-day free trial with full access to all features, including invoicing, tax management, reporting, and bank reconciliation. No credit card required to start.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-banner">
+        <div class="container">
+            <h2>Ready to Simplify Your Accounting?</h2>
+            <p>Join 50,000+ businesses automating their finances, staying compliant, and getting paid faster.</p>
+            <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                <a href="#demo" class="btn" style="background: #fff; color: var(--primary);">Start Free Trial</a>
+                <a href="#demo" class="btn btn-outline">Talk to Sales</a>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- =========================================
+FOOTER
+========================================= -->
+<footer class="heropesa-footer" role="contentinfo">
 <div class="container">
 <div class="footer-grid">
 <div class="footer-brand">
-<a href="#" class="logo">Hero<span class="logo-accent">pesa</span></a>
+<a href="/index.html" class="logo">Hero<span class="logo-accent">pesa</span></a>
 <p>Cloud ERP built for modern manufacturers. Unified, intelligent, and designed to scale with your production needs.</p>
 <div class="social-icons">
-<a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
-<a href="#"><i class="fa-brands fa-twitter"></i></a>
-<a href="#"><i class="fa-brands fa-youtube"></i></a>
-<a href="#"><i class="fa-brands fa-github"></i></a>
+<a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+<a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+<a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+<a href="#" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
 </div>
 </div>
 <div class="footer-col">
@@ -812,12 +2143,12 @@ HEROPESA FOOTER STYLES - START
 <li><a href="/pages/posldg.html">Point of Sale</a></li>
 <li><a href="/pages/erpldg.html">Enterprise ERP</a></li>
 <li><a href="/pages/accounting.html">Accounting Software</a></li>
-<li><a href="/pages/crmldg.html">CRM & Sales</a></li>
+<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
 <li><a href="/pages/businessmanagementsystems.html">Business Management Systems</a></li>
-<li><a href="/pages/hr-payroll.html">HR & Payroll</a></li>
+<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
 <li><a href="/pages/supply-chain.html">Supply Chain</a></li>
 <li><a href="/pages/inventory.html">Inventory Control</a></li>
-<li><a href="/pages/analytics-bi.html">Analytics & BI</a></li>
+<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
 <li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
 <li><a href="/pages/education.html">Education Platform</a></li>
 <li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
@@ -832,48 +2163,48 @@ HEROPESA FOOTER STYLES - START
 </ul>
 </div>
 <div class="footer-col">
-<h5>Trading & Finance</h5>
+<h5>Trading &amp; Finance</h5>
 <ul>
-<li><a href="/pages/trading-prop.html">Trading & Prop</a></li>
+<li><a href="/pages/trading-prop.html">Trading &amp; Prop</a></li>
 <li><a href="/pages/cfd-prop.html">CFD Prop Firms</a></li>
 <li><a href="/pages/crypto-prop.html">Crypto Prop Solutions</a></li>
 <li><a href="/pages/prediction-markets.html">Prediction Market Solutions</a></li>
 <li><a href="/pages/sports-betting.html">Sports Betting Tech</a></li>
-<li><a href="/pages/lotterysoftware.html">Lottery & Casino Softwares</a></li>
+<li><a href="/pages/lotterysoftware.html">Lottery &amp; Casino Softwares</a></li>
 <li><a href="/pages/payments.html">Payment Processing</a></li>
 <li><a href="/pages/trader-dash.html">Trader Dashboards</a></li>
 <li><a href="/pages/trading-analytics.html">Trading Analytics</a></li>
 <li><a href="/pages/compliance-monitoring.html">Compliance Monitoring</a></li>
-<li><a href="/pages/kyc-aml.html">KYC & AML</a></li>
+<li><a href="/pages/kyc-aml.html">KYC &amp; AML</a></li>
 </ul>
 </div>
 <div class="footer-col">
-<h5>Cloud & Infrastructure</h5>
+<h5>Cloud &amp; Infrastructure</h5>
 <ul>
-<li><a href="/pages/cloud-infra.html">Cloud & Infrastructure</a></li>
+<li><a href="/pages/cloud-infra.html">Cloud &amp; Infrastructure</a></li>
 <li><a href="/pages/domains.html">Domain Registration</a></li>
 <li><a href="/pages/web-hosting.html">Web Hosting</a></li>
-<li><a href="/pages/vps-dedicated.html">VPS & Dedicated</a></li>
+<li><a href="/pages/vps-dedicated.html">VPS &amp; Dedicated</a></li>
 <li><a href="/pages/cloud-computing.html">Cloud Computing</a></li>
-<li><a href="/pages/cdn-security.html">CDN & Security</a></li>
-<li><a href="/pages/backup.html">Backup & Recovery</a></li>
+<li><a href="/pages/cdn-security.html">CDN &amp; Security</a></li>
+<li><a href="/pages/backup.html">Backup &amp; Recovery</a></li>
 <li><a href="/pages/enterprise-email.html">Enterprise Email</a></li>
 <li><a href="/pages/dev-apis.html">Developer APIs</a></li>
-<li><a href="/pages/monitoring.html">Monitoring & Logs</a></li>
+<li><a href="/pages/monitoring.html">Monitoring &amp; Logs</a></li>
 <li><a href="/pages/infra-status.html">Infrastructure Status</a></li>
 </ul>
 </div>
 <div class="footer-col">
-<h5>Security & AI</h5>
+<h5>Security &amp; AI</h5>
 <ul>
 <li><a href="/pages/cybersecurity.html">Cybersecurity Suite</a></li>
 <li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
-<li><a href="/pages/automation-rpa.html">Automation & RPA</a></li>
-<li><a href="/pages/cctv-physical.html">CCTV & Physical Security</a></li>
+<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
+<li><a href="/pages/cctv-physical.html">CCTV &amp; Physical Security</a></li>
 <li><a href="/pages/business-intel.html">Business Intelligence</a></li>
 <li><a href="/pages/threat-detection.html">Threat Detection</a></li>
-<li><a href="/pages/compliance-gov.html">Compliance & Governance</a></li>
-<li><a href="/pages/identity-access.html">Identity & Access</a></li>
+<li><a href="/pages/compliance-gov.html">Compliance &amp; Governance</a></li>
+<li><a href="/pages/identity-access.html">Identity &amp; Access</a></li>
 <li><a href="/pages/soc-monitoring.html">SOC Monitoring</a></li>
 <li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
 </ul>
@@ -886,11 +2217,20 @@ HEROPESA FOOTER STYLES - START
 <li><a href="/industries/healthcare.html">Healthcare</a></li>
 <li><a href="/industries/education.html">Education</a></li>
 <li><a href="/industries/restaurants.html">Restaurants</a></li>
-<li><a href="/industries/beauty-wellness.html">Beauty & Wellness</a></li>
+<li><a href="/industries/beauty-wellness.html">Beauty &amp; Wellness</a></li>
 <li><a href="/industries/pro-services.html">Professional Services</a></li>
-<li><a href="/industries/fashion.html">Fashion & Apparel</a></li>
+<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
 <li><a href="/industries/finance.html">Finance</a></li>
 <li><a href="/industries/enterprise.html">Enterprise</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Business Types</h5>
+<ul>
+<li><a href="/pages/kioskldg.html">Kiosk</a></li>
+<li><a href="/pages/hairsalonposldg.html">Hair Salon</a></li>
+<li><a href="/pages/medspaposldg.html">Med Spa</a></li>
+<li><a href="/pages/pharmacypos.html">Pharmacy</a></li>
 </ul>
 </div>
 <div class="footer-col">
@@ -898,8 +2238,8 @@ HEROPESA FOOTER STYLES - START
 <ul>
 <li><a href="/pages/developers.html">Developer Hub</a></li>
 <li><a href="/pages/docs.html">API Documentation</a></li>
-<li><a href="/pages/sdks.html">SDKs & Libraries</a></li>
-<li><a href="/pages/webhooks.html">Webhooks & Events</a></li>
+<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
+<li><a href="/pages/webhooks.html">Webhooks &amp; Events</a></li>
 <li><a href="/pages/marketplace.html">App Marketplace</a></li>
 <li><a href="/pages/console.html">Developer Console</a></li>
 <li><a href="/pages/open-source.html">Open Source</a></li>
@@ -910,7 +2250,7 @@ HEROPESA FOOTER STYLES - START
 </ul>
 </div>
 <div class="footer-col">
-<h5>Company & Legal</h5>
+<h5>Company &amp; Legal</h5>
 <ul>
 <li><a href="/pages/about.html">About Us</a></li>
 <li><a href="/pages/leadership.html">Leadership</a></li>
@@ -948,329 +2288,636 @@ HEROPESA FOOTER STYLES - START
 </div>
 <div>©️ 2026 Heropesa Global Inc. All rights reserved.</div>
 </div>
-<p style="font-size:0.75rem;color:var(--text-muted,#888888);margin-top:24px;line-height:1.5;">
+<p style="font-size:0.75rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
 Heropesa Manufacturing ERP is a cloud-based business management platform.
 Implementation services and partner integrations may be required for certain capabilities.
 Contact sales for detailed compliance and regulatory information specific to your industry and region.
 </p>
 </div>
 </footer>
-
+<!-- =========================================
+DEMO MODAL
+========================================= -->
+<div id="demoModal" class="demo-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle" aria-hidden="true">
+<div class="demo-modal-container">
+<div class="demo-modal-header">
+<h3 id="demoModalTitle">Start Your Free Trial</h3>
+<button class="demo-modal-close" aria-label="Close demo modal">&times;</button>
+</div>
+<form id="demoModalForm">
+<div class="demo-form-group">
+<label for="demo-name">Full Name</label>
+<input type="text" id="demo-name" required placeholder="John Doe" autocomplete="name" />
+</div>
+<div class="demo-form-group">
+<label for="demo-email">Corporate Email</label>
+<input type="email" id="demo-email" required placeholder="name@company.com" autocomplete="email" />
+</div>
+<div class="demo-form-group">
+<label for="demo-size">Company Size</label>
+<select id="demo-size" required>
+<option value="">Select size</option>
+<option>1-9 employees</option>
+<option>10-49 employees</option>
+<option>50-249 employees</option>
+<option>250+ employees</option>
+</select>
+</div>
+<div class="demo-form-group">
+<label for="demo-phone">Phone Number</label>
+<input type="tel" id="demo-phone" required placeholder="+1 (555) 000-0000" autocomplete="tel" />
+</div>
+<button type="submit" class="demo-submit-btn">Submit Request</button>
+</form>
+<div id="demoSuccessState" class="demo-success-state" style="display: none;">
+<i class="fa-solid fa-circle-check color-green" aria-hidden="true"></i>
+<h4>Request Submitted!</h4>
+<p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
+<button class="demo-close-btn">Close</button>
+</div>
+</div>
+</div>
+<!-- =========================================
+JAVASCRIPT
+========================================= -->
 <script>
-
-document.addEventListener('DOMContentLoaded', () => {
-// 1. Tab Switching
+document.addEventListener('DOMContentLoaded', function() {
+'use strict';
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function getFocusableElements(container) {
+return container.querySelectorAll(
+'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+);
+}
+function trapFocus(element) {
+const focusable = getFocusableElements(element);
+if (focusable.length === 0) return;
+const first = focusable[0];
+const last = focusable[focusable.length - 1];
+function handler(e) {
+if (e.key !== 'Tab') return;
+if (e.shiftKey) {
+if (document.activeElement === first) {
+e.preventDefault();
+last.focus();
+}
+} else {
+if (document.activeElement === last) {
+e.preventDefault();
+first.focus();
+}
+}
+}
+element.addEventListener('keydown', handler);
+return () => element.removeEventListener('keydown', handler);
+}
+// ============================================================
+// 1. TABS
+// ============================================================
 const tabBtns = document.querySelectorAll('.tab-btn');
 const tabContents = document.querySelectorAll('.tab-content');
-tabBtns.forEach(btn => {
-btn.addEventListener('click', () => {
-tabBtns.forEach(b => b.classList.remove('active'));
-tabContents.forEach(c => c.classList.remove('active'));
+tabBtns.forEach(function(btn) {
+btn.addEventListener('click', function() {
+tabBtns.forEach(function(b) {
+b.classList.remove('active');
+b.setAttribute('aria-selected', 'false');
+});
+tabContents.forEach(function(c) { c.classList.remove('active'); });
 btn.classList.add('active');
-document.getElementById(btn.dataset.tab).classList.add('active');
+btn.setAttribute('aria-selected', 'true');
+var target = document.getElementById(btn.dataset.tab);
+if (target) target.classList.add('active');
+});
+// Keyboard navigation for tabs
+btn.addEventListener('keydown', function(e) {
+const btnsArray = Array.from(tabBtns);
+const index = btnsArray.indexOf(btn);
+let newIndex = index;
+if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+e.preventDefault();
+newIndex = (index + 1) % btnsArray.length;
+} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+e.preventDefault();
+newIndex = (index - 1 + btnsArray.length) % btnsArray.length;
+} else if (e.key === 'Home') {
+e.preventDefault();
+newIndex = 0;
+} else if (e.key === 'End') {
+e.preventDefault();
+newIndex = btnsArray.length - 1;
+}
+if (newIndex !== index) {
+btnsArray[newIndex].click();
+btnsArray[newIndex].focus();
+}
 });
 });
-
-// 2. FAQ Accordion
-const faqItems = document.querySelectorAll('.faq-item');
-faqItems.forEach(item => {
-const q = item.querySelector('.faq-q');
-q.addEventListener('click', () => {
-const isOpen = item.classList.contains('active');
-faqItems.forEach(i => i.classList.remove('active'));
-if (!isOpen) item.classList.add('active');
+// ============================================================
+// 2. FAQ ACCORDION
+// ============================================================
+var faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(function(item) {
+var q = item.querySelector('.faq-q');
+if (q) {
+q.addEventListener('click', function() {
+var isOpen = item.classList.contains('active');
+faqItems.forEach(function(i) {
+i.classList.remove('active');
+i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
 });
+if (!isOpen) {
+item.classList.add('active');
+q.setAttribute('aria-expanded', 'true');
+}
 });
-
-// 3. Scroll Reveal Animation
-const revealElements = document.querySelectorAll('.reveal');
+}
+});
+// ============================================================
+// 3. SCROLL REVEAL
+// ============================================================
+var revealElements = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
 document.body.classList.add('js-enabled');
-const revealObserver = new IntersectionObserver((entries) => {
-entries.forEach(entry => {
+var revealObserver = new IntersectionObserver(function(entries) {
+entries.forEach(function(entry) {
 if (entry.isIntersecting) {
 entry.target.classList.add('visible');
 revealObserver.unobserve(entry.target);
 }
 });
 }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
-revealElements.forEach(el => revealObserver.observe(el));
+revealElements.forEach(function(el) { revealObserver.observe(el); });
 }
-
-// 4. Smooth Scroll for Anchor Links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+// ============================================================
+// 4. SMOOTH SCROLL FOR ANCHOR LINKS
+// ============================================================
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 anchor.addEventListener('click', function(e) {
-const href = this.getAttribute('href');
-if (!href || href === '#') return; // Do not prevent default or scroll for dummy hash links
+var href = this.getAttribute('href');
+if (!href || href === '#' || href === '#demo') {
+return;
+}
 e.preventDefault();
 try {
-const target = document.querySelector(href);
+var target = document.querySelector(href);
 if (target) {
 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-const navLinks = document.getElementById('navLinks');
-const menuToggle = document.getElementById('menuToggle');
-if(navLinks && menuToggle) {
-navLinks.classList.remove('active');
-menuToggle.classList.add('fa-bars');
-menuToggle.classList.remove('fa-xmark');
-}
+closeMobileDrawer();
 }
 } catch (err) {
 console.warn('Invalid scroll selector:', href);
 }
 });
 });
-
-// 5. Functional Header Search Bar
-const headerSearchInput = document.getElementById('headerSearchInput');
-let searchTimeout;
-let currentSearchMatches = [];
-let currentMatchIndex = -1;
-
+// ============================================================
+// 5. FUNCTIONAL HEADER SEARCH
+// ============================================================
+var headerSearchInput = document.getElementById('headerSearchInput');
+var mobileSearchInput = document.getElementById('mobileSearchInput');
+var searchTimeout;
 function clearSearchHighlights() {
-document.querySelectorAll('.search-highlight').forEach(el => {
-const parent = el.parentNode;
+document.querySelectorAll('.search-highlight').forEach(function(el) {
+var parent = el.parentNode;
 parent.replaceChild(document.createTextNode(el.textContent), el);
 parent.normalize();
 });
-currentSearchMatches = [];
-currentMatchIndex = -1;
 }
-
-if (headerSearchInput) {
-headerSearchInput.addEventListener('input', (e) => {
-clearTimeout(searchTimeout);
-const query = e.target.value.trim();
+function performSearch(query) {
 clearSearchHighlights();
-
 if (query.length < 2) return;
-
-searchTimeout = setTimeout(() => {
-const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-const nodes = [];
-let node;
-while (node = walker.nextNode()) {
-if (!['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(node.parentElement.tagName) && 
-!node.parentElement.classList.contains('search-highlight') &&
-!node.parentElement.closest('.heropesa-header')) {
+var walker = document.createTreeWalker(
+document.body,
+NodeFilter.SHOW_TEXT,
+null,
+false
+);
+var nodes = [];
+var node;
+while ((node = walker.nextNode())) {
+var parent = node.parentElement;
+if (!parent) continue;
+var tag = parent.tagName;
+if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(tag)) continue;
+if (parent.classList && parent.classList.contains('search-highlight')) continue;
+if (parent.closest && (parent.closest('.heropesa-header') || parent.closest('.mobile-drawer'))) continue;
 nodes.push(node);
 }
-}
-
-const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-nodes.reverse().forEach(node => {
-if (regex.test(node.textContent)) {
-const span = document.createElement('span');
+var regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+nodes.reverse().forEach(function(n) {
+if (regex.test(n.textContent)) {
+var span = document.createElement('span');
 span.className = 'search-highlight';
-span.style.backgroundColor = '#fff3cd';
-span.style.borderRadius = '2px';
-span.style.padding = '0 2px';
-span.innerHTML = node.textContent.replace(regex, '<mark style="background:transparent; color:inherit;">$1</mark>');
-node.parentNode.replaceChild(span, node);
+span.innerHTML = n.textContent.replace(regex,
+'<mark style="background:transparent;color:inherit;">$1</mark>'
+);
+n.parentNode.replaceChild(span, n);
 }
 });
-
-currentSearchMatches = Array.from(document.querySelectorAll('.search-highlight'));
-if (currentSearchMatches.length > 0) {
-currentMatchIndex = 0;
-currentSearchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-currentSearchMatches[0].style.backgroundColor = '#fdcb6e';
+var matches = document.querySelectorAll('.search-highlight');
+if (matches.length > 0) {
+matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+matches[0].classList.add('active-match');
 }
+}
+function handleSearchInput(e) {
+clearTimeout(searchTimeout);
+var query = e.target.value.trim();
+searchTimeout = setTimeout(function() {
+performSearch(query);
 }, 300);
-});
-
-headerSearchInput.addEventListener('keydown', (e) => {
+}
+function handleSearchKeydown(e) {
 if (e.key === 'Escape') {
-headerSearchInput.value = '';
+e.target.value = '';
 clearSearchHighlights();
-headerSearchInput.blur();
+e.target.blur();
 }
-});
 }
-
-// 6. HEROPESA HEADER JS
-const menuToggle = document.getElementById('menuToggle');
-const navLinks = document.getElementById('navLinks');
-if (menuToggle && navLinks) {
-menuToggle.addEventListener('click', () => {
-navLinks.classList.toggle('active');
-const isExpanded = navLinks.classList.contains('active');
-menuToggle.classList.toggle('fa-bars', !isExpanded);
-menuToggle.classList.toggle('fa-xmark', isExpanded);
-menuToggle.setAttribute('aria-expanded', isExpanded);
-});
-
-navLinks.querySelectorAll('a').forEach(link => {
-link.addEventListener('click', () => {
-if (window.innerWidth <= 1024 && navLinks.classList.contains('active')) {
-navLinks.classList.remove('active');
-menuToggle.classList.add('fa-bars');
-menuToggle.classList.remove('fa-xmark');
+if (headerSearchInput) {
+headerSearchInput.addEventListener('input', handleSearchInput);
+headerSearchInput.addEventListener('keydown', handleSearchKeydown);
+}
+if (mobileSearchInput) {
+mobileSearchInput.addEventListener('input', handleSearchInput);
+mobileSearchInput.addEventListener('keydown', handleSearchKeydown);
+}
+// ============================================================
+// 6. MOBILE DRAWER
+// ============================================================
+var menuToggle = document.getElementById('menuToggle');
+var mobileDrawer = document.getElementById('mobileDrawer');
+var mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+var mobileDrawerClose = document.getElementById('mobileDrawerClose');
+var lastFocusedElement = null;
+var drawerFocusTrap = null;
+function openMobileDrawer() {
+lastFocusedElement = document.activeElement;
+mobileDrawer.classList.add('active');
+mobileDrawerBackdrop.classList.add('active');
+mobileDrawer.setAttribute('aria-hidden', 'false');
+mobileDrawerBackdrop.setAttribute('aria-hidden', 'false');
+menuToggle.setAttribute('aria-expanded', 'true');
+menuToggle.setAttribute('aria-label', 'Close navigation menu');
+document.body.classList.add('no-scroll');
+// Focus the close button
+setTimeout(function() {
+mobileDrawerClose.focus();
+drawerFocusTrap = trapFocus(mobileDrawer);
+}, 100);
+}
+function closeMobileDrawer() {
+mobileDrawer.classList.remove('active');
+mobileDrawerBackdrop.classList.remove('active');
+mobileDrawer.setAttribute('aria-hidden', 'true');
+mobileDrawerBackdrop.setAttribute('aria-hidden', 'true');
 menuToggle.setAttribute('aria-expanded', 'false');
+menuToggle.setAttribute('aria-label', 'Open navigation menu');
+document.body.classList.remove('no-scroll');
+// Close all accordions
+document.querySelectorAll('.mobile-nav-item').forEach(function(item) {
+item.setAttribute('aria-expanded', 'false');
+item.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
+});
+if (drawerFocusTrap) {
+drawerFocusTrap();
+drawerFocusTrap = null;
+}
+// Restore focus
+if (lastFocusedElement) {
+lastFocusedElement.focus();
+}
+}
+// Make closeMobileDrawer globally accessible
+window.closeMobileDrawer = closeMobileDrawer;
+if (menuToggle) {
+menuToggle.addEventListener('click', function() {
+var isOpen = mobileDrawer.classList.contains('active');
+if (isOpen) {
+closeMobileDrawer();
+} else {
+openMobileDrawer();
+}
+});
+}
+if (mobileDrawerClose) {
+mobileDrawerClose.addEventListener('click', closeMobileDrawer);
+}
+if (mobileDrawerBackdrop) {
+mobileDrawerBackdrop.addEventListener('click', closeMobileDrawer);
+}
+// Escape key closes drawer
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+if (mobileDrawer.classList.contains('active')) {
+closeMobileDrawer();
+}
+}
+});
+// ============================================================
+// 7. MOBILE ACCORDION NAVIGATION
+// ============================================================
+var mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+mobileNavItems.forEach(function(item) {
+var trigger = item.querySelector('.mobile-nav-trigger');
+if (!trigger) return;
+trigger.addEventListener('click', function() {
+var isExpanded = item.getAttribute('aria-expanded') === 'true';
+// Close all other accordions
+mobileNavItems.forEach(function(otherItem) {
+if (otherItem !== item) {
+otherItem.setAttribute('aria-expanded', 'false');
+otherItem.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
+}
+});
+// Toggle current
+var newState = !isExpanded;
+item.setAttribute('aria-expanded', newState ? 'true' : 'false');
+trigger.setAttribute('aria-expanded', newState ? 'true' : 'false');
+});
+});
+// Close drawer when clicking a link inside
+mobileDrawer.querySelectorAll('a').forEach(function(link) {
+link.addEventListener('click', function() {
+// Small delay to allow navigation
+setTimeout(closeMobileDrawer, 150);
+});
+});
+// ============================================================
+// 8. DESKTOP MEGA MENU - Keyboard & Focus Management
+// ============================================================
+var navItems = document.querySelectorAll('.nav-item');
+navItems.forEach(function(item) {
+var parentLink = item.querySelector('.nav-parent-link');
+var megaMenu = item.querySelector('.mega-menu');
+if (!parentLink || !megaMenu) return;
+// Click to toggle on touch devices
+parentLink.addEventListener('click', function(e) {
+e.preventDefault();
+var isExpanded = item.getAttribute('aria-expanded') === 'true';
+// Close all other menus
+navItems.forEach(function(otherItem) {
+if (otherItem !== item) {
+otherItem.setAttribute('aria-expanded', 'false');
+otherItem.querySelector('.nav-parent-link').setAttribute('aria-expanded', 'false');
+}
+});
+item.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+parentLink.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+if (!isExpanded) {
+// Focus first link in mega menu
+var firstLink = megaMenu.querySelector('a');
+if (firstLink) {
+setTimeout(function() { firstLink.focus(); }, 100);
+}
+}
+});
+// Keyboard navigation within mega menu
+parentLink.addEventListener('keydown', function(e) {
+if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+e.preventDefault();
+item.setAttribute('aria-expanded', 'true');
+parentLink.setAttribute('aria-expanded', 'true');
+var firstLink = megaMenu.querySelector('a');
+if (firstLink) firstLink.focus();
+}
+});
+megaMenu.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+item.setAttribute('aria-expanded', 'false');
+parentLink.setAttribute('aria-expanded', 'false');
+parentLink.focus();
+}
+// Arrow key navigation within mega menu
+var links = Array.from(megaMenu.querySelectorAll('a'));
+var currentIndex = links.indexOf(document.activeElement);
+if (e.key === 'ArrowDown') {
+e.preventDefault();
+var nextIndex = (currentIndex + 1) % links.length;
+links[nextIndex].focus();
+} else if (e.key === 'ArrowUp') {
+e.preventDefault();
+var prevIndex = (currentIndex - 1 + links.length) % links.length;
+links[prevIndex].focus();
 }
 });
 });
-}
-
-document.addEventListener('click', (e) => {
+// Close mega menus when clicking outside
+document.addEventListener('click', function(e) {
 if (!e.target.closest('.nav-item')) {
-document.querySelectorAll('.nav-item').forEach(item => {
-item.classList.remove('active');
+navItems.forEach(function(item) {
+item.setAttribute('aria-expanded', 'false');
+var parentLink = item.querySelector('.nav-parent-link');
+if (parentLink) parentLink.setAttribute('aria-expanded', 'false');
 });
 }
 });
-
-const header = document.getElementById('navbar');
+// ============================================================
+// 9. SCROLL HEADER SHADOW
+// ============================================================
+var header = document.getElementById('navbar');
 if (header) {
-window.addEventListener('scroll', () => {
+var scrollTicking = false;
+window.addEventListener('scroll', function() {
+if (!scrollTicking) {
+window.requestAnimationFrame(function() {
 header.classList.toggle('scrolled', window.scrollY > 10);
+scrollTicking = false;
+});
+scrollTicking = true;
+}
 }, { passive: true });
 }
+// ============================================================
+// 10. ACTIVE NAVIGATION STATE SYSTEM
+// ============================================================
+function setActiveNav() {
+var currentPath = window.location.pathname;
+var normalized = currentPath.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (normalized === '') normalized = '/';
+// Header direct links
+document.querySelectorAll('.nav-direct-link').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
+} else {
+link.classList.remove('active');
+}
 });
-
-</script>
-
-<!-- HEROPESA DEMO REQUEST MODAL - START -->
-<style>
-.demo-modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 99999;
+// Header parent nav items
+navItems.forEach(function(item) {
+var parentLink = item.querySelector('.nav-parent-link');
+if (!parentLink) return;
+var megaLinks = item.querySelectorAll('.mega-menu a');
+var isActive = false;
+megaLinks.forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+isActive = true;
+link.classList.add('active');
+} else {
+link.classList.remove('active');
 }
-.demo-modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.demo-modal-container {
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 32px;
-  width: 90%;
-  max-width: 460px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-  transform: scale(0.9);
-  transition: transform 0.3s ease;
-  position: relative;
-  box-sizing: border-box;
-}
-.demo-modal-overlay.active .demo-modal-container {
-  transform: scale(1);
-}
-.demo-modal-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 24px;
-}
-.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
-.demo-modal-close {
-  background: transparent; border: none; font-size: 1.5rem; cursor: pointer; color: #888888;
-  transition: color 0.2s; line-height: 1;
-}
-.demo-modal-close:hover { color: #0a0a0a; }
-.demo-form-group { margin-bottom: 16px; text-align: left; }
-.demo-form-group label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 6px; color: #555555; }
-.demo-form-group input, .demo-form-group select {
-  width: 100%; padding: 10px 12px; border: 1px solid #e5e5e5; border-radius: 6px;
-  font-size: 0.92rem; outline: none; transition: border-color 0.25s;
-  box-sizing: border-box;
-}
-.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
-.demo-submit-btn {
-  width: 100%; padding: 12px; background: #0a0a0a; color: #ffffff; border: none;
-  border-radius: 6px; font-weight: 500; font-size: 0.95rem; cursor: pointer;
-  transition: background-color 0.25s; margin-top: 8px;
-}
-.demo-submit-btn:hover { background: #222222; }
-.demo-success-state { text-align: center; padding: 20px 0; }
-.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
-.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
-.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
-.demo-close-btn {
-  padding: 10px 24px; background: #0a0a0a; color: #ffffff; border: none;
-  border-radius: 6px; font-weight: 500; cursor: pointer;
-}
-</style>
-
-<div id="demoModal" class="demo-modal-overlay">
-  <div class="demo-modal-container">
-    <div class="demo-modal-header">
-      <h3>Schedule an Enterprise Demo</h3>
-      <button class="demo-modal-close" onclick="closeDemoModal()">&times;</button>
-    </div>
-    <form id="demoModalForm" onsubmit="handleDemoSubmit(event)">
-      <div class="demo-form-group">
-        <label>Full Name</label>
-        <input type="text" required placeholder="John Doe">
-      </div>
-      <div class="demo-form-group">
-        <label>Corporate Email</label>
-        <input type="email" required placeholder="name@company.com">
-      </div>
-      <div class="demo-form-group">
-        <label>Company Size</label>
-        <select required>
-          <option value="">Select size</option>
-          <option>1-9 employees</option>
-          <option>10-49 employees</option>
-          <option>50-249 employees</option>
-          <option>250+ employees</option>
-        </select>
-      </div>
-      <div class="demo-form-group">
-        <label>Phone Number</label>
-        <input type="tel" required placeholder="+1 (555) 000-0000">
-      </div>
-      <button type="submit" class="demo-submit-btn">Submit Request</button>
-    </form>
-    <div id="demoSuccessState" class="demo-success-state" style="display: none;">
-      <i class="fa-solid fa-circle-check color-green"></i>
-      <h4>Request Submitted!</h4>
-      <p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
-      <button class="demo-close-btn" onclick="closeDemoModal()">Close</button>
-    </div>
-  </div>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Bind all demo elements to show modal
-  document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      openDemoModal();
-    });
-  });
 });
-
+if (isActive) {
+parentLink.classList.add('active');
+} else {
+parentLink.classList.remove('active');
+}
+});
+// Footer links
+document.querySelectorAll('.footer-col a, .footer-links a').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
+} else {
+link.classList.remove('active');
+}
+});
+// Mobile drawer links
+document.querySelectorAll('.mobile-submenu-group a, .mobile-direct-links a').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
+} else {
+link.classList.remove('active');
+}
+});
+}
+setActiveNav();
+window.addEventListener('popstate', setActiveNav);
+setTimeout(setActiveNav, 100);
+// ============================================================
+// 11. DEMO MODAL
+// ============================================================
+var demoModal = document.getElementById('demoModal');
+var demoModalForm = document.getElementById('demoModalForm');
+var demoSuccessState = document.getElementById('demoSuccessState');
+var demoModalFocusTrap = null;
+var demoLastFocused = null;
 function openDemoModal() {
-  const modal = document.getElementById('demoModal');
-  if (modal) {
-    modal.classList.add('active');
-    document.getElementById('demoModalForm').style.display = 'block';
-    document.getElementById('demoSuccessState').style.display = 'none';
-  }
+demoLastFocused = document.activeElement;
+demoModal.classList.add('active');
+demoModal.setAttribute('aria-hidden', 'false');
+document.body.classList.add('no-scroll');
+demoModalForm.style.display = 'block';
+demoSuccessState.style.display = 'none';
+// Close mobile drawer if open
+if (mobileDrawer.classList.contains('active')) {
+closeMobileDrawer();
 }
-
+setTimeout(function() {
+var firstInput = demoModal.querySelector('input, button');
+if (firstInput) firstInput.focus();
+demoModalFocusTrap = trapFocus(demoModal);
+}, 100);
+}
 function closeDemoModal() {
-  const modal = document.getElementById('demoModal');
-  if (modal) {
-    modal.classList.remove('active');
-  }
+demoModal.classList.remove('active');
+demoModal.setAttribute('aria-hidden', 'true');
+document.body.classList.remove('no-scroll');
+if (demoModalFocusTrap) {
+demoModalFocusTrap();
+demoModalFocusTrap = null;
 }
-
-function handleDemoSubmit(e) {
-  e.preventDefault();
-  const form = document.getElementById('demoModalForm');
-  const success = document.getElementById('demoSuccessState');
-  form.style.display = 'none';
-  success.style.display = 'block';
+if (demoLastFocused) {
+demoLastFocused.focus();
 }
+}
+// Attach to all demo triggers
+document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(function(link) {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
+});
+});
+// Mobile demo button
+var mobileDemoBtn = document.getElementById('mobileDemoBtn');
+if (mobileDemoBtn) {
+mobileDemoBtn.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
+});
+}
+// Close modal
+var demoCloseBtn = demoModal.querySelector('.demo-modal-close');
+if (demoCloseBtn) {
+demoCloseBtn.addEventListener('click', closeDemoModal);
+}
+var demoCloseSuccessBtn = demoSuccessState.querySelector('.demo-close-btn');
+if (demoCloseSuccessBtn) {
+demoCloseSuccessBtn.addEventListener('click', closeDemoModal);
+}
+// Click outside modal
+demoModal.addEventListener('click', function(e) {
+if (e.target === this) {
+closeDemoModal();
+}
+});
+// Escape closes modal
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape' && demoModal.classList.contains('active')) {
+closeDemoModal();
+}
+});
+// Form submission
+if (demoModalForm) {
+demoModalForm.addEventListener('submit', function(e) {
+e.preventDefault();
+demoModalForm.style.display = 'none';
+demoSuccessState.style.display = 'block';
+// Focus the close button in success state
+setTimeout(function() {
+var closeBtn = demoSuccessState.querySelector('.demo-close-btn');
+if (closeBtn) closeBtn.focus();
+}, 100);
+});
+}
+// ============================================================
+// 12. FIX DEAD LINKS - Connect # links to meaningful actions
+// ============================================================
+document.querySelectorAll('a[href="#"]').forEach(function(link) {
+// If it's in a sol-card or similar, make it scroll to demo or a section
+var card = link.closest('.sol-card, .trading-card');
+if (card) {
+var heading = card.querySelector('h4');
+if (heading) {
+var text = heading.textContent.toLowerCase();
+if (text.includes('microfinance') || text.includes('sacco') || text.includes('real estate') || text.includes('property')) {
+link.setAttribute('href', '#demo');
+link.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
+});
+} else {
+link.setAttribute('href', '#solutions');
+}
+}
+}
+});
+// ============================================================
+// 13. PREFERS REDUCED MOTION
+// ============================================================
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+document.documentElement.style.scrollBehavior = 'auto';
+document.querySelectorAll('.marquee-track').forEach(function(track) {
+track.style.animation = 'none';
+});
+}
+});
 </script>
-<!-- HEROPESA DEMO REQUEST MODAL - END -->
 </body>
 </html>
