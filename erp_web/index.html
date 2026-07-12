@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexusERP - Enterprise Resource Planning</title>
+    <style>
+        :root {
+            --bg: #f0f2f5;
+            --surface: #fff;
+            --surface2: #f8f9fa;
+            --border: #e0e4e8;
+            --text: #1a1d23;
+            --text2: #5f6368;
+            --text3: #80868b;
+            --primary: #1a73e8;
+            --primary-hover: #1557b0;
+            --primary-light: #e8f0fe;
+            --danger: #ea4335;
+            --danger-light: #fce8e6;
+            --success: #0d904f;
+            --success-light: #e6f4ea;
+            --warning: #f9ab00;
+            --warning-light: #fef7e0;
+            --info: #1967d2;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --sidebar-w: 260px;
+            --header-h: 56px;
+            --tab-h: 44px;
+            --transition: 0.2s ease;
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --chart-1: #1a73e8;
+            --chart-2: #0d904f;
+            --chart-3: #f9ab00;
+            --chart-4: #ea4335;
+            --chart-5: #7b1fa2;
+        }
+        [data-theme="dark"] {
+            --bg: #1a1d23;
+            --surface: #252830;
+            --surface2: #2d3038;
+            --border: #3c4043;
+            --text: #e8eaed;
+            --text2: #bdc1c6;
+            --text3: #9aa0a6;
+            --primary: #8ab4f8;
+            --primary-hover: #aecbfa;
+            --primary-light: #1e2f45;
+            --danger: #f28b82;
+            --danger-light: #3e2422;
+            --success: #81c995;
+            --success-light: #1e3524;
+            --warning: #fdd663;
+            --warning-light: #3e3420;
+            --info: #8ab4f8;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow: hidden;
+            transition: background var(--transition), color var(--transition);
+        }
+        /* LOGIN */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.3s;
+        }
+        .login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .login-card {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 40px 36px;
+            width: 420px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+        .login-card h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--primary);
+        }
+        .login-card .subtitle {
+            color: var(--text2);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+        .login-card input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            margin-bottom: 14px;
+            background: var(--surface2);
+            color: var(--text);
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .login-card input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .login-card button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            letter-spacing: 0.2px;
+        }
+        .login-card button:hover {
+            background: var(--primary-hover);
+        }
+        .login-error {
+            color: var(--danger);
+            font-size: 13px;
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+        /* MAIN LAYOUT */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .app-container.active {
+            opacity: 1;
+        }
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+        .sidebar-logo {
+            padding: 16px 20px;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-logo .logo-icon {
+            width: 34px;
+            height: 34px;
+            background: var(--primary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+        }
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+        .sidebar-nav .nav-section {
+            padding: 8px 20px 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text3);
+            font-weight: 600;
+        }
+        .sidebar-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 13.5px;
+            color: var(--text2);
+            transition: var(--transition);
+            border-left: 3px solid transparent;
+            font-weight: 500;
+            margin: 1px 0;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-right: 8px;
+        }
+        .sidebar-nav .nav-item:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+        .sidebar-nav .nav-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+        .sidebar-nav .nav-item .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .sidebar-footer .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        /* MAIN */
+        .main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+        .header {
+            height: var(--header-h);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        .header .global-search {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+        .header .global-search input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            font-size: 13px;
+            background: var(--surface2);
+            color: var(--text);
+            font-family: var(--font);
+            transition: var(--transition);
+        }
+        .header .global-search input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .header .global-search .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3);
+            font-size: 16px;
+            pointer-events: none;
+        }
+        .search-results-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-lg);
+            max-height: 350px;
+            overflow-y: auto;
+            z-index: 200;
+            display: none;
+        }
+        .search-results-dropdown.show {
+            display: block;
+        }
+        .search-result-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+        .search-result-item:hover {
+            background: var(--surface2);
+        }
+        .search-result-item .sr-type {
+            font-size: 10px;
+            color: var(--text3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+        .header-actions .btn-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+        }
+        .header-actions .btn-icon:hover {
+            background: var(--surface2);
+            color: var(--text);
+        }
+        .badge-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 9px;
+            height: 9px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--surface);
+        }
+        .theme-toggle {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            transition: var(--transition);
+            border: none;
+            background: transparent;
+        }
+        .theme-toggle:hover {
+            background: var(--surface2);
+        }
+        /* TABS */
+        .tab-bar {
+            height: var(--tab-h);
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            gap: 2px;
+            flex-shrink: 0;
+            overflow-x: auto;
+        }
+        .tab-bar .tab {
+            padding: 8px 14px;
+            font-size: 12.5px;
+            cursor: pointer;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+            white-space: nowrap;
+            color: var(--text2);
+            transition: var(--transition);
+            position: relative;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            max-width: 180px;
+        }
+        .tab-bar .tab.active {
+            color: var(--primary);
+            background: var(--bg);
+            font-weight: 600;
+        }
+        .tab-bar .tab .tab-close {
+            font-size: 14px;
+            opacity: 0;
+            transition: var(--transition);
+            margin-left: 2px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tab-bar .tab:hover .tab-close {
+            opacity: 0.7;
+        }
+        .tab-bar .tab .tab-close:hover {
+            opacity: 1;
+            background: var(--border);
+        }
+        /* CONTENT */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg);
+        }
+        .module-page {
+            display: none;
+        }
+        .module-page.active {
+            display: block;
+            animation: fadeIn 0.2s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* CARDS */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .card-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+        .kpi-card {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .kpi-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+        }
+        .kpi-card .kpi-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text3);
+            font-weight: 600;
+        }
+        .kpi-card .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+            color: var(--text);
+        }
+        .kpi-card .kpi-change {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        .kpi-change.up {
+            color: var(--success);
+        }
+        .kpi-change.down {
+            color: var(--danger);
+        }
+        /* TABLE */
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table th,
+        table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        table th {
+            background: var(--surface2);
+            font-weight: 600;
+            color: var(--text2);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+        table tr:hover td {
+            background: var(--surface2);
+        }
+        /* BUTTONS */
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover {
+            background: var(--surface2);
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+        /* STATUS BADGES */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
+        }
+        .badge-success {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .badge-warning {
+            background: var(--warning-light);
+            color: #b87a00;
+        }
+        .badge-danger {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .badge-info {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal {
+            background: var(--surface);
+            border-radius: var(--radius);
+            padding: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+        .modal h3 {
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+        .modal .form-group {
+            margin-bottom: 12px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .modal .form-group input,
+        .modal .form-group select,
+        .modal .form-group textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            background: var(--surface2);
+            color: var(--text);
+            font-family: var(--font);
+            transition: var(--transition);
+        }
+        .modal .form-group input:focus,
+        .modal .form-group select:focus,
+        .modal .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .modal .form-row {
+            display: flex;
+            gap: 12px;
+        }
+        .modal .form-row .form-group {
+            flex: 1;
+        }
+        .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 16px;
+        }
+        /* TOAST */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            animation: slideIn 0.3s;
+            box-shadow: var(--shadow-lg);
+            min-width: 280px;
+        }
+        .toast.success {
+            background: var(--success);
+        }
+        .toast.error {
+            background: var(--danger);
+        }
+        .toast.info {
+            background: var(--info);
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        /* CHART BARS */
+        .chart-bar-row {
+            display: flex;
+            align-items: end;
+            gap: 4px;
+            height: 120px;
+            padding-top: 20px;
+        }
+        .chart-bar {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            min-width: 16px;
+            transition: height 0.4s;
+            position: relative;
+        }
+        .chart-bar .bar-val {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text2);
+        }
+        .chart-labels {
+            display: flex;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .chart-labels span {
+            flex: 1;
+            text-align: center;
+            font-size: 10px;
+            color: var(--text3);
+            min-width: 16px;
+        }
+        /* NOTIFICATIONS PANEL */
+        .notif-panel {
+            position: fixed;
+            top: var(--header-h);
+            right: 20px;
+            width: 380px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            z-index: 500;
+            display: none;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+        .notif-panel.show {
+            display: block;
+        }
+        .notif-panel .notif-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .notif-panel .notif-item:hover {
+            background: var(--surface2);
+        }
+        .notif-panel .notif-item.unread {
+            border-left: 3px solid var(--primary);
+            font-weight: 600;
+        }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            .sidebar .nav-item span:not(.nav-icon) {
+                display: none;
+            }
+            .sidebar .nav-section {
+                display: none;
+            }
+            .sidebar-logo {
+                font-size: 0;
+                justify-content: center;
+            }
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .modal {
+                width: 95%;
+                padding: 16px;
+            }
+            .modal .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        @media (max-width: 480px) {
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            .header .global-search {
+                max-width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN OVERLAY -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-card">
+            <h1>🔷 NexusERP</h1>
+            <p class="subtitle">Enterprise Resource Planning</p>
+            <div class="login-error" id="loginError"></div>
+            <input type="text" id="loginUser" placeholder="Username" value="admin">
+            <input type="password" id="loginPass" placeholder="Password" value="admin123">
+            <button onclick="app.login()">Sign In</button>
+            <p style="text-align:center;margin-top:12px;font-size:11px;color:var(--text3);">Demo: admin / admin123</p>
+        </div>
+    </div>
+
+    <!-- APP CONTAINER -->
+    <div class="app-container" id="appContainer">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo"><span class="logo-icon">◆</span> NexusERP</div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <div class="nav-section">Main</div>
+                <div class="nav-item active" data-module="dashboard"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+                <div class="nav-section">Modules</div>
+                <div class="nav-item" data-module="crm"><span class="nav-icon">👥</span><span>CRM</span></div>
+                <div class="nav-item" data-module="sales"><span class="nav-icon">💰</span><span>Sales</span></div>
+                <div class="nav-item" data-module="inventory"><span class="nav-icon">📦</span><span>Inventory</span></div>
+                <div class="nav-item" data-module="procurement"><span class="nav-icon">🛒</span><span>Procurement</span></div>
+                <div class="nav-item" data-module="finance"><span class="nav-icon">📋</span><span>Finance</span></div>
+                <div class="nav-item" data-module="hr"><span class="nav-icon">👤</span><span>HR</span></div>
+                <div class="nav-section">System</div>
+                <div class="nav-item" data-module="users"><span class="nav-icon">⚙️</span><span>User Mgmt</span></div>
+                <div class="nav-item" data-module="audit"><span class="nav-icon">📝</span><span>Audit Logs</span></div>
+                <div class="nav-item" data-module="documents"><span class="nav-icon">📁</span><span>Documents</span></div>
+            </nav>
+            <div class="sidebar-footer" onclick="app.logout()" title="Logout">
+                <div class="avatar" id="sidebarAvatar">A</div>
+                <span id="sidebarUser">Admin</span>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <div class="main-area">
+            <!-- HEADER -->
+            <header class="header">
+                <div class="global-search">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="globalSearchInput" placeholder="Global search... (Ctrl+K)" oninput="app.globalSearch(this.value)">
+                    <div class="search-results-dropdown" id="searchDropdown"></div>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="app.toggleTheme()" title="Toggle theme">🌓</button>
+                    <button class="btn-icon" onclick="app.toggleNotifPanel()" title="Notifications" style="position:relative;">
+                        🔔<span class="badge-dot" id="notifDot" style="display:none;"></span>
+                    </button>
+                </div>
+                <div class="notif-panel" id="notifPanel"></div>
+            </header>
+
+            <!-- TAB BAR -->
+            <div class="tab-bar" id="tabBar">
+                <div class="tab active" data-module="dashboard">📊 Dashboard</div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="content-area" id="contentArea">
+                <!-- DASHBOARD -->
+                <div class="module-page active" id="page-dashboard"></div>
+                <!-- CRM -->
+                <div class="module-page" id="page-crm"></div>
+                <!-- SALES -->
+                <div class="module-page" id="page-sales"></div>
+                <!-- INVENTORY -->
+                <div class="module-page" id="page-inventory"></div>
+                <!-- PROCUREMENT -->
+                <div class="module-page" id="page-procurement"></div>
+                <!-- FINANCE -->
+                <div class="module-page" id="page-finance"></div>
+                <!-- HR -->
+                <div class="module-page" id="page-hr"></div>
+                <!-- USERS -->
+                <div class="module-page" id="page-users"></div>
+                <!-- AUDIT -->
+                <div class="module-page" id="page-audit"></div>
+                <!-- DOCUMENTS -->
+                <div class="module-page" id="page-documents"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL OVERLAY -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ==================== NEXUS ERP - COMPLETE APPLICATION ====================
+        const DB_KEY = 'nexus_erp_db';
+        const SETTINGS_KEY = 'nexus_erp_settings';
+
+        // Default data structure
+        function getDefaultDB() {
+            const now = new Date().toISOString();
+            return {
+                users: [
+                    { id: 'u1', username: 'admin', password: 'admin123', role: 'admin', fullName: 'System Admin',
+                        email: 'admin@nexus.com', branch: 'HQ', department: 'IT', active: true, createdAt: now },
+                    { id: 'u2', username: 'manager', password: 'manager123', role: 'manager', fullName: 'Jane Manager',
+                        email: 'jane@nexus.com', branch: 'HQ', department: 'Operations', active: true,
+                    createdAt: now },
+                    { id: 'u3', username: 'staff', password: 'staff123', role: 'staff', fullName: 'Bob Staff',
+                        email: 'bob@nexus.com', branch: 'Branch A', department: 'Sales', active: true, createdAt: now },
+                ],
+                customers: [
+                    { id: 'c1', name: 'Acme Corp', email: 'contact@acme.com', phone: '555-0100', address: '123 Main St',
+                        type: 'Corporate', status: 'Active', branch: 'HQ', createdAt: now },
+                    { id: 'c2', name: 'Globex Inc', email: 'info@globex.com', phone: '555-0101', address: '456 Oak Ave',
+                        type: 'Enterprise', status: 'Active', branch: 'HQ', createdAt: now },
+                    { id: 'c3', name: 'Stark Industries', email: 'tony@stark.com', phone: '555-0102',
+                        address: '789 Park Rd', type: 'VIP', status: 'Active', branch: 'Branch A', createdAt: now },
+                ],
+                vendors: [
+                    { id: 'v1', name: 'SupplyPro', email: 'sales@supplypro.com', phone: '555-0200',
+                        address: '321 Industrial Blvd', category: 'Raw Materials', status: 'Active', createdAt: now },
+                    { id: 'v2', name: 'TechDist', email: 'orders@techdist.com', phone: '555-0201',
+                        address: '654 Commerce Dr', category: 'Electronics', status: 'Active', createdAt: now },
+                ],
+                products: [
+                    { id: 'p1', name: 'Widget Alpha', sku: 'WA-001', category: 'Widgets', price: 49.99, cost: 25.00,
+                        quantity: 250, minStock: 50, warehouse: 'Main Warehouse', binLocation: 'A-12', createdAt: now },
+                    { id: 'p2', name: 'Gadget Beta', sku: 'GB-002', category: 'Gadgets', price: 129.99, cost: 70.00,
+                        quantity: 80, minStock: 20, warehouse: 'Main Warehouse', binLocation: 'B-03', createdAt: now },
+                    { id: 'p3', name: 'Component X', sku: 'CX-003', category: 'Components', price: 19.99, cost: 8.00,
+                        quantity: 500, minStock: 100, warehouse: 'Secondary WH', binLocation: 'C-07', createdAt: now },
+                ],
+                salesOrders: [
+                    { id: 'so1', customerId: 'c1', customerName: 'Acme Corp', items: [{ productId: 'p1', productName: 'Widget Alpha',
+                            qty: 10, price: 49.99 }], total: 499.90, status: 'Confirmed', date: '2026-07-08',
+                        branch: 'HQ', createdAt: now },
+                    { id: 'so2', customerId: 'c2', customerName: 'Globex Inc', items: [{ productId: 'p2', productName: 'Gadget Beta',
+                            qty: 3, price: 129.99 }], total: 389.97, status: 'Pending', date: '2026-07-10',
+                        branch: 'HQ', createdAt: now },
+                ],
+                purchaseOrders: [
+                    { id: 'po1', vendorId: 'v1', vendorName: 'SupplyPro', items: [{ productId: 'p1', productName: 'Widget Alpha',
+                            qty: 100, cost: 25.00 }], total: 2500.00, status: 'Approved', date: '2026-07-05',
+                        branch: 'HQ', createdAt: now },
+                ],
+                invoices: [
+                    { id: 'inv1', customerId: 'c1', customerName: 'Acme Corp', salesOrderId: 'so1', amount: 499.90,
+                        status: 'Paid', dueDate: '2026-08-08', date: '2026-07-08', createdAt: now },
+                    { id: 'inv2', customerId: 'c2', customerName: 'Globex Inc', salesOrderId: 'so2', amount: 389.97,
+                        status: 'Unpaid', dueDate: '2026-08-10', date: '2026-07-10', createdAt: now },
+                ],
+                journalEntries: [
+                    { id: 'je1', date: '2026-07-08', description: 'Sales revenue - Acme Corp', debits: 'Cash',
+                        credits: 'Revenue', amount: 499.90, status: 'Posted', createdAt: now },
+                    { id: 'je2', date: '2026-07-05', description: 'Purchase - SupplyPro', debits: 'Inventory',
+                        credits: 'Accounts Payable', amount: 2500.00, status: 'Posted', createdAt: now },
+                ],
+                employees: [
+                    { id: 'e1', name: 'Alice Johnson', department: 'Sales', position: 'Sales Rep', salary: 55000,
+                        joinDate: '2024-03-15', branch: 'HQ', status: 'Active', createdAt: now },
+                    { id: 'e2', name: 'Charlie Brown', department: 'Warehouse', position: 'Warehouse Manager',
+                        salary: 48000, joinDate: '2025-01-10', branch: 'Branch A', status: 'Active', createdAt: now },
+                ],
+                attendance: [
+                    { id: 'att1', employeeId: 'e1', employeeName: 'Alice Johnson', date: '2026-07-11', checkIn: '08:00',
+                        checkOut: '17:00', status: 'Present', createdAt: now },
+                ],
+                documents: [
+                    { id: 'doc1', name: 'Q2_Report.pdf', type: 'PDF', category: 'Reports', size: '2.4 MB',
+                        uploadedBy: 'admin', createdAt: now },
+                ],
+                auditLogs: [
+                    { id: 'log1', userId: 'u1', username: 'admin', action: 'System initialized', module: 'System',
+                        timestamp: now, details: 'ERP database seeded with default data' },
+                ],
+                notifications: [
+                    { id: 'n1', userId: 'u1', title: 'Welcome', message: 'NexusERP is ready. Default data loaded.',
+                        read: false, timestamp: now },
+                    { id: 'n2', userId: 'u1', title: 'Invoice Due', message: 'Invoice #inv2 for $389.97 is unpaid.',
+                        read: false, timestamp: now },
+                ],
+                branches: ['HQ', 'Branch A', 'Branch B'],
+                warehouses: ['Main Warehouse', 'Secondary WH', 'Distribution Center'],
+                settings: { theme: 'light', companyName: 'NexusERP Demo' },
+            };
+        }
+
+        function getDB() {
+            try { return JSON.parse(localStorage.getItem(DB_KEY)) || getDefaultDB(); } catch (e) { return getDefaultDB(); }
+        }
+
+        function saveDB(db) {
+            localStorage.setItem(DB_KEY, JSON.stringify(db));
+        }
+
+        function generateId(prefix = 'id') {
+            return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
+        }
+
+        // ==================== APPLICATION CLASS ====================
+        class NexusERP {
+            constructor() {
+                this.db = getDB();
+                this.currentUser = null;
+                this.openTabs = ['dashboard'];
+                this.activeTab = 'dashboard';
+                this.activeModule = 'dashboard';
+                this.init();
+            }
+
+            init() {
+                // Ensure DB is saved
+                if (!localStorage.getItem(DB_KEY)) {
+                    this.db = getDefaultDB();
+                    saveDB(this.db);
+                }
+                // Load theme
+                const theme = this.db.settings?.theme || 'light';
+                document.documentElement.setAttribute('data-theme', theme);
+                // Bind keyboard shortcuts
+                document.addEventListener('keydown', (e) => this.handleShortcut(e));
+                // Close modals on overlay click
+                document.getElementById('modalOverlay').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('modalOverlay')) this.closeModal();
+                });
+                // Close search on click outside
+                document.addEventListener('click', (e) => {
+                    const sd = document.getElementById('searchDropdown');
+                    const si = document.getElementById('globalSearchInput');
+                    if (!sd.contains(e.target) && e.target !== si) sd.classList.remove('show');
+                });
+                // Close notif panel
+                document.addEventListener('click', (e) => {
+                    const np = document.getElementById('notifPanel');
+                    const nb = e.target.closest('.btn-icon');
+                    if (!np.contains(e.target) && !nb) np.classList.remove('show');
+                });
+                // Render login screen ready
+                document.getElementById('loginUser').focus();
+            }
+
+            handleShortcut(e) {
+                if (!this.currentUser) return;
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    document.getElementById('globalSearchInput').focus();
+                }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+                    e.preventDefault();
+                    this.navigateTo('dashboard');
+                }
+            }
+
+            // ---- AUTH ----
+            login() {
+                const username = document.getElementById('loginUser').value.trim();
+                const password = document.getElementById('loginPass').value.trim();
+                const errEl = document.getElementById('loginError');
+                const user = this.db.users.find(u => u.username === username && u.password === password && u.active);
+                if (!user) {
+                    errEl.textContent = 'Invalid credentials. Please try again.';
+                    return;
+                }
+                this.currentUser = user;
+                this.addAuditLog(user.id, user.username, 'Login', 'System', 'User logged in');
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('appContainer').classList.add('active');
+                document.getElementById('sidebarAvatar').textContent = user.fullName.charAt(0).toUpperCase();
+                document.getElementById('sidebarUser').textContent = user.fullName;
+                this.refreshAll();
+                this.navigateTo('dashboard');
+                this.showToast('Welcome back, ' + user.fullName + '!', 'success');
+            }
+
+            logout() {
+                if (this.currentUser) {
+                    this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Logout', 'System',
+                        'User logged out');
+                }
+                this.currentUser = null;
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                document.getElementById('appContainer').classList.remove('active');
+                document.getElementById('loginUser').value = 'admin';
+                document.getElementById('loginPass').value = 'admin123';
+                document.getElementById('loginError').textContent = '';
+            }
+
+            // ---- NAVIGATION & TABS ----
+            navigateTo(module) {
+                if (!this.currentUser) return;
+                this.activeModule = module;
+                // Add tab if not exists
+                if (!this.openTabs.includes(module)) {
+                    this.openTabs.push(module);
+                }
+                this.activeTab = module;
+                this.renderTabs();
+                this.renderModule(module);
+                // Update sidebar active
+                document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
+                const navItem = document.querySelector(`.sidebar-nav .nav-item[data-module="${module}"]`);
+                if (navItem) navItem.classList.add('active');
+                // Hide search dropdown
+                document.getElementById('searchDropdown').classList.remove('show');
+                document.getElementById('globalSearchInput').value = '';
+            }
+
+            closeTab(module) {
+                if (module === 'dashboard') return;
+                const idx = this.openTabs.indexOf(module);
+                if (idx > -1) {
+                    this.openTabs.splice(idx, 1);
+                    if (this.activeTab === module) {
+                        this.activeTab = this.openTabs[this.openTabs.length - 1] || 'dashboard';
+                        this.activeModule = this.activeTab;
+                        this.renderModule(this.activeTab);
+                        this.renderTabs();
+                    } else {
+                        this.renderTabs();
+                    }
+                }
+            }
+
+            renderTabs() {
+                const tabBar = document.getElementById('tabBar');
+                const moduleNames = {
+                    dashboard: '📊 Dashboard',
+                    crm: '👥 CRM',
+                    sales: '💰 Sales',
+                    inventory: '📦 Inventory',
+                    procurement: '🛒 Procurement',
+                    finance: '📋 Finance',
+                    hr: '👤 HR',
+                    users: '⚙️ Users',
+                    audit: '📝 Audit',
+                    documents: '📁 Documents'
+                };
+                tabBar.innerHTML = this.openTabs.map(m => {
+                    const active = m === this.activeTab ? ' active' : '';
+                    const closeBtn = m !== 'dashboard' ?
+                        `<span class="tab-close" onclick="event.stopPropagation();app.closeTab('${m}')">×</span>` :
+                        '';
+                    return `<div class="tab${active}" data-module="${m}" onclick="app.navigateTo('${m}')">${moduleNames[m] || m}${closeBtn}</div>`;
+                }).join('');
+            }
+
+            renderModule(module) {
+                // Hide all pages
+                document.querySelectorAll('.module-page').forEach(p => p.classList.remove('active'));
+                const pageEl = document.getElementById('page-' + module);
+                if (pageEl) {
+                    pageEl.classList.add('active');
+                    this.loadModuleContent(module, pageEl);
+                }
+                // Update tab bar active
+                document.querySelectorAll('.tab-bar .tab').forEach(t => t.classList.remove('active'));
+                const tabEl = document.querySelector(`.tab-bar .tab[data-module="${module}"]`);
+                if (tabEl) tabEl.classList.add('active');
+                this.activeModule = module;
+                this.activeTab = module;
+            }
+
+            loadModuleContent(module, pageEl) {
+                switch (module) {
+                    case 'dashboard':
+                        this.renderDashboard(pageEl);
+                        break;
+                    case 'crm':
+                        this.renderCRM(pageEl);
+                        break;
+                    case 'sales':
+                        this.renderSales(pageEl);
+                        break;
+                    case 'inventory':
+                        this.renderInventory(pageEl);
+                        break;
+                    case 'procurement':
+                        this.renderProcurement(pageEl);
+                        break;
+                    case 'finance':
+                        this.renderFinance(pageEl);
+                        break;
+                    case 'hr':
+                        this.renderHR(pageEl);
+                        break;
+                    case 'users':
+                        this.renderUsers(pageEl);
+                        break;
+                    case 'audit':
+                        this.renderAudit(pageEl);
+                        break;
+                    case 'documents':
+                        this.renderDocuments(pageEl);
+                        break;
+                    default:
+                        pageEl.innerHTML = '<div class="card"><h3>Module not found</h3></div>';
+                }
+            }
+
+            refreshAll() {
+                this.db = getDB();
+                if (this.currentUser) {
+                    this.renderModule(this.activeModule);
+                    this.renderTabs();
+                }
+            }
+
+            // ---- DASHBOARD ----
+            renderDashboard(el) {
+                const db = this.db;
+                const totalRevenue = db.invoices.filter(i => i.status === 'Paid').reduce((s, i) => s + i.amount, 0);
+                const unpaidInvoices = db.invoices.filter(i => i.status === 'Unpaid').reduce((s, i) => s + i.amount, 0);
+                const totalCustomers = db.customers.length;
+                const totalProducts = db.products.length;
+                const inventoryValue = db.products.reduce((s, p) => s + (p.quantity * p.cost), 0);
+                const totalEmployees = db.employees.filter(e => e.status === 'Active').length;
+                const pendingPOs = db.purchaseOrders.filter(po => po.status === 'Pending').length;
+                const lowStock = db.products.filter(p => p.quantity <= p.minStock).length;
+
+                el.innerHTML = `
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-label">💰 Revenue (Paid)</div><div class="kpi-value">$${totalRevenue.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change up">▲ Total collected</div></div>
+                    <div class="kpi-card"><div class="kpi-label">📋 Outstanding</div><div class="kpi-value">$${unpaidInvoices.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change down">⚠ Needs attention</div></div>
+                    <div class="kpi-card"><div class="kpi-label">📦 Inventory Value</div><div class="kpi-value">$${inventoryValue.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change">${lowStock} low-stock alerts</div></div>
+                    <div class="kpi-card"><div class="kpi-label">👥 Customers</div><div class="kpi-value">${totalCustomers}</div><div class="kpi-change up">Active accounts</div></div>
+                    <div class="kpi-card"><div class="kpi-label">📦 Products</div><div class="kpi-value">${totalProducts}</div><div class="kpi-change">In catalog</div></div>
+                    <div class="kpi-card"><div class="kpi-label">👤 Employees</div><div class="kpi-value">${totalEmployees}</div><div class="kpi-change">Active staff</div></div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="card">
+                        <div class="card-header"><h3>📊 Monthly Sales Trend</h3></div>
+                        <div class="chart-bar-row">
+                            ${['Jan','Feb','Mar','Apr','May','Jun','Jul'].map((m,i)=>{
+                                const val = [3200,4100,3800,5200,4900,6100, totalRevenue || 4500][i];
+                                const h = Math.min(100, (val/6500)*100);
+                                return `<div class="chart-bar" style="height:${h}px;background:var(--chart-${(i%5)+1});"><span class="bar-val">$${(val/1000).toFixed(1)}k</span></div>`;
+                            }).join('')}
+                        </div>
+                        <div class="chart-labels">${['Jan','Feb','Mar','Apr','May','Jun','Jul'].map(m=>`<span>${m}</span>`).join('')}</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>🔔 Recent Notifications</h3></div>
+                        ${db.notifications.slice(-6).reverse().map(n=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><strong>${n.title}</strong> - ${n.message}<br><small style="color:var(--text3);">${new Date(n.timestamp).toLocaleString()}</small></div>`).join('')||'<p style="color:var(--text3);">No notifications</p>'}
+                    </div>
+                </div>
+                <div class="card" style="margin-top:16px;">
+                    <div class="card-header"><h3>📋 Recent Audit Activity</h3></div>
+                    <div class="table-wrap"><table><thead><tr><th>User</th><th>Action</th><th>Module</th><th>Time</th></tr></thead><tbody>
+                        ${db.auditLogs.slice(-10).reverse().map(l=>`<tr><td>${l.username}</td><td>${l.action}</td><td>${l.module}</td><td>${new Date(l.timestamp).toLocaleString()}</td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            // ---- CRM ----
+            renderCRM(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>👥 Customer Management</h3>
+                        <button class="btn btn-primary btn-sm" onclick="app.openCRMModal()">+ Add Customer</button>
+                    </div>
+                    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Status</th><th>Branch</th><th>Actions</th></tr></thead><tbody>
+                        ${db.customers.map(c=>`<tr>
+                            <td><strong>${c.name}</strong></td><td>${c.email}</td><td>${c.phone}</td>
+                            <td><span class="badge badge-info">${c.type}</span></td>
+                            <td><span class="badge ${c.status==='Active'?'badge-success':'badge-danger'}">${c.status}</span></td>
+                            <td>${c.branch}</td>
+                            <td><button class="btn btn-outline btn-sm" onclick="app.openCRMModal('${c.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="app.deleteCustomer('${c.id}')">Del</button></td>
+                        </tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openCRMModal(customerId = null) {
+                const db = this.db;
+                const customer = customerId ? db.customers.find(c => c.id === customerId) : null;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>${customer?'Edit':'Add'} Customer</h3>
+                <div class="form-row"><div class="form-group"><label>Name</label><input id="crmName" value="${customer?.name||''}"></div>
+                <div class="form-group"><label>Email</label><input id="crmEmail" value="${customer?.email||''}"></div></div>
+                <div class="form-row"><div class="form-group"><label>Phone</label><input id="crmPhone" value="${customer?.phone||''}"></div>
+                <div class="form-group"><label>Type</label><select id="crmType"><option>Corporate</option><option>Enterprise</option><option>VIP</option><option>Individual</option></select></div></div>
+                <div class="form-group"><label>Address</label><input id="crmAddress" value="${customer?.address||''}"></div>
+                <div class="form-row"><div class="form-group"><label>Branch</label><select id="crmBranch">${db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Status</label><select id="crmStatus"><option>Active</option><option>Inactive</option></select></div></div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="app.saveCustomer('${customerId||''}')">Save</button>
+                </div>`;
+                if (customer) {
+                    document.getElementById('crmType').value = customer.type;
+                    document.getElementById('crmBranch').value = customer.branch;
+                    document.getElementById('crmStatus').value = customer.status;
+                }
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveCustomer(customerId) {
+                const db = this.db;
+                const data = {
+                    id: customerId || generateId('c'),
+                    name: document.getElementById('crmName').value,
+                    email: document.getElementById('crmEmail').value,
+                    phone: document.getElementById('crmPhone').value,
+                    type: document.getElementById('crmType').value,
+                    address: document.getElementById('crmAddress').value,
+                    branch: document.getElementById('crmBranch').value,
+                    status: document.getElementById('crmStatus').value,
+                    createdAt: new Date().toISOString(),
+                };
+                if (customerId) {
+                    const idx = db.customers.findIndex(c => c.id === customerId);
+                    if (idx > -1) { data.createdAt = db.customers[idx].createdAt;
+                        db.customers[idx] = data; }
+                } else {
+                    db.customers.push(data);
+                }
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, customerId ? 'Updated customer' :
+                    'Created customer', 'CRM', data.name);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Customer saved!', 'success');
+            }
+
+            deleteCustomer(id) {
+                if (!confirm('Delete this customer?')) return;
+                const db = this.db;
+                db.customers = db.customers.filter(c => c.id !== id);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted customer', 'CRM', id);
+                this.refreshAll();
+                this.showToast('Customer deleted.', 'info');
+            }
+
+            // ---- SALES ----
+            renderSales(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>💰 Sales Orders</h3>
+                        <button class="btn btn-primary btn-sm" onclick="app.openSalesModal()">+ New Order</button>
+                    </div>
+                    <div class="table-wrap"><table><thead><tr><th>Order#</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
+                        ${db.salesOrders.map(so=>`<tr>
+                            <td><strong>#${so.id}</strong></td><td>${so.customerName}</td>
+                            <td>${so.items.length} item(s)</td><td>$${so.total.toFixed(2)}</td>
+                            <td><span class="badge ${so.status==='Confirmed'?'badge-success':so.status==='Pending'?'badge-warning':'badge-danger'}">${so.status}</span></td>
+                            <td>${so.date}</td>
+                            <td><button class="btn btn-outline btn-sm" onclick="app.openSalesModal('${so.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="app.deleteSalesOrder('${so.id}')">Del</button></td>
+                        </tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openSalesModal(orderId = null) {
+                const db = this.db;
+                const order = orderId ? db.salesOrders.find(so => so.id === orderId) : null;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>${order?'Edit':'New'} Sales Order</h3>
+                <div class="form-group"><label>Customer</label><select id="soCustomer">${db.customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Product</label><select id="soProduct">${db.products.map(p=>`<option value="${p.id}">${p.name} - $${p.price}</option>`).join('')}</select></div>
+                <div class="form-row"><div class="form-group"><label>Quantity</label><input id="soQty" type="number" value="1" min="1"></div>
+                <div class="form-group"><label>Status</label><select id="soStatus"><option>Pending</option><option>Confirmed</option><option>Cancelled</option></select></div></div>
+                <div class="form-group"><label>Date</label><input id="soDate" type="date" value="${order?.date||'2026-07-12'}"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="app.saveSalesOrder('${orderId||''}')">Save</button>
+                </div>`;
+                if (order) {
+                    document.getElementById('soCustomer').value = order.customerId;
+                    document.getElementById('soStatus').value = order.status;
+                }
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveSalesOrder(orderId) {
+                const db = this.db;
+                const custId = document.getElementById('soCustomer').value;
+                const prodId = document.getElementById('soProduct').value;
+                const qty = parseInt(document.getElementById('soQty').value);
+                const customer = db.customers.find(c => c.id === custId);
+                const product = db.products.find(p => p.id === prodId);
+                if (!customer || !product) return;
+                const data = {
+                    id: orderId || generateId('so'),
+                    customerId: custId,
+                    customerName: customer.name,
+                    items: [{ productId: prodId, productName: product.name, qty, price: product.price }],
+                    total: product.price * qty,
+                    status: document.getElementById('soStatus').value,
+                    date: document.getElementById('soDate').value,
+                    branch: customer.branch,
+                    createdAt: new Date().toISOString(),
+                };
+                if (orderId) {
+                    const idx = db.salesOrders.findIndex(so => so.id === orderId);
+                    if (idx > -1) { data.createdAt = db.salesOrders[idx].createdAt;
+                        db.salesOrders[idx] = data; }
+                } else {
+                    db.salesOrders.push(data);
+                    // Auto-create invoice
+                    const inv = {
+                        id: generateId('inv'),
+                        customerId: custId,
+                        customerName: customer.name,
+                        salesOrderId: data.id,
+                        amount: data.total,
+                        status: 'Unpaid',
+                        dueDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+                        date: data.date,
+                        createdAt: new Date().toISOString(),
+                    };
+                    db.invoices.push(inv);
+                    this.addNotification(this.currentUser.id, 'Invoice Created',
+                        `Invoice #${inv.id} for $${inv.amount.toFixed(2)} generated.`);
+                }
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, orderId ? 'Updated sales order' :
+                    'Created sales order', 'Sales', data.id);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Sales order saved!', 'success');
+            }
+
+            deleteSalesOrder(id) {
+                if (!confirm('Delete this order?')) return;
+                const db = this.db;
+                db.salesOrders = db.salesOrders.filter(so => so.id !== id);
+                db.invoices = db.invoices.filter(inv => inv.salesOrderId !== id);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted sales order', 'Sales', id);
+                this.refreshAll();
+                this.showToast('Order deleted.', 'info');
+            }
+
+            // ---- INVENTORY ----
+            renderInventory(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>📦 Product Inventory</h3>
+                        <button class="btn btn-primary btn-sm" onclick="app.openProductModal()">+ Add Product</button>
+                    </div>
+                    <div class="table-wrap"><table><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Cost</th><th>Qty</th><th>Min Stock</th><th>Warehouse</th><th>Bin</th><th>Actions</th></tr></thead><tbody>
+                        ${db.products.map(p=>`<tr>
+                            <td><strong>${p.sku}</strong></td><td>${p.name}</td><td>${p.category}</td>
+                            <td>$${p.price.toFixed(2)}</td><td>$${p.cost.toFixed(2)}</td>
+                            <td style="color:${p.quantity<=p.minStock?'var(--danger)':'var(--text)'};font-weight:600;">${p.quantity}</td>
+                            <td>${p.minStock}</td><td>${p.warehouse}</td><td>${p.binLocation}</td>
+                            <td><button class="btn btn-outline btn-sm" onclick="app.openProductModal('${p.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="app.deleteProduct('${p.id}')">Del</button></td>
+                        </tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openProductModal(productId = null) {
+                const db = this.db;
+                const product = productId ? db.products.find(p => p.id === productId) : null;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>${product?'Edit':'Add'} Product</h3>
+                <div class="form-row"><div class="form-group"><label>Name</label><input id="prodName" value="${product?.name||''}"></div>
+                <div class="form-group"><label>SKU</label><input id="prodSku" value="${product?.sku||''}"></div></div>
+                <div class="form-row"><div class="form-group"><label>Price</label><input id="prodPrice" type="number" step="0.01" value="${product?.price||''}"></div>
+                <div class="form-group"><label>Cost</label><input id="prodCost" type="number" step="0.01" value="${product?.cost||''}"></div></div>
+                <div class="form-row"><div class="form-group"><label>Quantity</label><input id="prodQty" type="number" value="${product?.quantity||0}"></div>
+                <div class="form-group"><label>Min Stock</label><input id="prodMin" type="number" value="${product?.minStock||10}"></div></div>
+                <div class="form-row"><div class="form-group"><label>Category</label><input id="prodCat" value="${product?.category||''}"></div>
+                <div class="form-group"><label>Warehouse</label><select id="prodWH">${db.warehouses.map(w=>`<option>${w}</option>`).join('')}</select></div></div>
+                <div class="form-group"><label>Bin Location</label><input id="prodBin" value="${product?.binLocation||''}"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="app.saveProduct('${productId||''}')">Save</button>
+                </div>`;
+                if (product) {
+                    document.getElementById('prodWH').value = product.warehouse;
+                }
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveProduct(productId) {
+                const db = this.db;
+                const data = {
+                    id: productId || generateId('p'),
+                    name: document.getElementById('prodName').value,
+                    sku: document.getElementById('prodSku').value,
+                    price: parseFloat(document.getElementById('prodPrice').value),
+                    cost: parseFloat(document.getElementById('prodCost').value),
+                    quantity: parseInt(document.getElementById('prodQty').value),
+                    minStock: parseInt(document.getElementById('prodMin').value),
+                    category: document.getElementById('prodCat').value,
+                    warehouse: document.getElementById('prodWH').value,
+                    binLocation: document.getElementById('prodBin').value,
+                    createdAt: new Date().toISOString(),
+                };
+                if (productId) {
+                    const idx = db.products.findIndex(p => p.id === productId);
+                    if (idx > -1) { data.createdAt = db.products[idx].createdAt;
+                        db.products[idx] = data; }
+                } else {
+                    db.products.push(data);
+                }
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, productId ? 'Updated product' :
+                    'Created product', 'Inventory', data.name);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Product saved!', 'success');
+            }
+
+            deleteProduct(id) {
+                if (!confirm('Delete this product?')) return;
+                const db = this.db;
+                db.products = db.products.filter(p => p.id !== id);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted product', 'Inventory', id);
+                this.refreshAll();
+                this.showToast('Product deleted.', 'info');
+            }
+
+            // ---- PROCUREMENT ----
+            renderProcurement(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>🛒 Purchase Orders & Vendors</h3>
+                        <button class="btn btn-primary btn-sm" onclick="app.openPOModal()">+ New PO</button>
+                    </div>
+                    <div class="table-wrap"><table><thead><tr><th>PO#</th><th>Vendor</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
+                        ${db.purchaseOrders.map(po=>`<tr>
+                            <td><strong>#${po.id}</strong></td><td>${po.vendorName}</td>
+                            <td>${po.items.length} item(s)</td><td>$${po.total.toFixed(2)}</td>
+                            <td><span class="badge ${po.status==='Approved'?'badge-success':po.status==='Pending'?'badge-warning':'badge-danger'}">${po.status}</span></td>
+                            <td>${po.date}</td>
+                            <td><button class="btn btn-outline btn-sm" onclick="app.openPOModal('${po.id}')">Edit</button>
+                            <button class="btn btn-danger btn-sm" onclick="app.deletePO('${po.id}')">Del</button></td>
+                        </tr>`).join('')}
+                    </tbody></table></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>🏭 Vendors</h3><button class="btn btn-outline btn-sm" onclick="app.openVendorModal()">+ Add Vendor</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Category</th><th>Status</th></tr></thead><tbody>
+                        ${db.vendors.map(v=>`<tr><td><strong>${v.name}</strong></td><td>${v.email}</td><td>${v.phone}</td><td>${v.category}</td><td><span class="badge badge-success">${v.status}</span></td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openPOModal(poId = null) {
+                const db = this.db;
+                const po = poId ? db.purchaseOrders.find(p => p.id === poId) : null;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>${po?'Edit':'New'} Purchase Order</h3>
+                <div class="form-group"><label>Vendor</label><select id="poVendor">${db.vendors.map(v=>`<option value="${v.id}">${v.name}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Product</label><select id="poProduct">${db.products.map(p=>`<option value="${p.id}">${p.name} - Cost:$${p.cost}</option>`).join('')}</select></div>
+                <div class="form-row"><div class="form-group"><label>Quantity</label><input id="poQty" type="number" value="1" min="1"></div>
+                <div class="form-group"><label>Status</label><select id="poStatus"><option>Pending</option><option>Approved</option><option>Received</option></select></div></div>
+                <div class="form-group"><label>Date</label><input id="poDate" type="date" value="${po?.date||'2026-07-12'}"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="app.savePO('${poId||''}')">Save</button>
+                </div>`;
+                if (po) { document.getElementById('poVendor').value = po.vendorId;
+                    document.getElementById('poStatus').value = po.status; }
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            savePO(poId) {
+                const db = this.db;
+                const vendId = document.getElementById('poVendor').value;
+                const prodId = document.getElementById('poProduct').value;
+                const qty = parseInt(document.getElementById('poQty').value);
+                const vendor = db.vendors.find(v => v.id === vendId);
+                const product = db.products.find(p => p.id === prodId);
+                if (!vendor || !product) return;
+                const data = {
+                    id: poId || generateId('po'),
+                    vendorId: vendId,
+                    vendorName: vendor.name,
+                    items: [{ productId: prodId, productName: product.name, qty, cost: product.cost }],
+                    total: product.cost * qty,
+                    status: document.getElementById('poStatus').value,
+                    date: document.getElementById('poDate').value,
+                    branch: 'HQ',
+                    createdAt: new Date().toISOString(),
+                };
+                if (poId) {
+                    const idx = db.purchaseOrders.findIndex(p => p.id === poId);
+                    if (idx > -1) { data.createdAt = db.purchaseOrders[idx].createdAt;
+                        db.purchaseOrders[idx] = data; }
+                } else {
+                    db.purchaseOrders.push(data);
+                    if (data.status === 'Received') {
+                        const pidx = db.products.findIndex(p => p.id === prodId);
+                        if (pidx > -1) db.products[pidx].quantity += qty;
+                    }
+                }
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, poId ? 'Updated PO' : 'Created PO',
+                    'Procurement', data.id);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Purchase order saved!', 'success');
+            }
+
+            deletePO(id) {
+                if (!confirm('Delete this PO?')) return;
+                const db = this.db;
+                db.purchaseOrders = db.purchaseOrders.filter(po => po.id !== id);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted PO', 'Procurement', id);
+                this.refreshAll();
+                this.showToast('PO deleted.', 'info');
+            }
+
+            openVendorModal() {
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>Add Vendor</h3>
+                <div class="form-row"><div class="form-group"><label>Name</label><input id="vName"></div>
+                <div class="form-group"><label>Email</label><input id="vEmail"></div></div>
+                <div class="form-row"><div class="form-group"><label>Phone</label><input id="vPhone"></div>
+                <div class="form-group"><label>Category</label><input id="vCat"></div></div>
+                <div class="form-group"><label>Address</label><input id="vAddr"></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveVendor()">Save</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveVendor() {
+                const db = this.db;
+                db.vendors.push({
+                    id: generateId('v'),
+                    name: document.getElementById('vName').value,
+                    email: document.getElementById('vEmail').value,
+                    phone: document.getElementById('vPhone').value,
+                    category: document.getElementById('vCat').value,
+                    address: document.getElementById('vAddr').value,
+                    status: 'Active',
+                    createdAt: new Date().toISOString(),
+                });
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created vendor', 'Procurement', document
+                    .getElementById('vName').value);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Vendor added!', 'success');
+            }
+
+            // ---- FINANCE ----
+            renderFinance(el) {
+                const db = this.db;
+                const totalPaid = db.invoices.filter(i => i.status === 'Paid').reduce((s, i) => s + i.amount, 0);
+                const totalUnpaid = db.invoices.filter(i => i.status === 'Unpaid').reduce((s, i) => s + i.amount, 0);
+                el.innerHTML = `
+                <div class="kpi-grid">
+                    <div class="kpi-card"><div class="kpi-label">💰 Total Collected</div><div class="kpi-value">$${totalPaid.toFixed(2)}</div></div>
+                    <div class="kpi-card"><div class="kpi-label">📋 Outstanding</div><div class="kpi-value" style="color:var(--danger);">$${totalUnpaid.toFixed(2)}</div></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>📋 Invoices</h3><button class="btn btn-primary btn-sm" onclick="app.openInvoiceModal()">+ New Invoice</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Invoice#</th><th>Customer</th><th>Amount</th><th>Status</th><th>Due Date</th><th>Actions</th></tr></thead><tbody>
+                        ${db.invoices.map(inv=>`<tr>
+                            <td><strong>#${inv.id}</strong></td><td>${inv.customerName}</td><td>$${inv.amount.toFixed(2)}</td>
+                            <td><span class="badge ${inv.status==='Paid'?'badge-success':'badge-warning'}">${inv.status}</span></td>
+                            <td>${inv.dueDate}</td>
+                            <td>${inv.status==='Unpaid'?`<button class="btn btn-success btn-sm" onclick="app.markInvoicePaid('${inv.id}')">Mark Paid</button>`:''}
+                            <button class="btn btn-danger btn-sm" onclick="app.deleteInvoice('${inv.id}')">Del</button></td>
+                        </tr>`).join('')}
+                    </tbody></table></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>📝 Journal Entries</h3><button class="btn btn-outline btn-sm" onclick="app.openJEModal()">+ New Entry</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Debit</th><th>Credit</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+                        ${db.journalEntries.map(je=>`<tr><td>${je.date}</td><td>${je.description}</td><td>${je.debits}</td><td>${je.credits}</td><td>$${je.amount.toFixed(2)}</td><td><span class="badge badge-success">${je.status}</span></td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openInvoiceModal() {
+                const db = this.db;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>New Invoice</h3>
+                <div class="form-group"><label>Customer</label><select id="invCust">${db.customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
+                <div class="form-group"><label>Amount</label><input id="invAmt" type="number" step="0.01"></div>
+                <div class="form-row"><div class="form-group"><label>Due Date</label><input id="invDue" type="date" value="${new Date(Date.now()+30*86400000).toISOString().split('T')[0]}"></div>
+                <div class="form-group"><label>Status</label><select id="invStatus"><option>Unpaid</option><option>Paid</option></select></div></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveInvoice()">Save</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveInvoice() {
+                const db = this.db;
+                const custId = document.getElementById('invCust').value;
+                const customer = db.customers.find(c => c.id === custId);
+                const inv = {
+                    id: generateId('inv'),
+                    customerId: custId,
+                    customerName: customer?.name || '',
+                    salesOrderId: '',
+                    amount: parseFloat(document.getElementById('invAmt').value),
+                    status: document.getElementById('invStatus').value,
+                    dueDate: document.getElementById('invDue').value,
+                    date: new Date().toISOString().split('T')[0],
+                    createdAt: new Date().toISOString(),
+                };
+                db.invoices.push(inv);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created invoice', 'Finance', inv.id);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Invoice created!', 'success');
+            }
+
+            markInvoicePaid(id) {
+                const db = this.db;
+                const inv = db.invoices.find(i => i.id === id);
+                if (inv) { inv.status = 'Paid';
+                    saveDB(db);
+                    this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Marked invoice paid', 'Finance',
+                        id);
+                    this.refreshAll();
+                    this.showToast('Invoice marked as paid!', 'success'); }
+            }
+
+            deleteInvoice(id) {
+                if (!confirm('Delete this invoice?')) return;
+                const db = this.db;
+                db.invoices = db.invoices.filter(i => i.id !== id);
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted invoice', 'Finance', id);
+                this.refreshAll();
+                this.showToast('Invoice deleted.', 'info');
+            }
+
+            openJEModal() {
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>New Journal Entry</h3>
+                <div class="form-group"><label>Description</label><input id="jeDesc"></div>
+                <div class="form-row"><div class="form-group"><label>Debit Account</label><input id="jeDebit" value="Cash"></div>
+                <div class="form-group"><label>Credit Account</label><input id="jeCredit" value="Revenue"></div></div>
+                <div class="form-row"><div class="form-group"><label>Amount</label><input id="jeAmt" type="number" step="0.01"></div>
+                <div class="form-group"><label>Date</label><input id="jeDate" type="date" value="2026-07-12"></div></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveJE()">Save</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveJE() {
+                const db = this.db;
+                db.journalEntries.push({
+                    id: generateId('je'),
+                    date: document.getElementById('jeDate').value,
+                    description: document.getElementById('jeDesc').value,
+                    debits: document.getElementById('jeDebit').value,
+                    credits: document.getElementById('jeCredit').value,
+                    amount: parseFloat(document.getElementById('jeAmt').value),
+                    status: 'Posted',
+                    createdAt: new Date().toISOString(),
+                });
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created journal entry', 'Finance',
+                    document.getElementById('jeDesc').value);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Journal entry posted!', 'success');
+            }
+
+            // ---- HR ----
+            renderHR(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>👤 Employee Management</h3><button class="btn btn-primary btn-sm" onclick="app.openEmployeeModal()">+ Add Employee</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Salary</th><th>Join Date</th><th>Branch</th><th>Status</th></tr></thead><tbody>
+                        ${db.employees.map(e=>`<tr><td><strong>${e.name}</strong></td><td>${e.department}</td><td>${e.position}</td><td>$${e.salary.toLocaleString()}</td><td>${e.joinDate}</td><td>${e.branch}</td><td><span class="badge badge-success">${e.status}</span></td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><h3>📅 Attendance</h3></div>
+                    <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr></thead><tbody>
+                        ${db.attendance.map(a=>`<tr><td>${a.employeeName}</td><td>${a.date}</td><td>${a.checkIn}</td><td>${a.checkOut}</td><td><span class="badge badge-success">${a.status}</span></td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openEmployeeModal() {
+                const db = this.db;
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>Add Employee</h3>
+                <div class="form-row"><div class="form-group"><label>Name</label><input id="empName"></div>
+                <div class="form-group"><label>Department</label><input id="empDept"></div></div>
+                <div class="form-row"><div class="form-group"><label>Position</label><input id="empPos"></div>
+                <div class="form-group"><label>Salary</label><input id="empSal" type="number"></div></div>
+                <div class="form-row"><div class="form-group"><label>Join Date</label><input id="empDate" type="date"></div>
+                <div class="form-group"><label>Branch</label><select id="empBranch">${db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveEmployee()">Save</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveEmployee() {
+                const db = this.db;
+                db.employees.push({
+                    id: generateId('e'),
+                    name: document.getElementById('empName').value,
+                    department: document.getElementById('empDept').value,
+                    position: document.getElementById('empPos').value,
+                    salary: parseInt(document.getElementById('empSal').value),
+                    joinDate: document.getElementById('empDate').value,
+                    branch: document.getElementById('empBranch').value,
+                    status: 'Active',
+                    createdAt: new Date().toISOString(),
+                });
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Added employee', 'HR', document
+                    .getElementById('empName').value);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Employee added!', 'success');
+            }
+
+            // ---- USERS ----
+            renderUsers(el) {
+                const db = this.db;
+                if (this.currentUser?.role !== 'admin') {
+                    el.innerHTML =
+                        '<div class="card"><h3>Access Denied</h3><p>Only administrators can manage users.</p></div>';
+                    return;
+                }
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>⚙️ User Management</h3><button class="btn btn-primary btn-sm" onclick="app.openUserModal()">+ Add User</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Username</th><th>Full Name</th><th>Role</th><th>Email</th><th>Branch</th><th>Active</th></tr></thead><tbody>
+                        ${db.users.map(u=>`<tr><td><strong>${u.username}</strong></td><td>${u.fullName}</td><td><span class="badge badge-info">${u.role}</span></td><td>${u.email}</td><td>${u.branch}</td><td>${u.active?'✅':'❌'}</td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openUserModal() {
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>Add User</h3>
+                <div class="form-row"><div class="form-group"><label>Username</label><input id="uUser"></div>
+                <div class="form-group"><label>Password</label><input id="uPass" type="password"></div></div>
+                <div class="form-row"><div class="form-group"><label>Full Name</label><input id="uName"></div>
+                <div class="form-group"><label>Email</label><input id="uEmail"></div></div>
+                <div class="form-row"><div class="form-group"><label>Role</label><select id="uRole"><option>staff</option><option>manager</option><option>admin</option></select></div>
+                <div class="form-group"><label>Branch</label><select id="uBranch">${this.db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveUser()">Save</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveUser() {
+                const db = this.db;
+                db.users.push({
+                    id: generateId('u'),
+                    username: document.getElementById('uUser').value,
+                    password: document.getElementById('uPass').value,
+                    role: document.getElementById('uRole').value,
+                    fullName: document.getElementById('uName').value,
+                    email: document.getElementById('uEmail').value,
+                    branch: document.getElementById('uBranch').value,
+                    department: 'General',
+                    active: true,
+                    createdAt: new Date().toISOString(),
+                });
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created user', 'Users', document
+                    .getElementById('uUser').value);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('User created!', 'success');
+            }
+
+            // ---- AUDIT ----
+            renderAudit(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>📝 Audit Logs</h3></div>
+                    <div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Module</th><th>Details</th></tr></thead><tbody>
+                        ${db.auditLogs.slice().reverse().map(l=>`<tr><td>${new Date(l.timestamp).toLocaleString()}</td><td>${l.username}</td><td>${l.action}</td><td>${l.module}</td><td>${l.details||''}</td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            // ---- DOCUMENTS ----
+            renderDocuments(el) {
+                const db = this.db;
+                el.innerHTML = `
+                <div class="card">
+                    <div class="card-header"><h3>📁 Document Management</h3><button class="btn btn-primary btn-sm" onclick="app.openDocModal()">+ Upload Document</button></div>
+                    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Category</th><th>Size</th><th>Uploaded By</th><th>Date</th></tr></thead><tbody>
+                        ${db.documents.map(d=>`<tr><td><strong>${d.name}</strong></td><td>${d.type}</td><td>${d.category}</td><td>${d.size}</td><td>${d.uploadedBy}</td><td>${new Date(d.createdAt).toLocaleString()}</td></tr>`).join('')}
+                    </tbody></table></div>
+                </div>`;
+            }
+
+            openDocModal() {
+                const modal = document.getElementById('modalContent');
+                modal.innerHTML = `
+                <h3>Upload Document</h3>
+                <div class="form-group"><label>Document Name</label><input id="docName"></div>
+                <div class="form-row"><div class="form-group"><label>Type</label><select id="docType"><option>PDF</option><option>DOCX</option><option>XLSX</option><option>Image</option><option>Other</option></select></div>
+                <div class="form-group"><label>Category</label><input id="docCat" value="Reports"></div></div>
+                <div class="form-group"><label>File Size</label><input id="docSize" value="1.0 MB"></div>
+                <div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="app.saveDoc()">Upload</button></div>`;
+                document.getElementById('modalOverlay').classList.add('show');
+            }
+
+            saveDoc() {
+                const db = this.db;
+                db.documents.push({
+                    id: generateId('doc'),
+                    name: document.getElementById('docName').value,
+                    type: document.getElementById('docType').value,
+                    category: document.getElementById('docCat').value,
+                    size: document.getElementById('docSize').value,
+                    uploadedBy: this.currentUser?.username || 'unknown',
+                    createdAt: new Date().toISOString(),
+                });
+                saveDB(db);
+                this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Uploaded document', 'Documents', document
+                    .getElementById('docName').value);
+                this.closeModal();
+                this.refreshAll();
+                this.showToast('Document uploaded!', 'success');
+            }
+
+            // ---- GLOBAL SEARCH ----
+            globalSearch(query) {
+                const dropdown = document.getElementById('searchDropdown');
+                if (!query || query.length < 1) { dropdown.classList.remove('show'); return; }
+                const db = this.db;
+                const results = [];
+                const q = query.toLowerCase();
+                db.customers.forEach(c => { if (c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q))
+                        results.push({ type: 'Customer', label: c.name, id: c.id, module: 'crm' }); });
+                db.products.forEach(p => { if (p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
+                        results.push({ type: 'Product', label: p.name + ' (' + p.sku + ')', id: p.id,
+                        module: 'inventory' }); });
+                db.salesOrders.forEach(so => { if (so.id.includes(q) || so.customerName.toLowerCase().includes(q))
+                        results.push({ type: 'Sales Order', label: '#' + so.id + ' - ' + so.customerName, id: so.id,
+                            module: 'sales' }); });
+                db.invoices.forEach(inv => { if (inv.id.includes(q) || inv.customerName.toLowerCase().includes(q))
+                        results.push({ type: 'Invoice', label: '#' + inv.id + ' - ' + inv.customerName, id: inv.id,
+                            module: 'finance' }); });
+                db.employees.forEach(e => { if (e.name.toLowerCase().includes(q)) results.push({ type: 'Employee',
+                        label: e.name, id: e.id, module: 'hr' }); });
+                db.vendors.forEach(v => { if (v.name.toLowerCase().includes(q)) results.push({ type: 'Vendor',
+                        label: v.name, id: v.id, module: 'procurement' }); });
+                dropdown.innerHTML = results.slice(0, 15).map(r =>
+                    `<div class="search-result-item" onclick="app.navigateTo('${r.module}');document.getElementById('searchDropdown').classList.remove('show');document.getElementById('globalSearchInput').value='';">
+                <span>${r.label}</span><span class="sr-type">${r.type}</span></div>`
+                ).join('') || '<div class="search-result-item"><span>No results</span></div>';
+                dropdown.classList.add('show');
+            }
+
+            // ---- NOTIFICATIONS ----
+            toggleNotifPanel() {
+                const panel = document.getElementById('notifPanel');
+                const dot = document.getElementById('notifDot');
+                const db = this.db;
+                const userNotifs = db.notifications.filter(n => n.userId === this.currentUser?.id);
+                panel.innerHTML = userNotifs.slice(-15).reverse().map(n =>
+                    `<div class="notif-item ${n.read?'':'unread'}" onclick="app.markNotifRead('${n.id}')">
+                <strong>${n.title}</strong><br>${n.message}<br><small style="color:var(--text3);">${new Date(n.timestamp).toLocaleString()}</small></div>`
+                ).join('') || '<div class="notif-item">No notifications</div>';
+                panel.classList.toggle('show');
+                const unread = userNotifs.filter(n => !n.read).length;
+                dot.style.display = unread > 0 ? 'block' : 'none';
+            }
+
+            markNotifRead(id) {
+                const db = this.db;
+                const n = db.notifications.find(not => not.id === id);
+                if (n) { n.read = true;
+                    saveDB(db); }
+                this.toggleNotifPanel();
+            }
+
+            addNotification(userId, title, message) {
+                const db = this.db;
+                db.notifications.push({
+                    id: generateId('n'),
+                    userId,
+                    title,
+                    message,
+                    read: false,
+                    timestamp: new Date().toISOString(),
+                });
+                saveDB(db);
+            }
+
+            // ---- AUDIT LOG ----
+            addAuditLog(userId, username, action, module, details = '') {
+                const db = this.db;
+                db.auditLogs.push({
+                    id: generateId('log'),
+                    userId,
+                    username,
+                    action,
+                    module,
+                    timestamp: new Date().toISOString(),
+                    details,
+                });
+                saveDB(db);
+            }
+
+            // ---- THEME ----
+            toggleTheme() {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                const db = this.db;
+                db.settings = db.settings || {};
+                db.settings.theme = next;
+                saveDB(db);
+                this.showToast('Theme: ' + (next === 'dark' ? 'Dark Mode' : 'Light Mode'), 'info');
+            }
+
+            // ---- MODAL ----
+            closeModal() {
+                document.getElementById('modalOverlay').classList.remove('show');
+                document.getElementById('modalContent').innerHTML = '';
+            }
+
+            // ---- TOAST ----
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                container.appendChild(toast);
+                setTimeout(() => { toast.style.opacity = '0';
+                    toast.style.transition = 'opacity 0.3s';
+                    setTimeout(() => toast.remove(), 300); }, 3000);
+            }
+        }
+
+        // ==================== INITIALIZE ====================
+        const app = new NexusERP();
+
+        // Sidebar navigation
+        document.getElementById('sidebarNav').addEventListener('click', (e) => {
+            const navItem = e.target.closest('.nav-item');
+            if (navItem) {
+                const module = navItem.dataset.module;
+                if (module) app.navigateTo(module);
+            }
+        });
+
+        // Enter key for login
+        document.getElementById('loginPass').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') app.login();
+        });
+        document.getElementById('loginUser').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('loginPass').focus();
+        });
+
+        console.log('🔷 NexusERP Initialized');
+        console.log('📋 Default credentials: admin / admin123');
+        console.log('⌨️  Shortcuts: Ctrl+K = Global Search | Ctrl+D = Dashboard');
+        console.log('📦 Data stored in localStorage:', DB_KEY);
+        console.log('🌓 Dark/Light mode available via header toggle');
+        console.log('📊 Dashboard | 👥 CRM | 💰 Sales | 📦 Inventory | 🛒 Procurement | 📋 Finance | 👤 HR | ⚙️ Users | 📝 Audit | 📁 Documents');
+    </script>
+</body>
+</html>

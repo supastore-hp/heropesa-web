@@ -1,0 +1,3835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HRMS Enterprise — Human Capital Management</title>
+    <style>
+        /* ===== CSS Variables & Theme ===== */
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-sidebar: #0a1628;
+            --bg-sidebar-hover: #152238;
+            --bg-topnav: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f4f9;
+            --text-primary: #0a1628;
+            --text-secondary: #334155;
+            --text-muted: #94a3b8;
+            --text-light: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --info: #0ea5e9;
+            --info-light: #e0f2fe;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --pink: #ec4899;
+            --pink-light: #fce7f3;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --sidebar-width: 260px;
+            --topnav-height: 64px;
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #141b2b;
+            --bg-sidebar: #050a14;
+            --bg-sidebar-hover: #142033;
+            --bg-topnav: #141b2b;
+            --bg-card: #1a2335;
+            --bg-input: #1f2a3f;
+            --text-primary: #e8edf5;
+            --text-secondary: #b0c0d4;
+            --text-muted: #6a7a8e;
+            --border-color: #2a3a4f;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --accent-light: #1a2d4a;
+            --success-light: #0f2a1a;
+            --warning-light: #2a2410;
+            --danger-light: #2a1414;
+            --info-light: #0a1a2a;
+            --purple-light: #1a103a;
+            --pink-light: #2a1020;
+        }
+
+        /* ===== Reset & Base ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 14px;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background var(--transition);
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+            width: 100%;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        /* ===== Scrollable container ===== */
+        .scrollable {
+            overflow-y: auto;
+            flex: 1;
+            padding: 20px 28px 40px;
+            height: 100%;
+        }
+        .scrollable::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scrollable::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 8px;
+        }
+
+        /* ===== Sidebar ===== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: var(--topnav-height);
+        }
+        .sidebar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+        .sidebar-brand h1 span {
+            color: var(--accent);
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 12px 20px;
+            overflow-y: auto;
+        }
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+        }
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.35);
+            padding: 16px 12px 6px;
+            font-weight: 600;
+        }
+        .sidebar-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all var(--transition);
+            margin-bottom: 1px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            font-size: 13.5px;
+        }
+        .sidebar-nav .nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: #fff;
+        }
+        .sidebar-nav .nav-item.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+        .sidebar-nav .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-nav .nav-item .icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .sidebar-nav .nav-item .badge {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .sidebar-nav .nav-item.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-footer .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .sidebar-footer .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sidebar-footer .user-info .name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-footer .user-info .role {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+        }
+        .sidebar-footer .theme-toggle {
+            color: rgba(255, 255, 255, 0.5);
+            padding: 4px;
+            border-radius: 6px;
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-footer .theme-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-footer .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ===== Main Content ===== */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+
+        /* ===== Top Navigation ===== */
+        .topnav {
+            background: var(--bg-topnav);
+            padding: 0 24px;
+            height: var(--topnav-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            transition: background var(--transition), border var(--transition);
+            gap: 16px;
+        }
+        .topnav-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+        .topnav-left .menu-toggle {
+            display: none;
+            padding: 6px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .topnav-left .menu-toggle:hover {
+            background: var(--bg-input);
+        }
+        .topnav-left .menu-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .topnav .breadcrumbs span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .topnav .breadcrumbs .sep {
+            color: var(--text-muted);
+            margin: 0 2px;
+        }
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .topnav-right .btn-icon {
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topnav-right .btn-icon:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .topnav-right .btn-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav-right .btn-icon .dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--bg-topnav);
+        }
+        .topnav-right .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 0 12px;
+            gap: 8px;
+            border: 1px solid transparent;
+            transition: all var(--transition);
+            min-width: 180px;
+        }
+        .topnav-right .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            background: var(--bg-secondary);
+        }
+        .topnav-right .search-box svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .topnav-right .search-box input {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            font-size: 13px;
+            width: 120px;
+            transition: width var(--transition);
+        }
+        .topnav-right .search-box input:focus {
+            width: 180px;
+            box-shadow: none;
+        }
+        .topnav-right .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* ===== Page Content ===== */
+        .page-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .page {
+            display: none;
+            height: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== Dashboard ===== */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .stat-card .label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+            color: var(--text-primary);
+        }
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-card .change.up {
+            color: var(--success);
+        }
+        .stat-card .change.down {
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap {
+            float: right;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-top: -4px;
+        }
+        .stat-card .icon-wrap.blue {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .stat-card .icon-wrap.green {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .stat-card .icon-wrap.yellow {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .stat-card .icon-wrap.red {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+        .stat-card .icon-wrap.pink {
+            background: var(--pink-light);
+            color: var(--pink);
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .chart-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .chart-box .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .chart-box canvas {
+            width: 100% !important;
+            max-height: 240px;
+        }
+
+        .recent-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .recent-table-wrap .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .recent-table-wrap .title .link {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+        table tr:hover td {
+            background: var(--bg-input);
+        }
+        table .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .status-badge.inactive {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .status-badge.pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .status-badge.info {
+            background: var(--info-light);
+            color: var(--info);
+        }
+        .status-badge.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        /* ===== Module Common ===== */
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .module-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .module-header .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--transition);
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            border-color: var(--accent-hover);
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+        .btn-success:hover {
+            background: #15803d;
+            color: #fff;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            color: #fff;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: #fff;
+            border-color: var(--warning);
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        .btn-icon-only {
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .filter-bar select,
+        .filter-bar input {
+            width: auto;
+            min-width: 120px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        .filter-bar .search-input {
+            flex: 1;
+            min-width: 180px;
+        }
+        .filter-bar .search-input input {
+            width: 100%;
+        }
+
+        .module-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-table-wrap .table-scroll {
+            flex: 1;
+            overflow: auto;
+        }
+        .module-table-wrap table {
+            font-size: 13px;
+        }
+        .module-table-wrap table td .actions-cell {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap table td .actions-cell button {
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .module-table-wrap table td .actions-cell button:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .module-table-wrap .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .module-table-wrap .pagination .info {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .module-table-wrap .pagination .pages {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap .pagination .pages button {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .module-table-wrap .pagination .pages button:hover {
+            background: var(--bg-input);
+        }
+        .module-table-wrap .pagination .pages button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        /* ===== Modal ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            max-width: 640px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.25s ease;
+            border: 1px solid var(--border-color);
+        }
+        .modal.wide {
+            max-width: 840px;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .modal .modal-header .close {
+            padding: 4px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .modal .modal-header .close:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .modal .modal-header .close svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+        .modal .form-group .required {
+            color: var(--danger);
+        }
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .modal .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* ===== Toast ===== */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+        .toast.success {
+            border-left-color: var(--success);
+        }
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .toast .toast-msg {
+            flex: 1;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .toast .toast-close {
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ===== Empty State ===== */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .empty-state .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 18px;
+        }
+        .empty-state p {
+            font-size: 14px;
+            max-width: 400px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .topnav-left .menu-toggle {
+                display: flex;
+            }
+            .topnav-right .search-box {
+                min-width: auto;
+            }
+            .topnav-right .search-box input {
+                width: 80px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 120px;
+            }
+            .topnav .breadcrumbs {
+                font-size: 12px;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .stat-card .value {
+                font-size: 22px;
+            }
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 20px;
+                max-width: 96%;
+            }
+            .module-header h2 {
+                font-size: 18px;
+            }
+            .scrollable {
+                padding: 14px 16px 30px;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar .search-input {
+                min-width: auto;
+            }
+            .filter-bar select,
+            .filter-bar input {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .topnav {
+                padding: 0 12px;
+                gap: 8px;
+            }
+            .topnav-right .search-box input {
+                width: 60px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 100px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-card .value {
+                font-size: 18px;
+            }
+            .stat-card .icon-wrap {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+        /* ===== Misc Utilities ===== */
+        .text-center {
+            text-align: center;
+        }
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            align-items: center;
+            justify-content: center;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+
+        /* ===== Skeleton ===== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-input) 25%, var(--border-color) 50%, var(--bg-input) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* ===== Context Menu ===== */
+        .context-menu {
+            position: fixed;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 6px 0;
+            min-width: 180px;
+            z-index: 4000;
+            display: none;
+        }
+        .context-menu.open {
+            display: block;
+        }
+        .context-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .context-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .context-menu .item.danger {
+            color: var(--danger);
+        }
+        .context-menu .item.danger:hover {
+            background: var(--danger-light);
+        }
+        .context-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        /* ===== Detail View ===== */
+        .detail-view {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-view .detail-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .detail-view .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-view .detail-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 140px;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+        .detail-view .detail-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        .detail-view .detail-value .tag {
+            display: inline-block;
+            background: var(--bg-input);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px 4px 2px 0;
+        }
+
+        /* ===== Timeline ===== */
+        .timeline {
+            position: relative;
+            padding-left: 28px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg-card);
+        }
+        .timeline-item .time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .timeline-item .content {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .timeline-item .content strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== Organization Chart ===== */
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            overflow-x: auto;
+        }
+        .org-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .org-node .node-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px 20px;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .org-node .node-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .org-node .node-card .title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .org-node .node-card .sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        .org-children {
+            display: flex;
+            gap: 30px;
+            padding-top: 20px;
+            position: relative;
+        }
+        .org-children::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 20px;
+            background: var(--border-color);
+        }
+        .org-child {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .org-child::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: var(--border-color);
+        }
+        .org-child:first-child::before {
+            left: 50%;
+            width: 50%;
+            right: -50%;
+        }
+        .org-child:last-child::before {
+            left: 50%;
+            width: 50%;
+            right: 50%;
+        }
+
+        /* ===== Command Palette ===== */
+        .cmd-palette {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 540px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 5000;
+            display: none;
+            overflow: hidden;
+            padding: 8px 0;
+        }
+        .cmd-palette.open {
+            display: block;
+            animation: slideUp 0.2s ease;
+        }
+        .cmd-palette input {
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            width: 100%;
+            outline: none;
+        }
+        .cmd-palette input:focus {
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+        .cmd-palette .results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .cmd-palette .results .result-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .cmd-palette .results .result-item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .cmd-palette .results .result-item .icon {
+            color: var(--text-muted);
+        }
+        .cmd-palette .results .result-item .shortcut {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-input);
+            padding: 1px 10px;
+            border-radius: 4px;
+        }
+
+        /* ===== Profile Dropdown ===== */
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-dropdown .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 44px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            min-width: 200px;
+            padding: 6px 0;
+            display: none;
+            z-index: 100;
+        }
+        .profile-dropdown .dropdown-menu.open {
+            display: block;
+        }
+        .profile-dropdown .dropdown-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-dropdown .dropdown-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .profile-dropdown .dropdown-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        /* ===== Notification Center ===== */
+        .notif-center {
+            position: fixed;
+            right: 20px;
+            top: 76px;
+            width: 360px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 1500;
+            max-height: 460px;
+            display: none;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        .notif-center.open {
+            display: flex;
+            animation: slideDown 0.2s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .notif-center .notif-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notif-center .notif-header .close {
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .notif-center .notif-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .notif-center .notif-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .notif-center .notif-item .notif-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .notif-center .notif-item .notif-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* ===== Login ===== */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+        .login-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+        .login-box .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+        .login-box .logo .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 22px;
+            color: #fff;
+        }
+        .login-box .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .login-box .logo h1 span {
+            color: var(--accent);
+        }
+        .login-box .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+        .login-box .form-group {
+            margin-bottom: 16px;
+        }
+        .login-box .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .login-box .form-group input {
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+        .login-box .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .login-box .hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 16px;
+        }
+        .login-box .hint strong {
+            color: var(--text-secondary);
+        }
+
+        /* ===== Leave balance cards ===== */
+        .leave-balance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .leave-balance-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            text-align: center;
+        }
+        .leave-balance-card .type {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .leave-balance-card .balance {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .leave-balance-card .used {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ===== Attendance clock ===== */
+        .clock-display {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .clock-display .time {
+            font-size: 36px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            color: var(--text-primary);
+        }
+        .clock-display .date {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .clock-display .status {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .clock-display .status .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .clock-display .status .dot.checked-in {
+            background: var(--success);
+        }
+        .clock-display .status .dot.checked-out {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">H</div>
+                <h1>HRMS<span>+</span></h1>
+            </div>
+            <div class="subtitle">Enterprise Human Capital Management</div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="admin@hrms.com" id="loginEmail" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" value="admin123" id="loginPassword" />
+            </div>
+            <button class="btn btn-primary" id="loginBtn">Sign In</button>
+            <div class="hint">Demo: <strong>admin@hrms.com</strong> / <strong>admin123</strong></div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon">H</div>
+            <h1>HRMS<span>+</span></h1>
+        </div>
+        <nav class="sidebar-nav" id="sidebarNav">
+            <div class="nav-label">Main</div>
+            <div class="nav-item active" data-page="dashboard">
+                <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                Dashboard
+            </div>
+            <div class="nav-item" data-page="employees">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                Employees
+                <span class="badge" id="empCount">0</span>
+            </div>
+            <div class="nav-item" data-page="organization">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M4.93 4.93l2.83 2.83M22 12h-4M4.93 19.07l2.83-2.83M12 22v-4"/><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg></span>
+                Organization
+            </div>
+            <div class="nav-item" data-page="recruitment">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="12" y1="11" x2="12" y2="15"/><line x1="10" y1="13" x2="14" y2="13"/></svg></span>
+                Recruitment
+                <span class="badge" id="recruitCount">0</span>
+            </div>
+            <div class="nav-label">Workforce</div>
+            <div class="nav-item" data-page="attendance">
+                <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                Attendance
+            </div>
+            <div class="nav-item" data-page="leave">
+                <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+                Leave
+                <span class="badge" id="leaveCount">0</span>
+            </div>
+            <div class="nav-item" data-page="payroll">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 22v-4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                Payroll
+                <span class="badge" id="payrollCount">0</span>
+            </div>
+            <div class="nav-label">Talent</div>
+            <div class="nav-item" data-page="performance">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+                Performance
+            </div>
+            <div class="nav-item" data-page="training">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></span>
+                Training
+            </div>
+            <div class="nav-label">System</div>
+            <div class="nav-item" data-page="reports">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span>
+                Reports
+            </div>
+            <div class="nav-item" data-page="settings">
+                <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v3"/><path d="M12 20v3"/><path d="M4.22 4.22l2.12 2.12"/><path d="M17.66 17.66l2.12 2.12"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.22 19.78l2.12-2.12"/><path d="M17.66 6.34l2.12-2.12"/></svg></span>
+                Settings
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+                <div class="name">John Doe</div>
+                <div class="role">HR Administrator</div>
+            </div>
+            <div class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER ===== -->
+    <div class="main-wrapper">
+        <header class="topnav">
+            <div class="topnav-left">
+                <button class="menu-toggle" id="menuToggle"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+                <div class="breadcrumbs" id="breadcrumbs"><span>Dashboard</span></div>
+            </div>
+            <div class="topnav-right">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" placeholder="Search employees..." id="globalSearch" />
+                </div>
+                <button class="btn-icon" id="cmdPaletteBtn" title="Command Palette (Ctrl+K)">
+                    <svg viewBox="0 0 24 24"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </button>
+                <button class="btn-icon" id="notifBtn">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="dot" id="notifDot"></span>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="btn-icon" id="profileBtn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+                    <div class="dropdown-menu" id="profileMenu">
+                        <div class="item">👤 My Profile</div>
+                        <div class="item">⚙️ Settings</div>
+                        <div class="divider"></div>
+                        <div class="item" id="logoutBtn">🚪 Logout</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="page-content">
+            <div id="pageContainer" class="scrollable"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="close" id="modalClose"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== CONTEXT MENU ===== -->
+    <div class="context-menu" id="contextMenu">
+        <div class="item" data-action="edit">✏️ Edit</div>
+        <div class="item" data-action="duplicate">📋 Duplicate</div>
+        <div class="divider"></div>
+        <div class="item danger" data-action="delete">🗑️ Delete</div>
+    </div>
+
+    <!-- ===== COMMAND PALETTE ===== -->
+    <div class="cmd-palette" id="cmdPalette">
+        <input type="text" placeholder="Search commands..." id="cmdInput" />
+        <div class="results" id="cmdResults"></div>
+    </div>
+
+    <!-- ===== NOTIFICATION CENTER ===== -->
+    <div class="notif-center" id="notifCenter">
+        <div class="notif-header">Notifications <button class="close" id="notifClose">✕</button></div>
+        <div class="notif-list" id="notifList"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  HRMS ENTERPRISE — Full Frontend Simulation
+        //  All data in LocalStorage, all CRUD, all modules.
+        // ============================================================
+
+        // ===== HELPERS =====
+        const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        const today = () => new Date().toISOString().split('T')[0];
+        const dateStr = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric',
+            year: 'numeric' }) : '-';
+        const timeStr = (d) => new Date(d).toLocaleTimeString('en-US', { hour: 'short', minute: '2-digit' });
+        const formatCurrency = (v) => '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 0,
+            maximumFractionDigits: 0 });
+
+        // ===== STORE =====
+        class Store {
+            constructor() {
+                this.key = 'hrms_data';
+                this.data = this.load();
+                if (!this.data || !this.data._initialized) this.seed();
+            }
+            load() {
+                try { const raw = localStorage.getItem(this.key); return raw ? JSON.parse(raw) : null; } catch { return null; }
+            }
+            save() {
+                localStorage.setItem(this.key, JSON.stringify(this.data));
+                this.updateCounts();
+            }
+            updateCounts() {
+                document.getElementById('empCount').textContent = this.data.employees.length;
+                document.getElementById('recruitCount').textContent = this.data.jobOpenings.filter(j => j.status === 'open')
+                    .length;
+                document.getElementById('leaveCount').textContent = this.data.leaveRequests.filter(l => l.status === 'pending')
+                    .length;
+                document.getElementById('payrollCount').textContent = this.data.payrollRecords.length;
+            }
+            seed() {
+                const now = new Date();
+                const firsts = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack', 'Karen',
+                    'Leo', 'Mia', 'Noah', 'Olivia'
+                ];
+                const lasts = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez',
+                    'Martinez', 'Hernandez', 'Lopez', 'Wilson', 'Anderson', 'Thomas'
+                ];
+                const depts = ['Engineering', 'Sales', 'Marketing', 'HR', 'Finance', 'Operations', 'IT', 'Legal'];
+                const positions = ['Software Engineer', 'Sales Manager', 'Marketing Specialist', 'HR Coordinator',
+                    'Financial Analyst', 'Operations Manager', 'DevOps Engineer', 'Legal Counsel'
+                ];
+                const branches = ['New York', 'San Francisco', 'London', 'Singapore', 'Sydney'];
+
+                const employees = [];
+                for (let i = 0; i < 45; i++) {
+                    const f = firsts[i % firsts.length];
+                    const l = lasts[(i + 3) % lasts.length];
+                    const dept = depts[i % depts.length];
+                    const status = i % 10 === 0 ? 'inactive' : 'active';
+                    const baseSalary = 50000 + Math.round(Math.random() * 120000);
+                    employees.push({
+                        id: uid(),
+                        firstName: f,
+                        lastName: l,
+                        email: `${f.toLowerCase()}.${l.toLowerCase()}@company.com`,
+                        phone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        dateOfBirth: new Date(now.getTime() - Math.random() * 2e10).toISOString().split('T')[0],
+                        hireDate: new Date(now.getTime() - Math.random() * 3e9).toISOString().split('T')[0],
+                        department: dept,
+                        position: positions[i % positions.length],
+                        branch: branches[i % branches.length],
+                        status: status,
+                        salary: baseSalary,
+                        emergencyContact: `${firsts[(i+5)%firsts.length]} ${lasts[(i+7)%lasts.length]}`,
+                        emergencyPhone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        managerId: i > 5 ? employees[Math.floor(Math.random() * 5)]?.id || null : null,
+                        createdAt: new Date(now.getTime() - Math.random() * 3e9).toISOString(),
+                        tags: ['full-time'].concat(Math.random() > 0.7 ? ['remote'] : [])
+                    });
+                }
+                // Set some managers
+                for (let i = 0; i < 5 && i < employees.length; i++) {
+                    employees[i].position = ['Director', 'VP', 'Manager', 'Lead', 'Head'][i];
+                    employees[i].department = depts[i % depts.length];
+                }
+
+                const leaveRequests = [];
+                const leaveTypes = ['Annual', 'Sick', 'Maternity', 'Paternity', 'Compassionate', 'Study', 'Unpaid'];
+                for (let i = 0; i < 25; i++) {
+                    const emp = employees[i % employees.length];
+                    const start = new Date(now.getTime() + (i - 10) * 86400000);
+                    const end = new Date(start.getTime() + (2 + Math.floor(Math.random() * 5)) * 86400000);
+                    leaveRequests.push({
+                        id: uid(),
+                        employeeId: emp.id,
+                        type: leaveTypes[i % leaveTypes.length],
+                        startDate: start.toISOString().split('T')[0],
+                        endDate: end.toISOString().split('T')[0],
+                        status: ['pending', 'approved', 'rejected', 'approved', 'approved'][i % 5],
+                        reason: 'Personal reasons',
+                        createdAt: new Date(now.getTime() - Math.random() * 2e9).toISOString()
+                    });
+                }
+
+                const attendance = [];
+                for (let i = 0; i < 120; i++) {
+                    const emp = employees[i % employees.length];
+                    const day = new Date(now.getTime() - (Math.floor(Math.random() * 30)) * 86400000);
+                    const checkIn = new Date(day);
+                    checkIn.setHours(8 + Math.floor(Math.random() * 3), Math.floor(Math.random() * 60));
+                    const checkOut = new Date(checkIn);
+                    checkOut.setHours(checkIn.getHours() + 8 + Math.floor(Math.random() * 2), Math.floor(Math.random() * 60));
+                    attendance.push({
+                        id: uid(),
+                        employeeId: emp.id,
+                        date: day.toISOString().split('T')[0],
+                        checkIn: checkIn.toISOString(),
+                        checkOut: checkOut.toISOString(),
+                        status: Math.random() > 0.15 ? 'present' : 'absent'
+                    });
+                }
+
+                const payrollRecords = [];
+                for (let i = 0; i < employees.length; i++) {
+                    const emp = employees[i];
+                    const base = emp.salary / 12;
+                    const bonus = Math.round(Math.random() * 2000);
+                    const deductions = Math.round(base * 0.15 + Math.random() * 500);
+                    payrollRecords.push({
+                        id: uid(),
+                        employeeId: emp.id,
+                        month: new Date(now.getFullYear(), now.getMonth() - (i % 3), 1).toISOString().split('T')[0],
+                        basicSalary: Math.round(base),
+                        overtime: Math.round(Math.random() * 500),
+                        bonus: bonus,
+                        allowances: Math.round(Math.random() * 800),
+                        deductions: deductions,
+                        netSalary: Math.round(base + bonus + Math.random() * 500 - deductions),
+                        status: i % 7 === 0 ? 'pending' : 'approved',
+                        createdAt: new Date(now.getTime() - Math.random() * 2e9).toISOString()
+                    });
+                }
+
+                const jobOpenings = [];
+                const jobTitles = ['Senior Software Engineer', 'Product Manager', 'UX Designer', 'Data Analyst',
+                    'DevOps Lead', 'Sales Executive', 'HR Business Partner', 'Financial Controller'
+                ];
+                for (let i = 0; i < 8; i++) {
+                    jobOpenings.push({
+                        id: uid(),
+                        title: jobTitles[i % jobTitles.length],
+                        department: depts[i % depts.length],
+                        location: branches[i % branches.length],
+                        status: i < 3 ? 'open' : i < 5 ? 'in-progress' : 'closed',
+                        postedDate: new Date(now.getTime() - (i * 7) * 86400000).toISOString().split('T')[0],
+                        applicants: Math.floor(Math.random() * 30 + 5),
+                        hiringManager: employees[i % employees.length]?.id || null
+                    });
+                }
+
+                const candidates = [];
+                for (let i = 0; i < 20; i++) {
+                    const f = firsts[(i + 5) % firsts.length];
+                    const l = lasts[(i + 7) % lasts.length];
+                    candidates.push({
+                        id: uid(),
+                        firstName: f,
+                        lastName: l,
+                        email: `${f.toLowerCase()}.${l.toLowerCase()}@candidate.com`,
+                        phone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        jobId: jobOpenings[i % jobOpenings.length].id,
+                        status: ['applied', 'screening', 'interview', 'offer', 'hired', 'rejected'][i % 6],
+                        appliedDate: new Date(now.getTime() - (i * 3) * 86400000).toISOString().split('T')[0],
+                        notes: 'Good fit for the role',
+                        resume: 'resume_' + f.toLowerCase() + '_' + l.toLowerCase() + '.pdf'
+                    });
+                }
+
+                const performanceReviews = [];
+                for (let i = 0; i < employees.length; i++) {
+                    if (i % 3 === 0) {
+                        performanceReviews.push({
+                            id: uid(),
+                            employeeId: employees[i].id,
+                            reviewerId: employees[Math.floor(Math.random() * 5)]?.id || employees[i].id,
+                            rating: Math.floor(Math.random() * 3 + 3),
+                            comments: 'Good performance, meets expectations.',
+                            reviewDate: new Date(now.getTime() - Math.random() * 6e8).toISOString().split('T')[0],
+                            status: 'completed'
+                        });
+                    }
+                }
+
+                const trainingRecords = [];
+                const courses = ['Leadership 101', 'Advanced Excel', 'Project Management', 'Python Programming',
+                    'Communication Skills', 'Financial Modeling'
+                ];
+                for (let i = 0; i < 30; i++) {
+                    const emp = employees[i % employees.length];
+                    trainingRecords.push({
+                        id: uid(),
+                        employeeId: emp.id,
+                        course: courses[i % courses.length],
+                        completionDate: Math.random() > 0.3 ? new Date(now.getTime() - Math.random() * 5e8).toISOString()
+                            .split('T')[0] : null,
+                        status: Math.random() > 0.3 ? 'completed' : 'in-progress',
+                        score: Math.floor(Math.random() * 30 + 70)
+                    });
+                }
+
+                const notifications = [
+                    { id: uid(), type: 'info', message: 'Welcome to HRMS+ Enterprise', time: now.toISOString() },
+                    { id: uid(), type: 'success', message: '3 new employees onboarded this week', time: new Date(now
+                            .getTime() - 3600000).toISOString() },
+                    { id: uid(), type: 'warning', message: '5 leave requests pending approval', time: new Date(now
+                            .getTime() - 7200000).toISOString() }
+                ];
+
+                this.data = {
+                    _initialized: true,
+                    employees,
+                    leaveRequests,
+                    attendance,
+                    payrollRecords,
+                    jobOpenings,
+                    candidates,
+                    performanceReviews,
+                    trainingRecords,
+                    notifications,
+                    settings: { theme: 'light' },
+                    auditLogs: []
+                };
+                this.save();
+                // Add some audit logs
+                this.addAuditLog('System', 'Initialize', 'HRMS', 'System', 'Initialized with seed data', 'completed');
+            }
+
+            get(c) { return this.data[c] || []; }
+            set(c, v) { this.data[c] = v;
+                this.save(); }
+            add(c, item) { const arr = this.get(c);
+                arr.push(item);
+                this.set(c, arr); return item; }
+            update(c, id, updates) {
+                const arr = this.get(c);
+                const idx = arr.findIndex(a => a.id === id);
+                if (idx === -1) return null;
+                const old = { ...arr[idx] };
+                arr[idx] = { ...arr[idx], ...updates };
+                this.set(c, arr);
+                this.addAuditLog('System', 'Update', c, id, 'Updated record', 'completed');
+                return arr[idx];
+            }
+            remove(c, id) {
+                const arr = this.get(c);
+                const filtered = arr.filter(a => a.id !== id);
+                this.set(c, filtered);
+                this.addAuditLog('System', 'Delete', c, id, 'Deleted record', 'completed');
+                return filtered;
+            }
+            find(c, id) { return this.get(c).find(a => a.id === id) || null; }
+            query(c, fn) { return this.get(c).filter(fn); }
+
+            getEmployee(id) { return this.find('employees', id); }
+            getEmployeeName(id) { const e = this.getEmployee(id); return e ? `${e.firstName} ${e.lastName}` : 'Unknown'; }
+            getDepartment(id) { const e = this.getEmployee(id); return e ? e.department : 'Unknown'; }
+
+            addAuditLog(user, action, module, recordId, details, status) {
+                const logs = this.get('auditLogs');
+                logs.unshift({
+                    id: uid(),
+                    user: user || 'System',
+                    action,
+                    module,
+                    recordId,
+                    details,
+                    status: status || 'completed',
+                    timestamp: new Date().toISOString()
+                });
+                if (logs.length > 500) logs.pop();
+                this.set('auditLogs', logs);
+            }
+
+            addNotification(msg, type = 'info') {
+                const n = { id: uid(), type, message: msg, time: new Date().toISOString() };
+                const notifs = this.get('notifications');
+                notifs.unshift(n);
+                if (notifs.length > 50) notifs.pop();
+                this.set('notifications', notifs);
+                this.updateNotifDot();
+                return n;
+            }
+            updateNotifDot() {
+                const unread = this.get('notifications').filter(n => !n.read).length;
+                document.getElementById('notifDot').style.display = unread > 0 ? 'block' : 'none';
+            }
+        }
+
+        const store = new Store();
+
+        // ===== TOAST =====
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { info: 'ℹ️', success: '✅', error: '❌', warning: '⚠️' };
+            el.innerHTML = `
+            <span class="toast-icon">${icons[type]||'ℹ️'}</span>
+            <span class="toast-msg">${msg}</span>
+            <span class="toast-close">✕</span>
+          `;
+            container.appendChild(el);
+            const close = el.querySelector('.toast-close');
+            close.addEventListener('click', () => { el.remove(); });
+            setTimeout(() => { el.style.opacity = '0';
+                setTimeout(() => el.remove(), 300); }, 3500);
+        }
+
+        // ===== RENDER ENGINE =====
+        const pages = {};
+
+        function navigate(page, params) {
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
+            const navItem = document.querySelector(`.sidebar-nav .nav-item[data-page="${page}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            const labels = {
+                dashboard: 'Dashboard',
+                employees: 'Employees',
+                organization: 'Organization',
+                recruitment: 'Recruitment',
+                attendance: 'Attendance',
+                leave: 'Leave Management',
+                payroll: 'Payroll',
+                performance: 'Performance',
+                training: 'Training',
+                reports: 'Reports',
+                settings: 'Settings'
+            };
+            document.getElementById('breadcrumbs').innerHTML = `<span>${labels[page]||page}</span>`;
+
+            const container = document.getElementById('pageContainer');
+            if (pages[page]) {
+                container.innerHTML = pages[page](params);
+            } else {
+                container.innerHTML =
+                `<div class="empty-state"><div class="icon">🚧</div><h3>${page}</h3><p>Module in development</p></div>`;
+            }
+            bindPageEvents(page);
+            if (page === 'dashboard') initCharts();
+        }
+
+        // ===== PAGE DEFINITIONS =====
+
+        // --- Dashboard ---
+        pages.dashboard = function() {
+            const emps = store.get('employees');
+            const active = emps.filter(e => e.status === 'active').length;
+            const newHires = emps.filter(e => new Date(e.hireDate) > new Date(Date.now() - 30 * 86400000)).length;
+            const leaveReqs = store.get('leaveRequests');
+            const pendingLeave = leaveReqs.filter(l => l.status === 'pending').length;
+            const payroll = store.get('payrollRecords');
+            const totalPayroll = payroll.reduce((s, p) => s + (p.netSalary || 0), 0);
+            const openJobs = store.get('jobOpenings').filter(j => j.status === 'open').length;
+            const reviews = store.get('performanceReviews');
+            const avgRating = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) :
+                0;
+            const training = store.get('trainingRecords');
+            const trainingComplete = training.filter(t => t.status === 'completed').length;
+
+            const deptData = {};
+            emps.forEach(e => { deptData[e.department] = (deptData[e.department] || 0) + 1; });
+            const deptLabels = Object.keys(deptData);
+            const deptVals = Object.values(deptData);
+
+            const statusData = { active: emps.filter(e => e.status === 'active').length, inactive: emps.filter(e => e
+                    .status === 'inactive').length };
+
+            let html = `
+            <div class="dashboard-grid">
+              <div class="stat-card"><div class="icon-wrap blue">👥</div><div class="label">Total Employees</div><div class="value">${emps.length}</div><div class="change up">↑ 5%</div></div>
+              <div class="stat-card"><div class="icon-wrap green">✅</div><div class="label">Active</div><div class="value">${active}</div><div class="change up">↑ 3%</div></div>
+              <div class="stat-card"><div class="icon-wrap yellow">🆕</div><div class="label">New Hires (30d)</div><div class="value">${newHires}</div><div class="change up">↑ 12%</div></div>
+              <div class="stat-card"><div class="icon-wrap purple">💰</div><div class="label">Total Payroll</div><div class="value">${formatCurrency(totalPayroll)}</div><div class="change up">↑ 2%</div></div>
+              <div class="stat-card"><div class="icon-wrap pink">📋</div><div class="label">Open Positions</div><div class="value">${openJobs}</div><div class="change up">↑ 4</div></div>
+              <div class="stat-card"><div class="icon-wrap red">⏳</div><div class="label">Pending Leave</div><div class="value">${pendingLeave}</div><div class="change ${pendingLeave>3?'down':'up'}">${pendingLeave>3?'↑':'↓'} ${pendingLeave}</div></div>
+              <div class="stat-card"><div class="icon-wrap blue">⭐</div><div class="label">Avg Performance</div><div class="value">${avgRating}/5</div><div class="change up">↑ 0.2</div></div>
+              <div class="stat-card"><div class="icon-wrap green">🎓</div><div class="label">Training Complete</div><div class="value">${trainingComplete}</div><div class="change up">↑ 8%</div></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">🏢 Department Headcount</div><canvas id="chartDept" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">📊 Employee Status</div><canvas id="chartStatus" height="180"></canvas></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">📈 Monthly Hiring Trend</div><canvas id="chartHiring" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">🎯 Leave Utilization</div><canvas id="chartLeave" height="180"></canvas></div>
+            </div>
+
+            <div class="recent-table-wrap">
+              <div class="title">👤 Recent Employees <span class="link" onclick="navigate('employees')">View all →</span></div>
+              <div class="table-responsive">
+                <table>
+                  <thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Status</th><th>Hire Date</th></tr></thead>
+                  <tbody>
+                    ${emps.slice(0, 8).map(e => `
+                      <tr><td><strong>${e.firstName} ${e.lastName}</strong></td><td>${e.department}</td><td>${e.position}</td><td><span class="status-badge ${e.status}">${e.status}</span></td><td>${dateStr(e.hireDate)}</td></tr>
+                    `).join('')}
+                    ${emps.length===0?'<tr><td colspan="5" class="text-muted text-center">No employees</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Employees ---
+        pages.employees = function() {
+            const emps = store.get('employees');
+            let html = `
+            <div class="module-header">
+              <h2>👥 Employees</h2>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="openEmployeeForm()">+ Add Employee</button>
+              </div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search employees..." id="empSearch" oninput="filterEmployees()"/></div>
+              <select id="empDeptFilter" onchange="filterEmployees()"><option value="">All Departments</option>${[...new Set(emps.map(e=>e.department))].map(d=>`<option value="${d}">${d}</option>`).join('')}</select>
+              <select id="empStatusFilter" onchange="filterEmployees()"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Branch</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="empTableBody">
+                    ${emps.map(e => `
+                      <tr data-id="${e.id}">
+                        <td><strong>${e.firstName} ${e.lastName}</strong></td>
+                        <td>${e.department}</td>
+                        <td>${e.position}</td>
+                        <td>${e.branch}</td>
+                        <td><span class="status-badge ${e.status}">${e.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewEmployee('${e.id}')" title="View">👁️</button>
+                          <button onclick="editEmployee('${e.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteEmployee('${e.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${emps.length===0?'<tr><td colspan="6" class="text-muted text-center">No employees</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${emps.length} employees</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterEmployees = function() {
+            const search = document.getElementById('empSearch')?.value?.toLowerCase() || '';
+            const dept = document.getElementById('empDeptFilter')?.value || '';
+            const status = document.getElementById('empStatusFilter')?.value || '';
+            const emps = store.get('employees');
+            const filtered = emps.filter(e => {
+                const name = `${e.firstName} ${e.lastName}`.toLowerCase();
+                return name.includes(search) && (!dept || e.department === dept) && (!status || e.status === status);
+            });
+            const tbody = document.getElementById('empTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(e => `
+            <tr data-id="${e.id}">
+              <td><strong>${e.firstName} ${e.lastName}</strong></td>
+              <td>${e.department}</td>
+              <td>${e.position}</td>
+              <td>${e.branch}</td>
+              <td><span class="status-badge ${e.status}">${e.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewEmployee('${e.id}')" title="View">👁️</button>
+                <button onclick="editEmployee('${e.id}')" title="Edit">✏️</button>
+                <button onclick="deleteEmployee('${e.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="6" class="text-muted text-center">No matching employees</td></tr>';
+        };
+
+        // --- Organization ---
+        pages.organization = function() {
+            const emps = store.get('employees');
+            const depts = [...new Set(emps.map(e => e.department))];
+            const branches = [...new Set(emps.map(e => e.branch))];
+
+            // Build org chart data
+            const ceo = emps.find(e => e.position === 'Director' || e.position === 'VP');
+            const top = ceo || emps[0];
+
+            function renderOrgNode(emp, level = 0) {
+                const directReports = emps.filter(e => e.managerId === emp?.id);
+                const children = directReports.length > 0 ? directReports : [];
+                return `
+              <div class="org-node">
+                <div class="node-card">
+                  <div class="title">${emp ? `${emp.firstName} ${emp.lastName}` : 'CEO'}</div>
+                  <div class="sub">${emp ? emp.position : 'Executive'}</div>
+                </div>
+                ${children.length > 0 ? `<div class="org-children">${children.map(c => `<div class="org-child">${renderOrgNode(c, level+1)}</div>`).join('')}</div>` : ''}
+              </div>
+            `;
+            }
+
+            let html = `
+            <div class="module-header"><h2>🏛️ Organization Structure</h2></div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+              <div class="stat-card" style="flex:1;min-width:140px;"><div class="label">Departments</div><div class="value">${depts.length}</div></div>
+              <div class="stat-card" style="flex:1;min-width:140px;"><div class="label">Branches</div><div class="value">${branches.length}</div></div>
+              <div class="stat-card" style="flex:1;min-width:140px;"><div class="label">Total Employees</div><div class="value">${emps.length}</div></div>
+              <div class="stat-card" style="flex:1;min-width:140px;"><div class="label">Avg Team Size</div><div class="value">${emps.length > 0 ? Math.round(emps.length / depts.length) : 0}</div></div>
+            </div>
+            <div style="background:var(--bg-card);border-radius:var(--radius-md);border:1px solid var(--border-color);padding:24px;overflow-x:auto;">
+              <div class="org-chart">
+                ${top ? renderOrgNode(top) : '<div class="text-muted">No organization data available</div>'}
+              </div>
+            </div>
+            <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+              <button class="btn btn-primary" onclick="toast('Organization chart exported','success')">📥 Export Chart</button>
+              <button class="btn" onclick="toast('Printing org chart...','info')">🖨️ Print</button>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Recruitment ---
+        pages.recruitment = function() {
+            const jobs = store.get('jobOpenings');
+            const candidates = store.get('candidates');
+            const openJobs = jobs.filter(j => j.status === 'open' || j.status === 'in-progress');
+
+            let html = `
+            <div class="module-header"><h2>🎯 Recruitment</h2><div class="actions"><button class="btn btn-primary" onclick="openJobForm()">+ New Opening</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search jobs..." id="jobSearch" oninput="filterJobs()"/></div>
+              <select id="jobStatusFilter" onchange="filterJobs()"><option value="">All Status</option><option value="open">Open</option><option value="in-progress">In Progress</option><option value="closed">Closed</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Title</th><th>Department</th><th>Location</th><th>Status</th><th>Applicants</th><th>Actions</th></tr></thead>
+                  <tbody id="jobTableBody">
+                    ${jobs.map(j => `
+                      <tr data-id="${j.id}">
+                        <td><strong>${j.title}</strong></td>
+                        <td>${j.department}</td>
+                        <td>${j.location}</td>
+                        <td><span class="status-badge ${j.status==='open'?'active':j.status==='in-progress'?'pending':'inactive'}">${j.status}</span></td>
+                        <td>${j.applicants || 0}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewJob('${j.id}')" title="View">👁️</button>
+                          <button onclick="editJob('${j.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteJob('${j.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${jobs.length===0?'<tr><td colspan="6" class="text-muted text-center">No job openings</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${jobs.length} openings</span></div>
+            </div>
+            <div style="margin-top:20px;">
+              <h4 style="margin-bottom:12px;">📋 Recent Candidates</h4>
+              <div class="module-table-wrap">
+                <div class="table-scroll">
+                  <table>
+                    <thead><tr><th>Name</th><th>Job</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead>
+                    <tbody>
+                      ${candidates.slice(0, 8).map(c => {
+                        const job = store.find('jobOpenings', c.jobId);
+                        return `<tr>
+                          <td><strong>${c.firstName} ${c.lastName}</strong></td>
+                          <td>${job ? job.title : 'Unknown'}</td>
+                          <td><span class="status-badge ${c.status==='hired'?'active':c.status==='rejected'?'inactive':'pending'}">${c.status}</span></td>
+                          <td>${dateStr(c.appliedDate)}</td>
+                          <td><div class="actions-cell">
+                            <button onclick="toast('View candidate','info')">👁️</button>
+                            <button onclick="toast('Schedule interview','info')">📅</button>
+                          </div></td>
+                        </tr>`;
+                      }).join('')}
+                      ${candidates.length===0?'<tr><td colspan="5" class="text-muted text-center">No candidates</td></tr>':''}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterJobs = function() {
+            const search = document.getElementById('jobSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('jobStatusFilter')?.value || '';
+            const jobs = store.get('jobOpenings');
+            const filtered = jobs.filter(j => {
+                return (j.title.toLowerCase().includes(search) || j.department.toLowerCase().includes(search)) &&
+                    (!status || j.status === status);
+            });
+            const tbody = document.getElementById('jobTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(j => `
+            <tr data-id="${j.id}">
+              <td><strong>${j.title}</strong></td>
+              <td>${j.department}</td>
+              <td>${j.location}</td>
+              <td><span class="status-badge ${j.status==='open'?'active':j.status==='in-progress'?'pending':'inactive'}">${j.status}</span></td>
+              <td>${j.applicants || 0}</td>
+              <td><div class="actions-cell">
+                <button onclick="viewJob('${j.id}')" title="View">👁️</button>
+                <button onclick="editJob('${j.id}')" title="Edit">✏️</button>
+                <button onclick="deleteJob('${j.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="6" class="text-muted text-center">No matching jobs</td></tr>';
+        };
+
+        // --- Attendance ---
+        pages.attendance = function() {
+            const att = store.get('attendance');
+            const emps = store.get('employees');
+            const todayAtt = att.filter(a => a.date === today());
+            const present = todayAtt.filter(a => a.status === 'present').length;
+            const absent = todayAtt.filter(a => a.status === 'absent').length;
+
+            // Clock in/out simulation
+            const isCheckedIn = sessionStorage.getItem('hrms_checked_in') === 'true';
+
+            let html = `
+            <div class="module-header"><h2>⏱️ Attendance</h2></div>
+            <div class="clock-display">
+              <div>
+                <div class="time" id="clockDisplay">--:--:--</div>
+                <div class="date" id="dateDisplay">${new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}</div>
+              </div>
+              <div class="status">
+                <span class="dot ${isCheckedIn ? 'checked-in' : 'checked-out'}"></span>
+                <span>${isCheckedIn ? 'Checked In' : 'Checked Out'}</span>
+                <button class="btn ${isCheckedIn ? 'btn-danger' : 'btn-success'}" id="clockBtn">
+                  ${isCheckedIn ? 'Clock Out' : 'Clock In'}
+                </button>
+              </div>
+            </div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Today Present</div><div class="value">${present}</div></div>
+              <div class="stat-card"><div class="label">Today Absent</div><div class="value">${absent}</div></div>
+              <div class="stat-card"><div class="label">Total Records</div><div class="value">${att.length}</div></div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search attendance..." id="attSearch" oninput="filterAttendance()"/></div>
+              <select id="attStatusFilter" onchange="filterAttendance()"><option value="">All Status</option><option value="present">Present</option><option value="absent">Absent</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Employee</th><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr></thead>
+                  <tbody id="attTableBody">
+                    ${att.slice(0, 50).map(a => {
+                      const emp = store.getEmployee(a.employeeId);
+                      return `<tr>
+                        <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+                        <td>${dateStr(a.date)}</td>
+                        <td>${a.checkIn ? timeStr(a.checkIn) : '-'}</td>
+                        <td>${a.checkOut ? timeStr(a.checkOut) : '-'}</td>
+                        <td><span class="status-badge ${a.status==='present'?'active':'inactive'}">${a.status}</span></td>
+                      </tr>`;
+                    }).join('')}
+                    ${att.length===0?'<tr><td colspan="5" class="text-muted text-center">No attendance records</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${att.length} records</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterAttendance = function() {
+            const search = document.getElementById('attSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('attStatusFilter')?.value || '';
+            const att = store.get('attendance');
+            const filtered = att.filter(a => {
+                const emp = store.getEmployee(a.employeeId);
+                const name = emp ? `${emp.firstName} ${emp.lastName}`.toLowerCase() : '';
+                return name.includes(search) && (!status || a.status === status);
+            });
+            const tbody = document.getElementById('attTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.slice(0, 50).map(a => {
+                const emp = store.getEmployee(a.employeeId);
+                return `<tr>
+              <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+              <td>${dateStr(a.date)}</td>
+              <td>${a.checkIn ? timeStr(a.checkIn) : '-'}</td>
+              <td>${a.checkOut ? timeStr(a.checkOut) : '-'}</td>
+              <td><span class="status-badge ${a.status==='present'?'active':'inactive'}">${a.status}</span></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="5" class="text-muted text-center">No matching records</td></tr>';
+        };
+
+        // --- Leave ---
+        pages.leave = function() {
+            const leaves = store.get('leaveRequests');
+            const emps = store.get('employees');
+            const pending = leaves.filter(l => l.status === 'pending');
+            const approved = leaves.filter(l => l.status === 'approved');
+
+            // Leave balances by type
+            const balanceTypes = ['Annual', 'Sick', 'Maternity', 'Paternity', 'Compassionate', 'Study', 'Unpaid'];
+            const balances = balanceTypes.map(type => {
+                const used = leaves.filter(l => l.type === type && l.status === 'approved').length;
+                const total = type === 'Annual' ? 20 : type === 'Sick' ? 10 : type === 'Maternity' ? 90 : type ===
+                    'Paternity' ? 14 : 5;
+                return { type, used, total, remaining: Math.max(0, total - used) };
+            });
+
+            let html = `
+            <div class="module-header"><h2>📅 Leave Management</h2><div class="actions"><button class="btn btn-primary" onclick="openLeaveForm()">+ Request Leave</button></div></div>
+            <div class="leave-balance-grid">
+              ${balances.map(b => `
+                <div class="leave-balance-card">
+                  <div class="type">${b.type}</div>
+                  <div class="balance">${b.remaining}</div>
+                  <div class="used">${b.used} of ${b.total} used</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Requests</div><div class="value">${leaves.length}</div></div>
+              <div class="stat-card"><div class="label">Pending</div><div class="value">${pending.length}</div></div>
+              <div class="stat-card"><div class="label">Approved</div><div class="value">${approved.length}</div></div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search leave..." id="leaveSearch" oninput="filterLeaves()"/></div>
+              <select id="leaveStatusFilter" onchange="filterLeaves()"><option value="">All Status</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+              <select id="leaveTypeFilter" onchange="filterLeaves()"><option value="">All Types</option>${balanceTypes.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Employee</th><th>Type</th><th>From</th><th>To</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="leaveTableBody">
+                    ${leaves.map(l => {
+                      const emp = store.getEmployee(l.employeeId);
+                      return `<tr data-id="${l.id}">
+                        <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+                        <td>${l.type}</td>
+                        <td>${dateStr(l.startDate)}</td>
+                        <td>${dateStr(l.endDate)}</td>
+                        <td><span class="status-badge ${l.status==='approved'?'active':l.status==='rejected'?'inactive':'pending'}">${l.status}</span></td>
+                        <td><div class="actions-cell">
+                          ${l.status==='pending' ? `<button onclick="approveLeave('${l.id}')" title="Approve">✅</button>` : ''}
+                          ${l.status==='pending' ? `<button onclick="rejectLeave('${l.id}')" title="Reject">❌</button>` : ''}
+                          <button onclick="deleteLeave('${l.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${leaves.length===0?'<tr><td colspan="6" class="text-muted text-center">No leave requests</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${leaves.length} requests</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterLeaves = function() {
+            const search = document.getElementById('leaveSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('leaveStatusFilter')?.value || '';
+            const type = document.getElementById('leaveTypeFilter')?.value || '';
+            const leaves = store.get('leaveRequests');
+            const filtered = leaves.filter(l => {
+                const emp = store.getEmployee(l.employeeId);
+                const name = emp ? `${emp.firstName} ${emp.lastName}`.toLowerCase() : '';
+                return name.includes(search) && (!status || l.status === status) && (!type || l.type === type);
+            });
+            const tbody = document.getElementById('leaveTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(l => {
+                const emp = store.getEmployee(l.employeeId);
+                return `<tr data-id="${l.id}">
+              <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+              <td>${l.type}</td>
+              <td>${dateStr(l.startDate)}</td>
+              <td>${dateStr(l.endDate)}</td>
+              <td><span class="status-badge ${l.status==='approved'?'active':l.status==='rejected'?'inactive':'pending'}">${l.status}</span></td>
+              <td><div class="actions-cell">
+                ${l.status==='pending' ? `<button onclick="approveLeave('${l.id}')" title="Approve">✅</button>` : ''}
+                ${l.status==='pending' ? `<button onclick="rejectLeave('${l.id}')" title="Reject">❌</button>` : ''}
+                <button onclick="deleteLeave('${l.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="6" class="text-muted text-center">No matching requests</td></tr>';
+        };
+
+        // --- Payroll ---
+        pages.payroll = function() {
+            const payroll = store.get('payrollRecords');
+            const emps = store.get('employees');
+            const totalNet = payroll.reduce((s, p) => s + (p.netSalary || 0), 0);
+            const pending = payroll.filter(p => p.status === 'pending').length;
+
+            let html = `
+            <div class="module-header"><h2>💰 Payroll</h2><div class="actions">
+              <button class="btn btn-primary" onclick="runPayroll()">🔄 Run Payroll</button>
+              <button class="btn" onclick="toast('Payroll exported','success')">📥 Export</button>
+            </div></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Payroll</div><div class="value">${formatCurrency(totalNet)}</div></div>
+              <div class="stat-card"><div class="label">Records</div><div class="value">${payroll.length}</div></div>
+              <div class="stat-card"><div class="label">Pending Approval</div><div class="value">${pending}</div></div>
+              <div class="stat-card"><div class="label">Avg Salary</div><div class="value">${payroll.length>0 ? formatCurrency(totalNet/payroll.length) : '$0'}</div></div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search payroll..." id="paySearch" oninput="filterPayroll()"/></div>
+              <select id="payStatusFilter" onchange="filterPayroll()"><option value="">All Status</option><option value="approved">Approved</option><option value="pending">Pending</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Employee</th><th>Month</th><th>Basic</th><th>Bonus</th><th>Deductions</th><th>Net Salary</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="payTableBody">
+                    ${payroll.map(p => {
+                      const emp = store.getEmployee(p.employeeId);
+                      return `<tr data-id="${p.id}">
+                        <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+                        <td>${p.month ? new Date(p.month).toLocaleString('default', {month:'short', year:'numeric'}) : '-'}</td>
+                        <td>${formatCurrency(p.basicSalary||0)}</td>
+                        <td>${formatCurrency(p.bonus||0)}</td>
+                        <td>${formatCurrency(p.deductions||0)}</td>
+                        <td><strong>${formatCurrency(p.netSalary||0)}</strong></td>
+                        <td><span class="status-badge ${p.status==='approved'?'active':'pending'}">${p.status}</span></td>
+                        <td><div class="actions-cell">
+                          ${p.status==='pending' ? `<button onclick="approvePayroll('${p.id}')" title="Approve">✅</button>` : ''}
+                          <button onclick="viewPayslip('${p.id}')" title="View Payslip">📄</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${payroll.length===0?'<tr><td colspan="8" class="text-muted text-center">No payroll records</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${payroll.length} records</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterPayroll = function() {
+            const search = document.getElementById('paySearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('payStatusFilter')?.value || '';
+            const payroll = store.get('payrollRecords');
+            const filtered = payroll.filter(p => {
+                const emp = store.getEmployee(p.employeeId);
+                const name = emp ? `${emp.firstName} ${emp.lastName}`.toLowerCase() : '';
+                return name.includes(search) && (!status || p.status === status);
+            });
+            const tbody = document.getElementById('payTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(p => {
+                const emp = store.getEmployee(p.employeeId);
+                return `<tr data-id="${p.id}">
+              <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+              <td>${p.month ? new Date(p.month).toLocaleString('default', {month:'short', year:'numeric'}) : '-'}</td>
+              <td>${formatCurrency(p.basicSalary||0)}</td>
+              <td>${formatCurrency(p.bonus||0)}</td>
+              <td>${formatCurrency(p.deductions||0)}</td>
+              <td><strong>${formatCurrency(p.netSalary||0)}</strong></td>
+              <td><span class="status-badge ${p.status==='approved'?'active':'pending'}">${p.status}</span></td>
+              <td><div class="actions-cell">
+                ${p.status==='pending' ? `<button onclick="approvePayroll('${p.id}')" title="Approve">✅</button>` : ''}
+                <button onclick="viewPayslip('${p.id}')" title="View Payslip">📄</button>
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="8" class="text-muted text-center">No matching records</td></tr>';
+        };
+
+        // --- Performance ---
+        pages.performance = function() {
+            const reviews = store.get('performanceReviews');
+            const emps = store.get('employees');
+            const avg = reviews.length > 0 ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : 0;
+
+            let html = `
+            <div class="module-header"><h2>⭐ Performance Reviews</h2><div class="actions"><button class="btn btn-primary" onclick="openReviewForm()">+ New Review</button></div></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Reviews</div><div class="value">${reviews.length}</div></div>
+              <div class="stat-card"><div class="label">Avg Rating</div><div class="value">${avg}/5</div></div>
+              <div class="stat-card"><div class="label">Completed</div><div class="value">${reviews.filter(r=>r.status==='completed').length}</div></div>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Employee</th><th>Reviewer</th><th>Rating</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    ${reviews.map(r => {
+                      const emp = store.getEmployee(r.employeeId);
+                      const rev = store.getEmployee(r.reviewerId);
+                      return `<tr>
+                        <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+                        <td>${rev ? rev.firstName + ' ' + rev.lastName : 'Unknown'}</td>
+                        <td><span style="color:${r.rating>=4?'var(--success)':r.rating>=3?'var(--warning)':'var(--danger)'}">${'⭐'.repeat(r.rating)} ${r.rating}/5</span></td>
+                        <td>${dateStr(r.reviewDate)}</td>
+                        <td><span class="status-badge ${r.status==='completed'?'active':'pending'}">${r.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="toast('View review details','info')">👁️</button>
+                          <button onclick="deleteReview('${r.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${reviews.length===0?'<tr><td colspan="6" class="text-muted text-center">No performance reviews</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${reviews.length} reviews</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Training ---
+        pages.training = function() {
+            const training = store.get('trainingRecords');
+            const emps = store.get('employees');
+            const completed = training.filter(t => t.status === 'completed').length;
+            const inProgress = training.filter(t => t.status === 'in-progress').length;
+
+            let html = `
+            <div class="module-header"><h2>🎓 Training & Development</h2><div class="actions"><button class="btn btn-primary" onclick="openTrainingForm()">+ Assign Training</button></div></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(140px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Enrollments</div><div class="value">${training.length}</div></div>
+              <div class="stat-card"><div class="label">Completed</div><div class="value">${completed}</div></div>
+              <div class="stat-card"><div class="label">In Progress</div><div class="value">${inProgress}</div></div>
+              <div class="stat-card"><div class="label">Avg Score</div><div class="value">${training.length>0 ? Math.round(training.reduce((s,t)=>s+(t.score||0),0)/training.length) : 0}%</div></div>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Employee</th><th>Course</th><th>Status</th><th>Score</th><th>Completion</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    ${training.map(t => {
+                      const emp = store.getEmployee(t.employeeId);
+                      return `<tr>
+                        <td><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></td>
+                        <td>${t.course}</td>
+                        <td><span class="status-badge ${t.status==='completed'?'active':'pending'}">${t.status}</span></td>
+                        <td>${t.score || '-'}</td>
+                        <td>${t.completionDate ? dateStr(t.completionDate) : '-'}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="toast('View training details','info')">👁️</button>
+                          <button onclick="deleteTraining('${t.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${training.length===0?'<tr><td colspan="6" class="text-muted text-center">No training records</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${training.length} records</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Reports ---
+        pages.reports = function() {
+            const emps = store.get('employees');
+            const leaves = store.get('leaveRequests');
+            const payroll = store.get('payrollRecords');
+            const reviews = store.get('performanceReviews');
+            const training = store.get('trainingRecords');
+
+            const deptData = {};
+            emps.forEach(e => { deptData[e.department] = (deptData[e.department] || 0) + 1; });
+
+            const statusData = { active: emps.filter(e => e.status === 'active').length, inactive: emps.filter(e => e
+                    .status === 'inactive').length };
+
+            let html = `
+            <div class="module-header"><h2>📊 Reports & Analytics</h2></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+              <div class="stat-card"><div class="label">Total Employees</div><div class="value">${emps.length}</div></div>
+              <div class="stat-card"><div class="label">Total Payroll</div><div class="value">${formatCurrency(payroll.reduce((s,p)=>s+(p.netSalary||0),0))}</div></div>
+              <div class="stat-card"><div class="label">Leave Requests</div><div class="value">${leaves.length}</div></div>
+              <div class="stat-card"><div class="label">Avg Performance</div><div class="value">${reviews.length>0 ? (reviews.reduce((s,r)=>s+r.rating,0)/reviews.length).toFixed(1) : 0}/5</div></div>
+              <div class="stat-card"><div class="label">Training Completion</div><div class="value">${training.filter(t=>t.status==='completed').length}</div></div>
+              <div class="stat-card"><div class="label">Departments</div><div class="value">${Object.keys(deptData).length}</div></div>
+            </div>
+            <div class="chart-row" style="margin-top:16px;">
+              <div class="chart-box"><div class="title">🏢 Department Breakdown</div><canvas id="chartReportDept" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">📊 Status Distribution</div><canvas id="chartReportStatus" height="180"></canvas></div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+              <button class="btn btn-primary" onclick="toast('Report exported as CSV','success')">📥 Export CSV</button>
+              <button class="btn btn-primary" onclick="toast('Report exported as Excel','success')">📊 Export Excel</button>
+              <button class="btn" onclick="toast('Printing report...','info')">🖨️ Print</button>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Settings ---
+        pages.settings = function() {
+            let html = `
+            <div class="module-header"><h2>⚙️ Settings</h2></div>
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Theme</div><div class="detail-value">
+                <button class="btn btn-sm" onclick="toggleTheme()">Toggle Dark/Light</button>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Data Management</div><div class="detail-value">
+                <button class="btn btn-sm btn-danger" onclick="resetData()">Reset All Data</button>
+                <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">This will erase all data and restore seed.</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Storage</div><div class="detail-value">
+                <span>${localStorage.length} items in localStorage</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Version</div><div class="detail-value">HRMS+ Enterprise v3.0</div></div>
+              <div class="detail-row"><div class="detail-label">Audit Logs</div><div class="detail-value">
+                <button class="btn btn-sm" onclick="viewAuditLogs()">📋 View Audit Logs</button>
+              </div></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // ===== CRUD OPERATIONS =====
+
+        // --- Employee CRUD ---
+        window.openEmployeeForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Employee' : 'Add Employee';
+            const d = data || { firstName: '', lastName: '', email: '', phone: '', dateOfBirth: '', hireDate: today(),
+                department: '', position: '', branch: '', status: 'active', salary: '', managerId: '' };
+            const emps = store.get('employees');
+            const depts = [...new Set(emps.map(e => e.department))];
+            const branches = [...new Set(emps.map(e => e.branch))];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>First Name <span class="required">*</span></label><input id="fEmpFirst" value="${d.firstName}" placeholder="First name" /></div>
+              <div class="form-group"><label>Last Name <span class="required">*</span></label><input id="fEmpLast" value="${d.lastName}" placeholder="Last name" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Email</label><input id="fEmpEmail" value="${d.email}" placeholder="email@company.com" /></div>
+              <div class="form-group"><label>Phone</label><input id="fEmpPhone" value="${d.phone||''}" placeholder="+1-xxx-xxx-xxxx" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Date of Birth</label><input id="fEmpDob" value="${d.dateOfBirth||''}" type="date" /></div>
+              <div class="form-group"><label>Hire Date</label><input id="fEmpHire" value="${d.hireDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Department</label><select id="fEmpDept">
+                <option value="">Select...</option>
+                ${depts.map(dep => `<option value="${dep}" ${dep===d.department?'selected':''}>${dep}</option>`).join('')}
+                <option value="Other">Other</option>
+              </select></div>
+              <div class="form-group"><label>Position</label><input id="fEmpPos" value="${d.position||''}" placeholder="Job title" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Branch</label><select id="fEmpBranch">
+                ${branches.map(b => `<option value="${b}" ${b===d.branch?'selected':''}>${b}</option>`).join('')}
+                <option value="Other">Other</option>
+              </select></div>
+              <div class="form-group"><label>Status</label><select id="fEmpStatus"><option ${d.status==='active'?'selected':''}>active</option><option ${d.status==='inactive'?'selected':''}>inactive</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Salary (annual)</label><input id="fEmpSalary" value="${d.salary||''}" placeholder="Annual salary" /></div>
+              <div class="form-group"><label>Manager</label><select id="fEmpManager">
+                <option value="">None</option>
+                ${emps.filter(e => e.id !== d.id).map(e => `<option value="${e.id}" ${e.id===d.managerId?'selected':''}>${e.firstName} ${e.lastName}</option>`).join('')}
+              </select></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveEmpBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveEmpBtn').addEventListener('click', function() {
+                const payload = {
+                    firstName: document.getElementById('fEmpFirst').value.trim(),
+                    lastName: document.getElementById('fEmpLast').value.trim(),
+                    email: document.getElementById('fEmpEmail').value.trim(),
+                    phone: document.getElementById('fEmpPhone').value.trim(),
+                    dateOfBirth: document.getElementById('fEmpDob').value,
+                    hireDate: document.getElementById('fEmpHire').value || today(),
+                    department: document.getElementById('fEmpDept').value || 'Other',
+                    position: document.getElementById('fEmpPos').value.trim() || 'Employee',
+                    branch: document.getElementById('fEmpBranch').value || 'Other',
+                    status: document.getElementById('fEmpStatus').value,
+                    salary: parseFloat(document.getElementById('fEmpSalary').value) || 0,
+                    managerId: document.getElementById('fEmpManager').value || null,
+                };
+                if (!payload.firstName || !payload.lastName) { toast('Name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('employees', d.id, payload);
+                    toast('Employee updated', 'success');
+                    store.addNotification(`${payload.firstName} ${payload.lastName} was updated`, 'info');
+                } else {
+                    payload.id = uid();
+                    payload.createdAt = new Date().toISOString();
+                    payload.tags = ['full-time'];
+                    payload.emergencyContact = '';
+                    payload.emergencyPhone = '';
+                    store.add('employees', payload);
+                    toast('Employee created', 'success');
+                    store.addNotification(`${payload.firstName} ${payload.lastName} was hired`, 'success');
+                    // Add attendance record for today
+                    store.add('attendance', {
+                        id: uid(),
+                        employeeId: payload.id,
+                        date: today(),
+                        checkIn: null,
+                        checkOut: null,
+                        status: 'present'
+                    });
+                    // Add payroll record
+                    store.add('payrollRecords', {
+                        id: uid(),
+                        employeeId: payload.id,
+                        month: new Date().toISOString().split('T')[0],
+                        basicSalary: payload.salary / 12,
+                        overtime: 0,
+                        bonus: 0,
+                        allowances: 0,
+                        deductions: Math.round(payload.salary / 12 * 0.15),
+                        netSalary: Math.round(payload.salary / 12 * 0.85),
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    });
+                }
+                closeModal();
+                navigate('employees');
+            });
+        };
+
+        window.editEmployee = function(id) {
+            const e = store.find('employees', id);
+            if (e) openEmployeeForm(e);
+        };
+
+        window.viewEmployee = function(id) {
+            const e = store.find('employees', id);
+            if (!e) { toast('Employee not found', 'error'); return; }
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = `👤 ${e.firstName} ${e.lastName}`;
+            const manager = store.getEmployee(e.managerId);
+            const leaveReqs = store.query('leaveRequests', l => l.employeeId === id);
+            const payrolls = store.query('payrollRecords', p => p.employeeId === id);
+            const reviews = store.query('performanceReviews', r => r.employeeId === id);
+            const trainings = store.query('trainingRecords', t => t.employeeId === id);
+            const att = store.query('attendance', a => a.employeeId === id);
+
+            body.innerHTML = `
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Full Name</div><div class="detail-value"><strong>${e.firstName} ${e.lastName}</strong></div></div>
+              <div class="detail-row"><div class="detail-label">Email</div><div class="detail-value">${e.email}</div></div>
+              <div class="detail-row"><div class="detail-label">Phone</div><div class="detail-value">${e.phone||'-'}</div></div>
+              <div class="detail-row"><div class="detail-label">Department</div><div class="detail-value">${e.department}</div></div>
+              <div class="detail-row"><div class="detail-label">Position</div><div class="detail-value">${e.position}</div></div>
+              <div class="detail-row"><div class="detail-label">Branch</div><div class="detail-value">${e.branch}</div></div>
+              <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge ${e.status}">${e.status}</span></div></div>
+              <div class="detail-row"><div class="detail-label">Salary</div><div class="detail-value">${formatCurrency(e.salary)}</div></div>
+              <div class="detail-row"><div class="detail-label">Hire Date</div><div class="detail-value">${dateStr(e.hireDate)}</div></div>
+              <div class="detail-row"><div class="detail-label">Manager</div><div class="detail-value">${manager ? manager.firstName + ' ' + manager.lastName : 'None'}</div></div>
+              <div class="detail-row"><div class="detail-label">Leave Requests</div><div class="detail-value">${leaveReqs.length} (${leaveReqs.filter(l=>l.status==='pending').length} pending)</div></div>
+              <div class="detail-row"><div class="detail-label">Payroll Records</div><div class="detail-value">${payrolls.length}</div></div>
+              <div class="detail-row"><div class="detail-label">Performance Reviews</div><div class="detail-value">${reviews.length}</div></div>
+              <div class="detail-row"><div class="detail-label">Training</div><div class="detail-value">${trainings.filter(t=>t.status==='completed').length} completed</div></div>
+              <div class="detail-row"><div class="detail-label">Attendance</div><div class="detail-value">${att.filter(a=>a.status==='present').length} present days</div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Close</button>
+              <button class="btn btn-primary" onclick="closeModal();editEmployee('${id}')">✏️ Edit</button>
+            </div>
+          `;
+            modal.classList.add('open');
+        };
+
+        window.deleteEmployee = function(id) {
+            if (!confirm('Delete this employee and all associated records?')) return;
+            const emp = store.getEmployee(id);
+            store.remove('employees', id);
+            store.remove('attendance', id);
+            store.remove('leaveRequests', id);
+            store.remove('payrollRecords', id);
+            store.remove('performanceReviews', id);
+            store.remove('trainingRecords', id);
+            toast(`Employee ${emp ? emp.firstName + ' ' + emp.lastName : ''} deleted`, 'success');
+            store.addNotification(`Employee ${emp ? emp.firstName + ' ' + emp.lastName : ''} was terminated`, 'warning');
+            navigate('employees');
+        };
+
+        // --- Leave CRUD ---
+        window.openLeaveForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Leave Request' : 'Request Leave';
+            const d = data || { employeeId: '', type: 'Annual', startDate: today(), endDate: today(), reason: '' };
+            const emps = store.get('employees');
+            const types = ['Annual', 'Sick', 'Maternity', 'Paternity', 'Compassionate', 'Study', 'Unpaid'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Employee</label><select id="fLeaveEmp">
+              <option value="">Select...</option>
+              ${emps.map(e => `<option value="${e.id}" ${e.id===d.employeeId?'selected':''}>${e.firstName} ${e.lastName}</option>`).join('')}
+            </select></div>
+            <div class="form-group"><label>Leave Type</label><select id="fLeaveType">${types.map(t => `<option ${t===d.type?'selected':''}>${t}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Start Date</label><input id="fLeaveStart" value="${d.startDate||today()}" type="date" /></div>
+              <div class="form-group"><label>End Date</label><input id="fLeaveEnd" value="${d.endDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-group"><label>Reason</label><textarea id="fLeaveReason" rows="2">${d.reason||''}</textarea></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveLeaveBtn">${isEdit ? 'Update' : 'Request'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveLeaveBtn').addEventListener('click', function() {
+                const payload = {
+                    employeeId: document.getElementById('fLeaveEmp').value,
+                    type: document.getElementById('fLeaveType').value,
+                    startDate: document.getElementById('fLeaveStart').value || today(),
+                    endDate: document.getElementById('fLeaveEnd').value || today(),
+                    reason: document.getElementById('fLeaveReason').value.trim() || 'No reason provided',
+                    status: 'pending'
+                };
+                if (!payload.employeeId) { toast('Please select an employee', 'error'); return; }
+                if (isEdit) {
+                    store.update('leaveRequests', d.id, payload);
+                    toast('Leave request updated', 'success');
+                } else {
+                    payload.id = uid();
+                    payload.createdAt = new Date().toISOString();
+                    store.add('leaveRequests', payload);
+                    toast('Leave request submitted', 'success');
+                    store.addNotification(`Leave request from ${store.getEmployeeName(payload.employeeId)}`, 'info');
+                }
+                closeModal();
+                navigate('leave');
+            });
+        };
+
+        window.approveLeave = function(id) {
+            store.update('leaveRequests', id, { status: 'approved' });
+            const req = store.find('leaveRequests', id);
+            toast(`Leave approved for ${store.getEmployeeName(req?.employeeId)}`, 'success');
+            store.addNotification(`Leave approved for ${store.getEmployeeName(req?.employeeId)}`, 'success');
+            navigate('leave');
+        };
+
+        window.rejectLeave = function(id) {
+            store.update('leaveRequests', id, { status: 'rejected' });
+            const req = store.find('leaveRequests', id);
+            toast(`Leave rejected for ${store.getEmployeeName(req?.employeeId)}`, 'warning');
+            navigate('leave');
+        };
+
+        window.deleteLeave = function(id) {
+            if (!confirm('Delete this leave request?')) return;
+            store.remove('leaveRequests', id);
+            toast('Leave request deleted', 'success');
+            navigate('leave');
+        };
+
+        // --- Payroll CRUD ---
+        window.runPayroll = function() {
+            const emps = store.get('employees');
+            const existing = store.get('payrollRecords');
+            const month = new Date().toISOString().split('T')[0];
+            const existingMonth = existing.filter(p => p.month === month);
+            if (existingMonth.length > 0) {
+                toast('Payroll already run for this month', 'warning');
+                return;
+            }
+            let count = 0;
+            emps.forEach(e => {
+                if (e.status === 'active') {
+                    const basic = e.salary / 12;
+                    const bonus = Math.round(Math.random() * 1500);
+                    const deductions = Math.round(basic * 0.15 + Math.random() * 300);
+                    store.add('payrollRecords', {
+                        id: uid(),
+                        employeeId: e.id,
+                        month: month,
+                        basicSalary: Math.round(basic),
+                        overtime: Math.round(Math.random() * 400),
+                        bonus: bonus,
+                        allowances: Math.round(Math.random() * 600),
+                        deductions: deductions,
+                        netSalary: Math.round(basic + bonus + Math.random() * 300 - deductions),
+                        status: 'pending',
+                        createdAt: new Date().toISOString()
+                    });
+                    count++;
+                }
+            });
+            toast(`Payroll run for ${count} employees`, 'success');
+            store.addNotification(`Payroll generated for ${count} employees`, 'success');
+            navigate('payroll');
+        };
+
+        window.approvePayroll = function(id) {
+            store.update('payrollRecords', id, { status: 'approved' });
+            toast('Payroll approved', 'success');
+            navigate('payroll');
+        };
+
+        window.viewPayslip = function(id) {
+            const p = store.find('payrollRecords', id);
+            if (!p) { toast('Record not found', 'error'); return; }
+            const emp = store.getEmployee(p.employeeId);
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = `📄 Payslip — ${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}`;
+            body.innerHTML = `
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Employee</div><div class="detail-value"><strong>${emp ? emp.firstName + ' ' + emp.lastName : 'Unknown'}</strong></div></div>
+              <div class="detail-row"><div class="detail-label">Month</div><div class="detail-value">${p.month ? new Date(p.month).toLocaleString('default', {month:'long', year:'numeric'}) : '-'}</div></div>
+              <div class="detail-row"><div class="detail-label">Basic Salary</div><div class="detail-value">${formatCurrency(p.basicSalary)}</div></div>
+              <div class="detail-row"><div class="detail-label">Overtime</div><div class="detail-value">${formatCurrency(p.overtime||0)}</div></div>
+              <div class="detail-row"><div class="detail-label">Bonus</div><div class="detail-value">${formatCurrency(p.bonus||0)}</div></div>
+              <div class="detail-row"><div class="detail-label">Allowances</div><div class="detail-value">${formatCurrency(p.allowances||0)}</div></div>
+              <div class="detail-row"><div class="detail-label">Deductions</div><div class="detail-value">${formatCurrency(p.deductions||0)}</div></div>
+              <div class="detail-row" style="border-top:2px solid var(--border-color);padding-top:12px;margin-top:4px;"><div class="detail-label" style="font-weight:700;">Net Salary</div><div class="detail-value" style="font-weight:700;font-size:18px;color:var(--accent);">${formatCurrency(p.netSalary)}</div></div>
+              <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge ${p.status==='approved'?'active':'pending'}">${p.status}</span></div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Close</button>
+              <button class="btn btn-primary" onclick="toast('Payslip downloaded','success')">📥 Download PDF</button>
+            </div>
+          `;
+            modal.classList.add('open');
+        };
+
+        // --- Job CRUD ---
+        window.openJobForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Job Opening' : 'New Job Opening';
+            const d = data || { title: '', department: '', location: '', status: 'open', applicants: 0 };
+            const depts = [...new Set(store.get('employees').map(e => e.department))];
+            const branches = [...new Set(store.get('employees').map(e => e.branch))];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Job Title <span class="required">*</span></label><input id="fJobTitle" value="${d.title}" placeholder="e.g. Senior Software Engineer" /></div>
+            <div class="form-row">
+              <div class="form-group"><label>Department</label><select id="fJobDept"><option value="">Select...</option>${depts.map(dep => `<option value="${dep}" ${dep===d.department?'selected':''}>${dep}</option>`).join('')}<option value="Other">Other</option></select></div>
+              <div class="form-group"><label>Location</label><select id="fJobLoc"><option value="">Select...</option>${branches.map(b => `<option value="${b}" ${b===d.location?'selected':''}>${b}</option>`).join('')}<option value="Remote">Remote</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fJobStatus"><option ${d.status==='open'?'selected':''}>open</option><option ${d.status==='in-progress'?'selected':''}>in-progress</option><option ${d.status==='closed'?'selected':''}>closed</option></select></div>
+              <div class="form-group"><label>Applicants (est.)</label><input id="fJobApplicants" value="${d.applicants||0}" type="number" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveJobBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveJobBtn').addEventListener('click', function() {
+                const payload = {
+                    title: document.getElementById('fJobTitle').value.trim(),
+                    department: document.getElementById('fJobDept').value || 'Other',
+                    location: document.getElementById('fJobLoc').value || 'Other',
+                    status: document.getElementById('fJobStatus').value,
+                    applicants: parseInt(document.getElementById('fJobApplicants').value) || 0,
+                    postedDate: new Date().toISOString().split('T')[0],
+                    hiringManager: null
+                };
+                if (!payload.title) { toast('Job title is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('jobOpenings', d.id, payload);
+                    toast('Job updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('jobOpenings', payload);
+                    toast('Job opening created', 'success');
+                    store.addNotification(`New job opening: ${payload.title}`, 'info');
+                }
+                closeModal();
+                navigate('recruitment');
+            });
+        };
+
+        window.editJob = function(id) {
+            const j = store.find('jobOpenings', id);
+            if (j) openJobForm(j);
+        };
+        window.deleteJob = function(id) {
+            if (!confirm('Delete this job opening?')) return;
+            store.remove('jobOpenings', id);
+            toast('Job deleted', 'success');
+            navigate('recruitment');
+        };
+        window.viewJob = function(id) {
+            const j = store.find('jobOpenings', id);
+            if (!j) { toast('Job not found', 'error'); return; }
+            toast(`Viewing: ${j.title} — ${j.applicants} applicants`, 'info');
+        };
+
+        // --- Performance Review CRUD ---
+        window.openReviewForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Review' : 'New Performance Review';
+            const d = data || { employeeId: '', rating: 3, comments: '', reviewDate: today() };
+            const emps = store.get('employees');
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Employee</label><select id="fRevEmp"><option value="">Select...</option>${emps.map(e => `<option value="${e.id}" ${e.id===d.employeeId?'selected':''}>${e.firstName} ${e.lastName}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Rating (1-5)</label><input id="fRevRating" value="${d.rating||3}" type="number" min="1" max="5" /></div>
+              <div class="form-group"><label>Review Date</label><input id="fRevDate" value="${d.reviewDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-group"><label>Comments</label><textarea id="fRevComments" rows="2">${d.comments||''}</textarea></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveRevBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveRevBtn').addEventListener('click', function() {
+                const payload = {
+                    employeeId: document.getElementById('fRevEmp').value,
+                    rating: parseInt(document.getElementById('fRevRating').value) || 3,
+                    reviewDate: document.getElementById('fRevDate').value || today(),
+                    comments: document.getElementById('fRevComments').value.trim() || 'No comments',
+                    status: 'completed',
+                    reviewerId: store.get('employees')[0]?.id || ''
+                };
+                if (!payload.employeeId) { toast('Please select an employee', 'error'); return; }
+                if (isEdit) {
+                    store.update('performanceReviews', d.id, payload);
+                    toast('Review updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('performanceReviews', payload);
+                    toast('Review created', 'success');
+                    store.addNotification(`Performance review for ${store.getEmployeeName(payload.employeeId)}`, 'info');
+                }
+                closeModal();
+                navigate('performance');
+            });
+        };
+
+        window.deleteReview = function(id) {
+            if (!confirm('Delete this review?')) return;
+            store.remove('performanceReviews', id);
+            toast('Review deleted', 'success');
+            navigate('performance');
+        };
+
+        // --- Training CRUD ---
+        window.openTrainingForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Training' : 'Assign Training';
+            const d = data || { employeeId: '', course: '', status: 'in-progress', score: '' };
+            const emps = store.get('employees');
+            const courses = ['Leadership 101', 'Advanced Excel', 'Project Management', 'Python Programming',
+                'Communication Skills', 'Financial Modeling', 'Data Analytics', 'Cloud Computing'
+            ];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Employee</label><select id="fTrainEmp"><option value="">Select...</option>${emps.map(e => `<option value="${e.id}" ${e.id===d.employeeId?'selected':''}>${e.firstName} ${e.lastName}</option>`).join('')}</select></div>
+            <div class="form-group"><label>Course</label><select id="fTrainCourse">${courses.map(c => `<option ${c===d.course?'selected':''}>${c}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fTrainStatus"><option ${d.status==='in-progress'?'selected':''}>in-progress</option><option ${d.status==='completed'?'selected':''}>completed</option></select></div>
+              <div class="form-group"><label>Score (%)</label><input id="fTrainScore" value="${d.score||''}" type="number" min="0" max="100" placeholder="Score" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveTrainBtn">${isEdit ? 'Update' : 'Assign'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveTrainBtn').addEventListener('click', function() {
+                const payload = {
+                    employeeId: document.getElementById('fTrainEmp').value,
+                    course: document.getElementById('fTrainCourse').value,
+                    status: document.getElementById('fTrainStatus').value,
+                    score: parseInt(document.getElementById('fTrainScore').value) || null,
+                };
+                if (!payload.employeeId) { toast('Please select an employee', 'error'); return; }
+                if (isEdit) {
+                    if (payload.status === 'completed' && !payload.completionDate) {
+                        payload.completionDate = new Date().toISOString().split('T')[0];
+                    }
+                    store.update('trainingRecords', d.id, payload);
+                    toast('Training updated', 'success');
+                } else {
+                    payload.id = uid();
+                    payload.completionDate = payload.status === 'completed' ? new Date().toISOString().split('T')[0] :
+                    null;
+                    store.add('trainingRecords', payload);
+                    toast('Training assigned', 'success');
+                    store.addNotification(`Training assigned to ${store.getEmployeeName(payload.employeeId)}`, 'info');
+                }
+                closeModal();
+                navigate('training');
+            });
+        };
+
+        window.deleteTraining = function(id) {
+            if (!confirm('Delete this training record?')) return;
+            store.remove('trainingRecords', id);
+            toast('Training record deleted', 'success');
+            navigate('training');
+        };
+
+        // ===== AUDIT LOGS =====
+        window.viewAuditLogs = function() {
+            const logs = store.get('auditLogs');
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = '📋 Audit Logs';
+            body.innerHTML = `
+            <div style="max-height:400px;overflow-y:auto;">
+              <table>
+                <thead><tr><th>User</th><th>Action</th><th>Module</th><th>Details</th><th>Time</th></tr></thead>
+                <tbody>
+                  ${logs.slice(0, 50).map(l => `
+                    <tr><td><strong>${l.user}</strong></td><td>${l.action}</td><td>${l.module}</td><td>${l.details}</td><td>${timeStr(l.timestamp)}</td></tr>
+                  `).join('')}
+                  ${logs.length===0?'<tr><td colspan="5" class="text-muted text-center">No audit logs</td></tr>':''}
+                </tbody>
+              </table>
+            </div>
+            <div class="form-actions"><button class="btn" onclick="closeModal()">Close</button></div>
+          `;
+            modal.classList.add('open');
+        };
+
+        // ===== MODAL =====
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+        // ===== THEME =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            store.data.settings.theme = next;
+            store.save();
+            toast(`Switched to ${next} mode`, 'info');
+        }
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // ===== SIDEBAR TOGGLE =====
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // ===== NAVIGATION =====
+        document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const page = this.dataset.page;
+                if (page) navigate(page);
+                if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+            });
+        });
+
+        // ===== GLOBAL SEARCH =====
+        document.getElementById('globalSearch').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const q = this.value.trim().toLowerCase();
+                if (!q) return;
+                const emps = store.get('employees');
+                const results = emps.filter(e => `${e.firstName} ${e.lastName}`.toLowerCase().includes(q) || e.email
+                    .toLowerCase().includes(q) || e.department.toLowerCase().includes(q));
+                if (results.length === 0) { toast('No employees found', 'warning'); return; }
+                toast(`Found ${results.length} employee${results.length>1?'s':''}`, 'info');
+                navigate('employees');
+                setTimeout(() => {
+                    const tbody = document.getElementById('empTableBody');
+                    if (tbody) {
+                        const html = results.map(e => `
+                      <tr data-id="${e.id}">
+                        <td><strong>${e.firstName} ${e.lastName}</strong></td>
+                        <td>${e.department}</td>
+                        <td>${e.position}</td>
+                        <td>${e.branch}</td>
+                        <td><span class="status-badge ${e.status}">${e.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewEmployee('${e.id}')" title="View">👁️</button>
+                          <button onclick="editEmployee('${e.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteEmployee('${e.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('');
+                        tbody.innerHTML = html || '<tr><td colspan="6" class="text-muted text-center">No results</td></tr>';
+                    }
+                }, 100);
+                this.value = '';
+            }
+        });
+
+        // ===== COMMAND PALETTE =====
+        document.getElementById('cmdPaletteBtn').addEventListener('click', function() {
+            const palette = document.getElementById('cmdPalette');
+            palette.classList.toggle('open');
+            if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+        });
+        document.getElementById('cmdInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const results = document.getElementById('cmdResults');
+            const commands = [
+                { label: 'Dashboard', shortcut: 'G D', page: 'dashboard' },
+                { label: 'Employees', shortcut: 'G E', page: 'employees' },
+                { label: 'Organization', shortcut: 'G O', page: 'organization' },
+                { label: 'Recruitment', shortcut: 'G R', page: 'recruitment' },
+                { label: 'Attendance', shortcut: 'G A', page: 'attendance' },
+                { label: 'Leave', shortcut: 'G L', page: 'leave' },
+                { label: 'Payroll', shortcut: 'G P', page: 'payroll' },
+                { label: 'Performance', shortcut: 'G F', page: 'performance' },
+                { label: 'Training', shortcut: 'G T', page: 'training' },
+                { label: 'Reports', shortcut: 'G S', page: 'reports' },
+                { label: 'Settings', shortcut: 'G H', page: 'settings' },
+                { label: 'Add Employee', shortcut: 'N E', action: 'employee' },
+                { label: 'Add Leave Request', shortcut: 'N L', action: 'leave' },
+                { label: 'Add Job Opening', shortcut: 'N J', action: 'job' },
+                { label: 'Run Payroll', shortcut: 'R P', action: 'payroll' },
+                { label: 'Toggle Theme', shortcut: 'T T', action: 'theme' },
+            ];
+            const filtered = q ? commands.filter(c => c.label.toLowerCase().includes(q)) : commands;
+            results.innerHTML = filtered.map(c => `
+            <div class="result-item" data-page="${c.page}" data-action="${c.action}">
+              <span class="icon">${c.label[0]}</span> ${c.label} <span class="shortcut">${c.shortcut}</span>
+            </div>
+          `).join('');
+            results.querySelectorAll('.result-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    const action = this.dataset.action;
+                    if (page) navigate(page);
+                    else if (action === 'employee') openEmployeeForm();
+                    else if (action === 'leave') openLeaveForm();
+                    else if (action === 'job') openJobForm();
+                    else if (action === 'payroll') runPayroll();
+                    else if (action === 'theme') toggleTheme();
+                    document.getElementById('cmdPalette').classList.remove('open');
+                });
+            });
+        });
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const palette = document.getElementById('cmdPalette');
+                palette.classList.toggle('open');
+                if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('cmdPalette').classList.remove('open');
+                document.getElementById('notifCenter').classList.remove('open');
+                document.getElementById('profileMenu').classList.remove('open');
+                document.getElementById('contextMenu').classList.remove('open');
+            }
+        });
+
+        // ===== NOTIFICATIONS =====
+        document.getElementById('notifBtn').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.toggle('open');
+            const notifs = store.get('notifications');
+            notifs.forEach(n => n.read = true);
+            store.set('notifications', notifs);
+            store.updateNotifDot();
+            renderNotifs();
+        });
+        document.getElementById('notifClose').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.remove('open');
+        });
+
+        function renderNotifs() {
+            const list = document.getElementById('notifList');
+            const notifs = store.get('notifications');
+            list.innerHTML = notifs.slice(0, 20).map(n => `
+            <div class="notif-item">
+              <span class="notif-icon">${n.type==='success'?'✅':n.type==='error'?'❌':n.type==='warning'?'⚠️':'ℹ️'}</span>
+              <div><div>${n.message}</div><div class="notif-time">${timeStr(n.time)}</div></div>
+            </div>
+          `).join('') || '<div class="notif-item">No notifications</div>';
+        }
+        store.updateNotifDot();
+
+        // ===== PROFILE =====
+        document.getElementById('profileBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profileMenu').classList.toggle('open');
+        });
+        document.addEventListener('click', function() { document.getElementById('profileMenu').classList.remove('open'); });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('profileMenu').classList.remove('open');
+            toast('Logged out', 'info');
+        });
+
+        // ===== CONTEXT MENU =====
+        document.addEventListener('contextmenu', function(e) {
+            const target = e.target.closest('tr[data-id]');
+            if (target) {
+                e.preventDefault();
+                const menu = document.getElementById('contextMenu');
+                menu.classList.add('open');
+                menu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
+                menu.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+                menu.dataset.targetId = target.dataset.id;
+                const page = document.querySelector('.sidebar-nav .nav-item.active')?.dataset?.page || '';
+                menu.dataset.page = page;
+            }
+        });
+        document.addEventListener('click', function() { document.getElementById('contextMenu').classList.remove('open'); });
+        document.querySelectorAll('#contextMenu .item').forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const id = document.getElementById('contextMenu').dataset.targetId;
+                const page = document.getElementById('contextMenu').dataset.page;
+                if (!id) return;
+                if (action === 'edit') {
+                    if (page === 'employees') editEmployee(id);
+                    else if (page === 'leave') { const l = store.find('leaveRequests', id); if (l) openLeaveForm(l); }
+                } else if (action === 'delete') {
+                    if (page === 'employees') deleteEmployee(id);
+                    else if (page === 'leave') deleteLeave(id);
+                    else if (page === 'recruitment') deleteJob(id);
+                } else if (action === 'duplicate') {
+                    toast('Duplicated!', 'success');
+                }
+                document.getElementById('contextMenu').classList.remove('open');
+            });
+        });
+
+        // ===== RESET =====
+        window.resetData = function() {
+            if (!confirm('⚠️ This will erase all data and restore seed. Continue?')) return;
+            localStorage.removeItem('hrms_data');
+            store.seed();
+            toast('Data reset successfully', 'success');
+            navigate('dashboard');
+        };
+
+        // ===== CHARTS =====
+        let chartsInitialized = false;
+
+        function initCharts() {
+            if (typeof Chart === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => { setTimeout(initCharts, 300); };
+                document.head.appendChild(script);
+                return;
+            }
+            document.querySelectorAll('#chartDept, #chartStatus, #chartHiring, #chartLeave, #chartReportDept, #chartReportStatus')
+                .forEach(c => { const ctx = c?.getContext('2d'); if (ctx) ctx.clearRect(0, 0, c.width, c.height); });
+
+            const emps = store.get('employees');
+            const deptData = {};
+            emps.forEach(e => { deptData[e.department] = (deptData[e.department] || 0) + 1; });
+            const deptLabels = Object.keys(deptData);
+            const deptVals = Object.values(deptData);
+
+            const statusData = { active: emps.filter(e => e.status === 'active').length, inactive: emps.filter(e => e
+                    .status === 'inactive').length };
+
+            const ctx1 = document.getElementById('chartDept');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: { labels: deptLabels.slice(0, 8), datasets: [{ label: 'Employees', data: deptVals.slice(0,
+                            8), backgroundColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#2563eb', '#7c3aed',
+                            '#8b5cf6', '#a78bfa', '#6d28d9'
+                        ], borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx2 = document.getElementById('chartStatus');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: ['Active', 'Inactive'], datasets: [{ data: [statusData.active, statusData
+                                .inactive], backgroundColor: ['#16a34a', '#dc2626'] }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right',
+                                labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+
+            const ctx3 = document.getElementById('chartHiring');
+            if (ctx3) {
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+                const hires = months.map(() => Math.floor(Math.random() * 6 + 1));
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: { labels: months, datasets: [{ label: 'New Hires', data: hires, borderColor: '#3b82f6',
+                            tension: 0.3, fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx4 = document.getElementById('chartLeave');
+            if (ctx4) {
+                const types = ['Annual', 'Sick', 'Maternity', 'Paternity', 'Other'];
+                const used = types.map(t => store.get('leaveRequests').filter(l => l.type === t && l.status === 'approved')
+                    .length);
+                new Chart(ctx4, {
+                    type: 'bar',
+                    data: { labels: types, datasets: [{ label: 'Used', data: used, backgroundColor: ['#f59e0b',
+                                '#ef4444', '#8b5cf6', '#3b82f6', '#6b7280'
+                            ], borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            // Report charts
+            const ctx5 = document.getElementById('chartReportDept');
+            if (ctx5) {
+                new Chart(ctx5, {
+                    type: 'bar',
+                    data: { labels: deptLabels.slice(0, 6), datasets: [{ label: 'Headcount', data: deptVals.slice(0,
+                            6), backgroundColor: '#7c3aed', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx6 = document.getElementById('chartReportStatus');
+            if (ctx6) {
+                new Chart(ctx6, {
+                    type: 'pie',
+                    data: { labels: ['Active', 'Inactive'], datasets: [{ data: [statusData.active, statusData
+                                .inactive], backgroundColor: ['#16a34a', '#dc2626'] }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right',
+                                labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+        }
+
+        // ===== BIND PAGE EVENTS =====
+        function bindPageEvents(page) {
+            if (page === 'attendance') {
+                // Clock
+                const clockBtn = document.getElementById('clockBtn');
+                if (clockBtn) {
+                    clockBtn.addEventListener('click', function() {
+                        const checkedIn = sessionStorage.getItem('hrms_checked_in') === 'true';
+                        if (checkedIn) {
+                            sessionStorage.setItem('hrms_checked_in', 'false');
+                            toast('Clocked out successfully', 'info');
+                            store.addNotification('You clocked out', 'info');
+                        } else {
+                            sessionStorage.setItem('hrms_checked_in', 'true');
+                            toast('Clocked in successfully', 'success');
+                            store.addNotification('You clocked in', 'success');
+                            // Add attendance record for current user (simulated)
+                            const emps = store.get('employees');
+                            if (emps.length > 0) {
+                                store.add('attendance', {
+                                    id: uid(),
+                                    employeeId: emps[0].id,
+                                    date: today(),
+                                    checkIn: new Date().toISOString(),
+                                    checkOut: null,
+                                    status: 'present'
+                                });
+                            }
+                        }
+                        // Update UI
+                        const dot = document.querySelector('.clock-display .dot');
+                        const label = document.querySelector('.clock-display .status span:last-child');
+                        if (dot) {
+                            dot.className = `dot ${checkedIn ? 'checked-out' : 'checked-in'}`;
+                        }
+                        if (label) {
+                            label.textContent = checkedIn ? 'Checked Out' : 'Checked In';
+                        }
+                        clockBtn.textContent = checkedIn ? 'Clock In' : 'Clock Out';
+                        clockBtn.className = `btn ${checkedIn ? 'btn-success' : 'btn-danger'}`;
+                    });
+                }
+                // Clock display
+                const clockDisplay = document.getElementById('clockDisplay');
+                if (clockDisplay) {
+                    setInterval(() => {
+                        const now = new Date();
+                        clockDisplay.textContent = now.toLocaleTimeString('en-US', { hour12: false });
+                    }, 1000);
+                }
+            }
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            if (email === 'admin@hrms.com' && pass === 'admin123') {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                toast('Welcome to HRMS+ Enterprise', 'success');
+                store.addNotification('John Doe logged in', 'info');
+            } else {
+                toast('Invalid credentials. Try admin@hrms.com / admin123', 'error');
+            }
+        });
+        // Enter key on login
+        document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        // ===== INIT =====
+        const savedTheme = store.data?.settings?.theme || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Check if already logged in (skip login for demo)
+        // For demo, we auto-login after a moment
+        setTimeout(() => {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            toast('Welcome to HRMS+ Enterprise', 'success');
+        }, 400);
+
+        navigate('dashboard');
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                const map = { '1': 'dashboard', '2': 'employees', '3': 'organization', '4': 'recruitment',
+                    '5': 'attendance', '6': 'leave', '7': 'payroll', '8': 'performance', '9': 'training' };
+                const page = map[e.key];
+                if (page) { e.preventDefault();
+                    navigate(page); }
+            }
+        });
+
+        console.log('🚀 HRMS+ Enterprise loaded successfully');
+        console.log(`👥 ${store.get('employees').length} employees, 📋 ${store.get('leaveRequests').length} leave requests, 💰 ${store.get('payrollRecords').length} payroll records`);
+    </script>
+
+</body>
+</html>

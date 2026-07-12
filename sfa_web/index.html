@@ -1,0 +1,3824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SFA+ — Enterprise Sales Force Automation</title>
+    <style>
+        /* ===== CSS Variables & Theme ===== */
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-sidebar: #0a1628;
+            --bg-sidebar-hover: #152238;
+            --bg-topnav: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f4f9;
+            --text-primary: #0a1628;
+            --text-secondary: #334155;
+            --text-muted: #94a3b8;
+            --text-light: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --info: #0ea5e9;
+            --info-light: #e0f2fe;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --pink: #ec4899;
+            --pink-light: #fce7f3;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --sidebar-width: 260px;
+            --topnav-height: 64px;
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #141b2b;
+            --bg-sidebar: #050a14;
+            --bg-sidebar-hover: #142033;
+            --bg-topnav: #141b2b;
+            --bg-card: #1a2335;
+            --bg-input: #1f2a3f;
+            --text-primary: #e8edf5;
+            --text-secondary: #b0c0d4;
+            --text-muted: #6a7a8e;
+            --border-color: #2a3a4f;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --accent-light: #1a2d4a;
+            --success-light: #0f2a1a;
+            --warning-light: #2a2410;
+            --danger-light: #2a1414;
+            --info-light: #0a1a2a;
+            --purple-light: #1a103a;
+            --pink-light: #2a1020;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 14px;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background var(--transition);
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+            width: 100%;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            flex: 1;
+            padding: 20px 28px 40px;
+            height: 100%;
+        }
+        .scrollable::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scrollable::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 8px;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: var(--topnav-height);
+        }
+        .sidebar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+        .sidebar-brand h1 span {
+            color: var(--accent);
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 12px 20px;
+            overflow-y: auto;
+        }
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+        }
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.35);
+            padding: 16px 12px 6px;
+            font-weight: 600;
+        }
+        .sidebar-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all var(--transition);
+            margin-bottom: 1px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            font-size: 13.5px;
+        }
+        .sidebar-nav .nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: #fff;
+        }
+        .sidebar-nav .nav-item.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+        .sidebar-nav .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-nav .nav-item .icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .sidebar-nav .nav-item .badge {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .sidebar-nav .nav-item.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-footer .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .sidebar-footer .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sidebar-footer .user-info .name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-footer .user-info .role {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+        }
+        .sidebar-footer .theme-toggle {
+            color: rgba(255, 255, 255, 0.5);
+            padding: 4px;
+            border-radius: 6px;
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-footer .theme-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-footer .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+
+        .topnav {
+            background: var(--bg-topnav);
+            padding: 0 24px;
+            height: var(--topnav-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            transition: background var(--transition), border var(--transition);
+            gap: 16px;
+        }
+        .topnav-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+        .topnav-left .menu-toggle {
+            display: none;
+            padding: 6px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .topnav-left .menu-toggle:hover {
+            background: var(--bg-input);
+        }
+        .topnav-left .menu-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .topnav .breadcrumbs span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .topnav .breadcrumbs .sep {
+            color: var(--text-muted);
+            margin: 0 2px;
+        }
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .topnav-right .btn-icon {
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topnav-right .btn-icon:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .topnav-right .btn-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav-right .btn-icon .dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--bg-topnav);
+        }
+        .topnav-right .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 0 12px;
+            gap: 8px;
+            border: 1px solid transparent;
+            transition: all var(--transition);
+            min-width: 180px;
+        }
+        .topnav-right .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            background: var(--bg-secondary);
+        }
+        .topnav-right .search-box svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .topnav-right .search-box input {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            font-size: 13px;
+            width: 120px;
+            transition: width var(--transition);
+        }
+        .topnav-right .search-box input:focus {
+            width: 180px;
+            box-shadow: none;
+        }
+        .topnav-right .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .page-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .page {
+            display: none;
+            height: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .stat-card .label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+            color: var(--text-primary);
+        }
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-card .change.up {
+            color: var(--success);
+        }
+        .stat-card .change.down {
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap {
+            float: right;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-top: -4px;
+        }
+        .stat-card .icon-wrap.blue {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .stat-card .icon-wrap.green {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .stat-card .icon-wrap.yellow {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .stat-card .icon-wrap.red {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+        .stat-card .icon-wrap.pink {
+            background: var(--pink-light);
+            color: var(--pink);
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .chart-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .chart-box .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .chart-box canvas {
+            width: 100% !important;
+            max-height: 240px;
+        }
+
+        .recent-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .recent-table-wrap .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .recent-table-wrap .title .link {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+        table tr:hover td {
+            background: var(--bg-input);
+        }
+        table .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .status-badge.inactive {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .status-badge.pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .status-badge.info {
+            background: var(--info-light);
+            color: var(--info);
+        }
+        .status-badge.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .module-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .module-header .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--transition);
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            border-color: var(--accent-hover);
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+        .btn-success:hover {
+            background: #15803d;
+            color: #fff;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            color: #fff;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: #fff;
+            border-color: var(--warning);
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        .btn-icon-only {
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .filter-bar select,
+        .filter-bar input {
+            width: auto;
+            min-width: 120px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        .filter-bar .search-input {
+            flex: 1;
+            min-width: 180px;
+        }
+        .filter-bar .search-input input {
+            width: 100%;
+        }
+
+        .module-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-table-wrap .table-scroll {
+            flex: 1;
+            overflow: auto;
+        }
+        .module-table-wrap table {
+            font-size: 13px;
+        }
+        .module-table-wrap table td .actions-cell {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap table td .actions-cell button {
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .module-table-wrap table td .actions-cell button:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .module-table-wrap .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .module-table-wrap .pagination .info {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .module-table-wrap .pagination .pages {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap .pagination .pages button {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .module-table-wrap .pagination .pages button:hover {
+            background: var(--bg-input);
+        }
+        .module-table-wrap .pagination .pages button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            max-width: 700px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.25s ease;
+            border: 1px solid var(--border-color);
+        }
+        .modal.wide {
+            max-width: 900px;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .modal .modal-header .close {
+            padding: 4px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .modal .modal-header .close:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .modal .modal-header .close svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+        .modal .form-group .required {
+            color: var(--danger);
+        }
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .modal .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+        .toast.success {
+            border-left-color: var(--success);
+        }
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .toast .toast-msg {
+            flex: 1;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .toast .toast-close {
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .empty-state .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 18px;
+        }
+        .empty-state p {
+            font-size: 14px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 1024px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .topnav-left .menu-toggle {
+                display: flex;
+            }
+            .topnav-right .search-box {
+                min-width: auto;
+            }
+            .topnav-right .search-box input {
+                width: 80px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 120px;
+            }
+            .topnav .breadcrumbs {
+                font-size: 12px;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .stat-card .value {
+                font-size: 22px;
+            }
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 20px;
+                max-width: 96%;
+            }
+            .module-header h2 {
+                font-size: 18px;
+            }
+            .scrollable {
+                padding: 14px 16px 30px;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar .search-input {
+                min-width: auto;
+            }
+            .filter-bar select,
+            .filter-bar input {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .topnav {
+                padding: 0 12px;
+                gap: 8px;
+            }
+            .topnav-right .search-box input {
+                width: 60px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 100px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-card .value {
+                font-size: 18px;
+            }
+            .stat-card .icon-wrap {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .detail-view {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-view .detail-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .detail-view .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-view .detail-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 140px;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+        .detail-view .detail-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        .detail-view .detail-value .tag {
+            display: inline-block;
+            background: var(--bg-input);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px 4px 2px 0;
+        }
+
+        .context-menu {
+            position: fixed;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 6px 0;
+            min-width: 180px;
+            z-index: 4000;
+            display: none;
+        }
+        .context-menu.open {
+            display: block;
+        }
+        .context-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .context-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .context-menu .item.danger {
+            color: var(--danger);
+        }
+        .context-menu .item.danger:hover {
+            background: var(--danger-light);
+        }
+        .context-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        .cmd-palette {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 540px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 5000;
+            display: none;
+            overflow: hidden;
+            padding: 8px 0;
+        }
+        .cmd-palette.open {
+            display: block;
+            animation: slideUp 0.2s ease;
+        }
+        .cmd-palette input {
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            width: 100%;
+            outline: none;
+        }
+        .cmd-palette input:focus {
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+        .cmd-palette .results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .cmd-palette .results .result-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .cmd-palette .results .result-item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .cmd-palette .results .result-item .icon {
+            color: var(--text-muted);
+        }
+        .cmd-palette .results .result-item .shortcut {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-input);
+            padding: 1px 10px;
+            border-radius: 4px;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-dropdown .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 44px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            min-width: 200px;
+            padding: 6px 0;
+            display: none;
+            z-index: 100;
+        }
+        .profile-dropdown .dropdown-menu.open {
+            display: block;
+        }
+        .profile-dropdown .dropdown-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-dropdown .dropdown-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .profile-dropdown .dropdown-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        .notif-center {
+            position: fixed;
+            right: 20px;
+            top: 76px;
+            width: 360px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 1500;
+            max-height: 460px;
+            display: none;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        .notif-center.open {
+            display: flex;
+            animation: slideDown 0.2s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .notif-center .notif-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notif-center .notif-header .close {
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .notif-center .notif-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .notif-center .notif-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .notif-center .notif-item .notif-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .notif-center .notif-item .notif-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+        .login-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+        .login-box .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+        .login-box .logo .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 22px;
+            color: #fff;
+        }
+        .login-box .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .login-box .logo h1 span {
+            color: var(--accent);
+        }
+        .login-box .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+        .login-box .form-group {
+            margin-bottom: 16px;
+        }
+        .login-box .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .login-box .form-group input {
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+        .login-box .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .login-box .hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 16px;
+        }
+        .login-box .hint strong {
+            color: var(--text-secondary);
+        }
+
+        /* SFA specific */
+        .visit-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .visit-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .visit-card .visit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .visit-card .visit-header .customer {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .visit-card .visit-header .time {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .visit-card .visit-details {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .route-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 6px;
+        }
+        .route-item .order {
+            font-weight: 700;
+            color: var(--text-muted);
+            min-width: 24px;
+        }
+        .route-item .name {
+            flex: 1;
+            font-weight: 500;
+        }
+        .route-item .status {
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">S</div>
+                <h1>SFA<span>+</span></h1>
+            </div>
+            <div class="subtitle">Enterprise Sales Force Automation</div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="admin@sfa.com" id="loginEmail" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" value="admin123" id="loginPassword" />
+            </div>
+            <button class="btn btn-primary" id="loginBtn">Sign In</button>
+            <div class="hint">Demo: <strong>admin@sfa.com</strong> / <strong>admin123</strong></div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon">S</div>
+            <h1>SFA<span>+</span></h1>
+        </div>
+        <nav class="sidebar-nav" id="sidebarNav">
+            <div class="nav-label">Main</div>
+            <div class="nav-item active" data-page="dashboard">
+                <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                Dashboard
+            </div>
+            <div class="nav-item" data-page="customers">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                Customers
+                <span class="badge" id="custCount">0</span>
+            </div>
+            <div class="nav-item" data-page="leads">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+                Leads
+                <span class="badge" id="leadCount">0</span>
+            </div>
+            <div class="nav-item" data-page="opportunities">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 22v-4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                Opportunities
+                <span class="badge" id="oppCount">0</span>
+            </div>
+            <div class="nav-label">Sales</div>
+            <div class="nav-item" data-page="visits">
+                <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+                Visits
+                <span class="badge" id="visitCount">0</span>
+            </div>
+            <div class="nav-item" data-page="route-planning">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 17.77 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+                Route Planning
+            </div>
+            <div class="nav-item" data-page="orders">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                Sales Orders
+                <span class="badge" id="orderCount">0</span>
+            </div>
+            <div class="nav-item" data-page="quotations">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+                Quotations
+                <span class="badge" id="quoteCount">0</span>
+            </div>
+            <div class="nav-label">Products</div>
+            <div class="nav-item" data-page="products">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+                Products
+                <span class="badge" id="prodCount">0</span>
+            </div>
+            <div class="nav-label">Analytics</div>
+            <div class="nav-item" data-page="reports">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span>
+                Reports
+            </div>
+            <div class="nav-item" data-page="audit-logs">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 22v-4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                Audit Logs
+            </div>
+            <div class="nav-label">System</div>
+            <div class="nav-item" data-page="settings">
+                <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v3"/><path d="M12 20v3"/><path d="M4.22 4.22l2.12 2.12"/><path d="M17.66 17.66l2.12 2.12"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.22 19.78l2.12-2.12"/><path d="M17.66 6.34l2.12-2.12"/></svg></span>
+                Settings
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+                <div class="name">John Doe</div>
+                <div class="role">Sales Director</div>
+            </div>
+            <div class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER ===== -->
+    <div class="main-wrapper">
+        <header class="topnav">
+            <div class="topnav-left">
+                <button class="menu-toggle" id="menuToggle"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+                <div class="breadcrumbs" id="breadcrumbs"><span>Dashboard</span></div>
+            </div>
+            <div class="topnav-right">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" placeholder="Search customers..." id="globalSearch" />
+                </div>
+                <button class="btn-icon" id="cmdPaletteBtn" title="Command Palette (Ctrl+K)">
+                    <svg viewBox="0 0 24 24"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </button>
+                <button class="btn-icon" id="notifBtn">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="dot" id="notifDot"></span>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="btn-icon" id="profileBtn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+                    <div class="dropdown-menu" id="profileMenu">
+                        <div class="item">👤 My Profile</div>
+                        <div class="item">⚙️ Settings</div>
+                        <div class="divider"></div>
+                        <div class="item" id="logoutBtn">🚪 Logout</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="page-content">
+            <div id="pageContainer" class="scrollable"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="close" id="modalClose"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== CONTEXT MENU ===== -->
+    <div class="context-menu" id="contextMenu">
+        <div class="item" data-action="edit">✏️ Edit</div>
+        <div class="item" data-action="duplicate">📋 Duplicate</div>
+        <div class="divider"></div>
+        <div class="item danger" data-action="delete">🗑️ Delete</div>
+    </div>
+
+    <!-- ===== COMMAND PALETTE ===== -->
+    <div class="cmd-palette" id="cmdPalette">
+        <input type="text" placeholder="Search commands..." id="cmdInput" />
+        <div class="results" id="cmdResults"></div>
+    </div>
+
+    <!-- ===== NOTIFICATION CENTER ===== -->
+    <div class="notif-center" id="notifCenter">
+        <div class="notif-header">Notifications <button class="close" id="notifClose">✕</button></div>
+        <div class="notif-list" id="notifList"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  SFA+ ENTERPRISE — Sales Force Automation
+        //  All data in LocalStorage, all CRUD, all modules.
+        // ============================================================
+
+        // ===== HELPERS =====
+        const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        const today = () => new Date().toISOString().split('T')[0];
+        const dateStr = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric',
+            year: 'numeric' }) : '-';
+        const timeStr = (d) => new Date(d).toLocaleTimeString('en-US', { hour: 'short', minute: '2-digit' });
+        const formatCurrency = (v) => '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 0,
+            maximumFractionDigits: 0 });
+
+        // ===== STORE =====
+        class Store {
+            constructor() {
+                this.key = 'sfa_data';
+                this.data = this.load();
+                if (!this.data || !this.data._initialized) this.seed();
+            }
+            load() {
+                try { const raw = localStorage.getItem(this.key); return raw ? JSON.parse(raw) : null; } catch { return null; }
+            }
+            save() {
+                localStorage.setItem(this.key, JSON.stringify(this.data));
+                this.updateCounts();
+            }
+            updateCounts() {
+                document.getElementById('custCount').textContent = this.data.customers.length;
+                document.getElementById('leadCount').textContent = this.data.leads.filter(l => l.status !== 'converted')
+                    .length;
+                document.getElementById('oppCount').textContent = this.data.opportunities.filter(o => o.stage !== 'Closed')
+                    .length;
+                document.getElementById('visitCount').textContent = this.data.visits.filter(v => v.status === 'scheduled' ||
+                    v.status === 'in-progress').length;
+                document.getElementById('orderCount').textContent = this.data.orders.filter(o => o.status !== 'delivered')
+                    .length;
+                document.getElementById('quoteCount').textContent = this.data.quotations.filter(q => q.status !== 'accepted' &&
+                    q.status !== 'rejected').length;
+                document.getElementById('prodCount').textContent = this.data.products.length;
+            }
+            seed() {
+                const now = new Date();
+                const companyNames = ['Acme Corp', 'Globex Inc', 'Initech', 'Hooli', 'Stark Industries', 'Wayne Enterprises',
+                    'Cyberdyne', 'Umbrella Corp', 'Weyland-Yutani', 'Tyrell Corp', 'Oscorp', 'LexCorp', 'S.H.I.E.L.D.',
+                    'Stark Enterprises', 'Parker Industries'
+                ];
+                const firsts = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack', 'Karen',
+                    'Leo', 'Mia', 'Noah', 'Olivia'
+                ];
+                const lasts = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez',
+                    'Martinez', 'Hernandez', 'Lopez', 'Wilson', 'Anderson', 'Thomas'
+                ];
+                const territories = ['North', 'South', 'East', 'West', 'Central', 'Northeast', 'Northwest', 'Southeast',
+                    'Southwest'
+                ];
+                const industries = ['Technology', 'Healthcare', 'Finance', 'Retail', 'Manufacturing', 'Energy', 'Education',
+                    'Media', 'Telecom', 'Logistics'
+                ];
+                const salesReps = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Williams', 'David Brown', 'Emily Davis'];
+
+                // Customers
+                const customers = [];
+                for (let i = 0; i < 45; i++) {
+                    const name = companyNames[i % companyNames.length] + (i > 10 ? ' ' + (i + 1) : '');
+                    const ter = territories[i % territories.length];
+                    const rep = salesReps[i % salesReps.length];
+                    customers.push({
+                        id: uid(),
+                        name: name,
+                        industry: industries[i % industries.length],
+                        territory: ter,
+                        salesRep: rep,
+                        contactName: `${firsts[i%firsts.length]} ${lasts[i%lasts.length]}`,
+                        contactEmail: `${firsts[i%firsts.length].toLowerCase()}@${name.replace(/\s/g,'').toLowerCase()}.com`,
+                        contactPhone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        address: `${Math.floor(100+Math.random()*9000)} Main St, ${['New York','Los Angeles','Chicago','Houston','Phoenix','Philadelphia','San Antonio','San Diego','Dallas','Austin'][i%10]}`,
+                        status: i % 7 === 0 ? 'inactive' : 'active',
+                        creditLimit: Math.round((Math.random() * 80 + 10) * 1000),
+                        outstandingBalance: Math.round(Math.random() * 20 * 1000),
+                        createdAt: new Date(now.getTime() - Math.random() * 2e9).toISOString(),
+                        tags: ['enterprise', 'b2b'].concat(Math.random() > 0.5 ? ['premium'] : [])
+                    });
+                }
+
+                // Leads
+                const leads = [];
+                const leadStatuses = ['new', 'contacted', 'qualified', 'unqualified', 'converted'];
+                for (let i = 0; i < 25; i++) {
+                    const f = firsts[(i + 3) % firsts.length];
+                    const l = lasts[(i + 5) % lasts.length];
+                    leads.push({
+                        id: uid(),
+                        firstName: f,
+                        lastName: l,
+                        email: `${f.toLowerCase()}.${l.toLowerCase()}@prospect.com`,
+                        phone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        company: companyNames[(i + 2) % companyNames.length] + ' (Prospect)',
+                        status: leadStatuses[i % leadStatuses.length],
+                        source: ['Web', 'Referral', 'Event', 'Cold Call', 'LinkedIn', 'Trade Show'][i % 6],
+                        score: Math.round(Math.random() * 100),
+                        owner: salesReps[i % salesReps.length],
+                        createdAt: new Date(now.getTime() - Math.random() * 1e9).toISOString(),
+                        notes: Math.random() > 0.5 ? 'Interested in enterprise plan' : ''
+                    });
+                }
+
+                // Opportunities
+                const opportunities = [];
+                const stages = ['Discovery', 'Qualification', 'Proposal', 'Negotiation', 'Closing', 'Closed'];
+                for (let i = 0; i < 20; i++) {
+                    const cust = customers[i % customers.length];
+                    const val = Math.round((Math.random() * 48 + 2) * 10000);
+                    opportunities.push({
+                        id: uid(),
+                        name: `${cust.name} — ${['Q4 Deal','Annual Renewal','Expansion','New Implementation','Consulting','Upgrade'][i%6]}`,
+                        customerId: cust.id,
+                        value: val,
+                        stage: stages[i % stages.length],
+                        probability: [10, 25, 40, 60, 80, 90, 100][i % 7],
+                        closeDate: new Date(now.getTime() + Math.random() * 6e7).toISOString(),
+                        owner: salesReps[i % salesReps.length],
+                        createdAt: new Date(now.getTime() - Math.random() * 8e8).toISOString(),
+                        competitors: Math.random() > 0.6 ? ['Competitor X', 'Competitor Y'] : [],
+                        products: []
+                    });
+                }
+
+                // Visits
+                const visits = [];
+                const visitStatuses = ['scheduled', 'in-progress', 'completed', 'cancelled'];
+                for (let i = 0; i < 40; i++) {
+                    const cust = customers[i % customers.length];
+                    const date = new Date(now.getTime() + (i - 20) * 86400000);
+                    visits.push({
+                        id: uid(),
+                        customerId: cust.id,
+                        salesRep: salesReps[i % salesReps.length],
+                        date: date.toISOString().split('T')[0],
+                        checkIn: new Date(date.getTime() + 8 * 3600000 + Math.random() * 7200000).toISOString(),
+                        checkOut: new Date(date.getTime() + 10 * 3600000 + Math.random() * 7200000).toISOString(),
+                        status: visitStatuses[i % visitStatuses.length],
+                        purpose: ['Sales Call', 'Demo', 'Presentation', 'Follow-up', 'Support', 'Review'][i % 6],
+                        notes: Math.random() > 0.5 ? 'Positive discussion about partnership' : '',
+                        outcome: Math.random() > 0.6 ? 'Lead qualified' : 'Follow-up scheduled'
+                    });
+                }
+
+                // Sales Orders
+                const orders = [];
+                const orderStatuses = ['draft', 'pending', 'approved', 'processing', 'shipped', 'delivered', 'cancelled'];
+                for (let i = 0; i < 30; i++) {
+                    const cust = customers[i % customers.length];
+                    const total = Math.round((Math.random() * 15 + 1) * 1000);
+                    orders.push({
+                        id: uid(),
+                        orderNumber: `ORD-${String(i+1).padStart(4,'0')}`,
+                        customerId: cust.id,
+                        salesRep: salesReps[i % salesReps.length],
+                        orderDate: new Date(now.getTime() - (i * 3) * 86400000).toISOString().split('T')[0],
+                        total: total,
+                        status: orderStatuses[i % orderStatuses.length],
+                        items: [],
+                        notes: ''
+                    });
+                }
+
+                // Quotations
+                const quotations = [];
+                const quoteStatuses = ['draft', 'sent', 'viewed', 'negotiating', 'accepted', 'rejected'];
+                for (let i = 0; i < 25; i++) {
+                    const cust = customers[i % customers.length];
+                    const total = Math.round((Math.random() * 12 + 2) * 1000);
+                    quotations.push({
+                        id: uid(),
+                        quoteNumber: `QT-${String(i+1).padStart(4,'0')}`,
+                        customerId: cust.id,
+                        salesRep: salesReps[i % salesReps.length],
+                        quoteDate: new Date(now.getTime() - (i * 2) * 86400000).toISOString().split('T')[0],
+                        validUntil: new Date(now.getTime() + (30 - i) * 86400000).toISOString().split('T')[0],
+                        total: total,
+                        status: quoteStatuses[i % quoteStatuses.length],
+                        items: [],
+                        notes: ''
+                    });
+                }
+
+                // Products
+                const products = [];
+                const categories = ['Electronics', 'Software', 'Hardware', 'Services', 'Accessories', 'Consumables'];
+                for (let i = 0; i < 25; i++) {
+                    products.push({
+                        id: uid(),
+                        name: ['Pro Max', 'Enterprise Suite', 'Cloud Platform', 'Data Analyzer', 'Security Shield',
+                            'Smart Hub', 'AI Assistant', 'IoT Gateway', 'Mobile App', 'Web Portal', 'Analytics Pro',
+                            'Sync Manager', 'Protect Plus', 'Connect Hub', 'Insight Dashboard'
+                        ][i % 15],
+                        category: categories[i % categories.length],
+                        sku: `SKU-${String(i+1).padStart(3,'0')}`,
+                        price: Math.round((Math.random() * 800 + 100) * 100) / 100,
+                        cost: Math.round((Math.random() * 400 + 50) * 100) / 100,
+                        status: i % 5 === 0 ? 'discontinued' : 'active',
+                        description: `High-quality ${categories[i%categories.length]} product`,
+                        tags: []
+                    });
+                }
+
+                // Routes
+                const routes = [];
+                for (let i = 0; i < 8; i++) {
+                    const rep = salesReps[i % salesReps.length];
+                    const routeCustomers = customers.slice(i * 5, i * 5 + 6).map(c => c.id);
+                    routes.push({
+                        id: uid(),
+                        name: `${rep}'s Route ${i+1}`,
+                        salesRep: rep,
+                        territory: territories[i % territories.length],
+                        customers: routeCustomers,
+                        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][i % 6],
+                        status: 'active'
+                    });
+                }
+
+                // Tasks
+                const tasks = [];
+                const taskPriorities = ['low', 'medium', 'high'];
+                for (let i = 0; i < 30; i++) {
+                    const cust = customers[i % customers.length];
+                    tasks.push({
+                        id: uid(),
+                        title: ['Follow up with customer', 'Send proposal', 'Review contract', 'Prepare presentation',
+                            'Call for feedback', 'Schedule meeting', 'Update pipeline', 'Complete order'
+                        ][i % 8],
+                        customerId: cust.id,
+                        assignedTo: salesReps[i % salesReps.length],
+                        dueDate: new Date(now.getTime() + (i - 10) * 86400000).toISOString().split('T')[0],
+                        priority: taskPriorities[i % 3],
+                        status: ['todo', 'in-progress', 'done', 'todo', 'todo'][i % 5],
+                        createdAt: new Date(now.getTime() - Math.random() * 5e8).toISOString()
+                    });
+                }
+
+                // Notifications
+                const notifications = [
+                    { id: uid(), type: 'info', message: 'SFA+ Enterprise initialized', time: now.toISOString() },
+                    { id: uid(), type: 'success', message: '5 new leads captured today', time: new Date(now.getTime() -
+                            3600000).toISOString() },
+                    { id: uid(), type: 'warning', message: '3 quotations pending approval', time: new Date(now.getTime() -
+                            7200000).toISOString() }
+                ];
+
+                this.data = {
+                    _initialized: true,
+                    customers,
+                    leads,
+                    opportunities,
+                    visits,
+                    orders,
+                    quotations,
+                    products,
+                    routes,
+                    tasks,
+                    notifications,
+                    auditLogs: [],
+                    salesReps,
+                    territories,
+                    settings: { theme: 'light' }
+                };
+                this.save();
+                this.addAuditLog('System', 'Initialize', 'System', 'Initialized with seed data', 'completed');
+            }
+
+            get(c) { return this.data[c] || []; }
+            set(c, v) { this.data[c] = v;
+                this.save(); }
+            add(c, item) { const arr = this.get(c);
+                arr.push(item);
+                this.set(c, arr); return item; }
+            update(c, id, updates) {
+                const arr = this.get(c);
+                const idx = arr.findIndex(a => a.id === id);
+                if (idx === -1) return null;
+                arr[idx] = { ...arr[idx], ...updates };
+                this.set(c, arr);
+                this.addAuditLog('System', 'Update', c, id, 'Updated record', 'completed');
+                return arr[idx];
+            }
+            remove(c, id) {
+                const arr = this.get(c);
+                const filtered = arr.filter(a => a.id !== id);
+                this.set(c, filtered);
+                this.addAuditLog('System', 'Delete', c, id, 'Deleted record', 'completed');
+                return filtered;
+            }
+            find(c, id) { return this.get(c).find(a => a.id === id) || null; }
+            query(c, fn) { return this.get(c).filter(fn); }
+
+            getCustomer(id) { return this.find('customers', id); }
+            getCustomerName(id) { const c = this.getCustomer(id); return c ? c.name : 'Unknown'; }
+            getSalesRep(id) { const rep = this.data.salesReps; return rep; }
+
+            addAuditLog(user, action, module, recordId, details, status) {
+                const logs = this.get('auditLogs');
+                logs.unshift({
+                    id: uid(),
+                    user: user || 'System',
+                    action,
+                    module,
+                    recordId,
+                    details,
+                    status: status || 'completed',
+                    timestamp: new Date().toISOString()
+                });
+                if (logs.length > 500) logs.pop();
+                this.set('auditLogs', logs);
+            }
+
+            addNotification(msg, type = 'info') {
+                const n = { id: uid(), type, message: msg, time: new Date().toISOString() };
+                const notifs = this.get('notifications');
+                notifs.unshift(n);
+                if (notifs.length > 50) notifs.pop();
+                this.set('notifications', notifs);
+                this.updateNotifDot();
+                return n;
+            }
+            updateNotifDot() {
+                const unread = this.get('notifications').filter(n => !n.read).length;
+                document.getElementById('notifDot').style.display = unread > 0 ? 'block' : 'none';
+            }
+        }
+
+        const store = new Store();
+
+        // ===== TOAST =====
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { info: 'ℹ️', success: '✅', error: '❌', warning: '⚠️' };
+            el.innerHTML = `
+            <span class="toast-icon">${icons[type]||'ℹ️'}</span>
+            <span class="toast-msg">${msg}</span>
+            <span class="toast-close">✕</span>
+          `;
+            container.appendChild(el);
+            const close = el.querySelector('.toast-close');
+            close.addEventListener('click', () => { el.remove(); });
+            setTimeout(() => { el.style.opacity = '0';
+                setTimeout(() => el.remove(), 300); }, 3500);
+        }
+
+        // ===== RENDER ENGINE =====
+        const pages = {};
+
+        function navigate(page, params) {
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
+            const navItem = document.querySelector(`.sidebar-nav .nav-item[data-page="${page}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            const labels = {
+                dashboard: 'Dashboard',
+                customers: 'Customers',
+                leads: 'Leads',
+                opportunities: 'Opportunities',
+                visits: 'Visits',
+                'route-planning': 'Route Planning',
+                orders: 'Sales Orders',
+                quotations: 'Quotations',
+                products: 'Products',
+                reports: 'Reports',
+                'audit-logs': 'Audit Logs',
+                settings: 'Settings'
+            };
+            document.getElementById('breadcrumbs').innerHTML = `<span>${labels[page]||page}</span>`;
+
+            const container = document.getElementById('pageContainer');
+            if (pages[page]) {
+                container.innerHTML = pages[page](params);
+            } else {
+                container.innerHTML =
+                `<div class="empty-state"><div class="icon">🚧</div><h3>${page}</h3><p>Module in development</p></div>`;
+            }
+            bindPageEvents(page);
+            if (page === 'dashboard') initCharts();
+        }
+
+        // ===== PAGE DEFINITIONS =====
+
+        // --- Dashboard ---
+        pages.dashboard = function() {
+            const customers = store.get('customers');
+            const leads = store.get('leads');
+            const opps = store.get('opportunities');
+            const orders = store.get('orders');
+            const visits = store.get('visits');
+            const quotations = store.get('quotations');
+            const activeCust = customers.filter(c => c.status === 'active').length;
+            const totalRevenue = orders.filter(o => o.status === 'delivered').reduce((s, o) => s + o.total, 0);
+            const openOpps = opps.filter(o => o.stage !== 'Closed');
+            const totalOppValue = openOpps.reduce((s, o) => s + o.value, 0);
+            const conversionRate = leads.length > 0 ? Math.round((customers.length / leads.length) * 100) : 0;
+            const todayVisits = visits.filter(v => v.date === today() && v.status !== 'cancelled').length;
+            const completedVisits = visits.filter(v => v.status === 'completed').length;
+            const pendingQuotes = quotations.filter(q => q.status === 'draft' || q.status === 'sent').length;
+            const avgOrderValue = orders.filter(o => o.status === 'delivered').length > 0 ? Math.round(orders.filter(o =>
+                o.status === 'delivered').reduce((s, o) => s + o.total, 0) / orders.filter(o => o.status === 'delivered')
+                .length) : 0;
+
+            // Territory data
+            const territoryData = {};
+            customers.forEach(c => { territoryData[c.territory] = (territoryData[c.territory] || 0) + 1; });
+            const terLabels = Object.keys(territoryData);
+            const terVals = Object.values(territoryData);
+
+            // Sales by rep
+            const repData = {};
+            orders.filter(o => o.status === 'delivered').forEach(o => {
+                repData[o.salesRep] = (repData[o.salesRep] || 0) + o.total;
+            });
+            const repLabels = Object.keys(repData);
+            const repVals = Object.values(repData);
+
+            let html = `
+            <div class="dashboard-grid">
+              <div class="stat-card"><div class="icon-wrap blue">🏢</div><div class="label">Total Customers</div><div class="value">${customers.length}</div><div class="change up">↑ 4%</div></div>
+              <div class="stat-card"><div class="icon-wrap green">✅</div><div class="label">Active Customers</div><div class="value">${activeCust}</div><div class="change up">↑ 3%</div></div>
+              <div class="stat-card"><div class="icon-wrap yellow">🔄</div><div class="label">Leads</div><div class="value">${leads.filter(l=>l.status!=='converted').length}</div><div class="change up">↑ 8%</div></div>
+              <div class="stat-card"><div class="icon-wrap purple">💰</div><div class="label">Pipeline Value</div><div class="value">${formatCurrency(totalOppValue)}</div><div class="change up">↑ 6%</div></div>
+              <div class="stat-card"><div class="icon-wrap pink">📊</div><div class="label">Revenue (YTD)</div><div class="value">${formatCurrency(totalRevenue)}</div><div class="change up">↑ 12%</div></div>
+              <div class="stat-card"><div class="icon-wrap red">📈</div><div class="label">Conversion Rate</div><div class="value">${conversionRate}%</div><div class="change ${conversionRate>30?'up':'down'}">${conversionRate>30?'↑':'↓'} ${Math.abs(conversionRate-28)}%</div></div>
+              <div class="stat-card"><div class="icon-wrap blue">📍</div><div class="label">Today's Visits</div><div class="value">${todayVisits}</div><div class="change up">↑ 2</div></div>
+              <div class="stat-card"><div class="icon-wrap green">📋</div><div class="label">Avg Order Value</div><div class="value">${formatCurrency(avgOrderValue)}</div><div class="change up">↑ 5%</div></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">📊 Revenue by Sales Rep</div><canvas id="chartRepRevenue" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">🏢 Customers by Territory</div><canvas id="chartTerritory" height="180"></canvas></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">📈 Sales Pipeline</div><canvas id="chartPipeline" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">📊 Visit Status</div><canvas id="chartVisitStatus" height="180"></canvas></div>
+            </div>
+
+            <div class="recent-table-wrap">
+              <div class="title">📋 Recent Sales Orders <span class="link" onclick="navigate('orders')">View all →</span></div>
+              <div class="table-responsive">
+                <table>
+                  <thead><tr><th>Order #</th><th>Customer</th><th>Sales Rep</th><th>Total</th><th>Status</th></tr></thead>
+                  <tbody>
+                    ${orders.slice(0, 6).map(o => `
+                      <tr><td><strong>${o.orderNumber}</strong></td><td>${store.getCustomerName(o.customerId)}</td><td>${o.salesRep}</td><td>${formatCurrency(o.total)}</td><td><span class="status-badge ${o.status==='delivered'?'active':o.status==='cancelled'?'inactive':'pending'}">${o.status}</span></td></tr>
+                    `).join('')}
+                    ${orders.length===0?'<tr><td colspan="5" class="text-muted text-center">No orders</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="recent-table-wrap" style="margin-top:20px;">
+              <div class="title">📍 Recent Visits <span class="link" onclick="navigate('visits')">View all →</span></div>
+              <div class="table-responsive">
+                <table>
+                  <thead><tr><th>Customer</th><th>Sales Rep</th><th>Date</th><th>Purpose</th><th>Status</th></tr></thead>
+                  <tbody>
+                    ${visits.slice(0, 6).map(v => `
+                      <tr><td><strong>${store.getCustomerName(v.customerId)}</strong></td><td>${v.salesRep}</td><td>${dateStr(v.date)}</td><td>${v.purpose}</td><td><span class="status-badge ${v.status==='completed'?'active':v.status==='cancelled'?'inactive':'pending'}">${v.status}</span></td></tr>
+                    `).join('')}
+                    ${visits.length===0?'<tr><td colspan="5" class="text-muted text-center">No visits</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Customers ---
+        pages.customers = function() {
+            const customers = store.get('customers');
+            let html = `
+            <div class="module-header">
+              <h2>🏢 Customers</h2>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="openCustomerForm()">+ Add Customer</button>
+              </div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search customers..." id="custSearch" oninput="filterCustomers()"/></div>
+              <select id="custTerritoryFilter" onchange="filterCustomers()"><option value="">All Territories</option>${store.data.territories.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+              <select id="custStatusFilter" onchange="filterCustomers()"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Name</th><th>Contact</th><th>Industry</th><th>Territory</th><th>Sales Rep</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="custTableBody">
+                    ${customers.map(c => `
+                      <tr data-id="${c.id}">
+                        <td><strong>${c.name}</strong></td>
+                        <td>${c.contactName}</td>
+                        <td>${c.industry}</td>
+                        <td>${c.territory}</td>
+                        <td>${c.salesRep}</td>
+                        <td><span class="status-badge ${c.status}">${c.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewCustomer('${c.id}')" title="View">👁️</button>
+                          <button onclick="editCustomer('${c.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteCustomer('${c.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${customers.length===0?'<tr><td colspan="7" class="text-muted text-center">No customers</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${customers.length} customers</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterCustomers = function() {
+            const search = document.getElementById('custSearch')?.value?.toLowerCase() || '';
+            const territory = document.getElementById('custTerritoryFilter')?.value || '';
+            const status = document.getElementById('custStatusFilter')?.value || '';
+            const customers = store.get('customers');
+            const filtered = customers.filter(c => {
+                return (c.name.toLowerCase().includes(search) || c.contactName.toLowerCase().includes(search)) &&
+                    (!territory || c.territory === territory) && (!status || c.status === status);
+            });
+            const tbody = document.getElementById('custTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(c => `
+            <tr data-id="${c.id}">
+              <td><strong>${c.name}</strong></td>
+              <td>${c.contactName}</td>
+              <td>${c.industry}</td>
+              <td>${c.territory}</td>
+              <td>${c.salesRep}</td>
+              <td><span class="status-badge ${c.status}">${c.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewCustomer('${c.id}')" title="View">👁️</button>
+                <button onclick="editCustomer('${c.id}')" title="Edit">✏️</button>
+                <button onclick="deleteCustomer('${c.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching customers</td></tr>';
+        };
+
+        // --- Leads ---
+        pages.leads = function() {
+            const leads = store.get('leads');
+            let html = `
+            <div class="module-header"><h2>🔄 Leads</h2><div class="actions"><button class="btn btn-primary" onclick="openLeadForm()">+ Add Lead</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search leads..." id="leadSearch" oninput="filterLeads()"/></div>
+              <select id="leadStatusFilter" onchange="filterLeads()"><option value="">All Status</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="unqualified">Unqualified</option><option value="converted">Converted</option></select>
+              <select id="leadSourceFilter" onchange="filterLeads()"><option value="">All Sources</option><option value="Web">Web</option><option value="Referral">Referral</option><option value="Event">Event</option><option value="Cold Call">Cold Call</option><option value="LinkedIn">LinkedIn</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Name</th><th>Company</th><th>Source</th><th>Score</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="leadTableBody">
+                    ${leads.map(l => `
+                      <tr data-id="${l.id}">
+                        <td><strong>${l.firstName} ${l.lastName}</strong></td>
+                        <td>${l.company}</td>
+                        <td>${l.source}</td>
+                        <td><span style="color:${l.score>70?'var(--success)':l.score>40?'var(--warning)':'var(--danger)'}">${l.score}</span></td>
+                        <td><span class="status-badge ${l.status==='converted'?'active':l.status==='unqualified'?'inactive':'pending'}">${l.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="editLead('${l.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteLead('${l.id}')" title="Delete">🗑️</button>
+                          ${l.status!=='converted'?`<button onclick="convertLead('${l.id}')" title="Convert">🔄</button>`:''}
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${leads.length===0?'<tr><td colspan="6" class="text-muted text-center">No leads</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${leads.length} leads</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterLeads = function() {
+            const search = document.getElementById('leadSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('leadStatusFilter')?.value || '';
+            const source = document.getElementById('leadSourceFilter')?.value || '';
+            const leads = store.get('leads');
+            const filtered = leads.filter(l => {
+                const name = `${l.firstName} ${l.lastName}`.toLowerCase();
+                return (name.includes(search) || l.company.toLowerCase().includes(search)) &&
+                    (!status || l.status === status) && (!source || l.source === source);
+            });
+            const tbody = document.getElementById('leadTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(l => `
+            <tr data-id="${l.id}">
+              <td><strong>${l.firstName} ${l.lastName}</strong></td>
+              <td>${l.company}</td>
+              <td>${l.source}</td>
+              <td><span style="color:${l.score>70?'var(--success)':l.score>40?'var(--warning)':'var(--danger)'}">${l.score}</span></td>
+              <td><span class="status-badge ${l.status==='converted'?'active':l.status==='unqualified'?'inactive':'pending'}">${l.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="editLead('${l.id}')" title="Edit">✏️</button>
+                <button onclick="deleteLead('${l.id}')" title="Delete">🗑️</button>
+                ${l.status!=='converted'?`<button onclick="convertLead('${l.id}')" title="Convert">🔄</button>`:''}
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="6" class="text-muted text-center">No matching leads</td></tr>';
+        };
+
+        // --- Opportunities ---
+        pages.opportunities = function() {
+            const opps = store.get('opportunities');
+            const stages = ['Discovery', 'Qualification', 'Proposal', 'Negotiation', 'Closing', 'Closed'];
+            let html = `
+            <div class="module-header"><h2>💰 Opportunities</h2><div class="actions"><button class="btn btn-primary" onclick="openOpportunityForm()">+ Add Opportunity</button></div></div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+              <div class="search-input" style="flex:1;min-width:160px;"><input type="text" placeholder="Search opportunities..." id="oppSearch" oninput="filterOpps()"/></div>
+              <select id="oppStageFilter" onchange="filterOpps()"><option value="">All Stages</option>${stages.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>
+            </div>
+            <div class="pipeline-container" style="display:flex;gap:16px;overflow-x:auto;padding:8px 0 16px;flex:1;">
+              ${stages.map(stage => {
+                const items = opps.filter(o => o.stage === stage);
+                const total = items.reduce((s,o) => s + (o.value||0), 0);
+                return `
+                  <div style="min-width:200px;flex:1;background:var(--bg-input);border-radius:var(--radius-md);padding:14px;border:1px solid var(--border-color);max-height:450px;display:flex;flex-direction:column;">
+                    <div style="font-weight:600;font-size:13px;color:var(--text-secondary);display:flex;justify-content:space-between;margin-bottom:10px;">${stage} <span style="background:var(--bg-card);padding:0 10px;border-radius:12px;font-size:12px;">${items.length} · $${(total/1e3).toFixed(0)}K</span></div>
+                    <div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;">
+                      ${items.map(o => `
+                        <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:12px 14px;box-shadow:var(--shadow-sm);border:1px solid var(--border-color);">
+                          <div style="font-weight:600;font-size:14px;">${o.name}</div>
+                          <div style="font-size:12px;color:var(--text-muted);">${store.getCustomerName(o.customerId)}</div>
+                          <div style="font-weight:700;color:var(--accent);font-size:15px;margin-top:4px;">${formatCurrency(o.value)}</div>
+                          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">${o.probability}% · ${dateStr(o.closeDate)}</div>
+                          <div style="display:flex;gap:4px;margin-top:6px;">
+                            <button class="btn btn-sm" onclick="editOpportunity('${o.id}')">✏️</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteOpportunity('${o.id}')">🗑️</button>
+                          </div>
+                        </div>
+                      `).join('')}
+                      ${items.length===0?'<div style="color:var(--text-muted);padding:12px;text-align:center;font-size:13px;">No items</div>':''}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterOpps = function() {
+            navigate('opportunities');
+        };
+
+        // --- Visits ---
+        pages.visits = function() {
+            const visits = store.get('visits');
+            let html = `
+            <div class="module-header"><h2>📍 Visits</h2><div class="actions"><button class="btn btn-primary" onclick="openVisitForm()">+ Schedule Visit</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search visits..." id="visitSearch" oninput="filterVisits()"/></div>
+              <select id="visitStatusFilter" onchange="filterVisits()"><option value="">All Status</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+              <select id="visitRepFilter" onchange="filterVisits()"><option value="">All Reps</option>${store.data.salesReps.map(r=>`<option value="${r}">${r}</option>`).join('')}</select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Customer</th><th>Sales Rep</th><th>Date</th><th>Purpose</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="visitTableBody">
+                    ${visits.map(v => `
+                      <tr data-id="${v.id}">
+                        <td><strong>${store.getCustomerName(v.customerId)}</strong></td>
+                        <td>${v.salesRep}</td>
+                        <td>${dateStr(v.date)}</td>
+                        <td>${v.purpose}</td>
+                        <td><span class="status-badge ${v.status==='completed'?'active':v.status==='cancelled'?'inactive':'pending'}">${v.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewVisit('${v.id}')" title="View">👁️</button>
+                          <button onclick="editVisit('${v.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteVisit('${v.id}')" title="Delete">🗑️</button>
+                          ${v.status==='scheduled'?`<button onclick="checkInVisit('${v.id}')" title="Check In">📍</button>`:''}
+                          ${v.status==='in-progress'?`<button onclick="checkOutVisit('${v.id}')" title="Check Out">✅</button>`:''}
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${visits.length===0?'<tr><td colspan="6" class="text-muted text-center">No visits</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${visits.length} visits</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterVisits = function() {
+            const search = document.getElementById('visitSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('visitStatusFilter')?.value || '';
+            const rep = document.getElementById('visitRepFilter')?.value || '';
+            const visits = store.get('visits');
+            const filtered = visits.filter(v => {
+                const cust = store.getCustomer(v.customerId);
+                const name = cust ? cust.name.toLowerCase() : '';
+                return name.includes(search) && (!status || v.status === status) && (!rep || v.salesRep === rep);
+            });
+            const tbody = document.getElementById('visitTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(v => `
+            <tr data-id="${v.id}">
+              <td><strong>${store.getCustomerName(v.customerId)}</strong></td>
+              <td>${v.salesRep}</td>
+              <td>${dateStr(v.date)}</td>
+              <td>${v.purpose}</td>
+              <td><span class="status-badge ${v.status==='completed'?'active':v.status==='cancelled'?'inactive':'pending'}">${v.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewVisit('${v.id}')" title="View">👁️</button>
+                <button onclick="editVisit('${v.id}')" title="Edit">✏️</button>
+                <button onclick="deleteVisit('${v.id}')" title="Delete">🗑️</button>
+                ${v.status==='scheduled'?`<button onclick="checkInVisit('${v.id}')" title="Check In">📍</button>`:''}
+                ${v.status==='in-progress'?`<button onclick="checkOutVisit('${v.id}')" title="Check Out">✅</button>`:''}
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="6" class="text-muted text-center">No matching visits</td></tr>';
+        };
+
+        // --- Route Planning ---
+        pages['route-planning'] = function() {
+            const routes = store.get('routes');
+            const customers = store.get('customers');
+            let html = `
+            <div class="module-header"><h2>🗺️ Route Planning</h2><div class="actions"><button class="btn btn-primary" onclick="openRouteForm()">+ Create Route</button></div></div>
+            <div class="filter-bar">
+              <select id="routeRepFilter" onchange="filterRoutes()"><option value="">All Reps</option>${store.data.salesReps.map(r=>`<option value="${r}">${r}</option>`).join('')}</select>
+              <select id="routeDayFilter" onchange="filterRoutes()"><option value="">All Days</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option></select>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;" id="routeContainer">
+              ${routes.map(r => {
+                const routeCusts = r.customers.map(id => store.getCustomer(id)).filter(Boolean);
+                return `
+                  <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                      <div><strong>${r.name}</strong><div style="font-size:12px;color:var(--text-muted);">${r.salesRep} · ${r.territory}</div></div>
+                      <span class="status-badge active">${r.dayOfWeek}</span>
+                    </div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px;">${routeCusts.length} customers</div>
+                    <div style="max-height:150px;overflow-y:auto;">
+                      ${routeCusts.map((c,i) => `
+                        <div class="route-item">
+                          <span class="order">${i+1}</span>
+                          <span class="name">${c.name}</span>
+                          <span class="status" style="color:var(--text-muted);font-size:11px;">${c.territory}</span>
+                        </div>
+                      `).join('')}
+                      ${routeCusts.length===0?'<div class="text-muted" style="padding:8px;text-align:center;">No customers assigned</div>':''}
+                    </div>
+                    <div style="display:flex;gap:6px;margin-top:10px;">
+                      <button class="btn btn-sm" onclick="editRoute('${r.id}')">✏️</button>
+                      <button class="btn btn-sm btn-danger" onclick="deleteRoute('${r.id}')">🗑️</button>
+                      <button class="btn btn-sm btn-primary" onclick="toast('Route optimized','success')">🔄 Optimize</button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+              ${routes.length===0?'<div class="empty-state"><div class="icon">🗺️</div><h3>No routes created</h3><p>Create a route to start planning visits</p></div>':''}
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterRoutes = function() {
+            navigate('route-planning');
+        };
+
+        // --- Sales Orders ---
+        pages.orders = function() {
+            const orders = store.get('orders');
+            let html = `
+            <div class="module-header"><h2>📦 Sales Orders</h2><div class="actions"><button class="btn btn-primary" onclick="openOrderForm()">+ Create Order</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search orders..." id="orderSearch" oninput="filterOrders()"/></div>
+              <select id="orderStatusFilter" onchange="filterOrders()"><option value="">All Status</option><option value="draft">Draft</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="processing">Processing</option><option value="shipped">Shipped</option><option value="delivered">Delivered</option><option value="cancelled">Cancelled</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Order #</th><th>Customer</th><th>Sales Rep</th><th>Date</th><th>Total</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="orderTableBody">
+                    ${orders.map(o => `
+                      <tr data-id="${o.id}">
+                        <td><strong>${o.orderNumber}</strong></td>
+                        <td>${store.getCustomerName(o.customerId)}</td>
+                        <td>${o.salesRep}</td>
+                        <td>${dateStr(o.orderDate)}</td>
+                        <td>${formatCurrency(o.total)}</td>
+                        <td><span class="status-badge ${o.status==='delivered'?'active':o.status==='cancelled'?'inactive':'pending'}">${o.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewOrder('${o.id}')" title="View">👁️</button>
+                          <button onclick="editOrder('${o.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteOrder('${o.id}')" title="Delete">🗑️</button>
+                          ${o.status==='pending'?`<button onclick="approveOrder('${o.id}')" title="Approve">✅</button>`:''}
+                          ${o.status==='approved'?`<button onclick="shipOrder('${o.id}')" title="Ship">🚚</button>`:''}
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${orders.length===0?'<tr><td colspan="7" class="text-muted text-center">No orders</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${orders.length} orders</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterOrders = function() {
+            const search = document.getElementById('orderSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('orderStatusFilter')?.value || '';
+            const orders = store.get('orders');
+            const filtered = orders.filter(o => {
+                const cust = store.getCustomer(o.customerId);
+                const name = cust ? cust.name.toLowerCase() : '';
+                return (name.includes(search) || o.orderNumber.toLowerCase().includes(search)) &&
+                    (!status || o.status === status);
+            });
+            const tbody = document.getElementById('orderTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(o => `
+            <tr data-id="${o.id}">
+              <td><strong>${o.orderNumber}</strong></td>
+              <td>${store.getCustomerName(o.customerId)}</td>
+              <td>${o.salesRep}</td>
+              <td>${dateStr(o.orderDate)}</td>
+              <td>${formatCurrency(o.total)}</td>
+              <td><span class="status-badge ${o.status==='delivered'?'active':o.status==='cancelled'?'inactive':'pending'}">${o.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewOrder('${o.id}')" title="View">👁️</button>
+                <button onclick="editOrder('${o.id}')" title="Edit">✏️</button>
+                <button onclick="deleteOrder('${o.id}')" title="Delete">🗑️</button>
+                ${o.status==='pending'?`<button onclick="approveOrder('${o.id}')" title="Approve">✅</button>`:''}
+                ${o.status==='approved'?`<button onclick="shipOrder('${o.id}')" title="Ship">🚚</button>`:''}
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching orders</td></tr>';
+        };
+
+        // --- Quotations ---
+        pages.quotations = function() {
+            const quotes = store.get('quotations');
+            let html = `
+            <div class="module-header"><h2>📄 Quotations</h2><div class="actions"><button class="btn btn-primary" onclick="openQuoteForm()">+ Create Quote</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search quotes..." id="quoteSearch" oninput="filterQuotes()"/></div>
+              <select id="quoteStatusFilter" onchange="filterQuotes()"><option value="">All Status</option><option value="draft">Draft</option><option value="sent">Sent</option><option value="viewed">Viewed</option><option value="negotiating">Negotiating</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Quote #</th><th>Customer</th><th>Sales Rep</th><th>Total</th><th>Valid Until</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="quoteTableBody">
+                    ${quotes.map(q => `
+                      <tr data-id="${q.id}">
+                        <td><strong>${q.quoteNumber}</strong></td>
+                        <td>${store.getCustomerName(q.customerId)}</td>
+                        <td>${q.salesRep}</td>
+                        <td>${formatCurrency(q.total)}</td>
+                        <td>${dateStr(q.validUntil)}</td>
+                        <td><span class="status-badge ${q.status==='accepted'?'active':q.status==='rejected'?'inactive':'pending'}">${q.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewQuote('${q.id}')" title="View">👁️</button>
+                          <button onclick="editQuote('${q.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteQuote('${q.id}')" title="Delete">🗑️</button>
+                          ${q.status==='draft'?`<button onclick="sendQuote('${q.id}')" title="Send">📨</button>`:''}
+                          ${q.status==='sent'||q.status==='viewed'?`<button onclick="acceptQuote('${q.id}')" title="Accept">✅</button>`:''}
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${quotes.length===0?'<tr><td colspan="7" class="text-muted text-center">No quotations</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${quotes.length} quotations</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterQuotes = function() {
+            const search = document.getElementById('quoteSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('quoteStatusFilter')?.value || '';
+            const quotes = store.get('quotations');
+            const filtered = quotes.filter(q => {
+                const cust = store.getCustomer(q.customerId);
+                const name = cust ? cust.name.toLowerCase() : '';
+                return (name.includes(search) || q.quoteNumber.toLowerCase().includes(search)) &&
+                    (!status || q.status === status);
+            });
+            const tbody = document.getElementById('quoteTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(q => `
+            <tr data-id="${q.id}">
+              <td><strong>${q.quoteNumber}</strong></td>
+              <td>${store.getCustomerName(q.customerId)}</td>
+              <td>${q.salesRep}</td>
+              <td>${formatCurrency(q.total)}</td>
+              <td>${dateStr(q.validUntil)}</td>
+              <td><span class="status-badge ${q.status==='accepted'?'active':q.status==='rejected'?'inactive':'pending'}">${q.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewQuote('${q.id}')" title="View">👁️</button>
+                <button onclick="editQuote('${q.id}')" title="Edit">✏️</button>
+                <button onclick="deleteQuote('${q.id}')" title="Delete">🗑️</button>
+                ${q.status==='draft'?`<button onclick="sendQuote('${q.id}')" title="Send">📨</button>`:''}
+                ${q.status==='sent'||q.status==='viewed'?`<button onclick="acceptQuote('${q.id}')" title="Accept">✅</button>`:''}
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching quotations</td></tr>';
+        };
+
+        // --- Products ---
+        pages.products = function() {
+            const products = store.get('products');
+            let html = `
+            <div class="module-header"><h2>📦 Products</h2><div class="actions"><button class="btn btn-primary" onclick="openProductForm()">+ Add Product</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search products..." id="prodSearch" oninput="filterProducts()"/></div>
+              <select id="prodCategoryFilter" onchange="filterProducts()"><option value="">All Categories</option>${[...new Set(products.map(p=>p.category))].map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+              <select id="prodStatusFilter" onchange="filterProducts()"><option value="">All Status</option><option value="active">Active</option><option value="discontinued">Discontinued</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Cost</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="prodTableBody">
+                    ${products.map(p => `
+                      <tr data-id="${p.id}">
+                        <td><strong>${p.sku}</strong></td>
+                        <td>${p.name}</td>
+                        <td>${p.category}</td>
+                        <td>${formatCurrency(p.price)}</td>
+                        <td>${formatCurrency(p.cost)}</td>
+                        <td><span class="status-badge ${p.status==='active'?'active':'inactive'}">${p.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="editProduct('${p.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteProduct('${p.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('')}
+                    ${products.length===0?'<tr><td colspan="7" class="text-muted text-center">No products</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${products.length} products</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterProducts = function() {
+            const search = document.getElementById('prodSearch')?.value?.toLowerCase() || '';
+            const category = document.getElementById('prodCategoryFilter')?.value || '';
+            const status = document.getElementById('prodStatusFilter')?.value || '';
+            const products = store.get('products');
+            const filtered = products.filter(p => {
+                return (p.name.toLowerCase().includes(search) || p.sku.toLowerCase().includes(search)) &&
+                    (!category || p.category === category) && (!status || p.status === status);
+            });
+            const tbody = document.getElementById('prodTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(p => `
+            <tr data-id="${p.id}">
+              <td><strong>${p.sku}</strong></td>
+              <td>${p.name}</td>
+              <td>${p.category}</td>
+              <td>${formatCurrency(p.price)}</td>
+              <td>${formatCurrency(p.cost)}</td>
+              <td><span class="status-badge ${p.status==='active'?'active':'inactive'}">${p.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="editProduct('${p.id}')" title="Edit">✏️</button>
+                <button onclick="deleteProduct('${p.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>
+          `).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching products</td></tr>';
+        };
+
+        // --- Reports ---
+        pages.reports = function() {
+            const customers = store.get('customers');
+            const orders = store.get('orders');
+            const leads = store.get('leads');
+            const opps = store.get('opportunities');
+            const visits = store.get('visits');
+            const totalRevenue = orders.filter(o => o.status === 'delivered').reduce((s, o) => s + o.total, 0);
+            const totalOppValue = opps.reduce((s, o) => s + o.value, 0);
+            const completedVisits = visits.filter(v => v.status === 'completed').length;
+
+            let html = `
+            <div class="module-header"><h2>📊 Reports & Analytics</h2></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+              <div class="stat-card"><div class="label">Total Revenue</div><div class="value">${formatCurrency(totalRevenue)}</div></div>
+              <div class="stat-card"><div class="label">Pipeline Value</div><div class="value">${formatCurrency(totalOppValue)}</div></div>
+              <div class="stat-card"><div class="label">Customers</div><div class="value">${customers.length}</div></div>
+              <div class="stat-card"><div class="label">Leads</div><div class="value">${leads.length}</div></div>
+              <div class="stat-card"><div class="label">Orders</div><div class="value">${orders.length}</div></div>
+              <div class="stat-card"><div class="label">Visits Completed</div><div class="value">${completedVisits}</div></div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">📊 Sales by Territory</div><canvas id="chartReportTerritory" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">📈 Pipeline by Stage</div><canvas id="chartReportPipeline" height="180"></canvas></div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+              <button class="btn btn-primary" onclick="toast('Report exported as CSV','success')">📥 Export CSV</button>
+              <button class="btn btn-primary" onclick="toast('Report exported as Excel','success')">📊 Export Excel</button>
+              <button class="btn" onclick="toast('Printing report...','info')">🖨️ Print</button>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Audit Logs ---
+        pages['audit-logs'] = function() {
+            const logs = store.get('auditLogs');
+            let html = `
+            <div class="module-header"><h2>📋 Audit Logs</h2></div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>User</th><th>Action</th><th>Module</th><th>Details</th><th>Status</th><th>Time</th></tr></thead>
+                  <tbody>
+                    ${logs.slice(0, 100).map(l => `
+                      <tr><td><strong>${l.user}</strong></td><td>${l.action}</td><td>${l.module}</td><td>${l.details}</td><td><span class="status-badge ${l.status==='completed'?'active':'pending'}">${l.status}</span></td><td>${timeStr(l.timestamp)}</td></tr>
+                    `).join('')}
+                    ${logs.length===0?'<tr><td colspan="6" class="text-muted text-center">No audit logs</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${logs.length} logs</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Settings ---
+        pages.settings = function() {
+            let html = `
+            <div class="module-header"><h2>⚙️ Settings</h2></div>
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Theme</div><div class="detail-value">
+                <button class="btn btn-sm" onclick="toggleTheme()">Toggle Dark/Light</button>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Data Management</div><div class="detail-value">
+                <button class="btn btn-sm btn-danger" onclick="resetData()">Reset All Data</button>
+                <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">This will erase all data and restore seed.</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Storage</div><div class="detail-value">
+                <span>${localStorage.length} items in localStorage</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Version</div><div class="detail-value">SFA+ Enterprise v2.0</div></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // ===== CRUD OPERATIONS =====
+
+        // --- Customer CRUD ---
+        window.openCustomerForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Customer' : 'Add Customer';
+            const d = data || { name: '', contactName: '', contactEmail: '', contactPhone: '', industry: '',
+                territory: store.data.territories[0], salesRep: store.data.salesReps[0], status: 'active',
+                creditLimit: '', outstandingBalance: '', address: '' };
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Company Name <span class="required">*</span></label><input id="fCustName" value="${d.name}" placeholder="Company name" /></div>
+            <div class="form-row">
+              <div class="form-group"><label>Contact Name</label><input id="fCustContact" value="${d.contactName}" placeholder="Contact person" /></div>
+              <div class="form-group"><label>Contact Email</label><input id="fCustEmail" value="${d.contactEmail}" placeholder="email@company.com" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Phone</label><input id="fCustPhone" value="${d.contactPhone}" placeholder="+1-xxx-xxx-xxxx" /></div>
+              <div class="form-group"><label>Industry</label><input id="fCustIndustry" value="${d.industry}" placeholder="Industry" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Territory</label><select id="fCustTerritory">${store.data.territories.map(t => `<option value="${t}" ${t===d.territory?'selected':''}>${t}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Sales Rep</label><select id="fCustRep">${store.data.salesReps.map(r => `<option value="${r}" ${r===d.salesRep?'selected':''}>${r}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Credit Limit</label><input id="fCustCredit" value="${d.creditLimit||''}" placeholder="Credit limit" /></div>
+              <div class="form-group"><label>Outstanding Balance</label><input id="fCustBalance" value="${d.outstandingBalance||''}" placeholder="Outstanding balance" /></div>
+            </div>
+            <div class="form-group"><label>Address</label><input id="fCustAddress" value="${d.address||''}" placeholder="Street, City" /></div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fCustStatus"><option ${d.status==='active'?'selected':''}>active</option><option ${d.status==='inactive'?'selected':''}>inactive</option></select></div>
+              <div class="form-group"></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveCustBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveCustBtn').addEventListener('click', function() {
+                const payload = {
+                    name: document.getElementById('fCustName').value.trim(),
+                    contactName: document.getElementById('fCustContact').value.trim(),
+                    contactEmail: document.getElementById('fCustEmail').value.trim(),
+                    contactPhone: document.getElementById('fCustPhone').value.trim(),
+                    industry: document.getElementById('fCustIndustry').value.trim(),
+                    territory: document.getElementById('fCustTerritory').value,
+                    salesRep: document.getElementById('fCustRep').value,
+                    creditLimit: parseFloat(document.getElementById('fCustCredit').value) || 0,
+                    outstandingBalance: parseFloat(document.getElementById('fCustBalance').value) || 0,
+                    address: document.getElementById('fCustAddress').value.trim(),
+                    status: document.getElementById('fCustStatus').value,
+                };
+                if (!payload.name) { toast('Company name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('customers', d.id, payload);
+                    toast('Customer updated', 'success');
+                    store.addNotification(`${payload.name} was updated`, 'info');
+                } else {
+                    payload.id = uid();
+                    payload.createdAt = new Date().toISOString();
+                    payload.tags = [];
+                    store.add('customers', payload);
+                    toast('Customer created', 'success');
+                    store.addNotification(`${payload.name} was added as a customer`, 'success');
+                }
+                closeModal();
+                navigate('customers');
+            });
+        };
+
+        window.editCustomer = function(id) { const c = store.find('customers', id); if (c) openCustomerForm(c); };
+        window.deleteCustomer = function(id) {
+            if (!confirm('Delete this customer and all related records?')) return;
+            const c = store.getCustomer(id);
+            store.remove('customers', id);
+            store.remove('visits', id);
+            store.remove('orders', id);
+            store.remove('quotations', id);
+            toast(`Customer ${c ? c.name : ''} deleted`, 'success');
+            navigate('customers');
+        };
+
+        window.viewCustomer = function(id) {
+            const c = store.getCustomer(id);
+            if (!c) { toast('Customer not found', 'error'); return; }
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = `🏢 ${c.name}`;
+            const visits = store.query('visits', v => v.customerId === id);
+            const orders = store.query('orders', o => o.customerId === id);
+            const quotes = store.query('quotations', q => q.customerId === id);
+            body.innerHTML = `
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Contact</div><div class="detail-value"><strong>${c.contactName}</strong> · ${c.contactEmail} · ${c.contactPhone}</div></div>
+              <div class="detail-row"><div class="detail-label">Industry</div><div class="detail-value">${c.industry}</div></div>
+              <div class="detail-row"><div class="detail-label">Territory</div><div class="detail-value">${c.territory}</div></div>
+              <div class="detail-row"><div class="detail-label">Sales Rep</div><div class="detail-value">${c.salesRep}</div></div>
+              <div class="detail-row"><div class="detail-label">Credit Limit</div><div class="detail-value">${formatCurrency(c.creditLimit)}</div></div>
+              <div class="detail-row"><div class="detail-label">Outstanding</div><div class="detail-value">${formatCurrency(c.outstandingBalance)}</div></div>
+              <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge ${c.status}">${c.status}</span></div></div>
+              <div class="detail-row"><div class="detail-label">Visits</div><div class="detail-value">${visits.length} (${visits.filter(v=>v.status==='completed').length} completed)</div></div>
+              <div class="detail-row"><div class="detail-label">Orders</div><div class="detail-value">${orders.length} (${orders.filter(o=>o.status==='delivered').length} delivered)</div></div>
+              <div class="detail-row"><div class="detail-label">Quotations</div><div class="detail-value">${quotes.length}</div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Close</button>
+              <button class="btn btn-primary" onclick="closeModal();editCustomer('${id}')">✏️ Edit</button>
+            </div>
+          `;
+            modal.classList.add('open');
+        };
+
+        // --- Lead CRUD ---
+        window.openLeadForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Lead' : 'Add Lead';
+            const d = data || { firstName: '', lastName: '', email: '', phone: '', company: '', source: 'Web',
+                status: 'new', score: 50, notes: '' };
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>First Name <span class="required">*</span></label><input id="fLeadFirst" value="${d.firstName}" placeholder="First name" /></div>
+              <div class="form-group"><label>Last Name <span class="required">*</span></label><input id="fLeadLast" value="${d.lastName}" placeholder="Last name" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Email</label><input id="fLeadEmail" value="${d.email}" placeholder="email@example.com" /></div>
+              <div class="form-group"><label>Phone</label><input id="fLeadPhone" value="${d.phone||''}" placeholder="+1-xxx-xxx-xxxx" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Company</label><input id="fLeadCompany" value="${d.company||''}" placeholder="Company name" /></div>
+              <div class="form-group"><label>Source</label><select id="fLeadSource"><option ${d.source==='Web'?'selected':''}>Web</option><option ${d.source==='Referral'?'selected':''}>Referral</option><option ${d.source==='Event'?'selected':''}>Event</option><option ${d.source==='Cold Call'?'selected':''}>Cold Call</option><option ${d.source==='LinkedIn'?'selected':''}>LinkedIn</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fLeadStatus"><option ${d.status==='new'?'selected':''}>new</option><option ${d.status==='contacted'?'selected':''}>contacted</option><option ${d.status==='qualified'?'selected':''}>qualified</option><option ${d.status==='unqualified'?'selected':''}>unqualified</option></select></div>
+              <div class="form-group"><label>Score (0-100)</label><input id="fLeadScore" value="${d.score||50}" type="number" min="0" max="100" /></div>
+            </div>
+            <div class="form-group"><label>Notes</label><textarea id="fLeadNotes" rows="2">${d.notes||''}</textarea></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveLeadBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveLeadBtn').addEventListener('click', function() {
+                const payload = {
+                    firstName: document.getElementById('fLeadFirst').value.trim(),
+                    lastName: document.getElementById('fLeadLast').value.trim(),
+                    email: document.getElementById('fLeadEmail').value.trim(),
+                    phone: document.getElementById('fLeadPhone').value.trim(),
+                    company: document.getElementById('fLeadCompany').value.trim(),
+                    source: document.getElementById('fLeadSource').value,
+                    status: document.getElementById('fLeadStatus').value,
+                    score: parseInt(document.getElementById('fLeadScore').value) || 50,
+                    notes: document.getElementById('fLeadNotes').value.trim(),
+                    owner: store.data.salesReps[0]
+                };
+                if (!payload.firstName || !payload.lastName) { toast('Name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('leads', d.id, payload);
+                    toast('Lead updated', 'success');
+                } else {
+                    payload.id = uid();
+                    payload.createdAt = new Date().toISOString();
+                    store.add('leads', payload);
+                    toast('Lead created', 'success');
+                    store.addNotification(`New lead: ${payload.firstName} ${payload.lastName}`, 'info');
+                }
+                closeModal();
+                navigate('leads');
+            });
+        };
+
+        window.editLead = function(id) { const l = store.find('leads', id); if (l) openLeadForm(l); };
+        window.deleteLead = function(id) {
+            if (!confirm('Delete this lead?')) return;
+            store.remove('leads', id);
+            toast('Lead deleted', 'success');
+            navigate('leads');
+        };
+
+        window.convertLead = function(id) {
+            const l = store.find('leads', id);
+            if (!l) return;
+            if (!confirm(`Convert "${l.firstName} ${l.lastName}" to a customer?`)) return;
+            const customer = {
+                id: uid(),
+                name: l.company || `${l.firstName} ${l.lastName}`,
+                contactName: `${l.firstName} ${l.lastName}`,
+                contactEmail: l.email || '',
+                contactPhone: l.phone || '',
+                industry: '',
+                territory: store.data.territories[0],
+                salesRep: l.owner || store.data.salesReps[0],
+                creditLimit: 0,
+                outstandingBalance: 0,
+                address: '',
+                status: 'active',
+                createdAt: new Date().toISOString(),
+                tags: ['converted-from-lead']
+            };
+            store.add('customers', customer);
+            // Create opportunity
+            const opp = {
+                id: uid(),
+                name: `${customer.name} — Initial Deal`,
+                customerId: customer.id,
+                value: Math.round(Math.random() * 30000 + 5000),
+                stage: 'Discovery',
+                probability: 30,
+                closeDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+                owner: l.owner || store.data.salesReps[0],
+                createdAt: new Date().toISOString(),
+                competitors: [],
+                products: []
+            };
+            store.add('opportunities', opp);
+            store.update('leads', id, { status: 'converted' });
+            toast('Lead converted to customer with opportunity!', 'success');
+            store.addNotification(`${l.firstName} ${l.lastName} converted to customer`, 'success');
+            navigate('leads');
+        };
+
+        // --- Opportunity CRUD ---
+        window.openOpportunityForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Opportunity' : 'Add Opportunity';
+            const d = data || { name: '', customerId: '', value: '', stage: 'Discovery', probability: 50,
+                closeDate: today() };
+            const customers = store.get('customers');
+            const stages = ['Discovery', 'Qualification', 'Proposal', 'Negotiation', 'Closing', 'Closed'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Name <span class="required">*</span></label><input id="fOppName" value="${d.name}" placeholder="Opportunity name" /></div>
+            <div class="form-group"><label>Customer</label><select id="fOppCustomer"><option value="">Select...</option>${customers.map(c => `<option value="${c.id}" ${c.id===d.customerId?'selected':''}>${c.name}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Value (USD)</label><input id="fOppValue" value="${d.value||''}" placeholder="Deal value" /></div>
+              <div class="form-group"><label>Stage</label><select id="fOppStage">${stages.map(s => `<option ${s===d.stage?'selected':''}>${s}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Probability (%)</label><input id="fOppProb" value="${d.probability||50}" type="number" min="0" max="100" /></div>
+              <div class="form-group"><label>Close Date</label><input id="fOppClose" value="${d.closeDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveOppBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveOppBtn').addEventListener('click', function() {
+                const payload = {
+                    name: document.getElementById('fOppName').value.trim(),
+                    customerId: document.getElementById('fOppCustomer').value,
+                    value: parseFloat(document.getElementById('fOppValue').value) || 0,
+                    stage: document.getElementById('fOppStage').value,
+                    probability: parseInt(document.getElementById('fOppProb').value) || 50,
+                    closeDate: document.getElementById('fOppClose').value || today(),
+                    owner: store.data.salesReps[0],
+                    competitors: [],
+                    products: []
+                };
+                if (!payload.name) { toast('Name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('opportunities', d.id, payload);
+                    toast('Opportunity updated', 'success');
+                } else {
+                    payload.id = uid();
+                    payload.createdAt = new Date().toISOString();
+                    store.add('opportunities', payload);
+                    toast('Opportunity created', 'success');
+                    store.addNotification(`New opportunity: ${payload.name}`, 'info');
+                }
+                closeModal();
+                navigate('opportunities');
+            });
+        };
+
+        window.editOpportunity = function(id) { const o = store.find('opportunities', id); if (o) openOpportunityForm(o); };
+        window.deleteOpportunity = function(id) {
+            if (!confirm('Delete this opportunity?')) return;
+            store.remove('opportunities', id);
+            toast('Opportunity deleted', 'success');
+            navigate('opportunities');
+        };
+
+        // --- Visit CRUD ---
+        window.openVisitForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Visit' : 'Schedule Visit';
+            const d = data || { customerId: '', salesRep: store.data.salesReps[0], date: today(), purpose: 'Sales Call',
+                notes: '' };
+            const customers = store.get('customers');
+            const purposes = ['Sales Call', 'Demo', 'Presentation', 'Follow-up', 'Support', 'Review'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Customer</label><select id="fVisitCustomer"><option value="">Select...</option>${customers.map(c => `<option value="${c.id}" ${c.id===d.customerId?'selected':''}>${c.name}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Sales Rep</label><select id="fVisitRep">${store.data.salesReps.map(r => `<option value="${r}" ${r===d.salesRep?'selected':''}>${r}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Date</label><input id="fVisitDate" value="${d.date||today()}" type="date" /></div>
+            </div>
+            <div class="form-group"><label>Purpose</label><select id="fVisitPurpose">${purposes.map(p => `<option ${p===d.purpose?'selected':''}>${p}</option>`).join('')}</select></div>
+            <div class="form-group"><label>Notes</label><textarea id="fVisitNotes" rows="2">${d.notes||''}</textarea></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveVisitBtn">${isEdit ? 'Update' : 'Schedule'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveVisitBtn').addEventListener('click', function() {
+                const payload = {
+                    customerId: document.getElementById('fVisitCustomer').value,
+                    salesRep: document.getElementById('fVisitRep').value,
+                    date: document.getElementById('fVisitDate').value || today(),
+                    purpose: document.getElementById('fVisitPurpose').value,
+                    notes: document.getElementById('fVisitNotes').value.trim(),
+                    status: 'scheduled',
+                    checkIn: null,
+                    checkOut: null,
+                    outcome: ''
+                };
+                if (!payload.customerId) { toast('Please select a customer', 'error'); return; }
+                if (isEdit) {
+                    store.update('visits', d.id, payload);
+                    toast('Visit updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('visits', payload);
+                    toast('Visit scheduled', 'success');
+                    store.addNotification(`Visit scheduled with ${store.getCustomerName(payload.customerId)}`, 'info');
+                }
+                closeModal();
+                navigate('visits');
+            });
+        };
+
+        window.editVisit = function(id) { const v = store.find('visits', id); if (v) openVisitForm(v); };
+        window.deleteVisit = function(id) {
+            if (!confirm('Delete this visit?')) return;
+            store.remove('visits', id);
+            toast('Visit deleted', 'success');
+            navigate('visits');
+        };
+
+        window.viewVisit = function(id) {
+            const v = store.find('visits', id);
+            if (!v) { toast('Visit not found', 'error'); return; }
+            const cust = store.getCustomer(v.customerId);
+            toast(`Visit with ${cust ? cust.name : 'Unknown'} on ${dateStr(v.date)}: ${v.purpose}`, 'info');
+        };
+
+        window.checkInVisit = function(id) {
+            store.update('visits', id, { status: 'in-progress', checkIn: new Date().toISOString() });
+            toast('Checked in at customer location', 'success');
+            store.addNotification('Visit check-in recorded', 'info');
+            navigate('visits');
+        };
+
+        window.checkOutVisit = function(id) {
+            store.update('visits', id, { status: 'completed', checkOut: new Date().toISOString() });
+            toast('Visit completed!', 'success');
+            store.addNotification('Visit completed', 'success');
+            navigate('visits');
+        };
+
+        // --- Order CRUD ---
+        window.openOrderForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Order' : 'Create Order';
+            const d = data || { customerId: '', salesRep: store.data.salesReps[0], orderDate: today(), total: '',
+                status: 'draft' };
+            const customers = store.get('customers');
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Customer</label><select id="fOrderCustomer"><option value="">Select...</option>${customers.map(c => `<option value="${c.id}" ${c.id===d.customerId?'selected':''}>${c.name}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Sales Rep</label><select id="fOrderRep">${store.data.salesReps.map(r => `<option value="${r}" ${r===d.salesRep?'selected':''}>${r}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Order Date</label><input id="fOrderDate" value="${d.orderDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-group"><label>Total Amount</label><input id="fOrderTotal" value="${d.total||''}" placeholder="Order total" /></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveOrderBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveOrderBtn').addEventListener('click', function() {
+                const payload = {
+                    customerId: document.getElementById('fOrderCustomer').value,
+                    salesRep: document.getElementById('fOrderRep').value,
+                    orderDate: document.getElementById('fOrderDate').value || today(),
+                    total: parseFloat(document.getElementById('fOrderTotal').value) || 0,
+                    status: 'pending',
+                    items: [],
+                    notes: ''
+                };
+                if (!payload.customerId) { toast('Please select a customer', 'error'); return; }
+                if (isEdit) {
+                    store.update('orders', d.id, payload);
+                    toast('Order updated', 'success');
+                } else {
+                    const count = store.get('orders').length;
+                    payload.id = uid();
+                    payload.orderNumber = `ORD-${String(count+1).padStart(4,'0')}`;
+                    store.add('orders', payload);
+                    toast('Order created', 'success');
+                    store.addNotification(`Order ${payload.orderNumber} created`, 'info');
+                }
+                closeModal();
+                navigate('orders');
+            });
+        };
+
+        window.editOrder = function(id) { const o = store.find('orders', id); if (o) openOrderForm(o); };
+        window.deleteOrder = function(id) {
+            if (!confirm('Delete this order?')) return;
+            store.remove('orders', id);
+            toast('Order deleted', 'success');
+            navigate('orders');
+        };
+        window.viewOrder = function(id) { const o = store.find('orders', id); if (o) toast(`Order ${o.orderNumber}: $${o.total}`, 'info'); };
+        window.approveOrder = function(id) {
+            store.update('orders', id, { status: 'approved' });
+            toast('Order approved', 'success');
+            navigate('orders');
+        };
+        window.shipOrder = function(id) {
+            store.update('orders', id, { status: 'shipped' });
+            toast('Order shipped', 'success');
+            navigate('orders');
+        };
+
+        // --- Quote CRUD ---
+        window.openQuoteForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Quotation' : 'Create Quotation';
+            const d = data || { customerId: '', salesRep: store.data.salesReps[0], quoteDate: today(),
+                validUntil: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0], total: '', status: 'draft' };
+            const customers = store.get('customers');
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Customer</label><select id="fQuoteCustomer"><option value="">Select...</option>${customers.map(c => `<option value="${c.id}" ${c.id===d.customerId?'selected':''}>${c.name}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Sales Rep</label><select id="fQuoteRep">${store.data.salesReps.map(r => `<option value="${r}" ${r===d.salesRep?'selected':''}>${r}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Quote Date</label><input id="fQuoteDate" value="${d.quoteDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Valid Until</label><input id="fQuoteValid" value="${d.validUntil||new Date(Date.now()+30*86400000).toISOString().split('T')[0]}" type="date" /></div>
+              <div class="form-group"><label>Total Amount</label><input id="fQuoteTotal" value="${d.total||''}" placeholder="Quote total" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveQuoteBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveQuoteBtn').addEventListener('click', function() {
+                const payload = {
+                    customerId: document.getElementById('fQuoteCustomer').value,
+                    salesRep: document.getElementById('fQuoteRep').value,
+                    quoteDate: document.getElementById('fQuoteDate').value || today(),
+                    validUntil: document.getElementById('fQuoteValid').value || new Date(Date.now() + 30 * 86400000)
+                        .toISOString().split('T')[0],
+                    total: parseFloat(document.getElementById('fQuoteTotal').value) || 0,
+                    status: 'draft',
+                    items: [],
+                    notes: ''
+                };
+                if (!payload.customerId) { toast('Please select a customer', 'error'); return; }
+                if (isEdit) {
+                    store.update('quotations', d.id, payload);
+                    toast('Quotation updated', 'success');
+                } else {
+                    const count = store.get('quotations').length;
+                    payload.id = uid();
+                    payload.quoteNumber = `QT-${String(count+1).padStart(4,'0')}`;
+                    store.add('quotations', payload);
+                    toast('Quotation created', 'success');
+                    store.addNotification(`Quotation ${payload.quoteNumber} created`, 'info');
+                }
+                closeModal();
+                navigate('quotations');
+            });
+        };
+
+        window.editQuote = function(id) { const q = store.find('quotations', id); if (q) openQuoteForm(q); };
+        window.deleteQuote = function(id) {
+            if (!confirm('Delete this quotation?')) return;
+            store.remove('quotations', id);
+            toast('Quotation deleted', 'success');
+            navigate('quotations');
+        };
+        window.viewQuote = function(id) { const q = store.find('quotations', id); if (q) toast(`Quote ${q.quoteNumber}: $${q.total}`, 'info'); };
+        window.sendQuote = function(id) {
+            store.update('quotations', id, { status: 'sent' });
+            toast('Quotation sent to customer', 'success');
+            store.addNotification(`Quotation sent`, 'info');
+            navigate('quotations');
+        };
+        window.acceptQuote = function(id) {
+            const q = store.find('quotations', id);
+            if (!q) return;
+            store.update('quotations', id, { status: 'accepted' });
+            // Create order from accepted quote
+            const count = store.get('orders').length;
+            const order = {
+                id: uid(),
+                orderNumber: `ORD-${String(count+1).padStart(4,'0')}`,
+                customerId: q.customerId,
+                salesRep: q.salesRep,
+                orderDate: today(),
+                total: q.total,
+                status: 'pending',
+                items: q.items || [],
+                notes: 'Generated from accepted quotation'
+            };
+            store.add('orders', order);
+            toast('Quotation accepted! Order created.', 'success');
+            store.addNotification(`Quotation ${q.quoteNumber} accepted, order created`, 'success');
+            navigate('quotations');
+        };
+
+        // --- Product CRUD ---
+        window.openProductForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Product' : 'Add Product';
+            const d = data || { name: '', category: 'Electronics', sku: '', price: '', cost: '', status: 'active',
+                description: '' };
+            const categories = ['Electronics', 'Software', 'Hardware', 'Services', 'Accessories', 'Consumables'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Name <span class="required">*</span></label><input id="fProdName" value="${d.name}" placeholder="Product name" /></div>
+            <div class="form-row">
+              <div class="form-group"><label>Category</label><select id="fProdCategory">${categories.map(c => `<option ${c===d.category?'selected':''}>${c}</option>`).join('')}</select></div>
+              <div class="form-group"><label>SKU</label><input id="fProdSku" value="${d.sku||''}" placeholder="SKU code" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Price</label><input id="fProdPrice" value="${d.price||''}" placeholder="Price" /></div>
+              <div class="form-group"><label>Cost</label><input id="fProdCost" value="${d.cost||''}" placeholder="Cost" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fProdStatus"><option ${d.status==='active'?'selected':''}>active</option><option ${d.status==='discontinued'?'selected':''}>discontinued</option></select></div>
+              <div class="form-group"></div>
+            </div>
+            <div class="form-group"><label>Description</label><textarea id="fProdDesc" rows="2">${d.description||''}</textarea></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveProdBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveProdBtn').addEventListener('click', function() {
+                const payload = {
+                    name: document.getElementById('fProdName').value.trim(),
+                    category: document.getElementById('fProdCategory').value,
+                    sku: document.getElementById('fProdSku').value.trim() || `SKU-${Math.floor(Math.random()*1000)}`,
+                    price: parseFloat(document.getElementById('fProdPrice').value) || 0,
+                    cost: parseFloat(document.getElementById('fProdCost').value) || 0,
+                    status: document.getElementById('fProdStatus').value,
+                    description: document.getElementById('fProdDesc').value.trim(),
+                    tags: []
+                };
+                if (!payload.name) { toast('Product name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('products', d.id, payload);
+                    toast('Product updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('products', payload);
+                    toast('Product created', 'success');
+                    store.addNotification(`Product ${payload.name} added`, 'info');
+                }
+                closeModal();
+                navigate('products');
+            });
+        };
+
+        window.editProduct = function(id) { const p = store.find('products', id); if (p) openProductForm(p); };
+        window.deleteProduct = function(id) {
+            if (!confirm('Delete this product?')) return;
+            store.remove('products', id);
+            toast('Product deleted', 'success');
+            navigate('products');
+        };
+
+        // --- Route CRUD ---
+        window.openRouteForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Route' : 'Create Route';
+            const d = data || { name: '', salesRep: store.data.salesReps[0], territory: store.data.territories[0],
+                dayOfWeek: 'Monday', customers: [] };
+            const customers = store.get('customers');
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Route Name</label><input id="fRouteName" value="${d.name}" placeholder="e.g. North Route" /></div>
+            <div class="form-row">
+              <div class="form-group"><label>Sales Rep</label><select id="fRouteRep">${store.data.salesReps.map(r => `<option value="${r}" ${r===d.salesRep?'selected':''}>${r}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Territory</label><select id="fRouteTerritory">${store.data.territories.map(t => `<option value="${t}" ${t===d.territory?'selected':''}>${t}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-group"><label>Day of Week</label><select id="fRouteDay">${days.map(day => `<option ${day===d.dayOfWeek?'selected':''}>${day}</option>`).join('')}</select></div>
+            <div class="form-group"><label>Select Customers</label>
+              <div style="max-height:150px;overflow-y:auto;border:1px solid var(--border-color);border-radius:var(--radius-sm);padding:8px;">
+                ${customers.map(c => `
+                  <label style="display:flex;align-items:center;gap:6px;padding:4px 0;font-size:13px;cursor:pointer;">
+                    <input type="checkbox" value="${c.id}" ${(d.customers||[]).includes(c.id)?'checked':''} /> ${c.name} (${c.territory})
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveRouteBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveRouteBtn').addEventListener('click', function() {
+                const checked = document.querySelectorAll('#modalBody input[type=checkbox]:checked');
+                const selectedCustomers = Array.from(checked).map(el => el.value);
+                const payload = {
+                    name: document.getElementById('fRouteName').value.trim() || 'Unnamed Route',
+                    salesRep: document.getElementById('fRouteRep').value,
+                    territory: document.getElementById('fRouteTerritory').value,
+                    dayOfWeek: document.getElementById('fRouteDay').value,
+                    customers: selectedCustomers,
+                    status: 'active'
+                };
+                if (isEdit) {
+                    store.update('routes', d.id, payload);
+                    toast('Route updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('routes', payload);
+                    toast('Route created', 'success');
+                    store.addNotification(`Route ${payload.name} created`, 'info');
+                }
+                closeModal();
+                navigate('route-planning');
+            });
+        };
+
+        window.editRoute = function(id) { const r = store.find('routes', id); if (r) openRouteForm(r); };
+        window.deleteRoute = function(id) {
+            if (!confirm('Delete this route?')) return;
+            store.remove('routes', id);
+            toast('Route deleted', 'success');
+            navigate('route-planning');
+        };
+
+        // ===== MODAL =====
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+        // ===== THEME =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            store.data.settings.theme = next;
+            store.save();
+            toast(`Switched to ${next} mode`, 'info');
+        }
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // ===== SIDEBAR TOGGLE =====
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // ===== NAVIGATION =====
+        document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const page = this.dataset.page;
+                if (page) navigate(page);
+                if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+            });
+        });
+
+        // ===== GLOBAL SEARCH =====
+        document.getElementById('globalSearch').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const q = this.value.trim().toLowerCase();
+                if (!q) return;
+                const customers = store.get('customers');
+                const results = customers.filter(c => c.name.toLowerCase().includes(q) || c.contactName.toLowerCase()
+                    .includes(q) || c.industry.toLowerCase().includes(q));
+                if (results.length === 0) { toast('No customers found', 'warning'); return; }
+                toast(`Found ${results.length} customer${results.length>1?'s':''}`, 'info');
+                navigate('customers');
+                setTimeout(() => {
+                    const tbody = document.getElementById('custTableBody');
+                    if (tbody) {
+                        tbody.innerHTML = results.map(c => `
+                      <tr data-id="${c.id}">
+                        <td><strong>${c.name}</strong></td>
+                        <td>${c.contactName}</td>
+                        <td>${c.industry}</td>
+                        <td>${c.territory}</td>
+                        <td>${c.salesRep}</td>
+                        <td><span class="status-badge ${c.status}">${c.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewCustomer('${c.id}')" title="View">👁️</button>
+                          <button onclick="editCustomer('${c.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteCustomer('${c.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>
+                    `).join('') || '<tr><td colspan="7" class="text-muted text-center">No results</td></tr>';
+                    }
+                }, 100);
+                this.value = '';
+            }
+        });
+
+        // ===== COMMAND PALETTE =====
+        document.getElementById('cmdPaletteBtn').addEventListener('click', function() {
+            const palette = document.getElementById('cmdPalette');
+            palette.classList.toggle('open');
+            if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+        });
+        document.getElementById('cmdInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const results = document.getElementById('cmdResults');
+            const commands = [
+                { label: 'Dashboard', shortcut: 'G D', page: 'dashboard' },
+                { label: 'Customers', shortcut: 'G C', page: 'customers' },
+                { label: 'Leads', shortcut: 'G L', page: 'leads' },
+                { label: 'Opportunities', shortcut: 'G O', page: 'opportunities' },
+                { label: 'Visits', shortcut: 'G V', page: 'visits' },
+                { label: 'Route Planning', shortcut: 'G R', page: 'route-planning' },
+                { label: 'Sales Orders', shortcut: 'G S', page: 'orders' },
+                { label: 'Quotations', shortcut: 'G Q', page: 'quotations' },
+                { label: 'Products', shortcut: 'G P', page: 'products' },
+                { label: 'Reports', shortcut: 'G A', page: 'reports' },
+                { label: 'Audit Logs', shortcut: 'G U', page: 'audit-logs' },
+                { label: 'Settings', shortcut: 'G H', page: 'settings' },
+                { label: 'Add Customer', shortcut: 'N C', action: 'customer' },
+                { label: 'Add Lead', shortcut: 'N L', action: 'lead' },
+                { label: 'Add Visit', shortcut: 'N V', action: 'visit' },
+                { label: 'Add Order', shortcut: 'N O', action: 'order' },
+                { label: 'Add Quote', shortcut: 'N Q', action: 'quote' },
+                { label: 'Toggle Theme', shortcut: 'T T', action: 'theme' },
+            ];
+            const filtered = q ? commands.filter(c => c.label.toLowerCase().includes(q)) : commands;
+            results.innerHTML = filtered.map(c => `
+            <div class="result-item" data-page="${c.page}" data-action="${c.action}">
+              <span class="icon">${c.label[0]}</span> ${c.label} <span class="shortcut">${c.shortcut}</span>
+            </div>
+          `).join('');
+            results.querySelectorAll('.result-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    const action = this.dataset.action;
+                    if (page) navigate(page);
+                    else if (action === 'customer') openCustomerForm();
+                    else if (action === 'lead') openLeadForm();
+                    else if (action === 'visit') openVisitForm();
+                    else if (action === 'order') openOrderForm();
+                    else if (action === 'quote') openQuoteForm();
+                    else if (action === 'theme') toggleTheme();
+                    document.getElementById('cmdPalette').classList.remove('open');
+                });
+            });
+        });
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const palette = document.getElementById('cmdPalette');
+                palette.classList.toggle('open');
+                if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('cmdPalette').classList.remove('open');
+                document.getElementById('notifCenter').classList.remove('open');
+                document.getElementById('profileMenu').classList.remove('open');
+                document.getElementById('contextMenu').classList.remove('open');
+            }
+        });
+
+        // ===== NOTIFICATIONS =====
+        document.getElementById('notifBtn').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.toggle('open');
+            const notifs = store.get('notifications');
+            notifs.forEach(n => n.read = true);
+            store.set('notifications', notifs);
+            store.updateNotifDot();
+            renderNotifs();
+        });
+        document.getElementById('notifClose').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.remove('open');
+        });
+
+        function renderNotifs() {
+            const list = document.getElementById('notifList');
+            const notifs = store.get('notifications');
+            list.innerHTML = notifs.slice(0, 20).map(n => `
+            <div class="notif-item">
+              <span class="notif-icon">${n.type==='success'?'✅':n.type==='error'?'❌':n.type==='warning'?'⚠️':'ℹ️'}</span>
+              <div><div>${n.message}</div><div class="notif-time">${timeStr(n.time)}</div></div>
+            </div>
+          `).join('') || '<div class="notif-item">No notifications</div>';
+        }
+        store.updateNotifDot();
+
+        // ===== PROFILE =====
+        document.getElementById('profileBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profileMenu').classList.toggle('open');
+        });
+        document.addEventListener('click', function() { document.getElementById('profileMenu').classList.remove('open'); });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('profileMenu').classList.remove('open');
+            toast('Logged out', 'info');
+        });
+
+        // ===== CONTEXT MENU =====
+        document.addEventListener('contextmenu', function(e) {
+            const target = e.target.closest('tr[data-id]');
+            if (target) {
+                e.preventDefault();
+                const menu = document.getElementById('contextMenu');
+                menu.classList.add('open');
+                menu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
+                menu.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+                menu.dataset.targetId = target.dataset.id;
+                const page = document.querySelector('.sidebar-nav .nav-item.active')?.dataset?.page || '';
+                menu.dataset.page = page;
+            }
+        });
+        document.addEventListener('click', function() { document.getElementById('contextMenu').classList.remove('open'); });
+        document.querySelectorAll('#contextMenu .item').forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const id = document.getElementById('contextMenu').dataset.targetId;
+                const page = document.getElementById('contextMenu').dataset.page;
+                if (!id) return;
+                if (action === 'edit') {
+                    if (page === 'customers') editCustomer(id);
+                    else if (page === 'leads') editLead(id);
+                    else if (page === 'opportunities') editOpportunity(id);
+                    else if (page === 'visits') editVisit(id);
+                    else if (page === 'orders') editOrder(id);
+                    else if (page === 'quotations') editQuote(id);
+                    else if (page === 'products') editProduct(id);
+                    else if (page === 'route-planning') editRoute(id);
+                } else if (action === 'delete') {
+                    if (page === 'customers') deleteCustomer(id);
+                    else if (page === 'leads') deleteLead(id);
+                    else if (page === 'opportunities') deleteOpportunity(id);
+                    else if (page === 'visits') deleteVisit(id);
+                    else if (page === 'orders') deleteOrder(id);
+                    else if (page === 'quotations') deleteQuote(id);
+                    else if (page === 'products') deleteProduct(id);
+                    else if (page === 'route-planning') deleteRoute(id);
+                } else if (action === 'duplicate') {
+                    toast('Duplicated!', 'success');
+                }
+                document.getElementById('contextMenu').classList.remove('open');
+            });
+        });
+
+        // ===== RESET =====
+        window.resetData = function() {
+            if (!confirm('⚠️ This will erase all data and restore seed. Continue?')) return;
+            localStorage.removeItem('sfa_data');
+            store.seed();
+            toast('Data reset successfully', 'success');
+            navigate('dashboard');
+        };
+
+        // ===== CHARTS =====
+        let chartsInitialized = false;
+
+        function initCharts() {
+            if (typeof Chart === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => { setTimeout(initCharts, 300); };
+                document.head.appendChild(script);
+                return;
+            }
+            document.querySelectorAll('#chartRepRevenue, #chartTerritory, #chartPipeline, #chartVisitStatus, #chartReportTerritory, #chartReportPipeline')
+                .forEach(c => { const ctx = c?.getContext('2d'); if (ctx) ctx.clearRect(0, 0, c.width, c.height); });
+
+            const orders = store.get('orders');
+            const repData = {};
+            orders.filter(o => o.status === 'delivered').forEach(o => {
+                repData[o.salesRep] = (repData[o.salesRep] || 0) + o.total;
+            });
+            const repLabels = Object.keys(repData);
+            const repVals = Object.values(repData);
+
+            const customers = store.get('customers');
+            const territoryData = {};
+            customers.forEach(c => { territoryData[c.territory] = (territoryData[c.territory] || 0) + 1; });
+            const terLabels = Object.keys(territoryData);
+            const terVals = Object.values(territoryData);
+
+            const opps = store.get('opportunities');
+            const stages = ['Discovery', 'Qualification', 'Proposal', 'Negotiation', 'Closing', 'Closed'];
+            const stageData = stages.map(s => opps.filter(o => o.stage === s).length);
+
+            const visits = store.get('visits');
+            const visitStatus = ['scheduled', 'in-progress', 'completed', 'cancelled'];
+            const visitData = visitStatus.map(s => visits.filter(v => v.status === s).length);
+
+            const ctx1 = document.getElementById('chartRepRevenue');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: { labels: repLabels.slice(0, 6), datasets: [{ label: 'Revenue', data: repVals.slice(0,
+                            6), backgroundColor: '#3b82f6', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx2 = document.getElementById('chartTerritory');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: terLabels.slice(0, 6), datasets: [{ data: terVals.slice(0, 6),
+                            backgroundColor: ['#7c3aed', '#8b5cf6', '#a78bfa', '#6d28d9', '#5b21b6', '#4c1d95'] }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right',
+                                labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+
+            const ctx3 = document.getElementById('chartPipeline');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'bar',
+                    data: { labels: stages, datasets: [{ label: 'Opportunities', data: stageData,
+                            backgroundColor: ['#3b82f6', '#60a5fa', '#93c5fd', '#2563eb', '#16a34a', '#dc2626'],
+                            borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx4 = document.getElementById('chartVisitStatus');
+            if (ctx4) {
+                new Chart(ctx4, {
+                    type: 'pie',
+                    data: { labels: visitStatus, datasets: [{ data: visitData, backgroundColor: ['#f59e0b',
+                                '#3b82f6', '#16a34a', '#dc2626'
+                            ] }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right',
+                                labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+
+            // Report charts
+            const ctx5 = document.getElementById('chartReportTerritory');
+            if (ctx5) {
+                new Chart(ctx5, {
+                    type: 'bar',
+                    data: { labels: terLabels.slice(0, 6), datasets: [{ label: 'Customers', data: terVals.slice(0,
+                            6), backgroundColor: '#7c3aed', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const ctx6 = document.getElementById('chartReportPipeline');
+            if (ctx6) {
+                new Chart(ctx6, {
+                    type: 'bar',
+                    data: { labels: stages, datasets: [{ label: 'Deals', data: stageData, backgroundColor: [
+                                '#3b82f6', '#60a5fa', '#93c5fd', '#2563eb', '#16a34a', '#dc2626'
+                            ], borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+        }
+
+        // ===== BIND PAGE EVENTS =====
+        function bindPageEvents(page) {
+            // nothing special for now
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            if (email === 'admin@sfa.com' && pass === 'admin123') {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                toast('Welcome to SFA+ Enterprise', 'success');
+                store.addNotification('John Doe logged in', 'info');
+            } else {
+                toast('Invalid credentials. Try admin@sfa.com / admin123', 'error');
+            }
+        });
+        document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        // ===== INIT =====
+        const savedTheme = store.data?.settings?.theme || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Auto-login
+        setTimeout(() => {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            toast('Welcome to SFA+ Enterprise', 'success');
+        }, 400);
+
+        navigate('dashboard');
+
+        // Keyboard shortcuts for navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                const map = { '1': 'dashboard', '2': 'customers', '3': 'leads', '4': 'opportunities',
+                    '5': 'visits', '6': 'route-planning', '7': 'orders', '8': 'quotations', '9': 'products' };
+                const page = map[e.key];
+                if (page) { e.preventDefault();
+                    navigate(page); }
+            }
+        });
+
+        console.log('🚀 SFA+ Enterprise loaded successfully');
+        console.log(`🏢 ${store.get('customers').length} customers, 📦 ${store.get('orders').length} orders, 📄 ${store.get('quotations').length} quotations`);
+    </script>
+
+</body>
+</html>

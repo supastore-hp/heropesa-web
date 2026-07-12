@@ -1,0 +1,3700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fleet+ — Enterprise Fleet Management</title>
+    <style>
+        /* ===== CSS Variables & Theme ===== */
+        :root {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-sidebar: #0a1628;
+            --bg-sidebar-hover: #152238;
+            --bg-topnav: #ffffff;
+            --bg-card: #ffffff;
+            --bg-input: #f1f4f9;
+            --text-primary: #0a1628;
+            --text-secondary: #334155;
+            --text-muted: #94a3b8;
+            --text-light: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #dbeafe;
+            --success: #16a34a;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #dc2626;
+            --danger-light: #fee2e2;
+            --info: #0ea5e9;
+            --info-light: #e0f2fe;
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+            --pink: #ec4899;
+            --pink-light: #fce7f3;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --sidebar-width: 260px;
+            --topnav-height: 64px;
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0f1a;
+            --bg-secondary: #141b2b;
+            --bg-sidebar: #050a14;
+            --bg-sidebar-hover: #142033;
+            --bg-topnav: #141b2b;
+            --bg-card: #1a2335;
+            --bg-input: #1f2a3f;
+            --text-primary: #e8edf5;
+            --text-secondary: #b0c0d4;
+            --text-muted: #6a7a8e;
+            --border-color: #2a3a4f;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --accent-light: #1a2d4a;
+            --success-light: #0f2a1a;
+            --warning-light: #2a2410;
+            --danger-light: #2a1414;
+            --info-light: #0a1a2a;
+            --purple-light: #1a103a;
+            --pink-light: #2a1020;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            font-size: 14px;
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            transition: background var(--transition);
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            font-size: inherit;
+            border: none;
+            background: none;
+            color: inherit;
+        }
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            transition: border var(--transition), box-shadow var(--transition);
+            outline: none;
+            width: 100%;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            flex: 1;
+            padding: 20px 28px 40px;
+            height: 100%;
+        }
+        .scrollable::-webkit-scrollbar {
+            width: 5px;
+        }
+        .scrollable::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 8px;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            min-height: var(--topnav-height);
+        }
+        .sidebar-brand .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .sidebar-brand h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+        .sidebar-brand h1 span {
+            color: var(--accent);
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 12px 12px 20px;
+            overflow-y: auto;
+        }
+        .sidebar-nav::-webkit-scrollbar {
+            width: 3px;
+        }
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+        }
+        .sidebar-nav .nav-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: rgba(255, 255, 255, 0.35);
+            padding: 16px 12px 6px;
+            font-weight: 600;
+        }
+        .sidebar-nav .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 9px 14px;
+            border-radius: var(--radius-sm);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all var(--transition);
+            margin-bottom: 1px;
+            cursor: pointer;
+            position: relative;
+            font-weight: 500;
+            font-size: 13.5px;
+        }
+        .sidebar-nav .nav-item:hover {
+            background: var(--bg-sidebar-hover);
+            color: #fff;
+        }
+        .sidebar-nav .nav-item.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+        }
+        .sidebar-nav .nav-item .icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-nav .nav-item .icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        .sidebar-nav .nav-item .badge {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .sidebar-nav .nav-item.active .badge {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .sidebar-footer {
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-footer .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+        .sidebar-footer .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .sidebar-footer .user-info .name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-footer .user-info .role {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 11px;
+        }
+        .sidebar-footer .theme-toggle {
+            color: rgba(255, 255, 255, 0.5);
+            padding: 4px;
+            border-radius: 6px;
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sidebar-footer .theme-toggle:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-footer .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+
+        .topnav {
+            background: var(--bg-topnav);
+            padding: 0 24px;
+            height: var(--topnav-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+            transition: background var(--transition), border var(--transition);
+            gap: 16px;
+        }
+        .topnav-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+        .topnav-left .menu-toggle {
+            display: none;
+            padding: 6px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .topnav-left .menu-toggle:hover {
+            background: var(--bg-input);
+        }
+        .topnav-left .menu-toggle svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .topnav .breadcrumbs span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .topnav .breadcrumbs .sep {
+            color: var(--text-muted);
+            margin: 0 2px;
+        }
+        .topnav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .topnav-right .btn-icon {
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topnav-right .btn-icon:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .topnav-right .btn-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .topnav-right .btn-icon .dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: var(--danger);
+            border-radius: 50%;
+            border: 2px solid var(--bg-topnav);
+        }
+        .topnav-right .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-input);
+            border-radius: 8px;
+            padding: 0 12px;
+            gap: 8px;
+            border: 1px solid transparent;
+            transition: all var(--transition);
+            min-width: 180px;
+        }
+        .topnav-right .search-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+            background: var(--bg-secondary);
+        }
+        .topnav-right .search-box svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+            flex-shrink: 0;
+        }
+        .topnav-right .search-box input {
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            font-size: 13px;
+            width: 120px;
+            transition: width var(--transition);
+        }
+        .topnav-right .search-box input:focus {
+            width: 180px;
+            box-shadow: none;
+        }
+        .topnav-right .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .page-content {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+        .page {
+            display: none;
+            height: 100%;
+            animation: fadeIn 0.3s ease;
+        }
+        .page.active {
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .stat-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        .stat-card .label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 4px;
+            color: var(--text-primary);
+        }
+        .stat-card .change {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .stat-card .change.up {
+            color: var(--success);
+        }
+        .stat-card .change.down {
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap {
+            float: right;
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-top: -4px;
+        }
+        .stat-card .icon-wrap.blue {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .stat-card .icon-wrap.green {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .stat-card .icon-wrap.yellow {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .stat-card .icon-wrap.red {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .stat-card .icon-wrap.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+        .stat-card .icon-wrap.pink {
+            background: var(--pink-light);
+            color: var(--pink);
+        }
+
+        .chart-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .chart-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+        .chart-box .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .chart-box canvas {
+            width: 100% !important;
+            max-height: 240px;
+        }
+
+        .recent-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .recent-table-wrap .title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .recent-table-wrap .title .link {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+        table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: middle;
+        }
+        table tr:hover td {
+            background: var(--bg-input);
+        }
+        table .status-badge {
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+        .status-badge.inactive {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .status-badge.pending {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+        .status-badge.info {
+            background: var(--info-light);
+            color: var(--info);
+        }
+        .status-badge.purple {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .module-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .module-header .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--transition);
+            background: var(--bg-input);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            border-color: var(--accent-hover);
+        }
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+            border-color: var(--success);
+        }
+        .btn-success:hover {
+            background: #15803d;
+            color: #fff;
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger);
+        }
+        .btn-danger:hover {
+            background: #b91c1c;
+            color: #fff;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: #fff;
+            border-color: var(--warning);
+        }
+        .btn-warning:hover {
+            background: #d97706;
+            color: #fff;
+        }
+        .btn-sm {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        .btn-icon-only {
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .filter-bar select,
+        .filter-bar input {
+            width: auto;
+            min-width: 120px;
+            padding: 6px 12px;
+            font-size: 13px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+        }
+        .filter-bar .search-input {
+            flex: 1;
+            min-width: 180px;
+        }
+        .filter-bar .search-input input {
+            width: 100%;
+        }
+
+        .module-table-wrap {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .module-table-wrap .table-scroll {
+            flex: 1;
+            overflow: auto;
+        }
+        .module-table-wrap table {
+            font-size: 13px;
+        }
+        .module-table-wrap table td .actions-cell {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap table td .actions-cell button {
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .module-table-wrap table td .actions-cell button:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .module-table-wrap .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .module-table-wrap .pagination .info {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        .module-table-wrap .pagination .pages {
+            display: flex;
+            gap: 4px;
+        }
+        .module-table-wrap .pagination .pages button {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            border: 1px solid transparent;
+        }
+        .module-table-wrap .pagination .pages button:hover {
+            background: var(--bg-input);
+        }
+        .module-table-wrap .pagination .pages button.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            max-width: 700px;
+            width: 92%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.25s ease;
+            border: 1px solid var(--border-color);
+        }
+        .modal.wide {
+            max-width: 900px;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal .modal-header h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .modal .modal-header .close {
+            padding: 4px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            transition: all var(--transition);
+        }
+        .modal .modal-header .close:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .modal .modal-header .close svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+        .modal .form-group {
+            margin-bottom: 16px;
+        }
+        .modal .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: var(--text-secondary);
+        }
+        .modal .form-group .required {
+            color: var(--danger);
+        }
+        .modal .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .modal .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+            width: 100%;
+        }
+        .toast {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid var(--accent);
+        }
+        .toast.success {
+            border-left-color: var(--success);
+        }
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+        .toast .toast-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .toast .toast-msg {
+            flex: 1;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .toast .toast-close {
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .empty-state .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-size: 18px;
+        }
+        .empty-state p {
+            font-size: 14px;
+            max-width: 400px;
+        }
+
+        @media (max-width: 1024px) {
+            .chart-row {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .topnav-left .menu-toggle {
+                display: flex;
+            }
+            .topnav-right .search-box {
+                min-width: auto;
+            }
+            .topnav-right .search-box input {
+                width: 80px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 120px;
+            }
+            .topnav .breadcrumbs {
+                font-size: 12px;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .stat-card .value {
+                font-size: 22px;
+            }
+            .modal .form-row {
+                grid-template-columns: 1fr;
+            }
+            .modal {
+                padding: 20px;
+                max-width: 96%;
+            }
+            .module-header h2 {
+                font-size: 18px;
+            }
+            .scrollable {
+                padding: 14px 16px 30px;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar .search-input {
+                min-width: auto;
+            }
+            .filter-bar select,
+            .filter-bar input {
+                min-width: auto;
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .topnav {
+                padding: 0 12px;
+                gap: 8px;
+            }
+            .topnav-right .search-box input {
+                width: 60px;
+            }
+            .topnav-right .search-box input:focus {
+                width: 100px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-card .value {
+                font-size: 18px;
+            }
+            .stat-card .icon-wrap {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .gap-12 {
+            gap: 12px;
+        }
+        .fw-600 {
+            font-weight: 600;
+        }
+        .text-center {
+            text-align: center;
+        }
+
+        .detail-view {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-view .detail-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .detail-view .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-view .detail-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 140px;
+            flex-shrink: 0;
+            font-size: 13px;
+        }
+        .detail-view .detail-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 13px;
+        }
+        .detail-view .detail-value .tag {
+            display: inline-block;
+            background: var(--bg-input);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px 4px 2px 0;
+        }
+
+        .context-menu {
+            position: fixed;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            padding: 6px 0;
+            min-width: 180px;
+            z-index: 4000;
+            display: none;
+        }
+        .context-menu.open {
+            display: block;
+        }
+        .context-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .context-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .context-menu .item.danger {
+            color: var(--danger);
+        }
+        .context-menu .item.danger:hover {
+            background: var(--danger-light);
+        }
+        .context-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        .cmd-palette {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 540px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 5000;
+            display: none;
+            overflow: hidden;
+            padding: 8px 0;
+        }
+        .cmd-palette.open {
+            display: block;
+            animation: slideUp 0.2s ease;
+        }
+        .cmd-palette input {
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            background: transparent;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 0;
+            width: 100%;
+            outline: none;
+        }
+        .cmd-palette input:focus {
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+        .cmd-palette .results {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .cmd-palette .results .result-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all var(--transition);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .cmd-palette .results .result-item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .cmd-palette .results .result-item .icon {
+            color: var(--text-muted);
+        }
+        .cmd-palette .results .result-item .shortcut {
+            margin-left: auto;
+            font-size: 11px;
+            color: var(--text-muted);
+            background: var(--bg-input);
+            padding: 1px 10px;
+            border-radius: 4px;
+        }
+
+        .profile-dropdown {
+            position: relative;
+        }
+        .profile-dropdown .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 44px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            min-width: 200px;
+            padding: 6px 0;
+            display: none;
+            z-index: 100;
+        }
+        .profile-dropdown .dropdown-menu.open {
+            display: block;
+        }
+        .profile-dropdown .dropdown-menu .item {
+            padding: 8px 18px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .profile-dropdown .dropdown-menu .item:hover {
+            background: var(--bg-input);
+            color: var(--text-primary);
+        }
+        .profile-dropdown .dropdown-menu .divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 4px 12px;
+        }
+
+        .notif-center {
+            position: fixed;
+            right: 20px;
+            top: 76px;
+            width: 360px;
+            max-width: 92%;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            z-index: 1500;
+            max-height: 460px;
+            display: none;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        .notif-center.open {
+            display: flex;
+            animation: slideDown 0.2s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .notif-center .notif-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .notif-center .notif-header .close {
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+        .notif-center .notif-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .notif-center .notif-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .notif-center .notif-item .notif-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .notif-center .notif-item .notif-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .login-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.05);
+        }
+        .login-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 92%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+        .login-box .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 32px;
+        }
+        .login-box .logo .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--accent);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 22px;
+            color: #fff;
+        }
+        .login-box .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .login-box .logo h1 span {
+            color: var(--accent);
+        }
+        .login-box .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+        .login-box .form-group {
+            margin-bottom: 16px;
+        }
+        .login-box .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .login-box .form-group input {
+            padding: 10px 14px;
+            font-size: 14px;
+        }
+        .login-box .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 15px;
+            margin-top: 8px;
+        }
+        .login-box .hint {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 16px;
+        }
+        .login-box .hint strong {
+            color: var(--text-secondary);
+        }
+
+        /* Fleet specific */
+        .fleet-status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .fleet-status-dot.online {
+            background: var(--success);
+        }
+        .fleet-status-dot.offline {
+            background: var(--text-muted);
+        }
+        .fleet-status-dot.idle {
+            background: var(--warning);
+        }
+        .fleet-status-dot.maintenance {
+            background: var(--danger);
+        }
+        .fleet-status-dot.on-route {
+            background: var(--accent);
+        }
+
+        .gps-sim {
+            background: var(--bg-input);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            min-height: 200px;
+        }
+        .gps-sim .vehicle-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: var(--shadow-md);
+            transition: all 2s ease;
+        }
+        .gps-sim .vehicle-marker::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN ===== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div class="logo">
+                <div class="logo-icon">F</div>
+                <h1>Fleet<span>+</span></h1>
+            </div>
+            <div class="subtitle">Enterprise Fleet Management</div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="admin@fleet.com" id="loginEmail" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" value="admin123" id="loginPassword" />
+            </div>
+            <button class="btn btn-primary" id="loginBtn">Sign In</button>
+            <div class="hint">Demo: <strong>admin@fleet.com</strong> / <strong>admin123</strong></div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="logo-icon">F</div>
+            <h1>Fleet<span>+</span></h1>
+        </div>
+        <nav class="sidebar-nav" id="sidebarNav">
+            <div class="nav-label">Main</div>
+            <div class="nav-item active" data-page="dashboard">
+                <span class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                Dashboard
+            </div>
+            <div class="nav-item" data-page="fleet-assets">
+                <span class="icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="2"/><polyline points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18" r="2.5"/><circle cx="18.5" cy="18" r="2.5"/></svg></span>
+                Fleet Assets
+                <span class="badge" id="assetCount">0</span>
+            </div>
+            <div class="nav-item" data-page="drivers">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                Drivers
+                <span class="badge" id="driverCount">0</span>
+            </div>
+            <div class="nav-label">Operations</div>
+            <div class="nav-item" data-page="trips">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 17.77 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></span>
+                Trips
+                <span class="badge" id="tripCount">0</span>
+            </div>
+            <div class="nav-item" data-page="routes">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M4.93 4.93l2.83 2.83M22 12h-4M4.93 19.07l2.83-2.83M12 22v-4"/><circle cx="12" cy="12" r="4"/></svg></span>
+                Route Planning
+            </div>
+            <div class="nav-item" data-page="dispatch">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+                Dispatch
+                <span class="badge" id="dispatchCount">0</span>
+            </div>
+            <div class="nav-label">Fleet</div>
+            <div class="nav-item" data-page="fuel">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 22h12"/><path d="M4 9h10"/><path d="M14 22V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v17"/><path d="M19 22v-7.5"/><path d="M15.5 8.5L19 5l3.5 3.5"/></svg></span>
+                Fuel Management
+            </div>
+            <div class="nav-item" data-page="maintenance">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
+                Maintenance
+                <span class="badge" id="maintCount">0</span>
+            </div>
+            <div class="nav-item" data-page="compliance">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></span>
+                Compliance
+                <span class="badge" id="complianceAlert">0</span>
+            </div>
+            <div class="nav-label">Analytics</div>
+            <div class="nav-item" data-page="reports">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg></span>
+                Reports
+            </div>
+            <div class="nav-item" data-page="audit-logs">
+                <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 22v-4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></span>
+                Audit Logs
+            </div>
+            <div class="nav-label">System</div>
+            <div class="nav-item" data-page="settings">
+                <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v3"/><path d="M12 20v3"/><path d="M4.22 4.22l2.12 2.12"/><path d="M17.66 17.66l2.12 2.12"/><path d="M1 12h3"/><path d="M20 12h3"/><path d="M4.22 19.78l2.12-2.12"/><path d="M17.66 6.34l2.12-2.12"/></svg></span>
+                Settings
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="avatar">JD</div>
+            <div class="user-info">
+                <div class="name">John Doe</div>
+                <div class="role">Fleet Manager</div>
+            </div>
+            <div class="theme-toggle" id="themeToggle" title="Toggle Theme">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN WRAPPER ===== -->
+    <div class="main-wrapper">
+        <header class="topnav">
+            <div class="topnav-left">
+                <button class="menu-toggle" id="menuToggle"><svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+                <div class="breadcrumbs" id="breadcrumbs"><span>Dashboard</span></div>
+            </div>
+            <div class="topnav-right">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" placeholder="Search fleet..." id="globalSearch" />
+                </div>
+                <button class="btn-icon" id="cmdPaletteBtn" title="Command Palette (Ctrl+K)">
+                    <svg viewBox="0 0 24 24"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+                </button>
+                <button class="btn-icon" id="notifBtn">
+                    <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="dot" id="notifDot"></span>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="btn-icon" id="profileBtn"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+                    <div class="dropdown-menu" id="profileMenu">
+                        <div class="item">👤 My Profile</div>
+                        <div class="item">⚙️ Settings</div>
+                        <div class="divider"></div>
+                        <div class="item" id="logoutBtn">🚪 Logout</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="page-content">
+            <div id="pageContainer" class="scrollable"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="close" id="modalClose"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ===== CONTEXT MENU ===== -->
+    <div class="context-menu" id="contextMenu">
+        <div class="item" data-action="edit">✏️ Edit</div>
+        <div class="item" data-action="duplicate">📋 Duplicate</div>
+        <div class="divider"></div>
+        <div class="item danger" data-action="delete">🗑️ Delete</div>
+    </div>
+
+    <!-- ===== COMMAND PALETTE ===== -->
+    <div class="cmd-palette" id="cmdPalette">
+        <input type="text" placeholder="Search commands..." id="cmdInput" />
+        <div class="results" id="cmdResults"></div>
+    </div>
+
+    <!-- ===== NOTIFICATION CENTER ===== -->
+    <div class="notif-center" id="notifCenter">
+        <div class="notif-header">Notifications <button class="close" id="notifClose">✕</button></div>
+        <div class="notif-list" id="notifList"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        //  FLEET+ ENTERPRISE — Fleet Management System
+        //  All data in LocalStorage, all CRUD, all modules.
+        // ============================================================
+
+        // ===== HELPERS =====
+        const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        const today = () => new Date().toISOString().split('T')[0];
+        const dateStr = (d) => d ? new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric',
+            year: 'numeric' }) : '-';
+        const timeStr = (d) => new Date(d).toLocaleTimeString('en-US', { hour: 'short', minute: '2-digit' });
+        const formatCurrency = (v) => '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 2,
+            maximumFractionDigits: 2 });
+
+        // ===== STORE =====
+        class Store {
+            constructor() {
+                this.key = 'fleet_data';
+                this.data = this.load();
+                if (!this.data || !this.data._initialized) this.seed();
+            }
+            load() {
+                try { const raw = localStorage.getItem(this.key); return raw ? JSON.parse(raw) : null; } catch { return null; }
+            }
+            save() {
+                localStorage.setItem(this.key, JSON.stringify(this.data));
+                this.updateCounts();
+            }
+            updateCounts() {
+                document.getElementById('assetCount').textContent = this.data.vehicles.length;
+                document.getElementById('driverCount').textContent = this.data.drivers.length;
+                document.getElementById('tripCount').textContent = this.data.trips.filter(t => t.status === 'active' || t
+                    .status === 'scheduled').length;
+                document.getElementById('dispatchCount').textContent = this.data.dispatchRequests.filter(d => d.status ===
+                    'pending').length;
+                document.getElementById('maintCount').textContent = this.data.maintenance.filter(m => m.status === 'scheduled')
+                    .length;
+                const alerts = this.data.vehicles.filter(v => {
+                    const ins = v.insuranceExpiry ? new Date(v.insuranceExpiry) : new Date();
+                    const lic = v.licenseExpiry ? new Date(v.licenseExpiry) : new Date();
+                    const now = new Date();
+                    const diffIns = (ins - now) / (1000 * 60 * 60 * 24);
+                    const diffLic = (lic - now) / (1000 * 60 * 60 * 24);
+                    return diffIns < 30 || diffLic < 30;
+                }).length;
+                document.getElementById('complianceAlert').textContent = alerts;
+            }
+            seed() {
+                const now = new Date();
+                const makes = ['Ford', 'Toyota', 'Chevrolet', 'Volvo', 'Mercedes', 'BMW', 'Scania', 'Kenworth', 'Peterbilt'];
+                const models = ['F-150', 'Camry', 'Silverado', 'FH16', 'Actros', 'X5', 'R470', 'T680', '579'];
+                const statuses = ['active', 'active', 'active', 'maintenance', 'idle', 'inactive'];
+                const fuelTypes = ['Diesel', 'Gasoline', 'Electric', 'Hybrid'];
+
+                // Vehicles
+                const vehicles = [];
+                for (let i = 0; i < 30; i++) {
+                    const year = 2015 + Math.floor(Math.random() * 10);
+                    const make = makes[i % makes.length];
+                    const model = models[i % models.length];
+                    const status = statuses[i % statuses.length];
+                    vehicles.push({
+                        id: uid(),
+                        registration: `REG-${String(i+1).padStart(4,'0')}`,
+                        vin: `VIN-${String(i+1).padStart(8,'0')}`,
+                        make: make,
+                        model: model,
+                        year: year,
+                        color: ['White', 'Black', 'Silver', 'Blue', 'Red'][i % 5],
+                        engine: `V${4+(i%4)}`,
+                        fuelType: fuelTypes[i % fuelTypes.length],
+                        transmission: ['Automatic', 'Manual', 'CVT'][i % 3],
+                        capacity: Math.round((Math.random() * 20 + 2) * 100) / 100,
+                        branch: ['Main', 'North', 'South', 'East', 'West'][i % 5],
+                        assignedDriver: null,
+                        status: status,
+                        purchaseDate: new Date(now.getTime() - Math.random() * 3e9).toISOString().split('T')[0],
+                        purchasePrice: Math.round((Math.random() * 80 + 20) * 1000),
+                        odometer: Math.round(Math.random() * 150000),
+                        insuranceExpiry: new Date(now.getTime() + Math.random() * 6e8).toISOString().split('T')[0],
+                        licenseExpiry: new Date(now.getTime() + Math.random() * 5e8).toISOString().split('T')[0],
+                        lastMaintenance: new Date(now.getTime() - Math.random() * 2e9).toISOString().split('T')[0],
+                        notes: ''
+                    });
+                }
+
+                // Drivers
+                const drivers = [];
+                const firsts = ['James', 'Mary', 'Robert', 'Patricia', 'John', 'Jennifer', 'Michael', 'Linda', 'David',
+                    'Barbara'
+                ];
+                const lasts = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez',
+                    'Martinez'
+                ];
+                const licenseClasses = ['A', 'B', 'C', 'D', 'E', 'F'];
+                for (let i = 0; i < 18; i++) {
+                    const f = firsts[i % firsts.length];
+                    const l = lasts[(i + 3) % lasts.length];
+                    drivers.push({
+                        id: uid(),
+                        firstName: f,
+                        lastName: l,
+                        email: `${f.toLowerCase()}.${l.toLowerCase()}@fleet.com`,
+                        phone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        licenseNumber: `L-${String(i+1).padStart(6,'0')}`,
+                        licenseClass: licenseClasses[i % licenseClasses.length],
+                        licenseExpiry: new Date(now.getTime() + Math.random() * 4e8).toISOString().split('T')[0],
+                        medicalExpiry: new Date(now.getTime() + Math.random() * 3e8).toISOString().split('T')[0],
+                        status: ['active', 'active', 'active', 'on-leave', 'inactive'][i % 5],
+                        hiredDate: new Date(now.getTime() - Math.random() * 2e9).toISOString().split('T')[0],
+                        emergencyContact: `${firsts[(i+5)%firsts.length]} ${lasts[(i+7)%lasts.length]}`,
+                        emergencyPhone: `+1-${Math.floor(100+Math.random()*900)}-${Math.floor(100+Math.random()*900)}-${Math.floor(1000+Math.random()*9000)}`,
+                        assignedVehicle: null,
+                        violations: Math.floor(Math.random() * 3),
+                        rating: 3 + Math.floor(Math.random() * 3)
+                    });
+                }
+                // Assign some drivers to vehicles
+                for (let i = 0; i < 10; i++) {
+                    drivers[i].assignedVehicle = vehicles[i].id;
+                    vehicles[i].assignedDriver = drivers[i].id;
+                }
+
+                // Trips
+                const trips = [];
+                const tripStatuses = ['scheduled', 'active', 'completed', 'cancelled'];
+                const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Houston', 'Phoenix', 'Philadelphia',
+                    'San Antonio', 'San Diego', 'Dallas'
+                ];
+                for (let i = 0; i < 35; i++) {
+                    const fromIdx = i % cities.length;
+                    const toIdx = (i + 3) % cities.length;
+                    const dist = Math.round((Math.random() * 800 + 50) * 100) / 100;
+                    trips.push({
+                        id: uid(),
+                        tripNumber: `TRIP-${String(i+1).padStart(4,'0')}`,
+                        vehicleId: vehicles[i % vehicles.length].id,
+                        driverId: drivers[i % drivers.length].id,
+                        from: cities[fromIdx],
+                        to: cities[toIdx],
+                        distance: dist,
+                        estimatedDuration: Math.round((dist / 60) * 100) / 100,
+                        actualDuration: Math.round(((dist / 55) + Math.random() * 2) * 100) / 100,
+                        status: tripStatuses[i % tripStatuses.length],
+                        scheduledDate: new Date(now.getTime() + (i - 15) * 86400000).toISOString().split('T')[0],
+                        startDate: null,
+                        endDate: null,
+                        fuelUsed: Math.round(dist / 10 * (0.8 + Math.random() * 0.4) * 100) / 100,
+                        notes: ''
+                    });
+                }
+
+                // Fuel logs
+                const fuelLogs = [];
+                for (let i = 0; i < 50; i++) {
+                    const vehicle = vehicles[i % vehicles.length];
+                    const liters = Math.round((Math.random() * 150 + 20) * 100) / 100;
+                    const price = Math.round((Math.random() * 2 + 1) * 100) / 100;
+                    fuelLogs.push({
+                        id: uid(),
+                        vehicleId: vehicle.id,
+                        driverId: drivers[i % drivers.length].id,
+                        date: new Date(now.getTime() - Math.random() * 2e9).toISOString().split('T')[0],
+                        liters: liters,
+                        pricePerLiter: price,
+                        totalCost: Math.round(liters * price * 100) / 100,
+                        station: ['Shell', 'Exxon', 'Chevron', 'BP', 'Marathon'][i % 5],
+                        odometer: vehicle.odometer + Math.round(Math.random() * 2000),
+                        notes: ''
+                    });
+                }
+
+                // Maintenance
+                const maintenance = [];
+                const maintTypes = ['Oil Change', 'Brake Service', 'Tire Replacement', 'Engine Tune', 'Transmission Service',
+                    'Coolant Flush', 'Battery Replacement', 'Inspection'
+                ];
+                for (let i = 0; i < 25; i++) {
+                    const vehicle = vehicles[i % vehicles.length];
+                    maintenance.push({
+                        id: uid(),
+                        vehicleId: vehicle.id,
+                        type: maintTypes[i % maintTypes.length],
+                        description: `Scheduled ${maintTypes[i%maintTypes.length]}`,
+                        scheduledDate: new Date(now.getTime() + (i - 10) * 86400000).toISOString().split('T')[0],
+                        completedDate: i % 3 === 0 ? new Date(now.getTime() - Math.random() * 2e9).toISOString().split(
+                            'T')[0] : null,
+                        status: i % 3 === 0 ? 'completed' : i % 2 === 0 ? 'scheduled' : 'in-progress',
+                        cost: Math.round((Math.random() * 1000 + 100) * 100) / 100,
+                        provider: ['Fleet Auto', 'Quick Lube', 'National Tire', 'Service Plus'][i % 4],
+                        notes: ''
+                    });
+                }
+
+                // Dispatch requests
+                const dispatchRequests = [];
+                for (let i = 0; i < 15; i++) {
+                    const vehicle = vehicles[i % vehicles.length];
+                    const driver = drivers[i % drivers.length];
+                    dispatchRequests.push({
+                        id: uid(),
+                        requestNumber: `DISP-${String(i+1).padStart(4,'0')}`,
+                        vehicleId: vehicle.id,
+                        driverId: driver.id,
+                        from: cities[i % cities.length],
+                        to: cities[(i + 2) % cities.length],
+                        priority: ['low', 'medium', 'high'][i % 3],
+                        status: ['pending', 'approved', 'assigned', 'completed', 'cancelled'][i % 5],
+                        requestedDate: new Date(now.getTime() - (i * 2) * 86400000).toISOString().split('T')[0],
+                        scheduledDate: new Date(now.getTime() + (i - 5) * 86400000).toISOString().split('T')[0],
+                        notes: ''
+                    });
+                }
+
+                // Compliance records (licenses, insurance, etc.)
+                const compliance = [];
+                for (let i = 0; i < vehicles.length; i++) {
+                    const v = vehicles[i];
+                    compliance.push({
+                        id: uid(),
+                        vehicleId: v.id,
+                        type: 'Insurance',
+                        documentNumber: `INS-${String(i+1).padStart(6,'0')}`,
+                        expiryDate: v.insuranceExpiry,
+                        status: new Date(v.insuranceExpiry) > new Date() ? 'valid' : 'expired',
+                        provider: ['AllState', 'State Farm', 'Geico', 'Progressive'][i % 4],
+                        notes: ''
+                    });
+                    compliance.push({
+                        id: uid(),
+                        vehicleId: v.id,
+                        type: 'Registration',
+                        documentNumber: `REG-${String(i+1).padStart(6,'0')}`,
+                        expiryDate: v.licenseExpiry,
+                        status: new Date(v.licenseExpiry) > new Date() ? 'valid' : 'expired',
+                        provider: 'DMV',
+                        notes: ''
+                    });
+                }
+
+                // Notifications
+                const notifications = [
+                    { id: uid(), type: 'info', message: 'Fleet+ Enterprise initialized', time: now.toISOString() },
+                    { id: uid(), type: 'success', message: '5 vehicles added to fleet', time: new Date(now.getTime() -
+                            3600000).toISOString() },
+                    { id: uid(), type: 'warning', message: '3 vehicles due for maintenance', time: new Date(now.getTime() -
+                            7200000).toISOString() },
+                    { id: uid(), type: 'error', message: 'Insurance expiring for vehicle REG-0001', time: new Date(now
+                            .getTime() - 86400000).toISOString() }
+                ];
+
+                this.data = {
+                    _initialized: true,
+                    vehicles,
+                    drivers,
+                    trips,
+                    fuelLogs,
+                    maintenance,
+                    dispatchRequests,
+                    compliance,
+                    notifications,
+                    auditLogs: [],
+                    settings: { theme: 'light' }
+                };
+                this.save();
+                this.addAuditLog('System', 'Initialize', 'System', 'Initialized with seed data', 'completed');
+            }
+
+            get(c) { return this.data[c] || []; }
+            set(c, v) { this.data[c] = v;
+                this.save(); }
+            add(c, item) { const arr = this.get(c);
+                arr.push(item);
+                this.set(c, arr); return item; }
+            update(c, id, updates) {
+                const arr = this.get(c);
+                const idx = arr.findIndex(a => a.id === id);
+                if (idx === -1) return null;
+                arr[idx] = { ...arr[idx], ...updates };
+                this.set(c, arr);
+                this.addAuditLog('System', 'Update', c, id, 'Updated record', 'completed');
+                return arr[idx];
+            }
+            remove(c, id) {
+                const arr = this.get(c);
+                const filtered = arr.filter(a => a.id !== id);
+                this.set(c, filtered);
+                this.addAuditLog('System', 'Delete', c, id, 'Deleted record', 'completed');
+                return filtered;
+            }
+            find(c, id) { return this.get(c).find(a => a.id === id) || null; }
+            query(c, fn) { return this.get(c).filter(fn); }
+
+            getVehicle(id) { return this.find('vehicles', id); }
+            getDriver(id) { return this.find('drivers', id); }
+            getVehicleName(v) { return v ? `${v.make} ${v.model} (${v.registration})` : 'Unknown'; }
+            getDriverName(d) { return d ? `${d.firstName} ${d.lastName}` : 'Unassigned'; }
+
+            addAuditLog(user, action, module, recordId, details, status) {
+                const logs = this.get('auditLogs');
+                logs.unshift({
+                    id: uid(),
+                    user: user || 'System',
+                    action,
+                    module,
+                    recordId,
+                    details,
+                    status: status || 'completed',
+                    timestamp: new Date().toISOString()
+                });
+                if (logs.length > 500) logs.pop();
+                this.set('auditLogs', logs);
+            }
+
+            addNotification(msg, type = 'info') {
+                const n = { id: uid(), type, message: msg, time: new Date().toISOString() };
+                const notifs = this.get('notifications');
+                notifs.unshift(n);
+                if (notifs.length > 50) notifs.pop();
+                this.set('notifications', notifs);
+                this.updateNotifDot();
+                return n;
+            }
+            updateNotifDot() {
+                const unread = this.get('notifications').filter(n => !n.read).length;
+                document.getElementById('notifDot').style.display = unread > 0 ? 'block' : 'none';
+            }
+        }
+
+        const store = new Store();
+
+        // ===== TOAST =====
+        function toast(msg, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`;
+            const icons = { info: 'ℹ️', success: '✅', error: '❌', warning: '⚠️' };
+            el.innerHTML = `
+            <span class="toast-icon">${icons[type]||'ℹ️'}</span>
+            <span class="toast-msg">${msg}</span>
+            <span class="toast-close">✕</span>
+          `;
+            container.appendChild(el);
+            const close = el.querySelector('.toast-close');
+            close.addEventListener('click', () => { el.remove(); });
+            setTimeout(() => { el.style.opacity = '0';
+                setTimeout(() => el.remove(), 300); }, 3500);
+        }
+
+        // ===== RENDER ENGINE =====
+        const pages = {};
+
+        function navigate(page, params) {
+            document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
+            const navItem = document.querySelector(`.sidebar-nav .nav-item[data-page="${page}"]`);
+            if (navItem) navItem.classList.add('active');
+
+            const labels = {
+                dashboard: 'Dashboard',
+                'fleet-assets': 'Fleet Assets',
+                drivers: 'Drivers',
+                trips: 'Trips',
+                routes: 'Route Planning',
+                dispatch: 'Dispatch',
+                fuel: 'Fuel Management',
+                maintenance: 'Maintenance',
+                compliance: 'Compliance',
+                reports: 'Reports',
+                'audit-logs': 'Audit Logs',
+                settings: 'Settings'
+            };
+            document.getElementById('breadcrumbs').innerHTML = `<span>${labels[page]||page}</span>`;
+
+            const container = document.getElementById('pageContainer');
+            if (pages[page]) {
+                container.innerHTML = pages[page](params);
+            } else {
+                container.innerHTML =
+                `<div class="empty-state"><div class="icon">🚧</div><h3>${page}</h3><p>Module in development</p></div>`;
+            }
+            bindPageEvents(page);
+            if (page === 'dashboard') initCharts();
+        }
+
+        // ===== PAGE DEFINITIONS =====
+
+        // --- Dashboard ---
+        pages.dashboard = function() {
+            const vehicles = store.get('vehicles');
+            const drivers = store.get('drivers');
+            const trips = store.get('trips');
+            const fuelLogs = store.get('fuelLogs');
+            const maintenance = store.get('maintenance');
+            const active = vehicles.filter(v => v.status === 'active').length;
+            const maint = vehicles.filter(v => v.status === 'maintenance').length;
+            const available = vehicles.filter(v => v.status === 'active' || v.status === 'idle').length;
+            const onDuty = drivers.filter(d => d.status === 'active').length;
+            const tripsToday = trips.filter(t => t.scheduledDate === today() && t.status !== 'cancelled').length;
+            const totalFuel = fuelLogs.reduce((s, f) => s + f.totalCost, 0);
+            const totalDistance = trips.reduce((s, t) => s + t.distance, 0);
+            const maintCost = maintenance.reduce((s, m) => s + (m.cost || 0), 0);
+            const expiringInsurance = vehicles.filter(v => {
+                if (!v.insuranceExpiry) return false;
+                const diff = (new Date(v.insuranceExpiry) - new Date()) / (1000 * 60 * 60 * 24);
+                return diff < 30 && diff > 0;
+            }).length;
+
+            // Fuel by vehicle
+            const fuelByVehicle = {};
+            fuelLogs.forEach(f => {
+                const v = store.getVehicle(f.vehicleId);
+                if (v) fuelByVehicle[v.registration] = (fuelByVehicle[v.registration] || 0) + f.totalCost;
+            });
+            const fuelLabels = Object.keys(fuelByVehicle).slice(0, 6);
+            const fuelVals = Object.values(fuelByVehicle).slice(0, 6);
+
+            // Status distribution
+            const statusCounts = { active: 0, idle: 0, maintenance: 0, inactive: 0 };
+            vehicles.forEach(v => { statusCounts[v.status] = (statusCounts[v.status] || 0) + 1; });
+
+            let html = `
+            <div class="dashboard-grid">
+              <div class="stat-card"><div class="icon-wrap blue">🚛</div><div class="label">Total Fleet</div><div class="value">${vehicles.length}</div><div class="change up">↑ 4%</div></div>
+              <div class="stat-card"><div class="icon-wrap green">✅</div><div class="label">Active Vehicles</div><div class="value">${active}</div><div class="change up">↑ 2%</div></div>
+              <div class="stat-card"><div class="icon-wrap yellow">🔧</div><div class="label">In Maintenance</div><div class="value">${maint}</div><div class="change ${maint>5?'down':'up'}">${maint>5?'↑':'↓'} ${maint}</div></div>
+              <div class="stat-card"><div class="icon-wrap purple">👤</div><div class="label">Drivers On Duty</div><div class="value">${onDuty}</div><div class="change up">↑ 3%</div></div>
+              <div class="stat-card"><div class="icon-wrap pink">📊</div><div class="label">Trips Today</div><div class="value">${tripsToday}</div><div class="change up">↑ 6%</div></div>
+              <div class="stat-card"><div class="icon-wrap yellow">⛽</div><div class="label">Fuel Cost</div><div class="value">${formatCurrency(totalFuel)}</div><div class="change up">↑ 5%</div></div>
+              <div class="stat-card"><div class="icon-wrap red">⚠️</div><div class="label">Insurance Expiring</div><div class="value">${expiringInsurance}</div><div class="change ${expiringInsurance>0?'down':'up'}">${expiringInsurance>0?'↑':'↓'} ${expiringInsurance}</div></div>
+              <div class="stat-card"><div class="icon-wrap blue">📈</div><div class="label">Total Distance</div><div class="value">${(totalDistance/1000).toFixed(1)}K km</div><div class="change up">↑ 8%</div></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">⛽ Fuel Cost by Vehicle</div><canvas id="chartFuelCost" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">🚛 Fleet Status</div><canvas id="chartFleetStatus" height="180"></canvas></div>
+            </div>
+
+            <div class="chart-row">
+              <div class="chart-box"><div class="title">📈 Trip Activity (Last 7 Days)</div><canvas id="chartTripActivity" height="180"></canvas></div>
+              <div class="chart-box"><div class="title">🔧 Maintenance Cost</div><canvas id="chartMaintCost" height="180"></canvas></div>
+            </div>
+
+            <div class="recent-table-wrap">
+              <div class="title">🚛 Recent Trips <span class="link" onclick="navigate('trips')">View all →</span></div>
+              <div class="table-responsive">
+                <table>
+                  <thead><tr><th>Trip #</th><th>Vehicle</th><th>Driver</th><th>From → To</th><th>Status</th></tr></thead>
+                  <tbody>
+                    ${trips.slice(0, 6).map(t => {
+                      const v = store.getVehicle(t.vehicleId);
+                      const d = store.getDriver(t.driverId);
+                      return `<tr><td><strong>${t.tripNumber}</strong></td><td>${v ? v.registration : 'Unknown'}</td><td>${d ? d.firstName+' '+d.lastName : 'Unknown'}</td><td>${t.from} → ${t.to}</td><td><span class="status-badge ${t.status==='completed'?'active':t.status==='cancelled'?'inactive':'pending'}">${t.status}</span></td></tr>`;
+                    }).join('')}
+                    ${trips.length===0?'<tr><td colspan="5" class="text-muted text-center">No trips</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Fleet Assets ---
+        pages['fleet-assets'] = function() {
+            const vehicles = store.get('vehicles');
+            let html = `
+            <div class="module-header">
+              <h2>🚛 Fleet Assets</h2>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="openVehicleForm()">+ Add Vehicle</button>
+              </div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search vehicles..." id="assetSearch" oninput="filterAssets()"/></div>
+              <select id="assetStatusFilter" onchange="filterAssets()"><option value="">All Status</option><option value="active">Active</option><option value="idle">Idle</option><option value="maintenance">Maintenance</option><option value="inactive">Inactive</option></select>
+              <select id="assetBranchFilter" onchange="filterAssets()"><option value="">All Branches</option>${[...new Set(vehicles.map(v=>v.branch))].map(b=>`<option value="${b}">${b}</option>`).join('')}</select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Registration</th><th>Make/Model</th><th>Year</th><th>Fuel</th><th>Odometer</th><th>Status</th><th>Driver</th><th>Actions</th></tr></thead>
+                  <tbody id="assetTableBody">
+                    ${vehicles.map(v => {
+                      const d = store.getDriver(v.assignedDriver);
+                      return `<tr data-id="${v.id}">
+                        <td><strong>${v.registration}</strong></td>
+                        <td>${v.make} ${v.model}</td>
+                        <td>${v.year}</td>
+                        <td>${v.fuelType}</td>
+                        <td>${v.odometer ? v.odometer.toLocaleString() : '-'}</td>
+                        <td><span class="status-badge ${v.status==='active'?'active':v.status==='maintenance'?'inactive':'pending'}">${v.status}</span></td>
+                        <td>${d ? d.firstName+' '+d.lastName : 'Unassigned'}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewVehicle('${v.id}')" title="View">👁️</button>
+                          <button onclick="editVehicle('${v.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteVehicle('${v.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${vehicles.length===0?'<tr><td colspan="8" class="text-muted text-center">No vehicles</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${vehicles.length} vehicles</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterAssets = function() {
+            const search = document.getElementById('assetSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('assetStatusFilter')?.value || '';
+            const branch = document.getElementById('assetBranchFilter')?.value || '';
+            const vehicles = store.get('vehicles');
+            const filtered = vehicles.filter(v => {
+                const matchSearch = v.registration.toLowerCase().includes(search) || v.make.toLowerCase().includes(
+                    search) || v.model.toLowerCase().includes(search);
+                const matchStatus = !status || v.status === status;
+                const matchBranch = !branch || v.branch === branch;
+                return matchSearch && matchStatus && matchBranch;
+            });
+            const tbody = document.getElementById('assetTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(v => {
+                const d = store.getDriver(v.assignedDriver);
+                return `<tr data-id="${v.id}">
+              <td><strong>${v.registration}</strong></td>
+              <td>${v.make} ${v.model}</td>
+              <td>${v.year}</td>
+              <td>${v.fuelType}</td>
+              <td>${v.odometer ? v.odometer.toLocaleString() : '-'}</td>
+              <td><span class="status-badge ${v.status==='active'?'active':v.status==='maintenance'?'inactive':'pending'}">${v.status}</span></td>
+              <td>${d ? d.firstName+' '+d.lastName : 'Unassigned'}</td>
+              <td><div class="actions-cell">
+                <button onclick="viewVehicle('${v.id}')" title="View">👁️</button>
+                <button onclick="editVehicle('${v.id}')" title="Edit">✏️</button>
+                <button onclick="deleteVehicle('${v.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="8" class="text-muted text-center">No matching vehicles</td></tr>';
+        };
+
+        // --- Drivers ---
+        pages.drivers = function() {
+            const drivers = store.get('drivers');
+            let html = `
+            <div class="module-header"><h2>👤 Drivers</h2><div class="actions"><button class="btn btn-primary" onclick="openDriverForm()">+ Add Driver</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search drivers..." id="driverSearch" oninput="filterDrivers()"/></div>
+              <select id="driverStatusFilter" onchange="filterDrivers()"><option value="">All Status</option><option value="active">Active</option><option value="on-leave">On Leave</option><option value="inactive">Inactive</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Name</th><th>License</th><th>Class</th><th>Status</th><th>Assigned Vehicle</th><th>Rating</th><th>Actions</th></tr></thead>
+                  <tbody id="driverTableBody">
+                    ${drivers.map(d => {
+                      const v = store.getVehicle(d.assignedVehicle);
+                      return `<tr data-id="${d.id}">
+                        <td><strong>${d.firstName} ${d.lastName}</strong></td>
+                        <td>${d.licenseNumber}</td>
+                        <td>${d.licenseClass}</td>
+                        <td><span class="status-badge ${d.status==='active'?'active':d.status==='on-leave'?'pending':'inactive'}">${d.status}</span></td>
+                        <td>${v ? v.registration : 'Unassigned'}</td>
+                        <td>${'⭐'.repeat(d.rating||0)}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewDriver('${d.id}')" title="View">👁️</button>
+                          <button onclick="editDriver('${d.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteDriver('${d.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${drivers.length===0?'<tr><td colspan="7" class="text-muted text-center">No drivers</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${drivers.length} drivers</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterDrivers = function() {
+            const search = document.getElementById('driverSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('driverStatusFilter')?.value || '';
+            const drivers = store.get('drivers');
+            const filtered = drivers.filter(d => {
+                const name = `${d.firstName} ${d.lastName}`.toLowerCase();
+                return name.includes(search) && (!status || d.status === status);
+            });
+            const tbody = document.getElementById('driverTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(d => {
+                const v = store.getVehicle(d.assignedVehicle);
+                return `<tr data-id="${d.id}">
+              <td><strong>${d.firstName} ${d.lastName}</strong></td>
+              <td>${d.licenseNumber}</td>
+              <td>${d.licenseClass}</td>
+              <td><span class="status-badge ${d.status==='active'?'active':d.status==='on-leave'?'pending':'inactive'}">${d.status}</span></td>
+              <td>${v ? v.registration : 'Unassigned'}</td>
+              <td>${'⭐'.repeat(d.rating||0)}</td>
+              <td><div class="actions-cell">
+                <button onclick="viewDriver('${d.id}')" title="View">👁️</button>
+                <button onclick="editDriver('${d.id}')" title="Edit">✏️</button>
+                <button onclick="deleteDriver('${d.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching drivers</td></tr>';
+        };
+
+        // --- Trips ---
+        pages.trips = function() {
+            const trips = store.get('trips');
+            let html = `
+            <div class="module-header"><h2>🗺️ Trips</h2><div class="actions"><button class="btn btn-primary" onclick="openTripForm()">+ Schedule Trip</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search trips..." id="tripSearch" oninput="filterTrips()"/></div>
+              <select id="tripStatusFilter" onchange="filterTrips()"><option value="">All Status</option><option value="scheduled">Scheduled</option><option value="active">Active</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Trip #</th><th>Vehicle</th><th>Driver</th><th>From → To</th><th>Distance</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="tripTableBody">
+                    ${trips.map(t => {
+                      const v = store.getVehicle(t.vehicleId);
+                      const d = store.getDriver(t.driverId);
+                      return `<tr data-id="${t.id}">
+                        <td><strong>${t.tripNumber}</strong></td>
+                        <td>${v ? v.registration : 'Unknown'}</td>
+                        <td>${d ? d.firstName+' '+d.lastName : 'Unknown'}</td>
+                        <td>${t.from} → ${t.to}</td>
+                        <td>${t.distance} km</td>
+                        <td><span class="status-badge ${t.status==='completed'?'active':t.status==='cancelled'?'inactive':'pending'}">${t.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="viewTrip('${t.id}')" title="View">👁️</button>
+                          <button onclick="editTrip('${t.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteTrip('${t.id}')" title="Delete">🗑️</button>
+                          ${t.status==='scheduled'?`<button onclick="startTrip('${t.id}')" title="Start">▶️</button>`:''}
+                          ${t.status==='active'?`<button onclick="completeTrip('${t.id}')" title="Complete">✅</button>`:''}
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${trips.length===0?'<tr><td colspan="7" class="text-muted text-center">No trips</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${trips.length} trips</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterTrips = function() {
+            const search = document.getElementById('tripSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('tripStatusFilter')?.value || '';
+            const trips = store.get('trips');
+            const filtered = trips.filter(t => {
+                return (t.tripNumber.toLowerCase().includes(search) || t.from.toLowerCase().includes(search) || t.to
+                    .toLowerCase().includes(search)) &&
+                    (!status || t.status === status);
+            });
+            const tbody = document.getElementById('tripTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(t => {
+                const v = store.getVehicle(t.vehicleId);
+                const d = store.getDriver(t.driverId);
+                return `<tr data-id="${t.id}">
+              <td><strong>${t.tripNumber}</strong></td>
+              <td>${v ? v.registration : 'Unknown'}</td>
+              <td>${d ? d.firstName+' '+d.lastName : 'Unknown'}</td>
+              <td>${t.from} → ${t.to}</td>
+              <td>${t.distance} km</td>
+              <td><span class="status-badge ${t.status==='completed'?'active':t.status==='cancelled'?'inactive':'pending'}">${t.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="viewTrip('${t.id}')" title="View">👁️</button>
+                <button onclick="editTrip('${t.id}')" title="Edit">✏️</button>
+                <button onclick="deleteTrip('${t.id}')" title="Delete">🗑️</button>
+                ${t.status==='scheduled'?`<button onclick="startTrip('${t.id}')" title="Start">▶️</button>`:''}
+                ${t.status==='active'?`<button onclick="completeTrip('${t.id}')" title="Complete">✅</button>`:''}
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching trips</td></tr>';
+        };
+
+        // --- Route Planning ---
+        pages.routes = function() {
+            const trips = store.get('trips');
+            const vehicles = store.get('vehicles');
+            const activeTrips = trips.filter(t => t.status === 'scheduled' || t.status === 'active');
+            let html = `
+            <div class="module-header"><h2>🗺️ Route Planning</h2>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="toast('Route optimization started','success')">🔄 Optimize Routes</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;">
+              ${activeTrips.map(t => {
+                const v = store.getVehicle(t.vehicleId);
+                const d = store.getDriver(t.driverId);
+                return `<div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:16px;box-shadow:var(--shadow-sm);">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <strong>${t.tripNumber}</strong>
+                    <span class="status-badge ${t.status==='active'?'active':'pending'}">${t.status}</span>
+                  </div>
+                  <div style="font-size:13px;color:var(--text-secondary);margin:8px 0;">${t.from} → ${t.to}</div>
+                  <div style="font-size:12px;color:var(--text-muted);">🚛 ${v ? v.registration : 'Unknown'} · 👤 ${d ? d.firstName+' '+d.lastName : 'Unknown'}</div>
+                  <div style="font-size:12px;color:var(--text-muted);">📏 ${t.distance} km · ⏱️ ${t.estimatedDuration} hrs</div>
+                  <div style="margin-top:8px;display:flex;gap:6px;">
+                    <button class="btn btn-sm btn-primary" onclick="viewTrip('${t.id}')">View</button>
+                    <button class="btn btn-sm btn-success" onclick="toast('Route optimized','success')">🔄 Optimize</button>
+                  </div>
+                </div>`;
+              }).join('')}
+              ${activeTrips.length===0?'<div class="empty-state"><div class="icon">🗺️</div><h3>No active trips</h3><p>Schedule trips to start route planning</p></div>':''}
+            </div>
+            <div style="margin-top:20px;" class="gps-sim">
+              <div style="font-weight:600;margin-bottom:12px;">📍 Live GPS Simulation</div>
+              <div style="position:relative;height:200px;background:var(--bg-input);border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border-color);">
+                <div class="vehicle-marker" style="left:${20+Math.random()*60}%;top:${20+Math.random()*60}%;"></div>
+                <div style="position:absolute;bottom:10px;right:10px;font-size:11px;color:var(--text-muted);">${activeTrips.length} active vehicles · Updated: ${new Date().toLocaleTimeString()}</div>
+              </div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Dispatch ---
+        pages.dispatch = function() {
+            const requests = store.get('dispatchRequests');
+            let html = `
+            <div class="module-header"><h2>📋 Dispatch</h2><div class="actions"><button class="btn btn-primary" onclick="openDispatchForm()">+ New Request</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search requests..." id="dispatchSearch" oninput="filterDispatch()"/></div>
+              <select id="dispatchStatusFilter" onchange="filterDispatch()"><option value="">All Status</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="assigned">Assigned</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Request #</th><th>Vehicle</th><th>Driver</th><th>From → To</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead>
+                  <tbody id="dispatchTableBody">
+                    ${requests.map(r => {
+                      const v = store.getVehicle(r.vehicleId);
+                      const d = store.getDriver(r.driverId);
+                      return `<tr data-id="${r.id}">
+                        <td><strong>${r.requestNumber}</strong></td>
+                        <td>${v ? v.registration : 'Unknown'}</td>
+                        <td>${d ? d.firstName+' '+d.lastName : 'Unknown'}</td>
+                        <td>${r.from} → ${r.to}</td>
+                        <td><span class="status-badge ${r.priority==='high'?'danger':r.priority==='medium'?'warning':'info'}">${r.priority}</span></td>
+                        <td><span class="status-badge ${r.status==='completed'?'active':r.status==='cancelled'?'inactive':'pending'}">${r.status}</span></td>
+                        <td><div class="actions-cell">
+                          <button onclick="editDispatch('${r.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteDispatch('${r.id}')" title="Delete">🗑️</button>
+                          ${r.status==='pending'?`<button onclick="approveDispatch('${r.id}')" title="Approve">✅</button>`:''}
+                          ${r.status==='approved'?`<button onclick="assignDispatch('${r.id}')" title="Assign">📌</button>`:''}
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${requests.length===0?'<tr><td colspan="7" class="text-muted text-center">No dispatch requests</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${requests.length} requests</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterDispatch = function() {
+            const search = document.getElementById('dispatchSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('dispatchStatusFilter')?.value || '';
+            const requests = store.get('dispatchRequests');
+            const filtered = requests.filter(r => {
+                return (r.requestNumber.toLowerCase().includes(search) || r.from.toLowerCase().includes(search) || r
+                    .to.toLowerCase().includes(search)) &&
+                    (!status || r.status === status);
+            });
+            const tbody = document.getElementById('dispatchTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(r => {
+                const v = store.getVehicle(r.vehicleId);
+                const d = store.getDriver(r.driverId);
+                return `<tr data-id="${r.id}">
+              <td><strong>${r.requestNumber}</strong></td>
+              <td>${v ? v.registration : 'Unknown'}</td>
+              <td>${d ? d.firstName+' '+d.lastName : 'Unknown'}</td>
+              <td>${r.from} → ${r.to}</td>
+              <td><span class="status-badge ${r.priority==='high'?'danger':r.priority==='medium'?'warning':'info'}">${r.priority}</span></td>
+              <td><span class="status-badge ${r.status==='completed'?'active':r.status==='cancelled'?'inactive':'pending'}">${r.status}</span></td>
+              <td><div class="actions-cell">
+                <button onclick="editDispatch('${r.id}')" title="Edit">✏️</button>
+                <button onclick="deleteDispatch('${r.id}')" title="Delete">🗑️</button>
+                ${r.status==='pending'?`<button onclick="approveDispatch('${r.id}')" title="Approve">✅</button>`:''}
+                ${r.status==='approved'?`<button onclick="assignDispatch('${r.id}')" title="Assign">📌</button>`:''}
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching requests</td></tr>';
+        };
+
+        // --- Fuel Management ---
+        pages.fuel = function() {
+            const fuelLogs = store.get('fuelLogs');
+            const vehicles = store.get('vehicles');
+            const totalFuel = fuelLogs.reduce((s, f) => s + f.totalCost, 0);
+            const totalLiters = fuelLogs.reduce((s, f) => s + f.liters, 0);
+            let html = `
+            <div class="module-header"><h2>⛽ Fuel Management</h2><div class="actions"><button class="btn btn-primary" onclick="openFuelForm()">+ Log Fuel</button></div></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Fuel Cost</div><div class="value">${formatCurrency(totalFuel)}</div></div>
+              <div class="stat-card"><div class="label">Total Liters</div><div class="value">${totalLiters.toFixed(0)} L</div></div>
+              <div class="stat-card"><div class="label">Avg Price/L</div><div class="value">$${(fuelLogs.length>0 ? fuelLogs.reduce((s,f)=>s+f.pricePerLiter,0)/fuelLogs.length : 0).toFixed(2)}</div></div>
+              <div class="stat-card"><div class="label">Fuel Logs</div><div class="value">${fuelLogs.length}</div></div>
+            </div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search fuel logs..." id="fuelSearch" oninput="filterFuel()"/></div>
+              <select id="fuelVehicleFilter" onchange="filterFuel()"><option value="">All Vehicles</option>${vehicles.map(v => `<option value="${v.id}">${v.registration}</option>`).join('')}</select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Vehicle</th><th>Date</th><th>Liters</th><th>Price/L</th><th>Total Cost</th><th>Station</th><th>Actions</th></tr></thead>
+                  <tbody id="fuelTableBody">
+                    ${fuelLogs.map(f => {
+                      const v = store.getVehicle(f.vehicleId);
+                      return `<tr data-id="${f.id}">
+                        <td><strong>${v ? v.registration : 'Unknown'}</strong></td>
+                        <td>${dateStr(f.date)}</td>
+                        <td>${f.liters}</td>
+                        <td>$${f.pricePerLiter.toFixed(2)}</td>
+                        <td>${formatCurrency(f.totalCost)}</td>
+                        <td>${f.station}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="editFuel('${f.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteFuel('${f.id}')" title="Delete">🗑️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${fuelLogs.length===0?'<tr><td colspan="7" class="text-muted text-center">No fuel logs</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${fuelLogs.length} logs</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterFuel = function() {
+            const search = document.getElementById('fuelSearch')?.value?.toLowerCase() || '';
+            const vehicleId = document.getElementById('fuelVehicleFilter')?.value || '';
+            const fuelLogs = store.get('fuelLogs');
+            const filtered = fuelLogs.filter(f => {
+                const v = store.getVehicle(f.vehicleId);
+                const name = v ? v.registration.toLowerCase() : '';
+                return name.includes(search) && (!vehicleId || f.vehicleId === vehicleId);
+            });
+            const tbody = document.getElementById('fuelTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(f => {
+                const v = store.getVehicle(f.vehicleId);
+                return `<tr data-id="${f.id}">
+              <td><strong>${v ? v.registration : 'Unknown'}</strong></td>
+              <td>${dateStr(f.date)}</td>
+              <td>${f.liters}</td>
+              <td>$${f.pricePerLiter.toFixed(2)}</td>
+              <td>${formatCurrency(f.totalCost)}</td>
+              <td>${f.station}</td>
+              <td><div class="actions-cell">
+                <button onclick="editFuel('${f.id}')" title="Edit">✏️</button>
+                <button onclick="deleteFuel('${f.id}')" title="Delete">🗑️</button>
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching logs</td></tr>';
+        };
+
+        // --- Maintenance ---
+        pages.maintenance = function() {
+            const maintenance = store.get('maintenance');
+            const vehicles = store.get('vehicles');
+            let html = `
+            <div class="module-header"><h2>🔧 Maintenance</h2><div class="actions"><button class="btn btn-primary" onclick="openMaintenanceForm()">+ Schedule Maintenance</button></div></div>
+            <div class="filter-bar">
+              <div class="search-input"><input type="text" placeholder="Search maintenance..." id="maintSearch" oninput="filterMaintenance()"/></div>
+              <select id="maintStatusFilter" onchange="filterMaintenance()"><option value="">All Status</option><option value="scheduled">Scheduled</option><option value="in-progress">In Progress</option><option value="completed">Completed</option></select>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Vehicle</th><th>Type</th><th>Scheduled Date</th><th>Status</th><th>Cost</th><th>Provider</th><th>Actions</th></tr></thead>
+                  <tbody id="maintTableBody">
+                    ${maintenance.map(m => {
+                      const v = store.getVehicle(m.vehicleId);
+                      return `<tr data-id="${m.id}">
+                        <td><strong>${v ? v.registration : 'Unknown'}</strong></td>
+                        <td>${m.type}</td>
+                        <td>${dateStr(m.scheduledDate)}</td>
+                        <td><span class="status-badge ${m.status==='completed'?'active':m.status==='scheduled'?'pending':'info'}">${m.status}</span></td>
+                        <td>${m.cost ? formatCurrency(m.cost) : '-'}</td>
+                        <td>${m.provider}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="editMaintenance('${m.id}')" title="Edit">✏️</button>
+                          <button onclick="deleteMaintenance('${m.id}')" title="Delete">🗑️</button>
+                          ${m.status==='scheduled'?`<button onclick="startMaintenance('${m.id}')" title="Start">▶️</button>`:''}
+                          ${m.status==='in-progress'?`<button onclick="completeMaintenance('${m.id}')" title="Complete">✅</button>`:''}
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${maintenance.length===0?'<tr><td colspan="7" class="text-muted text-center">No maintenance records</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${maintenance.length} records</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        window.filterMaintenance = function() {
+            const search = document.getElementById('maintSearch')?.value?.toLowerCase() || '';
+            const status = document.getElementById('maintStatusFilter')?.value || '';
+            const maintenance = store.get('maintenance');
+            const filtered = maintenance.filter(m => {
+                const v = store.getVehicle(m.vehicleId);
+                const name = v ? v.registration.toLowerCase() : '';
+                return name.includes(search) && (!status || m.status === status);
+            });
+            const tbody = document.getElementById('maintTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = filtered.map(m => {
+                const v = store.getVehicle(m.vehicleId);
+                return `<tr data-id="${m.id}">
+              <td><strong>${v ? v.registration : 'Unknown'}</strong></td>
+              <td>${m.type}</td>
+              <td>${dateStr(m.scheduledDate)}</td>
+              <td><span class="status-badge ${m.status==='completed'?'active':m.status==='scheduled'?'pending':'info'}">${m.status}</span></td>
+              <td>${m.cost ? formatCurrency(m.cost) : '-'}</td>
+              <td>${m.provider}</td>
+              <td><div class="actions-cell">
+                <button onclick="editMaintenance('${m.id}')" title="Edit">✏️</button>
+                <button onclick="deleteMaintenance('${m.id}')" title="Delete">🗑️</button>
+                ${m.status==='scheduled'?`<button onclick="startMaintenance('${m.id}')" title="Start">▶️</button>`:''}
+                ${m.status==='in-progress'?`<button onclick="completeMaintenance('${m.id}')" title="Complete">✅</button>`:''}
+              </div></td>
+            </tr>`;
+            }).join('') || '<tr><td colspan="7" class="text-muted text-center">No matching records</td></tr>';
+        };
+
+        // --- Compliance ---
+        pages.compliance = function() {
+            const compliance = store.get('compliance');
+            const vehicles = store.get('vehicles');
+            const expiring = compliance.filter(c => c.status === 'expired' || (new Date(c.expiryDate) - new Date()) / (
+                1000 * 60 * 60 * 24) < 30);
+            let html = `
+            <div class="module-header"><h2>📋 Compliance</h2>
+              <div class="actions">
+                <button class="btn btn-primary" onclick="toast('Compliance report generated','success')">📊 Generate Report</button>
+              </div>
+            </div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));margin-bottom:16px;">
+              <div class="stat-card"><div class="label">Total Records</div><div class="value">${compliance.length}</div></div>
+              <div class="stat-card"><div class="label">Expiring Soon</div><div class="value" style="color:var(--danger);">${expiring.length}</div></div>
+              <div class="stat-card"><div class="label">Valid</div><div class="value" style="color:var(--success);">${compliance.length-expiring.length}</div></div>
+            </div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>Vehicle</th><th>Type</th><th>Document #</th><th>Expiry Date</th><th>Status</th><th>Provider</th><th>Actions</th></tr></thead>
+                  <tbody>
+                    ${compliance.map(c => {
+                      const v = store.getVehicle(c.vehicleId);
+                      const isExpiring = c.status === 'expired' || (new Date(c.expiryDate) - new Date()) / (1000 * 60 * 60 * 24) < 30;
+                      return `<tr>
+                        <td><strong>${v ? v.registration : 'Unknown'}</strong></td>
+                        <td>${c.type}</td>
+                        <td>${c.documentNumber}</td>
+                        <td>${dateStr(c.expiryDate)}</td>
+                        <td><span class="status-badge ${c.status==='valid'?'active':isExpiring?'warning':'inactive'}">${c.status}</span></td>
+                        <td>${c.provider}</td>
+                        <td><div class="actions-cell">
+                          <button onclick="toast('Renew document','info')">🔄</button>
+                          <button onclick="toast('View document','info')">👁️</button>
+                        </div></td>
+                      </tr>`;
+                    }).join('')}
+                    ${compliance.length===0?'<tr><td colspan="7" class="text-muted text-center">No compliance records</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${compliance.length} records</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Reports ---
+        pages.reports = function() {
+            const vehicles = store.get('vehicles');
+            const trips = store.get('trips');
+            const fuelLogs = store.get('fuelLogs');
+            const maintenance = store.get('maintenance');
+            const totalFuel = fuelLogs.reduce((s, f) => s + f.totalCost, 0);
+            const totalDistance = trips.reduce((s, t) => s + t.distance, 0);
+            const maintCost = maintenance.reduce((s, m) => s + (m.cost || 0), 0);
+
+            let html = `
+            <div class="module-header"><h2>📊 Reports & Analytics</h2></div>
+            <div class="dashboard-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
+              <div class="stat-card"><div class="label">Total Fleet</div><div class="value">${vehicles.length}</div></div>
+              <div class="stat-card"><div class="label">Total Trips</div><div class="value">${trips.length}</div></div>
+              <div class="stat-card"><div class="label">Total Distance</div><div class="value">${(totalDistance/1000).toFixed(1)}K km</div></div>
+              <div class="stat-card"><div class="label">Fuel Cost</div><div class="value">${formatCurrency(totalFuel)}</div></div>
+              <div class="stat-card"><div class="label">Maintenance Cost</div><div class="value">${formatCurrency(maintCost)}</div></div>
+              <div class="stat-card"><div class="label">Avg Fuel Efficiency</div><div class="value">${(totalDistance > 0 && fuelLogs.length > 0) ? (totalDistance / fuelLogs.reduce((s,f)=>s+f.liters,0)).toFixed(1) : '-'} km/L</div></div>
+            </div>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;">
+              <button class="btn btn-primary" onclick="toast('Report exported as CSV','success')">📥 Export CSV</button>
+              <button class="btn btn-primary" onclick="toast('Report exported as Excel','success')">📊 Export Excel</button>
+              <button class="btn" onclick="toast('Printing report...','info')">🖨️ Print</button>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Audit Logs ---
+        pages['audit-logs'] = function() {
+            const logs = store.get('auditLogs');
+            let html = `
+            <div class="module-header"><h2>📋 Audit Logs</h2></div>
+            <div class="module-table-wrap">
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>User</th><th>Action</th><th>Module</th><th>Details</th><th>Status</th><th>Time</th></tr></thead>
+                  <tbody>
+                    ${logs.slice(0, 100).map(l => `
+                      <tr><td><strong>${l.user}</strong></td><td>${l.action}</td><td>${l.module}</td><td>${l.details}</td><td><span class="status-badge ${l.status==='completed'?'active':'pending'}">${l.status}</span></td><td>${timeStr(l.timestamp)}</td></tr>
+                    `).join('')}
+                    ${logs.length===0?'<tr><td colspan="6" class="text-muted text-center">No audit logs</td></tr>':''}
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination"><span class="info">${logs.length} logs</span></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // --- Settings ---
+        pages.settings = function() {
+            let html = `
+            <div class="module-header"><h2>⚙️ Settings</h2></div>
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Theme</div><div class="detail-value">
+                <button class="btn btn-sm" onclick="toggleTheme()">Toggle Dark/Light</button>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Data Management</div><div class="detail-value">
+                <button class="btn btn-sm btn-danger" onclick="resetData()">Reset All Data</button>
+                <span style="font-size:12px;color:var(--text-muted);margin-left:8px;">This will erase all data and restore seed.</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Storage</div><div class="detail-value">
+                <span>${localStorage.length} items in localStorage</span>
+              </div></div>
+              <div class="detail-row"><div class="detail-label">Version</div><div class="detail-value">Fleet+ Enterprise v2.0</div></div>
+            </div>
+          `;
+            return html;
+        };
+
+        // ===== CRUD OPERATIONS =====
+
+        // --- Vehicle CRUD ---
+        window.openVehicleForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Vehicle' : 'Add Vehicle';
+            const d = data || { registration: '', vin: '', make: '', model: '', year: new Date().getFullYear(),
+                color: '', fuelType: 'Diesel', transmission: 'Automatic', capacity: '', branch: 'Main', status: 'active',
+                purchasePrice: '', odometer: '', insuranceExpiry: '', licenseExpiry: '' };
+            const branches = ['Main', 'North', 'South', 'East', 'West'];
+            const statuses = ['active', 'idle', 'maintenance', 'inactive'];
+            const fuelTypes = ['Diesel', 'Gasoline', 'Electric', 'Hybrid'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>Registration <span class="required">*</span></label><input id="fVehReg" value="${d.registration}" placeholder="REG-0001" /></div>
+              <div class="form-group"><label>VIN</label><input id="fVehVin" value="${d.vin||''}" placeholder="VIN number" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Make</label><input id="fVehMake" value="${d.make}" placeholder="Make" /></div>
+              <div class="form-group"><label>Model</label><input id="fVehModel" value="${d.model}" placeholder="Model" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Year</label><input id="fVehYear" value="${d.year}" type="number" /></div>
+              <div class="form-group"><label>Color</label><input id="fVehColor" value="${d.color||''}" placeholder="Color" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Fuel Type</label><select id="fVehFuel">${fuelTypes.map(f => `<option ${f===d.fuelType?'selected':''}>${f}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Transmission</label><select id="fVehTrans"><option ${d.transmission==='Automatic'?'selected':''}>Automatic</option><option ${d.transmission==='Manual'?'selected':''}>Manual</option><option ${d.transmission==='CVT'?'selected':''}>CVT</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Capacity (tons)</label><input id="fVehCapacity" value="${d.capacity||''}" placeholder="Capacity" /></div>
+              <div class="form-group"><label>Branch</label><select id="fVehBranch">${branches.map(b => `<option ${b===d.branch?'selected':''}>${b}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Purchase Price</label><input id="fVehPrice" value="${d.purchasePrice||''}" placeholder="Price" /></div>
+              <div class="form-group"><label>Odometer</label><input id="fVehOdometer" value="${d.odometer||''}" placeholder="Mileage" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Insurance Expiry</label><input id="fVehIns" value="${d.insuranceExpiry||''}" type="date" /></div>
+              <div class="form-group"><label>License Expiry</label><input id="fVehLic" value="${d.licenseExpiry||''}" type="date" /></div>
+            </div>
+            <div class="form-group"><label>Status</label><select id="fVehStatus">${statuses.map(s => `<option ${s===d.status?'selected':''}>${s}</option>`).join('')}</select></div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveVehBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveVehBtn').addEventListener('click', function() {
+                const payload = {
+                    registration: document.getElementById('fVehReg').value.trim(),
+                    vin: document.getElementById('fVehVin').value.trim(),
+                    make: document.getElementById('fVehMake').value.trim(),
+                    model: document.getElementById('fVehModel').value.trim(),
+                    year: parseInt(document.getElementById('fVehYear').value) || new Date().getFullYear(),
+                    color: document.getElementById('fVehColor').value.trim(),
+                    fuelType: document.getElementById('fVehFuel').value,
+                    transmission: document.getElementById('fVehTrans').value,
+                    capacity: parseFloat(document.getElementById('fVehCapacity').value) || 0,
+                    branch: document.getElementById('fVehBranch').value,
+                    purchasePrice: parseFloat(document.getElementById('fVehPrice').value) || 0,
+                    odometer: parseFloat(document.getElementById('fVehOdometer').value) || 0,
+                    insuranceExpiry: document.getElementById('fVehIns').value || null,
+                    licenseExpiry: document.getElementById('fVehLic').value || null,
+                    status: document.getElementById('fVehStatus').value,
+                    assignedDriver: d.assignedDriver || null,
+                    purchaseDate: d.purchaseDate || today(),
+                    notes: d.notes || ''
+                };
+                if (!payload.registration) { toast('Registration is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('vehicles', d.id, payload);
+                    toast('Vehicle updated', 'success');
+                    store.addNotification(`Vehicle ${payload.registration} updated`, 'info');
+                } else {
+                    payload.id = uid();
+                    store.add('vehicles', payload);
+                    toast('Vehicle added', 'success');
+                    store.addNotification(`Vehicle ${payload.registration} added to fleet`, 'success');
+                }
+                closeModal();
+                navigate('fleet-assets');
+            });
+        };
+
+        window.editVehicle = function(id) { const v = store.find('vehicles', id); if (v) openVehicleForm(v); };
+        window.deleteVehicle = function(id) {
+            if (!confirm('Delete this vehicle?')) return;
+            const v = store.getVehicle(id);
+            store.remove('vehicles', id);
+            store.remove('fuelLogs', id);
+            store.remove('maintenance', id);
+            store.remove('compliance', id);
+            toast(`Vehicle ${v ? v.registration : ''} deleted`, 'success');
+            navigate('fleet-assets');
+        };
+        window.viewVehicle = function(id) {
+            const v = store.getVehicle(id);
+            if (!v) { toast('Vehicle not found', 'error'); return; }
+            const d = store.getDriver(v.assignedDriver);
+            const trips = store.query('trips', t => t.vehicleId === id);
+            const maint = store.query('maintenance', m => m.vehicleId === id);
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = `🚛 ${v.registration}`;
+            body.innerHTML = `
+            <div class="detail-view">
+              <div class="detail-row"><div class="detail-label">Make/Model</div><div class="detail-value">${v.make} ${v.model} (${v.year})</div></div>
+              <div class="detail-row"><div class="detail-label">VIN</div><div class="detail-value">${v.vin||'-'}</div></div>
+              <div class="detail-row"><div class="detail-label">Fuel/Trans</div><div class="detail-value">${v.fuelType} · ${v.transmission}</div></div>
+              <div class="detail-row"><div class="detail-label">Capacity</div><div class="detail-value">${v.capacity} tons</div></div>
+              <div class="detail-row"><div class="detail-label">Branch</div><div class="detail-value">${v.branch}</div></div>
+              <div class="detail-row"><div class="detail-label">Driver</div><div class="detail-value">${d ? d.firstName+' '+d.lastName : 'Unassigned'}</div></div>
+              <div class="detail-row"><div class="detail-label">Odometer</div><div class="detail-value">${v.odometer ? v.odometer.toLocaleString() : '-'} km</div></div>
+              <div class="detail-row"><div class="detail-label">Insurance</div><div class="detail-value">${dateStr(v.insuranceExpiry)}</div></div>
+              <div class="detail-row"><div class="detail-label">License</div><div class="detail-value">${dateStr(v.licenseExpiry)}</div></div>
+              <div class="detail-row"><div class="detail-label">Status</div><div class="detail-value"><span class="status-badge ${v.status}">${v.status}</span></div></div>
+              <div class="detail-row"><div class="detail-label">Trips</div><div class="detail-value">${trips.length}</div></div>
+              <div class="detail-row"><div class="detail-label">Maintenance</div><div class="detail-value">${maint.length}</div></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Close</button>
+              <button class="btn btn-primary" onclick="closeModal();editVehicle('${id}')">✏️ Edit</button>
+            </div>
+          `;
+            modal.classList.add('open');
+        };
+
+        // --- Driver CRUD ---
+        window.openDriverForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Driver' : 'Add Driver';
+            const d = data || { firstName: '', lastName: '', email: '', phone: '', licenseNumber: '', licenseClass: 'B',
+                licenseExpiry: '', medicalExpiry: '', status: 'active', rating: 3 };
+            const licenseClasses = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const statuses = ['active', 'on-leave', 'inactive'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>First Name <span class="required">*</span></label><input id="fDrvFirst" value="${d.firstName}" placeholder="First name" /></div>
+              <div class="form-group"><label>Last Name <span class="required">*</span></label><input id="fDrvLast" value="${d.lastName}" placeholder="Last name" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Email</label><input id="fDrvEmail" value="${d.email}" placeholder="Email" /></div>
+              <div class="form-group"><label>Phone</label><input id="fDrvPhone" value="${d.phone||''}" placeholder="Phone" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>License Number</label><input id="fDrvLicNum" value="${d.licenseNumber}" placeholder="License #" /></div>
+              <div class="form-group"><label>License Class</label><select id="fDrvLicClass">${licenseClasses.map(c => `<option ${c===d.licenseClass?'selected':''}>${c}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>License Expiry</label><input id="fDrvLicExp" value="${d.licenseExpiry||''}" type="date" /></div>
+              <div class="form-group"><label>Medical Expiry</label><input id="fDrvMedExp" value="${d.medicalExpiry||''}" type="date" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Status</label><select id="fDrvStatus">${statuses.map(s => `<option ${s===d.status?'selected':''}>${s}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Rating (1-5)</label><input id="fDrvRating" value="${d.rating||3}" type="number" min="1" max="5" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveDrvBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveDrvBtn').addEventListener('click', function() {
+                const payload = {
+                    firstName: document.getElementById('fDrvFirst').value.trim(),
+                    lastName: document.getElementById('fDrvLast').value.trim(),
+                    email: document.getElementById('fDrvEmail').value.trim(),
+                    phone: document.getElementById('fDrvPhone').value.trim(),
+                    licenseNumber: document.getElementById('fDrvLicNum').value.trim(),
+                    licenseClass: document.getElementById('fDrvLicClass').value,
+                    licenseExpiry: document.getElementById('fDrvLicExp').value || null,
+                    medicalExpiry: document.getElementById('fDrvMedExp').value || null,
+                    status: document.getElementById('fDrvStatus').value,
+                    rating: parseInt(document.getElementById('fDrvRating').value) || 3,
+                    assignedVehicle: d.assignedVehicle || null,
+                    hiredDate: d.hiredDate || today(),
+                    emergencyContact: d.emergencyContact || '',
+                    emergencyPhone: d.emergencyPhone || '',
+                    violations: d.violations || 0
+                };
+                if (!payload.firstName || !payload.lastName) { toast('Name is required', 'error'); return; }
+                if (isEdit) {
+                    store.update('drivers', d.id, payload);
+                    toast('Driver updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('drivers', payload);
+                    toast('Driver added', 'success');
+                    store.addNotification(`Driver ${payload.firstName} ${payload.lastName} added`, 'success');
+                }
+                closeModal();
+                navigate('drivers');
+            });
+        };
+
+        window.editDriver = function(id) { const d = store.find('drivers', id); if (d) openDriverForm(d); };
+        window.deleteDriver = function(id) {
+            if (!confirm('Delete this driver?')) return;
+            const d = store.getDriver(id);
+            store.remove('drivers', id);
+            toast(`Driver ${d ? d.firstName+' '+d.lastName : ''} deleted`, 'success');
+            navigate('drivers');
+        };
+        window.viewDriver = function(id) {
+            const d = store.getDriver(id);
+            if (!d) { toast('Driver not found', 'error'); return; }
+            const v = store.getVehicle(d.assignedVehicle);
+            const trips = store.query('trips', t => t.driverId === id);
+            toast(`👤 ${d.firstName} ${d.lastName} · ${d.licenseNumber} · ${trips.length} trips · ⭐ ${d.rating}/5`, 'info');
+        };
+
+        // --- Trip CRUD ---
+        window.openTripForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Trip' : 'Schedule Trip';
+            const d = data || { vehicleId: '', driverId: '', from: '', to: '', distance: '', scheduledDate: today() };
+            const vehicles = store.get('vehicles');
+            const drivers = store.get('drivers');
+            const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Houston', 'Phoenix', 'Philadelphia',
+                'San Antonio', 'San Diego', 'Dallas'
+            ];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>Vehicle</label><select id="fTripVehicle"><option value="">Select...</option>${vehicles.map(v => `<option value="${v.id}" ${v.id===d.vehicleId?'selected':''}>${v.registration} - ${v.make} ${v.model}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Driver</label><select id="fTripDriver"><option value="">Select...</option>${drivers.map(drv => `<option value="${drv.id}" ${drv.id===d.driverId?'selected':''}>${drv.firstName} ${drv.lastName}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>From</label><select id="fTripFrom">${cities.map(c => `<option ${c===d.from?'selected':''}>${c}</option>`).join('')}</select></div>
+              <div class="form-group"><label>To</label><select id="fTripTo">${cities.map(c => `<option ${c===d.to?'selected':''}>${c}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Distance (km)</label><input id="fTripDist" value="${d.distance||''}" placeholder="Distance" /></div>
+              <div class="form-group"><label>Scheduled Date</label><input id="fTripDate" value="${d.scheduledDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveTripBtn">${isEdit ? 'Update' : 'Schedule'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveTripBtn').addEventListener('click', function() {
+                const payload = {
+                    vehicleId: document.getElementById('fTripVehicle').value,
+                    driverId: document.getElementById('fTripDriver').value,
+                    from: document.getElementById('fTripFrom').value,
+                    to: document.getElementById('fTripTo').value,
+                    distance: parseFloat(document.getElementById('fTripDist').value) || 0,
+                    scheduledDate: document.getElementById('fTripDate').value || today(),
+                    status: 'scheduled',
+                    startDate: null,
+                    endDate: null,
+                    fuelUsed: 0,
+                    estimatedDuration: 0,
+                    actualDuration: 0,
+                    notes: ''
+                };
+                if (!payload.vehicleId || !payload.driverId) { toast('Please select vehicle and driver', 'error');
+                    return; }
+                if (payload.distance <= 0) { toast('Distance must be greater than 0', 'error'); return; }
+                payload.tripNumber = `TRIP-${String(store.get('trips').length+1).padStart(4,'0')}`;
+                payload.estimatedDuration = Math.round((payload.distance / 60) * 100) / 100;
+                if (isEdit) {
+                    store.update('trips', d.id, payload);
+                    toast('Trip updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('trips', payload);
+                    toast('Trip scheduled', 'success');
+                    store.addNotification(`Trip ${payload.tripNumber} scheduled`, 'info');
+                }
+                closeModal();
+                navigate('trips');
+            });
+        };
+
+        window.editTrip = function(id) { const t = store.find('trips', id); if (t) openTripForm(t); };
+        window.deleteTrip = function(id) {
+            if (!confirm('Delete this trip?')) return;
+            store.remove('trips', id);
+            toast('Trip deleted', 'success');
+            navigate('trips');
+        };
+        window.viewTrip = function(id) {
+            const t = store.find('trips', id);
+            if (!t) { toast('Trip not found', 'error'); return; }
+            const v = store.getVehicle(t.vehicleId);
+            const d = store.getDriver(t.driverId);
+            toast(`🗺️ ${t.tripNumber}: ${t.from} → ${t.to} · ${t.distance} km · ${v ? v.registration : 'No vehicle'} · ${d ? d.firstName+' '+d.lastName : 'No driver'}`, 'info');
+        };
+        window.startTrip = function(id) {
+            store.update('trips', id, { status: 'active', startDate: new Date().toISOString() });
+            toast('Trip started', 'success');
+            store.addNotification(`Trip ${store.find('trips',id)?.tripNumber} started`, 'info');
+            navigate('trips');
+        };
+        window.completeTrip = function(id) {
+            const trip = store.find('trips', id);
+            if (!trip) return;
+            const fuelUsed = Math.round((trip.distance / 10 * (0.8 + Math.random() * 0.4)) * 100) / 100;
+            store.update('trips', id, {
+                status: 'completed',
+                endDate: new Date().toISOString(),
+                fuelUsed: fuelUsed,
+                actualDuration: Math.round(((trip.distance / 55) + Math.random() * 2) * 100) / 100
+            });
+            // Update vehicle odometer
+            const v = store.getVehicle(trip.vehicleId);
+            if (v) {
+                store.update('vehicles', v.id, { odometer: (v.odometer || 0) + trip.distance });
+            }
+            toast('Trip completed!', 'success');
+            store.addNotification(`Trip ${trip.tripNumber} completed`, 'success');
+            navigate('trips');
+        };
+
+        // --- Dispatch CRUD ---
+        window.openDispatchForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Dispatch' : 'New Dispatch Request';
+            const d = data || { vehicleId: '', driverId: '', from: '', to: '', priority: 'medium', scheduledDate: today() };
+            const vehicles = store.get('vehicles');
+            const drivers = store.get('drivers');
+            const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Houston', 'Phoenix', 'Philadelphia',
+                'San Antonio', 'San Diego', 'Dallas'
+            ];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-row">
+              <div class="form-group"><label>Vehicle</label><select id="fDispVehicle"><option value="">Select...</option>${vehicles.map(v => `<option value="${v.id}" ${v.id===d.vehicleId?'selected':''}>${v.registration} - ${v.make} ${v.model}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Driver</label><select id="fDispDriver"><option value="">Select...</option>${drivers.map(drv => `<option value="${drv.id}" ${drv.id===d.driverId?'selected':''}>${drv.firstName} ${drv.lastName}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>From</label><select id="fDispFrom">${cities.map(c => `<option ${c===d.from?'selected':''}>${c}</option>`).join('')}</select></div>
+              <div class="form-group"><label>To</label><select id="fDispTo">${cities.map(c => `<option ${c===d.to?'selected':''}>${c}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Priority</label><select id="fDispPriority"><option ${d.priority==='low'?'selected':''}>low</option><option ${d.priority==='medium'?'selected':''}>medium</option><option ${d.priority==='high'?'selected':''}>high</option></select></div>
+              <div class="form-group"><label>Scheduled Date</label><input id="fDispDate" value="${d.scheduledDate||today()}" type="date" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveDispBtn">${isEdit ? 'Update' : 'Create'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveDispBtn').addEventListener('click', function() {
+                const payload = {
+                    vehicleId: document.getElementById('fDispVehicle').value,
+                    driverId: document.getElementById('fDispDriver').value,
+                    from: document.getElementById('fDispFrom').value,
+                    to: document.getElementById('fDispTo').value,
+                    priority: document.getElementById('fDispPriority').value,
+                    scheduledDate: document.getElementById('fDispDate').value || today(),
+                    status: 'pending',
+                    requestedDate: today(),
+                    notes: ''
+                };
+                if (!payload.vehicleId || !payload.driverId) { toast('Please select vehicle and driver', 'error');
+                    return; }
+                payload.requestNumber = `DISP-${String(store.get('dispatchRequests').length+1).padStart(4,'0')}`;
+                if (isEdit) {
+                    store.update('dispatchRequests', d.id, payload);
+                    toast('Dispatch updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('dispatchRequests', payload);
+                    toast('Dispatch request created', 'success');
+                    store.addNotification(`Dispatch ${payload.requestNumber} created`, 'info');
+                }
+                closeModal();
+                navigate('dispatch');
+            });
+        };
+
+        window.editDispatch = function(id) { const r = store.find('dispatchRequests', id); if (r) openDispatchForm(r); };
+        window.deleteDispatch = function(id) {
+            if (!confirm('Delete this dispatch request?')) return;
+            store.remove('dispatchRequests', id);
+            toast('Dispatch deleted', 'success');
+            navigate('dispatch');
+        };
+        window.approveDispatch = function(id) {
+            store.update('dispatchRequests', id, { status: 'approved' });
+            toast('Dispatch approved', 'success');
+            store.addNotification(`Dispatch approved`, 'info');
+            navigate('dispatch');
+        };
+        window.assignDispatch = function(id) {
+            store.update('dispatchRequests', id, { status: 'assigned' });
+            toast('Dispatch assigned', 'success');
+            navigate('dispatch');
+        };
+
+        // --- Fuel CRUD ---
+        window.openFuelForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Fuel Log' : 'Log Fuel';
+            const d = data || { vehicleId: '', date: today(), liters: '', pricePerLiter: '', station: 'Shell' };
+            const vehicles = store.get('vehicles');
+            const stations = ['Shell', 'Exxon', 'Chevron', 'BP', 'Marathon'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Vehicle</label><select id="fFuelVehicle"><option value="">Select...</option>${vehicles.map(v => `<option value="${v.id}" ${v.id===d.vehicleId?'selected':''}>${v.registration} - ${v.make} ${v.model}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Date</label><input id="fFuelDate" value="${d.date||today()}" type="date" /></div>
+              <div class="form-group"><label>Station</label><select id="fFuelStation">${stations.map(s => `<option ${s===d.station?'selected':''}>${s}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Liters</label><input id="fFuelLiters" value="${d.liters||''}" placeholder="Liters" /></div>
+              <div class="form-group"><label>Price per Liter ($)</label><input id="fFuelPrice" value="${d.pricePerLiter||''}" placeholder="Price" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveFuelBtn">${isEdit ? 'Update' : 'Log'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveFuelBtn').addEventListener('click', function() {
+                const liters = parseFloat(document.getElementById('fFuelLiters').value) || 0;
+                const price = parseFloat(document.getElementById('fFuelPrice').value) || 0;
+                const payload = {
+                    vehicleId: document.getElementById('fFuelVehicle').value,
+                    date: document.getElementById('fFuelDate').value || today(),
+                    liters: liters,
+                    pricePerLiter: price,
+                    totalCost: Math.round(liters * price * 100) / 100,
+                    station: document.getElementById('fFuelStation').value,
+                    odometer: 0,
+                    notes: ''
+                };
+                if (!payload.vehicleId) { toast('Please select a vehicle', 'error'); return; }
+                if (liters <= 0 || price <= 0) { toast('Liters and price must be greater than 0', 'error'); return; }
+                if (isEdit) {
+                    store.update('fuelLogs', d.id, payload);
+                    toast('Fuel log updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('fuelLogs', payload);
+                    toast('Fuel logged', 'success');
+                    store.addNotification(`Fuel logged for ${store.getVehicle(payload.vehicleId)?.registration}`, 'info');
+                }
+                closeModal();
+                navigate('fuel');
+            });
+        };
+
+        window.editFuel = function(id) { const f = store.find('fuelLogs', id); if (f) openFuelForm(f); };
+        window.deleteFuel = function(id) {
+            if (!confirm('Delete this fuel log?')) return;
+            store.remove('fuelLogs', id);
+            toast('Fuel log deleted', 'success');
+            navigate('fuel');
+        };
+
+        // --- Maintenance CRUD ---
+        window.openMaintenanceForm = function(data) {
+            const isEdit = !!data;
+            const title = isEdit ? 'Edit Maintenance' : 'Schedule Maintenance';
+            const d = data || { vehicleId: '', type: 'Oil Change', scheduledDate: today(), provider: 'Fleet Auto',
+                cost: '' };
+            const vehicles = store.get('vehicles');
+            const types = ['Oil Change', 'Brake Service', 'Tire Replacement', 'Engine Tune', 'Transmission Service',
+                'Coolant Flush', 'Battery Replacement', 'Inspection'
+            ];
+            const providers = ['Fleet Auto', 'Quick Lube', 'National Tire', 'Service Plus'];
+            const modal = document.getElementById('modalOverlay');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalTitle').textContent = title;
+            body.innerHTML = `
+            <div class="form-group"><label>Vehicle</label><select id="fMaintVehicle"><option value="">Select...</option>${vehicles.map(v => `<option value="${v.id}" ${v.id===d.vehicleId?'selected':''}>${v.registration} - ${v.make} ${v.model}</option>`).join('')}</select></div>
+            <div class="form-row">
+              <div class="form-group"><label>Type</label><select id="fMaintType">${types.map(t => `<option ${t===d.type?'selected':''}>${t}</option>`).join('')}</select></div>
+              <div class="form-group"><label>Provider</label><select id="fMaintProvider">${providers.map(p => `<option ${p===d.provider?'selected':''}>${p}</option>`).join('')}</select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Scheduled Date</label><input id="fMaintDate" value="${d.scheduledDate||today()}" type="date" /></div>
+              <div class="form-group"><label>Cost ($)</label><input id="fMaintCost" value="${d.cost||''}" placeholder="Cost" /></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" id="saveMaintBtn">${isEdit ? 'Update' : 'Schedule'}</button>
+            </div>
+          `;
+            modal.classList.add('open');
+            document.getElementById('saveMaintBtn').addEventListener('click', function() {
+                const payload = {
+                    vehicleId: document.getElementById('fMaintVehicle').value,
+                    type: document.getElementById('fMaintType').value,
+                    scheduledDate: document.getElementById('fMaintDate').value || today(),
+                    provider: document.getElementById('fMaintProvider').value,
+                    cost: parseFloat(document.getElementById('fMaintCost').value) || 0,
+                    status: 'scheduled',
+                    completedDate: null,
+                    notes: ''
+                };
+                if (!payload.vehicleId) { toast('Please select a vehicle', 'error'); return; }
+                if (isEdit) {
+                    store.update('maintenance', d.id, payload);
+                    toast('Maintenance updated', 'success');
+                } else {
+                    payload.id = uid();
+                    store.add('maintenance', payload);
+                    toast('Maintenance scheduled', 'success');
+                    store.addNotification(`Maintenance scheduled for ${store.getVehicle(payload.vehicleId)?.registration}`,
+                        'info');
+                }
+                closeModal();
+                navigate('maintenance');
+            });
+        };
+
+        window.editMaintenance = function(id) { const m = store.find('maintenance', id); if (m) openMaintenanceForm(m); };
+        window.deleteMaintenance = function(id) {
+            if (!confirm('Delete this maintenance record?')) return;
+            store.remove('maintenance', id);
+            toast('Maintenance deleted', 'success');
+            navigate('maintenance');
+        };
+        window.startMaintenance = function(id) {
+            store.update('maintenance', id, { status: 'in-progress' });
+            const m = store.find('maintenance', id);
+            if (m) {
+                const v = store.getVehicle(m.vehicleId);
+                if (v) store.update('vehicles', v.id, { status: 'maintenance' });
+            }
+            toast('Maintenance started', 'success');
+            navigate('maintenance');
+        };
+        window.completeMaintenance = function(id) {
+            const m = store.find('maintenance', id);
+            if (m) {
+                store.update('maintenance', id, { status: 'completed', completedDate: new Date().toISOString() });
+                const v = store.getVehicle(m.vehicleId);
+                if (v && v.status === 'maintenance') {
+                    store.update('vehicles', v.id, { status: 'active' });
+                }
+                toast('Maintenance completed!', 'success');
+                store.addNotification(`Maintenance completed for ${v ? v.registration : 'vehicle'}`, 'success');
+            }
+            navigate('maintenance');
+        };
+
+        // ===== MODAL =====
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+        // ===== THEME =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+            store.data.settings.theme = next;
+            store.save();
+            toast(`Switched to ${next} mode`, 'info');
+        }
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+        // ===== SIDEBAR TOGGLE =====
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('open');
+        });
+
+        // ===== NAVIGATION =====
+        document.querySelectorAll('.sidebar-nav .nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const page = this.dataset.page;
+                if (page) navigate(page);
+                if (window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open');
+            });
+        });
+
+        // ===== GLOBAL SEARCH =====
+        document.getElementById('globalSearch').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const q = this.value.trim().toLowerCase();
+                if (!q) return;
+                const vehicles = store.get('vehicles');
+                const results = vehicles.filter(v => v.registration.toLowerCase().includes(q) || v.make.toLowerCase()
+                    .includes(q) || v.model.toLowerCase().includes(q));
+                if (results.length === 0) { toast('No vehicles found', 'warning'); return; }
+                toast(`Found ${results.length} vehicle${results.length>1?'s':''}`, 'info');
+                navigate('fleet-assets');
+                setTimeout(() => {
+                    const tbody = document.getElementById('assetTableBody');
+                    if (tbody) {
+                        tbody.innerHTML = results.map(v => {
+                            const d = store.getDriver(v.assignedDriver);
+                            return `<tr data-id="${v.id}">
+                          <td><strong>${v.registration}</strong></td>
+                          <td>${v.make} ${v.model}</td>
+                          <td>${v.year}</td>
+                          <td>${v.fuelType}</td>
+                          <td>${v.odometer ? v.odometer.toLocaleString() : '-'}</td>
+                          <td><span class="status-badge ${v.status==='active'?'active':v.status==='maintenance'?'inactive':'pending'}">${v.status}</span></td>
+                          <td>${d ? d.firstName+' '+d.lastName : 'Unassigned'}</td>
+                          <td><div class="actions-cell">
+                            <button onclick="viewVehicle('${v.id}')" title="View">👁️</button>
+                            <button onclick="editVehicle('${v.id}')" title="Edit">✏️</button>
+                            <button onclick="deleteVehicle('${v.id}')" title="Delete">🗑️</button>
+                          </div></td>
+                        </tr>`;
+                        }).join('') || '<tr><td colspan="8" class="text-muted text-center">No results</td></tr>';
+                    }
+                }, 100);
+                this.value = '';
+            }
+        });
+
+        // ===== COMMAND PALETTE =====
+        document.getElementById('cmdPaletteBtn').addEventListener('click', function() {
+            const palette = document.getElementById('cmdPalette');
+            palette.classList.toggle('open');
+            if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+        });
+        document.getElementById('cmdInput').addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const results = document.getElementById('cmdResults');
+            const commands = [
+                { label: 'Dashboard', shortcut: 'G D', page: 'dashboard' },
+                { label: 'Fleet Assets', shortcut: 'G F', page: 'fleet-assets' },
+                { label: 'Drivers', shortcut: 'G R', page: 'drivers' },
+                { label: 'Trips', shortcut: 'G T', page: 'trips' },
+                { label: 'Route Planning', shortcut: 'G O', page: 'routes' },
+                { label: 'Dispatch', shortcut: 'G P', page: 'dispatch' },
+                { label: 'Fuel Management', shortcut: 'G U', page: 'fuel' },
+                { label: 'Maintenance', shortcut: 'G M', page: 'maintenance' },
+                { label: 'Compliance', shortcut: 'G C', page: 'compliance' },
+                { label: 'Reports', shortcut: 'G A', page: 'reports' },
+                { label: 'Audit Logs', shortcut: 'G L', page: 'audit-logs' },
+                { label: 'Settings', shortcut: 'G H', page: 'settings' },
+                { label: 'Add Vehicle', shortcut: 'N V', action: 'vehicle' },
+                { label: 'Add Driver', shortcut: 'N D', action: 'driver' },
+                { label: 'Schedule Trip', shortcut: 'N T', action: 'trip' },
+                { label: 'Log Fuel', shortcut: 'N F', action: 'fuel' },
+                { label: 'Toggle Theme', shortcut: 'T T', action: 'theme' },
+            ];
+            const filtered = q ? commands.filter(c => c.label.toLowerCase().includes(q)) : commands;
+            results.innerHTML = filtered.map(c => `
+            <div class="result-item" data-page="${c.page}" data-action="${c.action}">
+              <span class="icon">${c.label[0]}</span> ${c.label} <span class="shortcut">${c.shortcut}</span>
+            </div>
+          `).join('');
+            results.querySelectorAll('.result-item').forEach(el => {
+                el.addEventListener('click', function() {
+                    const page = this.dataset.page;
+                    const action = this.dataset.action;
+                    if (page) navigate(page);
+                    else if (action === 'vehicle') openVehicleForm();
+                    else if (action === 'driver') openDriverForm();
+                    else if (action === 'trip') openTripForm();
+                    else if (action === 'fuel') openFuelForm();
+                    else if (action === 'theme') toggleTheme();
+                    document.getElementById('cmdPalette').classList.remove('open');
+                });
+            });
+        });
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                const palette = document.getElementById('cmdPalette');
+                palette.classList.toggle('open');
+                if (palette.classList.contains('open')) document.getElementById('cmdInput').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('cmdPalette').classList.remove('open');
+                document.getElementById('notifCenter').classList.remove('open');
+                document.getElementById('profileMenu').classList.remove('open');
+                document.getElementById('contextMenu').classList.remove('open');
+            }
+        });
+
+        // ===== NOTIFICATIONS =====
+        document.getElementById('notifBtn').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.toggle('open');
+            const notifs = store.get('notifications');
+            notifs.forEach(n => n.read = true);
+            store.set('notifications', notifs);
+            store.updateNotifDot();
+            renderNotifs();
+        });
+        document.getElementById('notifClose').addEventListener('click', function() {
+            document.getElementById('notifCenter').classList.remove('open');
+        });
+
+        function renderNotifs() {
+            const list = document.getElementById('notifList');
+            const notifs = store.get('notifications');
+            list.innerHTML = notifs.slice(0, 20).map(n => `
+            <div class="notif-item">
+              <span class="notif-icon">${n.type==='success'?'✅':n.type==='error'?'❌':n.type==='warning'?'⚠️':'ℹ️'}</span>
+              <div><div>${n.message}</div><div class="notif-time">${timeStr(n.time)}</div></div>
+            </div>
+          `).join('') || '<div class="notif-item">No notifications</div>';
+        }
+        store.updateNotifDot();
+
+        // ===== PROFILE =====
+        document.getElementById('profileBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('profileMenu').classList.toggle('open');
+        });
+        document.addEventListener('click', function() { document.getElementById('profileMenu').classList.remove('open'); });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('profileMenu').classList.remove('open');
+            toast('Logged out', 'info');
+        });
+
+        // ===== CONTEXT MENU =====
+        document.addEventListener('contextmenu', function(e) {
+            const target = e.target.closest('tr[data-id]');
+            if (target) {
+                e.preventDefault();
+                const menu = document.getElementById('contextMenu');
+                menu.classList.add('open');
+                menu.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
+                menu.style.top = Math.min(e.clientY, window.innerHeight - 150) + 'px';
+                menu.dataset.targetId = target.dataset.id;
+                const page = document.querySelector('.sidebar-nav .nav-item.active')?.dataset?.page || '';
+                menu.dataset.page = page;
+            }
+        });
+        document.addEventListener('click', function() { document.getElementById('contextMenu').classList.remove('open'); });
+        document.querySelectorAll('#contextMenu .item').forEach(item => {
+            item.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const id = document.getElementById('contextMenu').dataset.targetId;
+                const page = document.getElementById('contextMenu').dataset.page;
+                if (!id) return;
+                if (action === 'edit') {
+                    if (page === 'fleet-assets') editVehicle(id);
+                    else if (page === 'drivers') editDriver(id);
+                    else if (page === 'trips') editTrip(id);
+                    else if (page === 'fuel') editFuel(id);
+                    else if (page === 'maintenance') editMaintenance(id);
+                    else if (page === 'dispatch') editDispatch(id);
+                } else if (action === 'delete') {
+                    if (page === 'fleet-assets') deleteVehicle(id);
+                    else if (page === 'drivers') deleteDriver(id);
+                    else if (page === 'trips') deleteTrip(id);
+                    else if (page === 'fuel') deleteFuel(id);
+                    else if (page === 'maintenance') deleteMaintenance(id);
+                    else if (page === 'dispatch') deleteDispatch(id);
+                } else if (action === 'duplicate') {
+                    toast('Duplicated!', 'success');
+                }
+                document.getElementById('contextMenu').classList.remove('open');
+            });
+        });
+
+        // ===== RESET =====
+        window.resetData = function() {
+            if (!confirm('⚠️ This will erase all data and restore seed. Continue?')) return;
+            localStorage.removeItem('fleet_data');
+            store.seed();
+            toast('Data reset successfully', 'success');
+            navigate('dashboard');
+        };
+
+        // ===== CHARTS =====
+        let chartsInitialized = false;
+
+        function initCharts() {
+            if (typeof Chart === 'undefined') {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+                script.onload = () => { setTimeout(initCharts, 300); };
+                document.head.appendChild(script);
+                return;
+            }
+            document.querySelectorAll('#chartFuelCost, #chartFleetStatus, #chartTripActivity, #chartMaintCost')
+                .forEach(c => { const ctx = c?.getContext('2d'); if (ctx) ctx.clearRect(0, 0, c.width, c.height); });
+
+            const fuelLogs = store.get('fuelLogs');
+            const fuelByVehicle = {};
+            fuelLogs.forEach(f => {
+                const v = store.getVehicle(f.vehicleId);
+                if (v) fuelByVehicle[v.registration] = (fuelByVehicle[v.registration] || 0) + f.totalCost;
+            });
+            const fuelLabels = Object.keys(fuelByVehicle).slice(0, 6);
+            const fuelVals = Object.values(fuelByVehicle).slice(0, 6);
+
+            const ctx1 = document.getElementById('chartFuelCost');
+            if (ctx1) {
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: { labels: fuelLabels, datasets: [{ label: 'Fuel Cost', data: fuelVals,
+                            backgroundColor: '#3b82f6', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const vehicles = store.get('vehicles');
+            const statusCounts = { active: 0, idle: 0, maintenance: 0, inactive: 0 };
+            vehicles.forEach(v => { statusCounts[v.status] = (statusCounts[v.status] || 0) + 1; });
+            const ctx2 = document.getElementById('chartFleetStatus');
+            if (ctx2) {
+                new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: ['Active', 'Idle', 'Maintenance', 'Inactive'],
+                        datasets: [{ data: [statusCounts.active || 0, statusCounts.idle || 0, statusCounts
+                                .maintenance || 0, statusCounts.inactive || 0
+                            ], backgroundColor: ['#16a34a', '#f59e0b', '#dc2626', '#94a3b8'] }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'right',
+                                labels: { boxWidth: 10, font: { size: 10 } } } } }
+                });
+            }
+
+            const trips = store.get('trips');
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const tripCounts = days.map((d, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() - (6 - i));
+                const dateStr = date.toISOString().split('T')[0];
+                return trips.filter(t => t.scheduledDate === dateStr).length;
+            });
+            const ctx3 = document.getElementById('chartTripActivity');
+            if (ctx3) {
+                new Chart(ctx3, {
+                    type: 'line',
+                    data: { labels: days, datasets: [{ label: 'Trips', data: tripCounts, borderColor: '#3b82f6',
+                            tension: 0.3, fill: true, backgroundColor: 'rgba(59,130,246,0.1)' }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+
+            const maintenance = store.get('maintenance');
+            const maintByType = {};
+            maintenance.forEach(m => { maintByType[m.type] = (maintByType[m.type] || 0) + (m.cost || 0); });
+            const maintLabels = Object.keys(maintByType).slice(0, 5);
+            const maintVals = Object.values(maintByType).slice(0, 5);
+            const ctx4 = document.getElementById('chartMaintCost');
+            if (ctx4) {
+                new Chart(ctx4, {
+                    type: 'bar',
+                    data: { labels: maintLabels, datasets: [{ label: 'Cost', data: maintVals,
+                            backgroundColor: '#8b5cf6', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: true } } }
+                });
+            }
+        }
+
+        // ===== BIND PAGE EVENTS =====
+        function bindPageEvents(page) {
+            // Nothing special for now
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            if (email === 'admin@fleet.com' && pass === 'admin123') {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                toast('Welcome to Fleet+ Enterprise', 'success');
+                store.addNotification('John Doe logged in', 'info');
+            } else {
+                toast('Invalid credentials. Try admin@fleet.com / admin123', 'error');
+            }
+        });
+        document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('loginBtn').click();
+        });
+
+        // ===== INIT =====
+        const savedTheme = store.data?.settings?.theme || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        // Auto-login
+        setTimeout(() => {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            toast('Welcome to Fleet+ Enterprise', 'success');
+        }, 400);
+
+        navigate('dashboard');
+
+        // Keyboard shortcuts for navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                const map = { '1': 'dashboard', '2': 'fleet-assets', '3': 'drivers', '4': 'trips',
+                    '5': 'routes', '6': 'dispatch', '7': 'fuel', '8': 'maintenance', '9': 'compliance' };
+                const page = map[e.key];
+                if (page) { e.preventDefault();
+                    navigate(page); }
+            }
+        });
+
+        console.log('🚀 Fleet+ Enterprise loaded successfully');
+        console.log(`🚛 ${store.get('vehicles').length} vehicles, 👤 ${store.get('drivers').length} drivers, 🗺️ ${store.get('trips').length} trips`);
+    </script>
+
+</body>
+</html>
