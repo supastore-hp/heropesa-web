@@ -839,36 +839,125 @@ FOOTER
   </div>
 </footer>
 
+<!-- Load the Mock Auth Service (swap this with real API service in production) -->
+<script src="./mockAuthService.js"></script>
+
+<style>
+/* =========================================
+  AUTH ALERT (Error / Info Banners)
+  ========================================= */
+.auth-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  animation: fadeIn 0.25s ease;
+  border: 1.5px solid transparent;
+}
+.auth-alert.error {
+  background: rgba(234, 67, 53, 0.06);
+  border-color: rgba(234, 67, 53, 0.25);
+  color: #c62828;
+}
+.auth-alert.success {
+  background: rgba(52, 168, 83, 0.06);
+  border-color: rgba(52, 168, 83, 0.25);
+  color: #2e7d32;
+}
+.auth-alert.info {
+  background: rgba(26, 115, 232, 0.06);
+  border-color: rgba(26, 115, 232, 0.25);
+  color: #1557b0;
+}
+.auth-alert i { flex-shrink: 0; margin-top: 1px; }
+
+/* Demo credentials hint box */
+.demo-hint {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+.demo-hint strong { color: var(--text-main); display: block; margin-bottom: 6px; font-size: 0.82rem; }
+.demo-hint code {
+  background: var(--bg-body);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: var(--primary);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.demo-hint code:hover { background: var(--primary-light); }
+</style>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   'use strict';
 
-  const tabSignIn = document.getElementById('tabSignIn');
-  const tabSignUp = document.getElementById('tabSignUp');
-  const viewSignIn = document.getElementById('viewSignIn');
-  const viewSignUp = document.getElementById('viewSignUp');
-  const formTitle = document.getElementById('formTitle');
-  const formSubtitle = document.getElementById('formSubtitle');
-  const switchToSignup = document.getElementById('switchToSignup');
-  const switchToSignIn = document.getElementById('switchToSignIn');
-  const successState = document.getElementById('successState');
+  // ── If already logged in, go straight to dashboard ────────────
+  if (AuthService.isAuthenticated()) {
+    var redirectTo = _getRedirectParam() || '/pos_web/index.html';
+    window.location.replace(redirectTo);
+    return;
+  }
 
-  const signInForm = document.getElementById('signInForm');
-  const signUpForm = document.getElementById('signUpForm');
-  const signInBtn = document.getElementById('signInBtn');
-  const signUpBtn = document.getElementById('signUpBtn');
+  // ── Helpers ───────────────────────────────────────────────────
+  function _getRedirectParam() {
+    var params = new URLSearchParams(window.location.search);
+    return params.get('redirect') || null;
+  }
 
-  const signupPassword = document.getElementById('signup-password');
-  const strengthBars = [
-    document.getElementById('str1'),
-    document.getElementById('str2'),
-    document.getElementById('str3'),
-    document.getElementById('str4')
-  ];
-  const strengthText = document.getElementById('strengthText');
+  function _showAlert(containerId, type, message) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    var iconMap = { error: 'fa-circle-exclamation', success: 'fa-circle-check', info: 'fa-circle-info' };
+    container.innerHTML =
+      '<div class="auth-alert ' + type + '">' +
+        '<i class="fa-solid ' + (iconMap[type] || iconMap.info) + '"></i>' +
+        '<span>' + message + '</span>' +
+      '</div>';
+  }
+
+  function _clearAlert(containerId) {
+    var el = document.getElementById(containerId);
+    if (el) el.innerHTML = '';
+  }
+
+  function _setLoading(btn, textEl, spinnerEl, loading) {
+    if (loading) {
+      btn.classList.add('loading');
+      btn.disabled = true;
+    } else {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  }
+
+  // ── Tab Switching ─────────────────────────────────────────────
+  var tabSignIn   = document.getElementById('tabSignIn');
+  var tabSignUp   = document.getElementById('tabSignUp');
+  var viewSignIn  = document.getElementById('viewSignIn');
+  var viewSignUp  = document.getElementById('viewSignUp');
+  var formTitle   = document.getElementById('formTitle');
+  var formSubtitle = document.getElementById('formSubtitle');
+  var successState = document.getElementById('successState');
 
   function activateView(view) {
+    _clearAlert('signinAlertBox');
+    _clearAlert('signupAlertBox');
     successState.classList.remove('active');
+
     if (view === 'signin') {
       tabSignIn.classList.add('active');
       tabSignUp.classList.remove('active');
@@ -878,9 +967,8 @@ document.addEventListener('DOMContentLoaded', function() {
       viewSignUp.classList.remove('active');
       formTitle.textContent = 'Welcome back';
       formSubtitle.innerHTML = 'New to Heropesa? <a href="#" id="switchToSignup" role="button">Create an account</a>';
-      document.getElementById('switchToSignup').addEventListener('click', function(e) {
-        e.preventDefault();
-        activateView('signup');
+      document.getElementById('switchToSignup').addEventListener('click', function (e) {
+        e.preventDefault(); activateView('signup');
       });
     } else {
       tabSignUp.classList.add('active');
@@ -891,161 +979,225 @@ document.addEventListener('DOMContentLoaded', function() {
       viewSignIn.classList.remove('active');
       formTitle.textContent = 'Create your account';
       formSubtitle.innerHTML = 'Already have an account? <a href="#" id="switchToSignIn" role="button">Sign in</a>';
-      document.getElementById('switchToSignIn').addEventListener('click', function(e) {
-        e.preventDefault();
-        activateView('signin');
+      document.getElementById('switchToSignIn').addEventListener('click', function (e) {
+        e.preventDefault(); activateView('signin');
       });
     }
   }
 
-  tabSignIn.addEventListener('click', function() { activateView('signin'); });
-  tabSignUp.addEventListener('click', function() { activateView('signup'); });
-  switchToSignup.addEventListener('click', function(e) { e.preventDefault(); activateView('signup'); });
+  tabSignIn.addEventListener('click', function () { activateView('signin'); });
+  tabSignUp.addEventListener('click', function () { activateView('signup'); });
+  document.getElementById('switchToSignup').addEventListener('click', function (e) {
+    e.preventDefault(); activateView('signup');
+  });
 
-  document.querySelectorAll('.toggle-password').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const targetId = btn.getAttribute('data-target');
-      const input = document.getElementById(targetId);
-      const icon = btn.querySelector('i');
+  // ── Password Toggle ───────────────────────────────────────────
+  document.querySelectorAll('.toggle-password').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var input = document.getElementById(btn.getAttribute('data-target'));
+      var icon  = btn.querySelector('i');
       if (input.type === 'password') {
         input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
         btn.setAttribute('aria-label', 'Hide password');
       } else {
         input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
         btn.setAttribute('aria-label', 'Show password');
       }
     });
   });
 
-  function evaluateStrength(pwd) {
-    let score = 0;
+  // ── Password Strength ─────────────────────────────────────────
+  var strengthBars  = ['str1','str2','str3','str4'].map(function (id) { return document.getElementById(id); });
+  var strengthText  = document.getElementById('strengthText');
+  var signupPwd     = document.getElementById('signup-password');
+  var strengthLabels  = ['Use 8+ characters with a mix of letters, numbers & symbols','Weak — add more variety','Fair — getting better','Strong — looking good','Very strong — excellent!'];
+  var strengthClasses = ['','weak','medium','strong','strong'];
+
+  function _evalStrength(pwd) {
+    var s = 0;
     if (!pwd) return 0;
-    if (pwd.length >= 8) score++;
-    if (pwd.length >= 12) score++;
-    if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) score++;
-    if (/\d/.test(pwd)) score++;
-    if (/[^A-Za-z0-9]/.test(pwd)) score++;
-    return Math.min(score, 4);
+    if (pwd.length >= 8) s++;
+    if (pwd.length >= 12) s++;
+    if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) s++;
+    if (/\d/.test(pwd)) s++;
+    if (/[^A-Za-z0-9]/.test(pwd)) s++;
+    return Math.min(s, 4);
   }
 
-  const strengthLabels = [
-    'Use 8+ characters with a mix of letters, numbers & symbols',
-    'Weak — add more variety',
-    'Fair — getting better',
-    'Strong — looking good',
-    'Very strong — excellent!'
-  ];
-  const strengthClasses = ['', 'weak', 'medium', 'strong', 'strong'];
-
-  signupPassword.addEventListener('input', function() {
-    const score = evaluateStrength(this.value);
-    strengthBars.forEach(function(bar, i) {
+  signupPwd.addEventListener('input', function () {
+    var score = _evalStrength(this.value);
+    strengthBars.forEach(function (bar, i) {
       bar.className = 'strength-bar';
       if (i < score) bar.classList.add(strengthClasses[score]);
     });
     strengthText.textContent = strengthLabels[score];
   });
 
-  document.querySelectorAll('.social-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      const provider = btn.getAttribute('data-provider');
-      const providerNames = {
-        google: 'Google',
-        x: 'X (Twitter)',
-        linkedin: 'LinkedIn',
-        facebook: 'Facebook'
-      };
-      console.log('Initiating OAuth with:', provider);
+  // ── Demo Credential Hints ─────────────────────────────────────
+  // Inject after the "or continue with email" divider in sign-in view
+  var signInDivider = viewSignIn.querySelector('.divider');
+  if (signInDivider) {
+    var hint = document.createElement('div');
+    hint.className = 'demo-hint';
+    hint.innerHTML =
+      '<strong>🔑 Demo Credentials</strong>' +
+      '<div style="display:flex;flex-direction:column;gap:4px;">' +
+        '<div><code id="fillAdmin" title="Click to fill">admin@supastore.co.tz</code> / <code id="fillAdminPwd" title="Click to fill">password123</code> (Admin)</div>' +
+        '<div><code id="fillCashier" title="Click to fill">cashier@supastore.co.tz</code> / <code id="fillCashierPwd" title="Click to fill">cashier123</code> (Cashier)</div>' +
+      '</div>';
+    signInDivider.parentNode.insertBefore(hint, signInDivider.nextSibling);
+
+    // Click-to-fill
+    function fillCredentials(email, password) {
+      document.getElementById('signin-email').value    = email;
+      document.getElementById('signin-password').value = password;
+    }
+    hint.querySelector('#fillAdmin').addEventListener('click', function () { fillCredentials('admin@supastore.co.tz', ''); });
+    hint.querySelector('#fillAdminPwd').addEventListener('click', function () { fillCredentials('admin@supastore.co.tz', 'password123'); });
+    hint.querySelector('#fillCashier').addEventListener('click', function () { fillCredentials('cashier@supastore.co.tz', ''); });
+    hint.querySelector('#fillCashierPwd').addEventListener('click', function () { fillCredentials('cashier@supastore.co.tz', 'cashier123'); });
+  }
+
+  // Inject alert containers above each form's submit button
+  var signInBtn = document.getElementById('signInBtn');
+  var alertSignIn = document.createElement('div');
+  alertSignIn.id = 'signinAlertBox';
+  signInBtn.parentNode.insertBefore(alertSignIn, signInBtn);
+
+  var signUpBtn = document.getElementById('signUpBtn');
+  var alertSignUp = document.createElement('div');
+  alertSignUp.id = 'signupAlertBox';
+  signUpBtn.parentNode.insertBefore(alertSignUp, signUpBtn);
+
+  // ── Sign In ───────────────────────────────────────────────────
+  document.getElementById('signInForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    _clearAlert('signinAlertBox');
+
+    var email    = document.getElementById('signin-email').value.trim();
+    var password = document.getElementById('signin-password').value;
+
+    // Client-side validation
+    if (!email) {
+      _showAlert('signinAlertBox', 'error', 'Please enter your email address.');
+      document.getElementById('signin-email').focus();
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      _showAlert('signinAlertBox', 'error', 'Please enter a valid email address.');
+      return;
+    }
+    if (!password) {
+      _showAlert('signinAlertBox', 'error', 'Please enter your password.');
+      document.getElementById('signin-password').focus();
+      return;
+    }
+
+    _setLoading(signInBtn, null, null, true);
+
+    AuthService.login(email, password)
+      .then(function (result) {
+        _setLoading(signInBtn, null, null, false);
+        _showAlert('signinAlertBox', 'success', 'Signed in successfully. Redirecting you to your dashboard…');
+
+        setTimeout(function () {
+          var redirectTo = _getRedirectParam() || '/pos_web/index.html';
+          window.location.href = redirectTo;
+        }, 900);
+      })
+      .catch(function (err) {
+        _setLoading(signInBtn, null, null, false);
+        _showAlert('signinAlertBox', 'error', err.message || 'Sign in failed. Please try again.');
+      });
+  });
+
+  // ── Sign Up ───────────────────────────────────────────────────
+  document.getElementById('signUpForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    _clearAlert('signupAlertBox');
+
+    var firstName = document.getElementById('signup-first').value.trim();
+    var lastName  = document.getElementById('signup-last').value.trim();
+    var email     = document.getElementById('signup-email').value.trim();
+    var company   = document.getElementById('signup-company').value.trim();
+    var password  = document.getElementById('signup-password').value;
+    var agree     = document.getElementById('agreeTerms').checked;
+
+    if (!firstName || !lastName) {
+      _showAlert('signupAlertBox', 'error', 'First name and last name are required.');
+      return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      _showAlert('signupAlertBox', 'error', 'Please enter a valid corporate email address.');
+      return;
+    }
+    if (password.length < 8) {
+      _showAlert('signupAlertBox', 'error', 'Password must be at least 8 characters long.');
+      return;
+    }
+    if (!agree) {
+      _showAlert('signupAlertBox', 'error', 'You must accept the Terms of Service and Privacy Policy to continue.');
+      return;
+    }
+
+    _setLoading(signUpBtn, null, null, true);
+
+    AuthService.signup({ firstName: firstName, lastName: lastName, email: email, password: password, company: company })
+      .then(function (result) {
+        _setLoading(signUpBtn, null, null, false);
+        // Show success state
+        viewSignIn.classList.remove('active');
+        viewSignUp.classList.remove('active');
+        successState.classList.add('active');
+        document.getElementById('successTitle').textContent = 'Welcome to Heropesa, ' + result.user.firstName + '!';
+        document.getElementById('successMessage').textContent =
+          'Your SSO account has been created. You now have access to the entire Heropesa enterprise ecosystem.';
+      })
+      .catch(function (err) {
+        _setLoading(signUpBtn, null, null, false);
+        _showAlert('signupAlertBox', 'error', err.message || 'Sign up failed. Please try again.');
+      });
+  });
+
+  // ── Continue Button (after signup success) ────────────────────
+  document.getElementById('continueBtn').addEventListener('click', function () {
+    var redirectTo = _getRedirectParam() || '/pos_web/index.html';
+    window.location.href = redirectTo;
+  });
+
+  // ── Forgot Password ───────────────────────────────────────────
+  document.getElementById('forgotPassword').addEventListener('click', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('signin-email').value.trim();
+    if (!email) {
+      _showAlert('signinAlertBox', 'info', 'Enter your email address above, then click "Forgot password?" again.');
+      document.getElementById('signin-email').focus();
+      return;
+    }
+    _showAlert('signinAlertBox', 'info', 'Password reset instructions have been sent to <strong>' + email + '</strong>. Check your inbox.');
+  });
+
+  // ── Social OAuth buttons (demo only) ─────────────────────────
+  document.querySelectorAll('.social-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var provider = btn.getAttribute('data-provider');
+      var names = { google:'Google', x:'X (Twitter)', linkedin:'LinkedIn', facebook:'Facebook' };
       btn.style.opacity = '0.6';
       btn.style.pointerEvents = 'none';
-      setTimeout(function() {
+      setTimeout(function () {
         btn.style.opacity = '';
         btn.style.pointerEvents = '';
-        alert('In production, this would redirect to ' + providerNames[provider] + ' OAuth.');
+        _showAlert('signinAlertBox', 'info', names[provider] + ' OAuth is not configured in demo mode. Use email/password sign-in below.');
       }, 800);
     });
   });
 
-  function simulateSubmit(btn, callback) {
-    btn.classList.add('loading');
-    btn.disabled = true;
-    setTimeout(function() {
-      btn.classList.remove('loading');
-      btn.disabled = false;
-      callback();
-    }, 1200);
-  }
-
-  signInForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('signin-email').value.trim();
-    const password = document.getElementById('signin-password').value;
-    if (!email || !password) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    simulateSubmit(signInBtn, function() {
-      showSuccess('Welcome back!', 'Redirecting you to your Heropesa dashboard...');
-    });
-  });
-
-  signUpForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    const first = document.getElementById('signup-first').value.trim();
-    const last = document.getElementById('signup-last').value.trim();
-    const email = document.getElementById('signup-email').value.trim();
-    const password = document.getElementById('signup-password').value;
-    const agree = document.getElementById('agreeTerms').checked;
-    if (!first || !last || !email || !password) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-    if (password.length < 8) {
-      alert('Password must be at least 8 characters.');
-      return;
-    }
-    if (!agree) {
-      alert('Please agree to the Terms of Service and Privacy Policy.');
-      return;
-    }
-    simulateSubmit(signUpBtn, function() {
-      showSuccess('Account created!', 'Check your inbox for a verification link. Once confirmed, you\'ll have access to the entire ecosystem.');
-    });
-  });
-
-  function showSuccess(title, message) {
-    viewSignIn.classList.remove('active');
-    viewSignUp.classList.remove('active');
-    successState.classList.add('active');
-    document.getElementById('successTitle').textContent = title;
-    document.getElementById('successMessage').textContent = message;
-  }
-
-  document.getElementById('continueBtn').addEventListener('click', function() {
-    alert('In production, this would redirect to /dashboard');
-  });
-
-  document.getElementById('forgotPassword').addEventListener('click', function(e) {
-    e.preventDefault();
-    const email = document.getElementById('signin-email').value.trim();
-    if (email) {
-      alert('Password reset link sent to ' + email);
-    } else {
-      alert('Please enter your email address first.');
-      document.getElementById('signin-email').focus();
-    }
-  });
-
-  document.querySelectorAll('a[role="button"]').forEach(function(link) {
-    link.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        link.click();
-      }
+  // ── Keyboard a11y ─────────────────────────────────────────────
+  document.querySelectorAll('a[role="button"]').forEach(function (link) {
+    link.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); link.click(); }
     });
   });
 });

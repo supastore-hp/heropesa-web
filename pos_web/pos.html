@@ -1698,6 +1698,12 @@
 </head>
 <body>
 
+    <!-- ===== HEROPESA SSO AUTH GUARD =====
+         This single script protects this entire app.
+         To remove protection, delete only this one tag.
+    ======================================== -->
+    <script src="/sso_web/requireAuth.js"></script>
+
     <!-- ===== LOGIN ===== -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
@@ -3369,11 +3375,10 @@
         const savedTheme = store.data?.settings?.theme || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
 
-        // Auto-login
-        setTimeout(() => {
-            document.getElementById('loginOverlay').classList.add('hidden');
-            toast('Welcome to POS+ Enterprise', 'success');
-        }, 400);
+        // Auto-login removed — authentication is now handled centrally
+        // by the Heropesa SSO (/sso_web/sso.html) via requireAuth.js.
+        // The built-in login overlay is kept as a fallback UI only.
+        document.getElementById('loginOverlay').classList.add('hidden');
 
         navigate('dashboard');
 
