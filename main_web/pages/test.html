@@ -1,2124 +1,3150 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NexusERP - Enterprise Resource Planning</title>
+<meta name="google-site-verification" content="_KzutRP1hl5nYlJSs12dZ4YX2cUeLsY-jdi-XjwlUNA" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Heropesa | Cloud Software for Businesses and Enterprises</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
+/* =========================================
+MINIMALIST THEME & VARIABLES
+========================================= */
+.color-blue { color: #1a73e8 !important; }
+.color-red { color: #ea4335 !important; }
+.color-yellow { color: #fbbc05 !important; }
+.color-green { color: #34a853 !important; }
+.bg-blue-light { background-color: rgba(26, 115, 232, 0.08) !important; border-color: rgba(26, 115, 232, 0.3) !important; color: #1a73e8 !important; }
+.bg-red-light { background-color: rgba(234, 67, 53, 0.08) !important; border-color: rgba(234, 67, 53, 0.3) !important; color: #ea4335 !important; }
+.bg-yellow-light { background-color: rgba(251, 188, 5, 0.08) !important; border-color: rgba(251, 188, 5, 0.3) !important; color: #fbbc05 !important; }
+.bg-green-light { background-color: rgba(52, 168, 83, 0.08) !important; border-color: rgba(52, 168, 83, 0.3) !important; color: #34a853 !important; }
 :root {
---bg: #f8f9fa;
---surface: #ffffff;
---surface2: #f8f9fa;
---border: #dadce0;
---border-hover: #bdc1c6;
---text: #202124;
---text2: #5f6368;
---text3: #70757a;
 --primary: #1a73e8;
 --primary-hover: #1557b0;
---primary-light: rgba(26, 115, 232, 0.08);
---danger: #ea4335;
---danger-light: rgba(234, 67, 53, 0.08);
---success: #34a853;
---success-light: rgba(52, 168, 83, 0.08);
---warning: #fbbc05;
---warning-light: rgba(251, 188, 5, 0.08);
---info: #1a73e8;
+--bg-body: #ffffff;
+--bg-light: #f8f9fa;
+--bg-dark: #ffffff;
+--text-main: #202124;
+--text-secondary: #5f6368;
+--text-muted: #70757a;
+--border: #dadce0;
+--border-hover: #bdc1c6;
 --shadow-sm: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
---shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
---shadow-lg: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
---radius: 8px;
+--shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+--shadow-lg: 0 4px 6px 0 rgba(60, 64, 67, 0.3), 0 8px 16px 6px rgba(60, 64, 67, 0.15);
 --radius-sm: 4px;
 --radius-md: 4px;
 --radius-lg: 8px;
---sidebar-w: 260px;
---header-h: 56px;
---tab-h: 44px;
 --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
---font: 'Inter', system-ui, -apple-system, sans-serif;
---chart-1: #1a73e8;
---chart-2: #34a853;
---chart-3: #fbbc05;
---chart-4: #ea4335;
---chart-5: #7b1fa2;
+--font-main: 'Inter', system-ui, sans-serif;
+--container: 1180px;
+--header-height: 72px;
 }
-[data-theme="dark"] {
---bg: #202124;
---surface: #292a2d;
---surface2: #303134;
---border: #3c4043;
---border-hover: #5f6368;
---text: #e8eaed;
---text2: #bdc1c6;
---text3: #9aa0a6;
---primary: #8ab4f8;
---primary-hover: #aecbfa;
---primary-light: rgba(138, 180, 248, 0.12);
---danger: #f28b82;
---danger-light: rgba(242, 139, 130, 0.12);
---success: #81c995;
---success-light: rgba(129, 201, 149, 0.12);
---warning: #fdd663;
---warning-light: rgba(253, 214, 99, 0.12);
---info: #8ab4f8;
---shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
---shadow-lg: 0 4px 8px 3px rgba(0, 0, 0, 0.3);
-}
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
-}
-body {
-font-family: var(--font);
-background: var(--bg);
-color: var(--text);
-min-height: 100vh;
-overflow: hidden;
-transition: background var(--transition), color var(--transition);
+/* =========================================
+RESET & BASE STYLES
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+scroll-behavior: smooth;
+font-size: 16px;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
+overflow-x: hidden;
+max-width: 100vw;
 }
-/* LOGIN */
-.login-overlay {
-position: fixed;
-inset: 0;
-background: var(--bg);
-display: flex;
-align-items: center;
-justify-content: center;
-z-index: 9999;
-transition: opacity 0.3s;
+body {
+font-family: var(--font-main);
+color: var(--text-main);
+line-height: 1.65;
+background: var(--bg-body);
+overflow-x: hidden;
+max-width: 100vw;
 }
-.login-overlay.hidden {
-opacity: 0;
-pointer-events: none;
-}
-.login-card {
-background: var(--surface);
-border-radius: var(--radius-lg);
-padding: 40px 36px;
-width: 420px;
-box-shadow: var(--shadow-lg);
-border: 1px solid var(--border);
-border-top: 4px solid;
-border-image: linear-gradient(to right, #1a73e8 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
-}
-.login-card h1 {
-font-size: 28px;
-font-weight: 700;
-margin-bottom: 4px;
-color: var(--primary);
-letter-spacing: -0.5px;
-}
-.login-card .subtitle {
-color: var(--text2);
-margin-bottom: 28px;
-font-size: 14px;
-}
-.login-card input {
+body.no-scroll { overflow: hidden; }
+a { text-decoration: none; color: inherit; transition: color var(--transition); }
+ul, ol { list-style: none; }
+img, svg, video { max-width: 100%; display: block; }
+button, input, textarea, select { font-family: inherit; border: none; outline: none; }
+/* =========================================
+UTILITIES & LAYOUT
+========================================= */
+.container {
+max-width: var(--container);
+margin: 0 auto;
+padding: 0 24px;
 width: 100%;
-padding: 12px 14px;
-border: 1px solid var(--border);
-border-radius: var(--radius-sm);
-font-size: 14px;
-margin-bottom: 14px;
-background: var(--surface2);
-color: var(--text);
-transition: var(--transition);
-font-family: var(--font);
+box-sizing: border-box;
 }
-.login-card input:focus {
-outline: none;
-border-color: var(--primary);
-box-shadow: 0 0 0 3px var(--primary-light);
-}
-.login-card button {
-width: 100%;
-padding: 12px;
-background: var(--primary);
-color: #fff;
-border: none;
-border-radius: var(--radius-sm);
-font-size: 15px;
-font-weight: 500;
-cursor: pointer;
-transition: var(--transition);
-font-family: var(--font);
-letter-spacing: 0.2px;
-}
-.login-card button:hover {
-background: var(--primary-hover);
-box-shadow: var(--shadow-sm);
-transform: translateY(-1px);
-}
-.login-error {
-color: var(--danger);
-font-size: 13px;
-margin-bottom: 10px;
-min-height: 20px;
-}
-/* MAIN LAYOUT */
-.app-container {
-display: flex;
-height: 100vh;
-opacity: 0;
-transition: opacity 0.3s;
-}
-.app-container.active {
-opacity: 1;
-}
-.sidebar {
-width: var(--sidebar-w);
-background: var(--surface);
-border-right: 1px solid var(--border);
-display: flex;
-flex-direction: column;
-z-index: 100;
-flex-shrink: 0;
-transition: var(--transition);
-}
-.sidebar-logo {
-padding: 16px 20px;
-font-weight: 700;
-font-size: 20px;
-color: var(--text);
-border-bottom: 1px solid var(--border);
-letter-spacing: -0.3px;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-.sidebar-logo .logo-accent { color: var(--primary); }
-.sidebar-logo .logo-icon {
-width: 34px;
-height: 34px;
-background: var(--primary);
-border-radius: var(--radius-sm);
-display: flex;
-align-items: center;
-justify-content: center;
-color: #fff;
-font-size: 18px;
-}
-.sidebar-nav {
-flex: 1;
-overflow-y: auto;
-padding: 8px 0;
-}
-.sidebar-nav .nav-section {
-padding: 8px 20px 4px;
-font-size: 11px;
-text-transform: uppercase;
-letter-spacing: 1px;
-color: var(--text3);
-font-weight: 600;
-}
-.sidebar-nav .nav-item {
-display: flex;
-align-items: center;
-gap: 10px;
-padding: 10px 20px;
-cursor: pointer;
-font-size: 13.5px;
-color: var(--text2);
-transition: var(--transition);
-border-left: 3px solid transparent;
-font-weight: 500;
-margin: 1px 0;
-border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-margin-right: 8px;
-}
-.sidebar-nav .nav-item:hover {
-background: var(--surface2);
-color: var(--text);
-}
-.sidebar-nav .nav-item.active {
-background: var(--primary-light);
-color: var(--primary);
-border-left-color: var(--primary);
-font-weight: 600;
-}
-.sidebar-nav .nav-item .nav-icon {
-width: 20px;
+.section { padding: 100px 0; position: relative; }
+.section-header {
 text-align: center;
-font-size: 15px;
+max-width: 780px;
+margin: 0 auto 64px;
 }
-.sidebar-footer {
-padding: 12px 16px;
-border-top: 1px solid var(--border);
-display: flex;
-align-items: center;
-gap: 10px;
-font-size: 13px;
-cursor: pointer;
-transition: var(--transition);
+.section-header h2 {
+font-size: 2.25rem;
+font-weight: 700;
+margin-bottom: 14px;
+letter-spacing: -0.5px;
+color: var(--text-main);
 }
-.sidebar-footer:hover { background: var(--surface2); }
-.sidebar-footer .avatar {
-width: 32px;
-height: 32px;
-border-radius: 50%;
-background: var(--primary);
-color: #fff;
+.section-header p { font-size: 1.1rem; color: var(--text-secondary); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+@media (max-width: 1024px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) {
+.grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+.section-header h2 { font-size: 1.8rem; }
+}
+/* =========================================
+MEDIA PLACEHOLDERS
+========================================= */
+.media-placeholder {
+background: var(--bg-light);
+border: 2px dashed var(--border);
+border-radius: var(--radius-lg);
 display: flex;
 align-items: center;
 justify-content: center;
-font-weight: 600;
-font-size: 14px;
+color: var(--text-muted);
+font-size: 0.9rem;
+min-height: 300px;
+position: relative;
+overflow: hidden;
+transition: border-color var(--transition);
 }
-/* MAIN */
-.main-area {
-flex: 1;
+.media-placeholder:hover { border-color: var(--border-hover); }
+.media-placeholder::before {
+content: '\f03e';
+font-family: 'Font Awesome 6 Free';
+font-weight: 900;
+font-size: 2rem;
+margin-bottom: 12px;
+display: block;
+}
+.media-placeholder span {
 display: flex;
 flex-direction: column;
-overflow: hidden;
-min-width: 0;
-}
-.header {
-height: var(--header-h);
-background: rgba(255, 255, 255, 0.95);
-backdrop-filter: blur(12px);
-border-bottom: 1px solid var(--border);
-border-top: 4px solid;
-border-image: linear-gradient(to right, #1a73e8 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
-display: flex;
 align-items: center;
-padding: 0 20px;
-gap: 16px;
-flex-shrink: 0;
-transition: var(--transition);
+gap: 8px;
 }
-[data-theme="dark"] .header {
-background: rgba(41, 42, 45, 0.95);
-}
-.header .global-search {
-flex: 1;
-max-width: 500px;
-position: relative;
-}
-.header .global-search input {
-width: 100%;
-padding: 9px 14px 9px 38px;
-border: 1px solid var(--border);
-border-radius: var(--radius-lg);
-font-size: 13px;
-background: var(--surface2);
-color: var(--text);
-font-family: var(--font);
-transition: var(--transition);
-}
-.header .global-search input:focus {
-outline: none;
-border-color: var(--primary);
-box-shadow: 0 0 0 3px var(--primary-light);
-background: var(--surface);
-}
-.header .global-search .search-icon {
-position: absolute;
-left: 12px;
-top: 50%;
-transform: translateY(-50%);
-color: var(--text3);
-font-size: 16px;
-pointer-events: none;
-}
-.search-results-dropdown {
-position: absolute;
-top: 100%;
-left: 0;
-right: 0;
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: var(--radius-lg);
-box-shadow: var(--shadow-lg);
-max-height: 350px;
-overflow-y: auto;
-z-index: 200;
-display: none;
-margin-top: 4px;
-}
-.search-results-dropdown.show {
-display: block;
-}
-.search-result-item {
-padding: 10px 14px;
-cursor: pointer;
-font-size: 13px;
-border-bottom: 1px solid var(--border);
-display: flex;
-justify-content: space-between;
-transition: var(--transition);
-}
-.search-result-item:hover {
-background: var(--surface2);
-}
-.search-result-item .sr-type {
-font-size: 10px;
-color: var(--text3);
-text-transform: uppercase;
-letter-spacing: 0.5px;
-}
-.header-actions {
-display: flex;
-align-items: center;
-gap: 12px;
-margin-left: auto;
-}
-.header-actions .btn-icon {
-width: 38px;
-height: 38px;
-border-radius: 50%;
-border: none;
-background: transparent;
-cursor: pointer;
-font-size: 18px;
-color: var(--text2);
-display: flex;
-align-items: center;
-justify-content: center;
-transition: var(--transition);
-position: relative;
-}
-.header-actions .btn-icon:hover {
-background: var(--surface2);
-color: var(--text);
-}
-.badge-dot {
-position: absolute;
-top: 6px;
-right: 6px;
-width: 9px;
-height: 9px;
-background: var(--danger);
-border-radius: 50%;
-border: 2px solid var(--surface);
-}
-.theme-toggle {
-font-size: 20px;
-cursor: pointer;
-padding: 6px;
-border-radius: 50%;
-transition: var(--transition);
-border: none;
-background: transparent;
-}
-.theme-toggle:hover {
-background: var(--surface2);
-}
-/* TABS */
-.tab-bar {
-height: var(--tab-h);
-background: var(--surface);
-border-bottom: 1px solid var(--border);
-display: flex;
-align-items: center;
-padding: 0 4px;
-gap: 2px;
-flex-shrink: 0;
-overflow-x: auto;
-}
-.tab-bar .tab {
-padding: 8px 14px;
-font-size: 12.5px;
-cursor: pointer;
-border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-white-space: nowrap;
-color: var(--text2);
-transition: var(--transition);
-position: relative;
-font-weight: 500;
-display: flex;
-align-items: center;
-gap: 6px;
-max-width: 180px;
-}
-.tab-bar .tab.active {
-color: var(--primary);
-background: var(--bg);
-font-weight: 600;
-}
-.tab-bar .tab .tab-close {
-font-size: 14px;
-opacity: 0;
-transition: var(--transition);
-margin-left: 2px;
-cursor: pointer;
-border-radius: 50%;
-width: 18px;
-height: 18px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-.tab-bar .tab:hover .tab-close {
-opacity: 0.7;
-}
-.tab-bar .tab .tab-close:hover {
-opacity: 1;
-background: var(--border);
-}
-/* CONTENT */
-.content-area {
-flex: 1;
-overflow-y: auto;
-padding: 20px;
-background: var(--bg);
-}
-.module-page {
-display: none;
-}
-.module-page.active {
-display: block;
-animation: fadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@keyframes fadeIn {
-from {
-opacity: 0;
-transform: translateY(6px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-/* CARDS */
-.card {
-background: var(--surface);
-border-radius: var(--radius-lg);
-border: 1px solid var(--border);
-padding: 20px;
-box-shadow: var(--shadow);
-margin-bottom: 16px;
-transition: var(--transition);
-}
-.card:hover {
-box-shadow: var(--shadow-lg);
-}
-.card-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 16px;
-}
-.card-header h3 {
-font-size: 16px;
-font-weight: 600;
-letter-spacing: -0.2px;
-}
-.kpi-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-gap: 14px;
-margin-bottom: 20px;
-}
-.kpi-card {
-background: var(--surface);
-border-radius: var(--radius-lg);
-padding: 18px 20px;
-border: 1px solid var(--border);
-box-shadow: var(--shadow);
-transition: var(--transition);
-}
-.kpi-card:hover {
-box-shadow: var(--shadow-lg);
-transform: translateY(-2px);
-border-color: var(--border-hover);
-}
-.kpi-card .kpi-label {
-font-size: 11px;
-text-transform: uppercase;
-letter-spacing: 0.6px;
-color: var(--text3);
-font-weight: 600;
-}
-.kpi-card .kpi-value {
-font-size: 28px;
-font-weight: 700;
-margin-top: 4px;
-color: var(--text);
-letter-spacing: -0.5px;
-}
-.kpi-card .kpi-change {
-font-size: 12px;
-margin-top: 2px;
-}
-.kpi-change.up {
-color: var(--success);
-}
-.kpi-change.down {
-color: var(--danger);
-}
-/* TABLE */
-.table-wrap {
-overflow-x: auto;
-}
-table {
-width: 100%;
-border-collapse: collapse;
-font-size: 13px;
-}
-table th,
-table td {
-padding: 10px 12px;
-text-align: left;
-border-bottom: 1px solid var(--border);
-}
-table th {
-background: var(--surface2);
-font-weight: 600;
-color: var(--text2);
-font-size: 11px;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-white-space: nowrap;
-}
-table tr {
-transition: var(--transition);
-}
-table tr:hover td {
-background: var(--surface2);
-}
-/* BUTTONS */
+.media-sm { min-height: 160px; }
+.media-hero { min-height: 420px; }
+/* =========================================
+BUTTONS & INTERACTIVE ELEMENTS
+========================================= */
 .btn {
-padding: 8px 16px;
-border-radius: var(--radius-sm);
-font-size: 13px;
-font-weight: 500;
-cursor: pointer;
-border: 1.5px solid transparent;
-transition: var(--transition);
-font-family: var(--font);
 display: inline-flex;
 align-items: center;
-gap: 6px;
+justify-content: center;
+gap: 8px;
+padding: 12px 24px;
+border-radius: var(--radius-md);
+font-weight: 500;
+font-size: 0.95rem;
+cursor: pointer;
+transition: all var(--transition);
+border: 1.5px solid transparent;
 white-space: nowrap;
+flex-shrink: 0;
+min-height: 44px;
+text-decoration: none;
+line-height: 1.2;
 }
-.btn-primary {
-background: var(--primary);
-color: #fff;
-border-color: var(--primary);
+.btn:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
 }
+.btn-primary { background: var(--primary); color: #fff; }
 .btn-primary:hover {
 background: var(--primary-hover);
-border-color: var(--primary-hover);
 transform: translateY(-1px);
-box-shadow: var(--shadow-sm);
+box-shadow: var(--shadow-md);
 }
-.btn-outline {
-background: transparent;
-border-color: var(--border);
-color: var(--text);
-}
+.btn-primary:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
+.btn-outline { background: transparent; color: var(--text-main); border-color: var(--border); }
 .btn-outline:hover {
 border-color: var(--primary);
 color: var(--primary);
-background: var(--primary-light);
+background: var(--bg-light);
 }
-.btn-sm {
-padding: 5px 10px;
-font-size: 12px;
+.btn-outline:active { background: rgba(26, 115, 232, 0.08); }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: 1.5px solid var(--border); }
+.btn-ghost:hover { border-color: var(--text-main); color: var(--text-main); }
+.btn[disabled], .btn:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+pointer-events: none;
 }
-.btn-danger {
-background: var(--danger);
-color: #fff;
-border-color: var(--danger);
+/* =========================================
+HERO SECTION
+========================================= */
+.hero {
+padding-top: calc(var(--header-height) + 60px);
+padding-bottom: 80px;
+background: var(--bg-body);
 }
-.btn-danger:hover {
-opacity: 0.9;
-transform: translateY(-1px);
-box-shadow: var(--shadow-sm);
+.hero-content { text-align: center; max-width: 820px; margin: 0 auto; }
+.hero-content h1 {
+font-size: 3rem;
+font-weight: 700;
+line-height: 1.15;
+margin-bottom: 20px;
+letter-spacing: -0.8px;
+color: var(--text-main);
 }
-.btn-success {
-background: var(--success);
-color: #fff;
-border-color: var(--success);
+.hero-content p { font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 32px; }
+.hero-actions {
+display: flex;
+justify-content: center;
+gap: 12px;
+margin-bottom: 40px;
+flex-wrap: wrap;
 }
-.btn-success:hover {
-transform: translateY(-1px);
-box-shadow: var(--shadow-sm);
+.hero-trust {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+color: var(--text-muted);
+font-size: 0.85rem;
 }
-/* STATUS BADGES */
-.badge {
-padding: 4px 10px;
-border-radius: 12px;
-font-size: 11px;
+.hero-trust i { color: var(--text-secondary); }
+@media (max-width: 768px) {
+.hero-content h1 { font-size: 2.2rem; }
+}
+/* =========================================
+STATS BAR
+========================================= */
+.stats-bar {
+background: var(--bg-light);
+padding: 40px 0;
+border-top: 1px solid var(--border);
+border-bottom: 1px solid var(--border);
+}
+.stats-grid {
+display: flex;
+justify-content: space-around;
+text-align: center;
+flex-wrap: wrap;
+gap: 32px;
+}
+.stat-item h3 { font-size: 2rem; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+.stat-item p { font-size: 0.9rem; color: var(--text-muted); max-width: 160px; margin: 0 auto; }
+/* =========================================
+TRUSTED BY MARQUEE
+========================================= */
+.trusted-by {
+padding: 40px 0;
+background: var(--bg-body);
+border-bottom: 1px solid var(--border);
+overflow: hidden;
+}
+.trusted-by-title {
+text-align: center;
+font-size: 0.8rem;
+font-weight: 500;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.12em;
+margin-bottom: 24px;
+}
+.marquee {
+overflow: hidden;
+width: 100%;
+mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+-webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+display: flex;
+gap: 64px;
+width: max-content;
+animation: marqueeScroll 35s linear infinite;
+align-items: center;
+}
+.marquee-item {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+font-size: 1.15rem;
 font-weight: 600;
-letter-spacing: 0.3px;
-display: inline-block;
+color: var(--text-muted);
+white-space: nowrap;
+opacity: 0.7;
+transition: opacity var(--transition), color var(--transition);
+}
+.marquee-item i { font-size: 1.6rem; }
+.marquee-item:hover { opacity: 1; color: var(--text-main); }
+@keyframes marqueeScroll {
+from { transform: translateX(0); }
+to { transform: translateX(-50%); }
+}
+@media (max-width: 768px) {
+.marquee-track { gap: 40px; animation-duration: 25s; }
+.marquee-item { font-size: 1rem; }
+.marquee-item i { font-size: 1.3rem; }
+}
+/* =========================================
+SOLUTIONS GRID
+========================================= */
+.solutions { background: var(--bg-body); }
+.solutions-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+gap: 20px;
+}
+.sol-card {
+background: var(--bg-light);
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid transparent;
+transition: all var(--transition);
+display: flex;
+flex-direction: column;
+height: 100%;
+}
+.sol-card:hover {
+border-color: var(--border);
+transform: translateY(-3px);
+box-shadow: var(--shadow-sm);
+background: #fff;
+}
+.sol-icon {
+width: 44px;
+height: 44px;
+border-radius: var(--radius-md);
+background: #fff;
+border: 1px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1.1rem;
+color: var(--text-main);
+margin-bottom: 18px;
+}
+.sol-card h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: var(--text-main); }
+.sol-card p { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; flex-grow: 1; }
+.sol-link {
+font-size: 0.85rem;
+font-weight: 500;
+color: var(--text-main);
+display: inline-flex;
+align-items: center;
+gap: 5px;
+margin-top: auto;
+}
+.sol-link:hover { color: var(--primary); }
+.sol-link:hover i { transform: translateX(3px); transition: transform 0.2s; }
+/* =========================================
+FEATURED SOLUTIONS (TABS)
+========================================= */
+.featured-tabs { background: var(--bg-light); border-top: 1px solid var(--border); }
+.tabs-nav {
+display: flex;
+justify-content: center;
+gap: 8px;
+margin-bottom: 48px;
+flex-wrap: wrap;
+border-bottom: 1px solid var(--border);
+padding-bottom: 16px;
+}
+.tab-btn {
+padding: 8px 16px;
+background: transparent;
+border: none;
+border-radius: var(--radius-sm);
+font-weight: 500;
+cursor: pointer;
+color: var(--text-muted);
+transition: all var(--transition);
+min-height: 44px;
+font-size: 0.95rem;
+}
+.tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.tab-btn.active, .tab-btn:hover { background: transparent; color: var(--text-main); }
+.tab-btn.active { border-bottom: 2px solid var(--text-main); }
+.tab-content { display: none; animation: fadeIn 0.4s ease; }
+.tab-content.active { display: block; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(8px); }
+to { opacity: 1; transform: translateY(0); }
+}
+.featured-layout {
+display: grid;
+grid-template-columns: 1.1fr 0.9fr;
+gap: 48px;
+align-items: center;
+}
+.featured-text h3 { font-size: 1.8rem; margin-bottom: 14px; font-weight: 600; }
+.featured-text p { font-size: 1rem; color: var(--text-secondary); margin-bottom: 20px; }
+.feature-list { margin-bottom: 28px; }
+.feature-list li {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-bottom: 10px;
+font-size: 0.95rem;
+color: var(--text-secondary);
+}
+.feature-list li i { color: var(--text-main); margin-top: 4px; font-size: 0.85rem; }
+@media (max-width: 900px) {
+.featured-layout { grid-template-columns: 1fr; }
+.media-placeholder { order: -1; min-height: 280px; }
+}
+/* =========================================
+TRADING & SPORTS BETTING
+========================================= */
+.trading-section { background: var(--bg-body); border-top: 1px solid var(--border); }
+.trading-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+.trading-card {
+background: var(--bg-light);
+border: 1px solid var(--border);
+padding: 32px;
+border-radius: var(--radius-lg);
+transition: all var(--transition);
+}
+.trading-card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); }
+.trading-card h4 {
+font-size: 1.2rem;
+margin-bottom: 8px;
+color: var(--text-main);
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.trading-card p { color: var(--text-secondary); margin-bottom: 18px; font-size: 0.95rem; }
+.trading-features li {
+display: flex;
+align-items: center;
+gap: 8px;
+color: var(--text-secondary);
+font-size: 0.9rem;
+margin-bottom: 6px;
+}
+.trading-features li i { color: var(--text-muted); font-size: 0.75rem; }
+@media (max-width: 768px) { .trading-grid { grid-template-columns: 1fr; } }
+/* =========================================
+ENTERPRISE CAPABILITIES
+========================================= */
+.capabilities { background: var(--bg-light); border-top: 1px solid var(--border); }
+.cap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.cap-card {
+background: #fff;
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+transition: all var(--transition);
+}
+.cap-card:hover { box-shadow: var(--shadow-sm); border-color: var(--border-hover); }
+.cap-card i { font-size: 1.5rem; color: var(--text-main); margin-bottom: 14px; }
+.cap-card h4 { font-size: 1.05rem; margin-bottom: 8px; font-weight: 600; }
+.cap-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+@media (max-width: 1024px) { .cap-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .cap-grid { grid-template-columns: 1fr; } }
+/* =========================================
+INDUSTRIES
+========================================= */
+.industries { background: var(--bg-body); }
+.industries-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+gap: 16px;
+}
+.ind-card {
+background: var(--bg-light);
+padding: 20px;
+border-radius: var(--radius-md);
+text-align: center;
+transition: all var(--transition);
 border: 1px solid transparent;
 }
-.badge-success {
-background: var(--success-light);
-color: var(--success);
-border-color: rgba(52, 168, 83, 0.3);
+.ind-card:hover { background: #fff; border-color: var(--border); box-shadow: var(--shadow-sm); }
+.ind-card i {
+font-size: 1.5rem;
+color: var(--text-secondary);
+margin-bottom: 10px;
+transition: color var(--transition);
 }
-.badge-warning {
-background: var(--warning-light);
-color: #b87a00;
-border-color: rgba(251, 188, 5, 0.3);
+.ind-card:hover i { color: var(--text-main); }
+.ind-card h5 { font-size: 0.95rem; font-weight: 500; color: var(--text-main); }
+/* =========================================
+BILLING & LICENSING SECTION
+========================================= */
+.billing-section { background: var(--bg-light); border-top: 1px solid var(--border); }
+.billing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.billing-card {
+background: #fff;
+padding: 32px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+transition: all var(--transition);
 }
-.badge-danger {
-background: var(--danger-light);
-color: var(--danger);
-border-color: rgba(234, 67, 53, 0.3);
+.billing-card:hover { border-color: var(--text-main); box-shadow: var(--shadow-sm); transform: translateY(-3px); }
+.billing-card h4 {
+font-size: 1.2rem;
+font-weight: 600;
+margin-bottom: 12px;
+display: flex;
+align-items: center;
+gap: 10px;
 }
-.badge-info {
-background: var(--primary-light);
-color: var(--primary);
-border-color: rgba(26, 115, 232, 0.3);
+.billing-card h4 i { color: var(--text-main); }
+.billing-card p { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 16px; line-height: 1.6; }
+.billing-features li {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+margin-bottom: 8px;
+font-size: 0.9rem;
+color: var(--text-secondary);
 }
-/* MODAL */
-.modal-overlay {
+.billing-features li i { color: var(--text-main); margin-top: 4px; font-size: 0.8rem; }
+.billing-note {
+font-size: 0.85rem;
+color: var(--text-muted);
+margin-top: 24px;
+padding-top: 16px;
+border-top: 1px solid var(--border);
+}
+@media (max-width: 900px) { .billing-grid { grid-template-columns: 1fr; } }
+/* =========================================
+DEVELOPER & API SECTION
+========================================= */
+.dev-section { background: var(--bg-light); border-top: 1px solid var(--border); }
+.dev-content-centered { text-align: center; max-width: 700px; margin: 0 auto; }
+.dev-content-centered h2 { font-size: 2rem; margin-bottom: 16px; font-weight: 600; }
+.dev-content-centered p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.6; }
+/* =========================================
+TESTIMONIALS
+========================================= */
+.testimonials { background: var(--bg-light); border-top: 1px solid var(--border); }
+.test-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.test-card {
+background: #fff;
+padding: 28px;
+border-radius: var(--radius-lg);
+border: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+}
+.test-text { font-size: 0.98rem; line-height: 1.7; margin-bottom: 20px; color: var(--text-secondary); flex-grow: 1; }
+.test-meta {
+display: flex;
+align-items: center;
+gap: 12px;
+border-top: 1px solid var(--border);
+padding-top: 16px;
+}
+.test-avatar {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--bg-light);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-main);
+font-weight: 600;
+font-size: 0.85rem;
+}
+.test-info h6 { font-size: 0.9rem; font-weight: 600; margin: 0; color: var(--text-main); }
+.test-info span { font-size: 0.8rem; color: var(--text-muted); }
+@media (max-width: 900px) { .test-grid { grid-template-columns: 1fr; } }
+/* =========================================
+PARTNERS & ECOSYSTEM
+========================================= */
+.partners { background: var(--bg-body); border-top: 1px solid var(--border); }
+.partner-logos {
+display: flex;
+justify-content: center;
+align-items: center;
+flex-wrap: wrap;
+gap: 40px;
+margin-bottom: 48px;
+opacity: 0.4;
+}
+.partner-logos i { font-size: 2rem; color: var(--text-muted); transition: all var(--transition); }
+.partner-logos i:hover { opacity: 1; transform: scale(1.05); }
+.partner-cta { text-align: center; max-width: 600px; margin: 0 auto; }
+.partner-cta p { margin-bottom: 20px; color: var(--text-secondary); font-size: 1rem; }
+/* =========================================
+FAQ ACCORDION
+========================================= */
+.faq { background: var(--bg-light); border-top: 1px solid var(--border); }
+.faq-list { max-width: 720px; margin: 0 auto; }
+.faq-item {
+background: #fff;
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+margin-bottom: 12px;
+overflow: hidden;
+transition: border-color var(--transition);
+}
+.faq-item:hover { border-color: var(--border-hover); }
+.faq-q {
+padding: 18px 20px;
+font-weight: 500;
+cursor: pointer;
+display: flex;
+justify-content: space-between;
+align-items: center;
+color: var(--text-main);
+font-size: 0.98rem;
+background: transparent;
+border: none;
+width: 100%;
+text-align: left;
+min-height: 44px;
+}
+.faq-q:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.faq-q i { color: var(--text-muted); transition: transform 0.25s; font-size: 0.85rem; }
+.faq-item.active .faq-q i { transform: rotate(45deg); color: var(--text-main); }
+.faq-a {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s ease, padding 0.35s ease;
+padding: 0 20px;
+color: var(--text-secondary);
+line-height: 1.6;
+font-size: 0.95rem;
+}
+.faq-item.active .faq-a { max-height: 300px; padding: 0 20px 18px; }
+/* =========================================
+CTA BANNER
+========================================= */
+.cta-banner { background: var(--primary); color: #fff; text-align: center; padding: 80px 0; }
+.cta-banner h2 { font-size: 2.2rem; margin-bottom: 14px; font-weight: 600; }
+.cta-banner p {
+font-size: 1.05rem;
+opacity: 0.9;
+margin-bottom: 28px;
+max-width: 680px;
+margin-left: auto;
+margin-right: auto;
+}
+.cta-banner .btn-outline { border-color: rgba(255, 255, 255, 0.4); color: #fff; }
+.cta-banner .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: #fff; }
+/* =========================================
+SCROLL ANIMATIONS
+========================================= */
+.reveal { opacity: 1; transform: translateY(0); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.js-enabled .reveal { opacity: 0; transform: translateY(16px); }
+.js-enabled .reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+/* =========================================
+HEROPESA HEADER STYLES
+========================================= */
+.heropesa-header {
 position: fixed;
-inset: 0;
+top: 0;
+left: 0;
+width: 100%;
+height: var(--header-height);
+background: rgba(255, 255, 255, 0.95);
+backdrop-filter: blur(12px);
+border-top: 4px solid;
+border-image: linear-gradient(to right, #4285f4 33.33%, #ea4335 33.33%, #ea4335 66.66%, #fbbc05 66.66%, #fbbc05 100%) 1;
+border-bottom: 1px solid var(--border);
+z-index: 1000;
+transition: all var(--transition);
+}
+.heropesa-header.scrolled {
+background: rgba(255, 255, 255, 0.98);
+box-shadow: var(--shadow-sm);
+border-bottom-color: var(--border-hover);
+}
+.nav-wrapper {
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 100%;
+position: relative;
+}
+.logo {
+font-size: 1.35rem;
+font-weight: 700;
+color: var(--text-main);
+display: flex;
+align-items: center;
+gap: 8px;
+flex-shrink: 0;
+}
+.logo:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 2px; }
+.logo-accent { color: var(--primary); }
+/* ---- Primary Nav ---- */
+.nav-links {
+display: flex;
+gap: 24px;
+align-items: center;
+}
+.nav-item { position: relative; }
+.nav-item > a, .nav-direct-link {
+font-weight: 500;
+font-size: 0.9rem;
+color: var(--text-secondary);
+position: relative;
+padding: 4px 0;
+display: flex;
+align-items: center;
+gap: 4px;
+transition: color var(--transition);
+cursor: pointer;
+background: transparent;
+border: none;
+min-height: 44px;
+}
+.nav-item > a:hover, .nav-direct-link:hover { color: var(--text-main); }
+.nav-item > a:focus-visible, .nav-direct-link:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 4px;
+border-radius: 2px;
+}
+.nav-item > a::after, .nav-direct-link::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 2px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.nav-item > a:hover::after, .nav-direct-link:hover::after { width: 100%; }
+.nav-item .chevron {
+font-size: 0.65rem;
+opacity: 0.7;
+transition: transform 0.2s var(--transition);
+}
+.nav-item:hover .chevron, .nav-item[aria-expanded="true"] .chevron { transform: rotate(180deg); }
+.nav-item > a.active, .nav-direct-link.active { color: var(--primary); }
+.nav-item > a.active::after, .nav-direct-link.active::after { width: 100%; }
+/* ---- Mega Menu (viewport-centered, responsive sizing) ---- */
+.mega-menu {
+position: fixed;
+top: var(--header-height);
+left: 50%;
+transform: translateX(-50%) translateY(8px);
+width: min(1000px, calc(100vw - 48px));
+max-width: 95vw;
+background: #fff;
+border: 1px solid var(--border);
+border-radius: var(--radius-lg);
+padding: 32px;
+box-shadow: var(--shadow-lg);
+display: grid;
+grid-template-columns: repeat(4, minmax(180px, 1fr));
+gap: 24px;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.25s var(--transition), transform 0.25s var(--transition), visibility 0.25s;
+z-index: 999;
+pointer-events: none;
+}
+/* Bridge to eliminate hover gap */
+.nav-item::after {
+content: '';
+position: absolute;
+top: 100%;
+left: -8px;
+width: calc(100% + 16px);
+height: 32px;
+background: transparent;
+pointer-events: auto;
+z-index: 998;
+}
+.nav-item:hover .mega-menu,
+.nav-item:focus-within .mega-menu,
+.nav-item[aria-expanded="true"] .mega-menu {
+opacity: 1;
+visibility: visible;
+transform: translateX(-50%) translateY(0);
+pointer-events: auto;
+}
+.mega-menu h6 {
+font-size: 0.75rem;
+font-weight: 600;
+color: var(--text-main);
+letter-spacing: 0.06em;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+.mega-menu ul { list-style: none; padding: 0; margin: 0; }
+.mega-menu li { margin-bottom: 8px; }
+.mega-menu a {
+font-size: 0.85rem;
+color: var(--text-secondary);
+display: block;
+padding: 4px 0;
+transition: color var(--transition), padding-left var(--transition);
+position: relative;
+cursor: pointer;
+}
+.mega-menu a:hover { color: var(--primary); padding-left: 4px; }
+.mega-menu a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+border-radius: 2px;
+}
+.mega-menu a.active { color: var(--primary); font-weight: 500; }
+.mega-menu a.active::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 100%;
+height: 2px;
+background: var(--primary);
+border-radius: 2px;
+}
+/* ---- Nav Actions & Buttons ---- */
+.nav-actions {
+display: flex;
+align-items: center;
+gap: 12px;
+flex-shrink: 0;
+}
+.nav-actions .btn {
+padding: 10px 22px;
+font-size: 0.9rem;
+font-weight: 600;
+border-radius: var(--radius-md);
+min-height: 40px;
+flex-shrink: 0;
+white-space: nowrap;
+}
+.nav-actions .btn-ghost {
+border: 1.5px solid var(--border);
+color: var(--text-secondary);
+background: transparent;
+}
+.nav-actions .btn-ghost:hover {
+border-color: var(--primary);
+color: var(--primary);
+background: var(--bg-light);
+}
+.nav-actions .btn-primary {
+background: var(--primary);
+color: #fff;
+border: 1.5px solid var(--primary);
+}
+.nav-actions .btn-primary:hover {
+background: var(--primary-hover);
+border-color: var(--primary-hover);
+transform: translateY(-1px);
+box-shadow: var(--shadow-md);
+}
+/* ---- Functional Header Search ---- */
+.header-search {
+display: flex;
+align-items: center;
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+padding: 0 12px;
+transition: all var(--transition);
+flex-shrink: 1;
+min-width: 140px;
+max-width: 220px;
+}
+.header-search:focus-within {
+border-color: var(--primary);
+background: #fff;
+box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
+}
+.header-search input {
+background: transparent;
+border: none;
+padding: 10px 0;
+font-size: 0.9rem;
+color: var(--text-main);
+width: 100%;
+outline: none;
+min-width: 80px;
+}
+.header-search input::placeholder { color: var(--text-muted); }
+.header-search i { flex-shrink: 0; }
+/* ---- Mobile Toggle (Hamburger) ---- */
+.mobile-toggle {
+display: none;
+width: 44px;
+height: 44px;
+cursor: pointer;
+color: var(--text-main);
+background: transparent;
+border: none;
+position: relative;
+flex-shrink: 0;
+border-radius: var(--radius-md);
+transition: background var(--transition);
+}
+.mobile-toggle:hover { background: var(--bg-light); }
+.mobile-toggle:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+.hamburger-box {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 22px;
+height: 16px;
+}
+.hamburger-line {
+position: absolute;
+left: 0;
+width: 100%;
+height: 2px;
+background: var(--text-main);
+border-radius: 2px;
+transition: transform 0.3s ease, opacity 0.2s ease, top 0.3s ease;
+}
+.hamburger-line:nth-child(1) { top: 0; }
+.hamburger-line:nth-child(2) { top: 7px; }
+.hamburger-line:nth-child(3) { top: 14px; }
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+top: 7px;
+transform: rotate(45deg);
+}
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+opacity: 0;
+}
+.mobile-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+top: 7px;
+transform: rotate(-45deg);
+}
+/* =========================================
+MOBILE DRAWER
+========================================= */
+.mobile-drawer-backdrop {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
 background: rgba(0, 0, 0, 0.4);
 backdrop-filter: blur(4px);
-z-index: 1000;
+opacity: 0;
+visibility: hidden;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+z-index: 999;
+}
+.mobile-drawer-backdrop.active {
+opacity: 1;
+visibility: visible;
+}
+.mobile-drawer {
+position: fixed;
+top: 0;
+right: 0;
+width: min(380px, 90vw);
+height: 100%;
+background: #fff;
+z-index: 1001;
+transform: translateX(100%);
+transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+display: flex;
+flex-direction: column;
+overflow: hidden;
+box-shadow: var(--shadow-lg);
+}
+.mobile-drawer.active {
+transform: translateX(0);
+}
+.mobile-drawer-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+min-height: var(--header-height);
+flex-shrink: 0;
+}
+.mobile-drawer-header .logo { font-size: 1.2rem; }
+.mobile-drawer-close {
+width: 44px;
+height: 44px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: transparent;
+border: none;
+cursor: pointer;
+color: var(--text-main);
+font-size: 1.25rem;
+border-radius: var(--radius-md);
+transition: background var(--transition);
+}
+.mobile-drawer-close:hover { background: var(--bg-light); }
+.mobile-drawer-close:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+/* Mobile Search */
+.mobile-search {
+padding: 16px 20px;
+border-bottom: 1px solid var(--border);
+flex-shrink: 0;
+}
+.mobile-search-input {
+display: flex;
+align-items: center;
+background: var(--bg-light);
+border: 1px solid var(--border);
+border-radius: var(--radius-md);
+padding: 0 14px;
+transition: all var(--transition);
+width: 100%;
+}
+.mobile-search-input:focus-within {
+border-color: var(--primary);
+background: #fff;
+box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.08);
+}
+.mobile-search-input input {
+background: transparent;
+border: none;
+padding: 12px 10px;
+font-size: 0.95rem;
+color: var(--text-main);
+width: 100%;
+outline: none;
+}
+.mobile-search-input input::placeholder { color: var(--text-muted); }
+.mobile-search-input i { color: var(--text-muted); flex-shrink: 0; }
+/* Mobile Nav Body */
+.mobile-drawer-body {
+flex: 1;
+overflow-y: auto;
+padding: 8px 0;
+-webkit-overflow-scrolling: touch;
+}
+.mobile-nav-accordion { padding: 0; }
+.mobile-nav-item {
+border-bottom: 1px solid var(--border);
+}
+.mobile-nav-item:last-child { border-bottom: none; }
+.mobile-nav-trigger {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+padding: 16px 20px;
+background: transparent;
+border: none;
+cursor: pointer;
+color: var(--text-main);
+font-size: 1rem;
+font-weight: 500;
+text-align: left;
+min-height: 52px;
+transition: background var(--transition);
+}
+.mobile-nav-trigger:hover { background: var(--bg-light); }
+.mobile-nav-trigger:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: -2px;
+}
+.mobile-nav-trigger .chevron {
+font-size: 0.75rem;
+color: var(--text-muted);
+transition: transform 0.3s ease;
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger .chevron {
+transform: rotate(180deg);
+color: var(--primary);
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-trigger {
+color: var(--primary);
+}
+.mobile-nav-submenu {
+max-height: 0;
+overflow: hidden;
+transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+background: var(--bg-light);
+}
+.mobile-nav-item[aria-expanded="true"] .mobile-nav-submenu {
+max-height: 2000px;
+}
+.mobile-nav-submenu-inner { padding: 8px 20px 16px; }
+.mobile-submenu-group { margin-bottom: 16px; }
+.mobile-submenu-group:last-child { margin-bottom: 0; }
+.mobile-submenu-group h6 {
+font-size: 0.7rem;
+font-weight: 600;
+color: var(--text-muted);
+text-transform: uppercase;
+letter-spacing: 0.08em;
+margin-bottom: 8px;
+padding: 0 4px;
+}
+.mobile-submenu-group ul { list-style: none; padding: 0; margin: 0; }
+.mobile-submenu-group li { margin-bottom: 2px; }
+.mobile-submenu-group a {
+display: block;
+padding: 10px 12px;
+font-size: 0.9rem;
+color: var(--text-secondary);
+border-radius: var(--radius-sm);
+transition: all var(--transition);
+min-height: 40px;
+display: flex;
+align-items: center;
+}
+.mobile-submenu-group a:hover {
+background: #fff;
+color: var(--primary);
+}
+.mobile-submenu-group a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+.mobile-submenu-group a.active {
+color: var(--primary);
+font-weight: 500;
+background: rgba(26, 115, 232, 0.08);
+}
+/* Mobile Direct Links */
+.mobile-direct-links { padding: 8px 20px; border-bottom: 1px solid var(--border); }
+.mobile-direct-links a {
+display: flex;
+align-items: center;
+padding: 14px 0;
+font-size: 1rem;
+font-weight: 500;
+color: var(--text-main);
+min-height: 48px;
+transition: color var(--transition);
+}
+.mobile-direct-links a:hover { color: var(--primary); }
+.mobile-direct-links a:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
+}
+/* Mobile Drawer Footer */
+.mobile-drawer-footer {
+padding: 16px 20px;
+border-top: 1px solid var(--border);
+flex-shrink: 0;
+background: #fff;
+}
+.mobile-drawer-footer .btn {
+width: 100%;
+min-height: 48px;
+font-size: 1rem;
+font-weight: 600;
+}
+/* =========================================
+RESPONSIVE HEADER
+========================================= */
+@media (max-width: 1200px) {
+.mega-menu {
+width: min(900px, calc(100vw - 48px));
+grid-template-columns: repeat(3, 1fr);
+}
+}
+@media (max-width: 1024px) {
+.nav-links { display: none; }
+.nav-actions .desktop-only { display: none !important; }
+.mobile-toggle { display: flex; align-items: center; justify-content: center; }
+.header-search { display: none; }
+}
+@media (max-width: 768px) {
+.mega-menu {
+width: 100%;
+grid-template-columns: 1fr 1fr !important;
+}
+.nav-actions { gap: 6px; }
+.nav-actions .btn {
+padding: 6px 12px;
+font-size: 0.78rem;
+min-height: 32px;
+border-radius: var(--radius-sm);
+}
+.logo { font-size: 1.15rem; }
+}
+@media (max-width: 480px) {
+.nav-actions { gap: 4px; }
+.nav-actions .btn {
+padding: 4px 10px;
+font-size: 0.7rem;
+min-height: 28px;
+gap: 4px;
+}
+.logo { font-size: 1rem; }
+}
+/* =========================================
+HEROPESA FOOTER STYLES
+========================================= */
+.heropesa-footer {
+background: #fff;
+padding: 72px 0 32px;
+border-top: 1px solid var(--border);
+}
+.footer-grid {
+display: grid;
+grid-template-columns: 1.8fr repeat(7, 1fr);
+gap: 32px;
+margin-bottom: 48px;
+}
+.footer-brand p {
+color: var(--text-secondary);
+margin: 14px 0 18px;
+font-size: 0.9rem;
+line-height: 1.6;
+max-width: 280px;
+}
+.social-icons { display: flex; gap: 10px; }
+.social-icons a {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+background: var(--bg-light);
+border: 1px solid var(--border);
+display: flex;
+align-items: center;
+justify-content: center;
+color: var(--text-muted);
+transition: all var(--transition);
+}
+.social-icons a:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.social-icons a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.footer-col h5 { font-size: 0.85rem; margin-bottom: 14px; font-weight: 600; color: var(--text-main); }
+.footer-col ul li { margin-bottom: 9px; }
+.footer-col ul li a {
+color: var(--text-secondary);
+font-size: 0.82rem;
+transition: color var(--transition), padding-left var(--transition);
+display: inline-block;
+position: relative;
+}
+.footer-col ul li a:hover { color: var(--primary); padding-left: 2px; }
+.footer-col ul li a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+.footer-col ul li a::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1.5px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.footer-col ul li a:hover::after { width: 100%; }
+.footer-col ul li a.active { color: var(--primary); font-weight: 500; }
+.footer-col ul li a.active::after { width: 100%; }
+.footer-links a { position: relative; display: inline-block; }
+.footer-links a::after {
+content: '';
+position: absolute;
+bottom: -2px;
+left: 0;
+width: 0;
+height: 1.5px;
+background: var(--primary);
+transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+border-radius: 2px;
+}
+.footer-links a:hover::after { width: 100%; }
+.footer-links a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 2px; }
+.footer-links a.active { color: var(--primary); font-weight: 500; }
+.footer-links a.active::after { width: 100%; }
+.footer-bottom {
+border-top: 1px solid var(--border);
+padding-top: 24px;
+display: flex;
+justify-content: space-between;
+flex-wrap: wrap;
+gap: 16px;
+font-size: 0.8rem;
+color: var(--text-muted);
+}
+.footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+.footer-links a { color: var(--text-muted); transition: color var(--transition); }
+.footer-links a:hover { color: var(--primary); }
+@media (max-width: 1200px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px) {
+.footer-grid { grid-template-columns: repeat(2, 1fr); }
+.footer-col:nth-child(n+4) { grid-column: span 2; }
+}
+@media (max-width: 600px) {
+.footer-grid { grid-template-columns: 1fr; }
+.footer-col:nth-child(n+4) { grid-column: span 1; }
+.footer-bottom { flex-direction: column; text-align: center; }
+.footer-links { justify-content: center; }
+}
+/* =========================================
+DEMO MODAL OVERLAY
+========================================= */
+.demo-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.4);
+backdrop-filter: blur(4px);
 display: flex;
 align-items: center;
 justify-content: center;
 opacity: 0;
 pointer-events: none;
-transition: opacity 0.25s;
+transition: opacity 0.3s ease;
+z-index: 99999;
+padding: 20px;
 }
-.modal-overlay.show {
-opacity: 1;
-pointer-events: auto;
-}
-.modal {
-background: var(--surface);
-border-radius: var(--radius-lg);
-padding: 24px;
-width: 90%;
-max-width: 600px;
-max-height: 80vh;
-overflow-y: auto;
-box-shadow: var(--shadow-lg);
-border: 1px solid var(--border);
-transform: scale(0.95);
-transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.modal-overlay.show .modal {
-transform: scale(1);
-}
-.modal h3 {
-margin-bottom: 16px;
-font-size: 18px;
-font-weight: 600;
-letter-spacing: -0.2px;
-}
-.modal .form-group {
-margin-bottom: 12px;
-}
-.modal .form-group label {
-display: block;
-font-size: 12px;
-font-weight: 600;
-color: var(--text2);
-margin-bottom: 4px;
-text-transform: uppercase;
-letter-spacing: 0.4px;
-}
-.modal .form-group input,
-.modal .form-group select,
-.modal .form-group textarea {
+.demo-modal-overlay.active { opacity: 1; pointer-events: auto; }
+.demo-modal-container {
+background: #ffffff;
+border: 1px solid #e5e5e5;
+border-radius: 12px;
+padding: 32px;
 width: 100%;
-padding: 9px 12px;
-border: 1px solid var(--border);
-border-radius: var(--radius-sm);
-font-size: 13px;
-background: var(--surface2);
-color: var(--text);
-font-family: var(--font);
-transition: var(--transition);
-}
-.modal .form-group input:focus,
-.modal .form-group select:focus,
-.modal .form-group textarea:focus {
-outline: none;
-border-color: var(--primary);
-box-shadow: 0 0 0 3px var(--primary-light);
-background: var(--surface);
-}
-.modal .form-row {
-display: flex;
-gap: 12px;
-}
-.modal .form-row .form-group {
-flex: 1;
-}
-.modal-actions {
-display: flex;
-gap: 8px;
-justify-content: flex-end;
-margin-top: 16px;
-}
-/* TOAST */
-.toast-container {
-position: fixed;
-top: 20px;
-right: 20px;
-z-index: 9999;
-display: flex;
-flex-direction: column;
-gap: 8px;
-}
-.toast {
-padding: 12px 20px;
-border-radius: var(--radius-sm);
-color: #fff;
-font-size: 13px;
-font-weight: 500;
-animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-box-shadow: var(--shadow-lg);
-min-width: 280px;
-}
-.toast.success {
-background: var(--success);
-}
-.toast.error {
-background: var(--danger);
-}
-.toast.info {
-background: var(--info);
-}
-@keyframes slideIn {
-from {
-transform: translateX(100%);
-opacity: 0;
-}
-to {
-transform: translateX(0);
-opacity: 1;
-}
-}
-/* CHART BARS */
-.chart-bar-row {
-display: flex;
-align-items: end;
-gap: 4px;
-height: 120px;
-padding-top: 20px;
-}
-.chart-bar {
-flex: 1;
-border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-min-width: 16px;
-transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+max-width: 460px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+transform: scale(0.9);
+transition: transform 0.3s ease;
 position: relative;
-}
-.chart-bar .bar-val {
-position: absolute;
-top: -18px;
-left: 50%;
-transform: translateX(-50%);
-font-size: 10px;
-font-weight: 600;
-color: var(--text2);
-}
-.chart-labels {
-display: flex;
-gap: 4px;
-margin-top: 6px;
-}
-.chart-labels span {
-flex: 1;
-text-align: center;
-font-size: 10px;
-color: var(--text3);
-min-width: 16px;
-}
-/* NOTIFICATIONS PANEL */
-.notif-panel {
-position: fixed;
-top: calc(var(--header-h) + 4px);
-right: 20px;
-width: 380px;
-background: var(--surface);
-border: 1px solid var(--border);
-border-radius: var(--radius-lg);
-box-shadow: var(--shadow-lg);
-z-index: 500;
-display: none;
-max-height: 450px;
+box-sizing: border-box;
+max-height: 90vh;
 overflow-y: auto;
 }
-.notif-panel.show {
-display: block;
-animation: fadeIn 0.2s;
+.demo-modal-overlay.active .demo-modal-container { transform: scale(1); }
+.demo-modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 24px;
 }
-.notif-panel .notif-item {
-padding: 12px 16px;
-border-bottom: 1px solid var(--border);
-font-size: 13px;
+.demo-modal-header h3 { font-size: 1.35rem; font-weight: 600; color: #0a0a0a; margin: 0; }
+.demo-modal-close {
+background: transparent;
+border: none;
+font-size: 1.5rem;
 cursor: pointer;
-transition: var(--transition);
-}
-.notif-panel .notif-item:hover {
-background: var(--surface2);
-}
-.notif-panel .notif-item.unread {
-border-left: 3px solid var(--primary);
-font-weight: 600;
-background: var(--primary-light);
-}
-/* RESPONSIVE */
-@media (max-width: 768px) {
-.sidebar {
-width: 60px;
-}
-.sidebar .nav-item span:not(.nav-icon) {
-display: none;
-}
-.sidebar .nav-section {
-display: none;
-}
-.sidebar-logo {
-font-size: 0;
+color: #888888;
+transition: color 0.2s;
+line-height: 1;
+width: 44px;
+height: 44px;
+display: flex;
+align-items: center;
 justify-content: center;
+border-radius: var(--radius-md);
 }
-.kpi-grid {
-grid-template-columns: repeat(2, 1fr);
+.demo-modal-close:hover { color: #0a0a0a; background: var(--bg-light); }
+.demo-modal-close:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.demo-form-group { margin-bottom: 16px; text-align: left; }
+.demo-form-group label {
+display: block;
+font-size: 0.85rem;
+font-weight: 500;
+margin-bottom: 6px;
+color: #555555;
 }
-.modal {
-width: 95%;
-padding: 16px;
+.demo-form-group input, .demo-form-group select {
+width: 100%;
+padding: 10px 12px;
+border: 1px solid #e5e5e5;
+border-radius: 6px;
+font-size: 0.92rem;
+outline: none;
+transition: border-color 0.25s;
+box-sizing: border-box;
+min-height: 44px;
 }
-.modal .form-row {
-flex-direction: column;
-gap: 0;
+.demo-form-group input:focus, .demo-form-group select:focus { border-color: #0a0a0a; }
+.demo-form-group input:focus-visible, .demo-form-group select:focus-visible {
+outline: 2px solid var(--primary);
+outline-offset: 2px;
 }
+.demo-submit-btn {
+width: 100%;
+padding: 12px;
+background: #0a0a0a;
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-weight: 500;
+font-size: 0.95rem;
+cursor: pointer;
+transition: background-color 0.25s;
+margin-top: 8px;
+min-height: 44px;
 }
+.demo-submit-btn:hover { background: #222222; }
+.demo-submit-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.demo-success-state { text-align: center; padding: 20px 0; }
+.demo-success-state i { font-size: 3rem; color: #34a853; margin-bottom: 16px; }
+.demo-success-state h4 { font-size: 1.25rem; font-weight: 600; margin-bottom: 8px; margin-top: 0; }
+.demo-success-state p { font-size: 0.9rem; color: #555555; line-height: 1.5; margin-bottom: 20px; }
+.demo-close-btn {
+padding: 10px 24px;
+background: #0a0a0a;
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-weight: 500;
+cursor: pointer;
+min-height: 44px;
+}
+.demo-close-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* =========================================
+SEARCH HIGHLIGHT
+========================================= */
+.search-highlight mark { background: transparent; color: inherit; font-weight: 600; }
+.search-highlight {
+background-color: #fff3cd;
+border-radius: 2px;
+padding: 0 2px;
+transition: background-color 0.3s;
+}
+.search-highlight.active-match { background-color: #fdcb6e; }
+/* =========================================
+MISC & RESPONSIVE FIXES
+========================================= */
 @media (max-width: 480px) {
-.kpi-grid {
-grid-template-columns: 1fr;
+.section { padding: 64px 0; }
+.btn { width: 100%; }
+.hero-actions { flex-direction: column; align-items: stretch; }
+.hero-actions .btn { width: 100%; }
+.media-placeholder { min-height: 240px; }
+.stats-grid { gap: 24px; }
+.stat-item h3 { font-size: 1.6rem; }
+.stat-item p { font-size: 0.85rem; }
+.cta-banner h2 { font-size: 1.6rem; }
+.cta-banner { padding: 60px 0; }
+.section-header { margin-bottom: 40px; }
+.section-header h2 { font-size: 1.6rem; }
+.featured-text h3 { font-size: 1.4rem; }
+.trading-card { padding: 24px; }
+.billing-card { padding: 24px; }
+.sol-card { padding: 22px; }
+.test-card { padding: 22px; }
+.cap-card { padding: 22px; }
+.faq-q { padding: 16px 18px; font-size: 0.92rem; }
+.faq-a { padding: 0 18px; }
+.faq-item.active .faq-a { padding: 0 18px 16px; }
+.partner-logos { gap: 24px; }
+.partner-logos i { font-size: 1.5rem; }
 }
-.header .global-search {
-max-width: 150px;
+@media (max-width: 360px) {
+.container { padding: 0 16px; }
+.hero-content h1 { font-size: 1.8rem; }
+.hero-content p { font-size: 1rem; }
+.marquee-item { font-size: 0.9rem; }
+.marquee-item i { font-size: 1.1rem; }
 }
+/* Skip to content link */
+.skip-link {
+position: absolute;
+top: -100px;
+left: 16px;
+background: var(--primary);
+color: #fff;
+padding: 12px 20px;
+border-radius: var(--radius-md);
+z-index: 10000;
+font-weight: 500;
+transition: top 0.2s;
+}
+.skip-link:focus {
+top: 16px;
+}
+/* Visually hidden but accessible */
+.sr-only {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border: 0;
 }
 </style>
 </head>
 <body>
-<!-- ===== HEROPESA SSO AUTH GUARD =====
-This single script protects this entire app.
-To remove protection, delete only this one tag.
-======================================== -->
-<script src="/sso_web/requireAuth.js"></script>
-<!-- LOGIN OVERLAY -->
-<div class="login-overlay" id="loginOverlay">
-<div class="login-card">
-<h1>🔷 NexusERP</h1>
-<p class="subtitle">Enterprise Resource Planning</p>
-<div class="login-error" id="loginError"></div>
-<input type="text" id="loginUser" placeholder="Username" value="admin">
-<input type="password" id="loginPass" placeholder="Password" value="admin123">
-<button onclick="app.login()">Sign In</button>
-<p style="text-align:center;margin-top:12px;font-size:11px;color:var(--text3);">Demo: admin / admin123</p>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<!-- =========================================
+HEADER
+========================================= -->
+<header id="navbar" class="heropesa-header" role="banner">
+<div class="container nav-wrapper">
+<a href="/index.html" class="logo" aria-label="Heropesa Home">Heropesa<span class="logo-accent"> </span></a>
+<nav class="nav-links" id="navLinks" aria-label="Main navigation">
+<!-- Products -->
+<div class="nav-item" data-nav="products">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Products <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Products menu">
+<div>
+<h6>Core Platforms</h6>
+<ul>
+<li><a href="/main_web/pages/erpldg.html" role="menuitem">Enterprise ERP</a></li>
+<li><a href="/pages/accounting.html" role="menuitem">Accounting Software</a></li>
+<li><a href="/pages/crmldg.html" role="menuitem">CRM &amp; Sales</a></li>
+<li><a href="/pages/hr-payroll.html" role="menuitem">HR &amp; Payroll</a></li>
+<li><a href="/pages/inventory.html" role="menuitem">Inventory Control</a></li>
+</ul>
+</div>
+<div>
+<h6>Operations</h6>
+<ul>
+<li><a href="/pages/supply-chain.html" role="menuitem">Supply Chain</a></li>
+<li><a href="/pages/posldg.html" role="menuitem">Point of Sale</a></li>
+<li><a href="/pages/analytics-bi.html" role="menuitem">Analytics &amp; BI</a></li>
+<li><a href="/pages/marketing-auto.html" role="menuitem">Marketing Automation</a></li>
+</ul>
+</div>
+<div>
+<h6>Industry Solutions</h6>
+<ul>
+<li><a href="/pages/manufacturing.html" role="menuitem">Manufacturing</a></li>
+<li><a href="/pages/healthcare-os.html" role="menuitem">Healthcare OS</a></li>
+<li><a href="/pages/education.html" role="menuitem">Education Platform</a></li>
+<li><a href="/pages/retail.html" role="menuitem">Retail &amp; Commerce</a></li>
+</ul>
+</div>
+<div>
+<h6>AI &amp; Automation</h6>
+<ul>
+<li><a href="/pages/ai-support.html" role="menuitem">AI Customer Support</a></li>
+<li><a href="/pages/automation-rpa.html" role="menuitem">Automation &amp; RPA</a></li>
+<li><a href="/pages/enterprise-ai.html" role="menuitem">Enterprise AI</a></li>
+<li><a href="/pages/ai-workflows.html" role="menuitem">AI Workflows</a></li>
+</ul>
 </div>
 </div>
-<!-- APP CONTAINER -->
-<div class="app-container" id="appContainer">
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-<div class="sidebar-logo"><span class="logo-icon">◆</span> Nexus<span class="logo-accent">ERP</span></div>
-<nav class="sidebar-nav" id="sidebarNav">
-<div class="nav-section">Main</div>
-<div class="nav-item active" data-module="dashboard"><span class="nav-icon">📊</span><span>Dashboard</span></div>
-<div class="nav-section">Modules</div>
-<div class="nav-item" data-module="crm"><span class="nav-icon">👥</span><span>CRM</span></div>
-<div class="nav-item" data-module="sales"><span class="nav-icon">💰</span><span>Sales</span></div>
-<div class="nav-item" data-module="inventory"><span class="nav-icon">📦</span><span>Inventory</span></div>
-<div class="nav-item" data-module="procurement"><span class="nav-icon">🛒</span><span>Procurement</span></div>
-<div class="nav-item" data-module="finance"><span class="nav-icon">📋</span><span>Finance</span></div>
-<div class="nav-item" data-module="hr"><span class="nav-icon">👤</span><span>HR</span></div>
-<div class="nav-section">System</div>
-<div class="nav-item" data-module="users"><span class="nav-icon">⚙️</span><span>User Mgmt</span></div>
-<div class="nav-item" data-module="audit"><span class="nav-icon">📝</span><span>Audit Logs</span></div>
-<div class="nav-item" data-module="documents"><span class="nav-icon">📁</span><span>Documents</span></div>
+</div>
+<!-- Solutions -->
+<div class="nav-item" data-nav="solutions">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Solutions <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Solutions menu">
+<div>
+<h6>By Industry</h6>
+<ul>
+<li><a href="/industries/retail.html" role="menuitem">Retail</a></li>
+<li><a href="/industries/hospitality.html" role="menuitem">Hospitality</a></li>
+<li><a href="/industries/healthcare.html" role="menuitem">Healthcare</a></li>
+<li><a href="/industries/education.html" role="menuitem">Education</a></li>
+<li><a href="/industries/fashion.html" role="menuitem">Fashion &amp; Apparel</a></li>
+</ul>
+</div>
+<div>
+<h6>By Use Case</h6>
+<ul>
+<li><a href="/solutions/inventory.html" role="menuitem">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html" role="menuitem">Compliance &amp; Governance</a></li>
+<li><a href="/solutions/scaling.html" role="menuitem">Global Scaling</a></li>
+<li><a href="/solutions/automation.html" role="menuitem">Process Automation</a></li>
+</ul>
+</div>
+<div>
+<h6>By Company Size</h6>
+<ul>
+<li><a href="/solutions/startups.html" role="menuitem">Startups &amp; SMBs</a></li>
+<li><a href="/solutions/mid-market.html" role="menuitem">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html" role="menuitem">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html" role="menuitem">Multi-Entity Groups</a></li>
+</ul>
+</div>
+<div>
+<h6>Migration &amp; Integration</h6>
+<ul>
+<li><a href="/pages/migration.html" role="menuitem">Legacy System Migration</a></li>
+<li><a href="/pages/integrations.html" role="menuitem">Third-Party Integrations</a></li>
+<li><a href="/pages/api.html" role="menuitem">API &amp; Webhooks</a></li>
+<li><a href="/pages/implementation.html" role="menuitem">Implementation Services</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Resources -->
+<div class="nav-item" data-nav="resources">
+<a href="#" class="nav-parent-link" aria-haspopup="true" aria-expanded="false">Resources <i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i></a>
+<div class="mega-menu" role="menu" aria-label="Resources menu">
+<div>
+<h6>Documentation</h6>
+<ul>
+<li><a href="/pages/docs.html" role="menuitem">API Documentation</a></li>
+<li><a href="/pages/guides.html" role="menuitem">Business Guides</a></li>
+<li><a href="/pages/glossary.html" role="menuitem">Solutions Glossary</a></li>
+<li><a href="/pages/help.html" role="menuitem">Help Center</a></li>
+</ul>
+</div>
+<div>
+<h6>Learning</h6>
+<ul>
+<li><a href="/pages/demos.html" role="menuitem">Product Demos</a></li>
+<li><a href="/pages/stories.html" role="menuitem">Customer Stories</a></li>
+<li><a href="/pages/webinars.html" role="menuitem">Webinars &amp; Events</a></li>
+<li><a href="/pages/education.html" role="menuitem">Education Services</a></li>
+</ul>
+</div>
+<div>
+<h6>Technical</h6>
+<ul>
+<li><a href="/pages/sdks.html" role="menuitem">SDKs &amp; Libraries</a></li>
+<li><a href="/pages/status.html" role="menuitem">System Status</a></li>
+<li><a href="/pages/changelog.html" role="menuitem">Changelog</a></li>
+<li><a href="/pages/sandbox.html" role="menuitem">Developer Sandbox</a></li>
+</ul>
+</div>
+<div>
+<h6>Trust &amp; Security</h6>
+<ul>
+<li><a href="/pages/security.html" role="menuitem">Security Compliance</a></li>
+<li><a href="/pages/trust.html" role="menuitem">Trust Center</a></li>
+<li><a href="/pages/privacy.html" role="menuitem">Privacy Policy</a></li>
+<li><a href="/pages/responsible-ai.html" role="menuitem">Responsible AI</a></li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Partners (direct link) -->
+<a href="/pages/partners.html" class="nav-direct-link">Partners</a>
+<!-- Pricing (direct link) -->
+<a href="/main_web/pages/erpldg.html#pricing" class="nav-direct-link">Pricing</a>
 </nav>
-<div class="sidebar-footer" onclick="app.logout()" title="Logout">
-<div class="avatar" id="sidebarAvatar">A</div>
-<span id="sidebarUser">Admin</span>
+<div class="nav-actions">
+<!-- Search (Desktop) -->
+<div class="header-search desktop-only" role="search">
+<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+<input type="text" id="headerSearchInput" placeholder="Search page..." aria-label="Search page content" />
 </div>
-</aside>
-<!-- MAIN -->
-<div class="main-area">
-<!-- HEADER -->
-<header class="header">
-<div class="global-search">
-<span class="search-icon">🔍</span>
-<input type="text" id="globalSearchInput" placeholder="Global search... (Ctrl+K)" oninput="app.globalSearch(this.value)">
-<div class="search-results-dropdown" id="searchDropdown"></div>
-</div>
-<div class="header-actions">
-<button class="theme-toggle" onclick="app.toggleTheme()" title="Toggle theme">🌓</button>
-<button class="btn-icon" onclick="app.toggleNotifPanel()" title="Notifications" style="position:relative;">
-🔔<span class="badge-dot" id="notifDot" style="display:none;"></span>
+<a href="#demo" class="btn btn-primary nav-btn-demo desktop-only">Request Demo</a>
+<button class="mobile-toggle" id="menuToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobileDrawer">
+<span class="hamburger-box" aria-hidden="true">
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+<span class="hamburger-line"></span>
+</span>
 </button>
 </div>
-<div class="notif-panel" id="notifPanel"></div>
+</div>
 </header>
-<!-- TAB BAR -->
-<div class="tab-bar" id="tabBar">
-<div class="tab active" data-module="dashboard">📊 Dashboard</div>
+<!-- =========================================
+MOBILE DRAWER
+========================================= -->
+<div class="mobile-drawer-backdrop" id="mobileDrawerBackdrop" aria-hidden="true"></div>
+<aside class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Navigation menu" aria-hidden="true">
+<div class="mobile-drawer-header">
+<a href="/index.html" class="logo" aria-label="Heropesa Home">Hero<span class="logo-accent">pesa</span></a>
+<button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu">
+<i class="fa-solid fa-xmark" aria-hidden="true"></i>
+</button>
 </div>
-<!-- CONTENT -->
-<div class="content-area" id="contentArea">
-<!-- DASHBOARD -->
-<div class="module-page active" id="page-dashboard"></div>
-<!-- CRM -->
-<div class="module-page" id="page-crm"></div>
-<!-- SALES -->
-<div class="module-page" id="page-sales"></div>
-<!-- INVENTORY -->
-<div class="module-page" id="page-inventory"></div>
-<!-- PROCUREMENT -->
-<div class="module-page" id="page-procurement"></div>
-<!-- FINANCE -->
-<div class="module-page" id="page-finance"></div>
-<!-- HR -->
-<div class="module-page" id="page-hr"></div>
-<!-- USERS -->
-<div class="module-page" id="page-users"></div>
-<!-- AUDIT -->
-<div class="module-page" id="page-audit"></div>
-<!-- DOCUMENTS -->
-<div class="module-page" id="page-documents"></div>
+<div class="mobile-search" role="search">
+<div class="mobile-search-input">
+<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+<input type="text" id="mobileSearchInput" placeholder="Search..." aria-label="Search page content" />
 </div>
 </div>
+<div class="mobile-drawer-body">
+<nav class="mobile-nav-accordion" aria-label="Mobile navigation">
+<!-- Products Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-products">
+<span>Products</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-products" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>Core Platforms</h6>
+<ul>
+<li><a href="/main_web/pages/erpldg.html">Enterprise ERP</a></li>
+<li><a href="/pages/accounting.html">Accounting Software</a></li>
+<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
+<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
+<li><a href="/pages/inventory.html">Inventory Control</a></li>
+</ul>
 </div>
-<!-- MODAL OVERLAY -->
-<div class="modal-overlay" id="modalOverlay">
-<div class="modal" id="modalContent"></div>
+<div class="mobile-submenu-group">
+<h6>Operations</h6>
+<ul>
+<li><a href="/pages/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pages/posldg.html">Point of Sale</a></li>
+<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
+<li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
+</ul>
 </div>
-<!-- TOAST CONTAINER -->
-<div class="toast-container" id="toastContainer"></div>
+<div class="mobile-submenu-group">
+<h6>Industry Solutions</h6>
+<ul>
+<li><a href="/pages/manufacturing.html">Manufacturing</a></li>
+<li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/pages/education.html">Education Platform</a></li>
+<li><a href="/pages/retail.html">Retail &amp; Commerce</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>AI &amp; Automation</h6>
+<ul>
+<li><a href="/pages/ai-support.html">AI Customer Support</a></li>
+<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
+<li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Solutions Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-solutions">
+<span>Solutions</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-solutions" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>By Industry</h6>
+<ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>By Use Case</h6>
+<ul>
+<li><a href="/solutions/inventory.html">Inventory Optimization</a></li>
+<li><a href="/solutions/compliance.html">Compliance &amp; Governance</a></li>
+<li><a href="/solutions/scaling.html">Global Scaling</a></li>
+<li><a href="/solutions/automation.html">Process Automation</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>By Company Size</h6>
+<ul>
+<li><a href="/solutions/startups.html">Startups &amp; SMBs</a></li>
+<li><a href="/solutions/mid-market.html">Mid-Market</a></li>
+<li><a href="/solutions/enterprise.html">Enterprise</a></li>
+<li><a href="/solutions/multi-entity.html">Multi-Entity Groups</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Migration &amp; Integration</h6>
+<ul>
+<li><a href="/pages/migration.html">Legacy System Migration</a></li>
+<li><a href="/pages/integrations.html">Third-Party Integrations</a></li>
+<li><a href="/pages/api.html">API &amp; Webhooks</a></li>
+<li><a href="/pages/implementation.html">Implementation Services</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<!-- Resources Accordion -->
+<div class="mobile-nav-item" aria-expanded="false">
+<button class="mobile-nav-trigger" aria-expanded="false" aria-controls="mobile-submenu-resources">
+<span>Resources</span>
+<i class="fa-solid fa-chevron-down chevron" aria-hidden="true"></i>
+</button>
+<div class="mobile-nav-submenu" id="mobile-submenu-resources" role="region">
+<div class="mobile-nav-submenu-inner">
+<div class="mobile-submenu-group">
+<h6>Documentation</h6>
+<ul>
+<li><a href="/pages/docs.html">API Documentation</a></li>
+<li><a href="/pages/guides.html">Business Guides</a></li>
+<li><a href="/pages/glossary.html">Solutions Glossary</a></li>
+<li><a href="/pages/help.html">Help Center</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Learning</h6>
+<ul>
+<li><a href="/pages/demos.html">Product Demos</a></li>
+<li><a href="/pages/stories.html">Customer Stories</a></li>
+<li><a href="/pages/webinars.html">Webinars &amp; Events</a></li>
+<li><a href="/pages/education.html">Education Services</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Technical</h6>
+<ul>
+<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
+<li><a href="/pages/status.html">System Status</a></li>
+<li><a href="/pages/changelog.html">Changelog</a></li>
+<li><a href="/pages/sandbox.html">Developer Sandbox</a></li>
+</ul>
+</div>
+<div class="mobile-submenu-group">
+<h6>Trust &amp; Security</h6>
+<ul>
+<li><a href="/pages/security.html">Security Compliance</a></li>
+<li><a href="/pages/trust.html">Trust Center</a></li>
+<li><a href="/pages/privacy.html">Privacy Policy</a></li>
+<li><a href="/pages/responsible-ai.html">Responsible AI</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<div class="mobile-direct-links">
+<a href="/pages/partners.html">Partners</a>
+<a href="/main_web/pages/erpldg.html#pricing">Pricing</a>
+<a href="/pages/developers.html">Developers</a>
+<a href="/pages/contact-sales.html">Contact Sales</a>
+</div>
+</div>
+<div class="mobile-drawer-footer">
+<a href="#demo" class="btn btn-primary" id="mobileDemoBtn">Request Demo</a>
+</div>
+</aside>
+<!-- =========================================
+MAIN CONTENT
+========================================= -->
+<main id="main-content">
+<!-- =========================================
+HERO
+========================================= -->
+<section class="hero">
+<div class="container">
+<div class="hero-content">
+<h1>Enterprise-Grade Solutions.<br />Unified Enterprise Software Built for Modern Scale.</h1>
+<p>From intelligent POS, CRM and ERP to advanced AI analytics, microfinance systems, and proprietary trading platforms. One unified ecosystem to scale, secure, and transform your enterprise.</p>
+<div class="hero-actions">
+<a href="/erp_web/erp.html" class="btn btn-primary">Explore Solutions <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+<a href="#demo" class="btn btn-outline">Talk to an Expert</a>
+</div>
+<div class="hero-trust">
+<i class="fa-solid fa-shield-halved color-blue" aria-hidden="true"></i>
+<span>Trusted by 500,000+ businesses across 140+ countries</span>
+</div>
+</div>
+<img src="../assets/images/indexpg.jpeg" alt="Hero Image" style="margin-top: 40px; border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-lg);">
+</div>
+</section>
+<!-- =========================================
+STATS
+========================================= -->
+<section class="stats-bar" aria-label="Company statistics">
+<div class="container">
+<div class="stats-grid">
+<div class="stat-item">
+<h3 class="color-blue">$42B+</h3>
+<p>Transactions Processed Annually</p>
+</div>
+<div class="stat-item">
+<h3 class="color-red">1.2M</h3>
+<p>Active Enterprise Accounts</p>
+</div>
+<div class="stat-item">
+<h3 class="color-green">99.99%</h3>
+<p>Guaranteed Uptime SLA</p>
+</div>
+<div class="stat-item">
+<h3 class="color-yellow">34</h3>
+<p>Global Data Centers</p>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+TRUSTED BY MARQUEE
+========================================= -->
+<section class="trusted-by" aria-label="Trusted by leading companies">
+<div class="container">
+<div class="trusted-by-title">Trusted by leading companies worldwide</div>
+</div>
+<div class="marquee" aria-hidden="true">
+<div class="marquee-track">
+<div class="marquee-item"><img src="../assets/logos/gsm.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/azam.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/metl.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/sbl.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/tra.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/ura.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/zra.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/zohobooks.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/odoo.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/castlelager.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/konyagi.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/safarilager.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/gsm.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/azam.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/metl.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/sbl.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/tra.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/ura.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/zra.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/zohobooks.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/odoo.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/castlelager.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/konyagi.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+<div class="marquee-item"><img src="../assets/logos/safarilager.png" alt="Partner Logo" style="height: 50px; object-fit: contain; filter: grayscale(100%); opacity: 0.7; transition: all 0.3s;" onmouseover="this.style.filter='none'; this.style.opacity='1'" onmouseout="this.style.filter='grayscale(100%)'; this.style.opacity='0.7'"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+SOLUTIONS
+========================================= -->
+<section class="section solutions" id="solutions">
+<div class="container">
+<div class="section-header">
+<h2>Complete Enterprise Suite</h2>
+<p>Modular, scalable, and fully integrated. Deploy what you need, when you need it.</p>
+</div>
+<div class="solutions-grid">
+<div class="sol-card">
+<div class="sol-icon bg-blue-light"><i class="fa-solid fa-cash-register" aria-hidden="true"></i></div>
+<h4>Smart POS &amp; Retail</h4>
+<p>Cloud-native point of sale with offline sync, multi-location inventory, and seamless payment gateways.</p>
+<a href="/pages/posldg.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-red-light"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></div>
+<h4>Enterprise ERP</h4>
+<p>End-to-end resource planning: finance, procurement, manufacturing, supply chain, and compliance.</p>
+<a href="/main_web/pages/erpldg.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-yellow-light"><i class="fa-solid fa-handshake" aria-hidden="true"></i></div>
+<h4>CRM &amp; Sales</h4>
+<p>AI-powered pipeline management, customer 360, automated workflows, and omnichannel engagement.</p>
+<a href="/pages/crmldg.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-green-light"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></div>
+<h4>Data Analytics &amp; BI</h4>
+<p>Power BI-style interactive dashboards, predictive modeling, real-time KPIs, and automated executive reporting.</p>
+<a href="/pages/analytics-bi.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-blue-light"><i class="fa-solid fa-brain" aria-hidden="true"></i></div>
+<h4>Enterprise AI &amp; Automation</h4>
+<p>LLM integrations, intelligent document processing, robotic process automation, and decision engines.</p>
+<a href="/pages/enterprise-ai.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-red-light"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></div>
+<h4>Microfinance &amp; SACCO Systems</h4>
+<p>Loan lifecycle management, share tracking, dividend calculations, mobile banking integration, and regulatory reporting.</p>
+<a href="#demo" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-yellow-light"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></div>
+<h4>School &amp; Campus Management</h4>
+<p>Student information systems, fee collection, timetabling, LMS integration, and parent portals.</p>
+<a href="/pages/education.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-green-light"><i class="fa-solid fa-users-gear" aria-hidden="true"></i></div>
+<h4>HR &amp; Payroll Suite</h4>
+<p>Global payroll processing, talent management, attendance tracking, and compliance automation.</p>
+<a href="/pages/hr-payroll.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-blue-light"><i class="fa-solid fa-truck-fast" aria-hidden="true"></i></div>
+<h4>Supply Chain &amp; Logistics</h4>
+<p>Fleet tracking, warehouse management, route optimization, and supplier collaboration portals.</p>
+<a href="/pages/supply-chain.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-red-light"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i></div>
+<h4>Healthcare &amp; Clinic OS</h4>
+<p>Patient records, appointment scheduling, billing, telemedicine, and HIPAA-compliant workflows.</p>
+<a href="/pages/healthcare-os.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-yellow-light"><i class="fa-solid fa-building" aria-hidden="true"></i></div>
+<h4>Real Estate &amp; Property</h4>
+<p>Lease management, tenant portals, maintenance ticketing, and investment tracking dashboards.</p>
+<a href="#demo" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+<div class="sol-card">
+<div class="sol-icon bg-green-light"><i class="fa-solid fa-shield-cat" aria-hidden="true"></i></div>
+<h4>Cybersecurity &amp; Compliance</h4>
+<p>Zero-trust architecture, threat detection, audit trails, GDPR/SOX compliance, and encrypted backups.</p>
+<a href="/pages/cybersecurity.html" class="sol-link">Learn more <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+FEATURED TABS
+========================================= -->
+<section class="section featured-tabs" id="ai-analytics">
+<div class="container">
+<div class="section-header">
+<h2>Deep Dive: Flagship Platforms</h2>
+<p>Explore how our core engines power modern enterprises.</p>
+</div>
+<div class="tabs-nav" role="tablist" aria-label="Featured platforms">
+<button class="tab-btn active" data-tab="tab1" role="tab" aria-selected="true" aria-controls="tab1" id="tab-btn-1">AI &amp; Analytics</button>
+<button class="tab-btn" data-tab="tab2" role="tab" aria-selected="false" aria-controls="tab2" id="tab-btn-2">CRM &amp; Sales</button>
+<button class="tab-btn" data-tab="tab3" role="tab" aria-selected="false" aria-controls="tab3" id="tab-btn-3">Microfinance</button>
+<button class="tab-btn" data-tab="tab4" role="tab" aria-selected="false" aria-controls="tab4" id="tab-btn-4">Education</button>
+</div>
+<div class="tab-content active" id="tab1" role="tabpanel" aria-labelledby="tab-btn-1">
+<div class="featured-layout">
+<div class="featured-text">
+<h3>Enterprise AI &amp; Business Intelligence</h3>
+<p>Transform raw data into actionable strategy. Our AI engine processes millions of data points to deliver predictive insights, automated reporting, and real-time decision support.</p>
+<ul class="feature-list">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Power BI-style interactive dashboards with drag-and-drop builders</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Predictive forecasting using time-series ML models</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Natural language querying: "Show Q3 revenue by region"</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated anomaly detection and alert routing</li>
+</ul>
+<a href="#demo" class="btn btn-primary">Request Demo</a>
+</div>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.12 (1).jpeg" alt="AI Dashboard" style="border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+</div>
+<div class="tab-content" id="tab2" role="tabpanel" aria-labelledby="tab-btn-2">
+<div class="featured-layout">
+<div class="featured-text">
+<h3>Next-Gen CRM &amp; Revenue Operations</h3>
+<p>Unify sales, marketing, and service. Our CRM eliminates silos, accelerates deal cycles, and delivers hyper-personalized customer experiences at scale.</p>
+<ul class="feature-list">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> AI lead scoring and automated pipeline routing</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> 360° customer profiles with interaction history</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Omnichannel engagement: email, chat, voice, social</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Built-in CPQ and contract lifecycle management</li>
+</ul>
+<a href="/pages/crmldg.html" class="btn btn-primary">Explore CRM</a>
+</div>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.12.jpeg" alt="CRM Interface" style="border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+</div>
+<div class="tab-content" id="tab3" role="tabpanel" aria-labelledby="tab-btn-3">
+<div class="featured-layout">
+<div class="featured-text">
+<h3>Microfinance &amp; SACCO Management</h3>
+<p>Built for financial cooperatives, micro-lenders, and community banks. Streamline savings, loans, shares, and regulatory compliance in one secure platform.</p>
+<ul class="feature-list">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated loan origination, scoring, and disbursement</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Share capital tracking and dividend calculations</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> USSD &amp; mobile banking integration for offline regions</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Central bank reporting templates &amp; audit trails</li>
+</ul>
+<a href="#demo" class="btn btn-primary">View Financial Suite</a>
+</div>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.13 (1).jpeg" alt="Financial Platform" style="border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+</div>
+<div class="tab-content" id="tab4" role="tabpanel" aria-labelledby="tab-btn-4">
+<div class="featured-layout">
+<div class="featured-text">
+<h3>School &amp; Campus Management System</h3>
+<p>Digitalize educational operations from admissions to alumni. A unified platform for administrators, teachers, students, and parents.</p>
+<ul class="feature-list">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Student information system (SIS) with biometric attendance</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated fee collection, invoicing, and scholarship tracking</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Timetable generator, exam scheduling, and grade books</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Parent portal with real-time notifications &amp; LMS sync</li>
+</ul>
+<a href="/pages/education.html" class="btn btn-primary">Discover Education OS</a>
+</div>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.14 (1).jpeg" alt="Education Portal" style="border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+TRADING
+========================================= -->
+<section class="section trading-section" id="trading">
+<div class="container">
+<div class="section-header">
+<h2>Proprietary Trading &amp; Sports Betting</h2>
+<p>High-performance, low-latency platforms engineered for regulated gaming and trading environments.</p>
+</div>
+<div class="trading-grid">
+<div class="trading-card">
+<h4><i class="fa-solid fa-chart-candlestick" aria-hidden="true"></i> Prop Firm Management</h4>
+<p>Build, scale, and operate proprietary trading firms with institutional-grade infrastructure.</p>
+<ul class="trading-features">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-asset trading engine (Forex, Crypto, Indices)</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Automated risk management &amp; drawdown limits</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Trader dashboards, challenges, and payout automation</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> White-label MT4/MT5/cTrader integration</li>
+</ul>
+<a href="/pages/trading-prop.html" class="btn btn-outline" style="margin-top: 15px;">Learn More</a>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.14.jpeg" alt="Trading Platform" style="margin-top: 20px; border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+<div class="trading-card">
+<h4><i class="fa-solid fa-futbol" aria-hidden="true"></i> Sports Betting &amp; iGaming</h4>
+<p>Launch compliant, high-converting sportsbooks and casino platforms with real-time odds management.</p>
+<ul class="trading-features">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Live odds aggregation &amp; dynamic pricing</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-sport markets: pre-match, in-play, esports</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> KYC/AML compliance &amp; responsible gaming tools</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Payment gateway routing &amp; fraud prevention</li>
+</ul>
+<a href="/pages/sports-betting.html" class="btn btn-outline" style="margin-top: 15px;">Explore Platform</a>
+<img src="../assets/images/WhatsApp Image 2026-06-30 at 07.58.14.jpeg" alt="Trading Platform" style="margin-top: 20px; border-radius: var(--radius-lg); width: 100%; object-fit: cover; box-shadow: var(--shadow-md);">
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+CAPABILITIES
+========================================= -->
+<section class="section capabilities">
+<div class="container">
+<div class="section-header">
+<h2>Built for Global Scale</h2>
+<p>Enterprise-grade infrastructure that meets the strictest security, compliance, and performance standards.</p>
+</div>
+<div class="cap-grid">
+<div class="color-blue cap-card">
+<i class="color-blue fa-solid fa-lock" aria-hidden="true"></i>
+<h4>Zero-Trust Security</h4>
+<p>End-to-end encryption, role-based access, MFA, and continuous threat monitoring across all tenants.</p>
+</div>
+<div class="color-red cap-card">
+<i class="color-red fa-solid fa-globe" aria-hidden="true"></i>
+<h4>Global Compliance</h4>
+<p>SOC 2 Type II, ISO 27001, GDPR, CCPA, HIPAA, and regional financial regulatory frameworks.</p>
+</div>
+<div class="color-yellow cap-card">
+<i class="color-yellow fa-solid fa-server" aria-hidden="true"></i>
+<h4>99.99% Uptime SLA</h4>
+<p>Geo-redundant architecture, automated failover, and 24/7 enterprise support with guaranteed response times.</p>
+</div>
+<div class="color-green cap-card">
+<i class="color-green fa-solid fa-code-branch" aria-hidden="true"></i>
+<h4>Open API &amp; Webhooks</h4>
+<p>RESTful APIs, GraphQL endpoints, SDKs in 6 languages, and pre-built connectors for 500+ enterprise apps.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+INDUSTRIES
+========================================= -->
+<section class="section industries" id="industries">
+<div class="container">
+<div class="section-header">
+<h2>Solutions Tailored to Your Industry</h2>
+<p>Industry-specific configurations that deploy in days, not months.</p>
+</div>
+<div class="industries-grid">
+<div class="ind-card"><i class="fa-solid fa-utensils" aria-hidden="true"></i><h5>Food &amp; Beverage</h5></div>
+<div class="ind-card"><i class="fa-solid fa-shopping-bag" aria-hidden="true"></i><h5>Retail &amp; E-commerce</h5></div>
+<div class="ind-card"><i class="fa-solid fa-hospital" aria-hidden="true"></i><h5>Healthcare &amp; Pharma</h5></div>
+<div class="ind-card"><i class="fa-solid fa-building-columns" aria-hidden="true"></i><h5>Banking &amp; Finance</h5></div>
+<div class="ind-card"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i><h5>Education &amp; EdTech</h5></div>
+<div class="ind-card"><i class="fa-solid fa-industry" aria-hidden="true"></i><h5>Manufacturing</h5></div>
+<div class="ind-card"><i class="fa-solid fa-truck" aria-hidden="true"></i><h5>Logistics &amp; Fleet</h5></div>
+<div class="ind-card"><i class="fa-solid fa-hotel" aria-hidden="true"></i><h5>Hospitality &amp; Travel</h5></div>
+<div class="ind-card"><i class="fa-solid fa-futbol" aria-hidden="true"></i><h5>Sports &amp; Entertainment</h5></div>
+<div class="ind-card"><i class="fa-solid fa-landmark" aria-hidden="true"></i><h5>Government &amp; Public</h5></div>
+<div class="ind-card"><i class="fa-solid fa-leaf" aria-hidden="true"></i><h5>Energy &amp; Sustainability</h5></div>
+<div class="ind-card"><i class="fa-solid fa-house" aria-hidden="true"></i><h5>Real Estate &amp; PropTech</h5></div>
+</div>
+</div>
+</section>
+<!-- =========================================
+BILLING
+========================================= -->
+<section class="section billing-section" id="billing">
+<div class="container">
+<div class="section-header">
+<h2>Flexible Billing &amp; Licensing</h2>
+<p>Simple, transparent pricing designed to scale with your business needs.</p>
+</div>
+<div class="billing-grid">
+<div class="billing-card">
+<h4><i class="fa-solid fa-file-invoice-dollar" aria-hidden="true"></i> Subscription Plans</h4>
+<p>Choose from monthly or annual subscriptions with flexible user tiers. Scale up or down anytime with no long-term commitments.</p>
+<ul class="billing-features">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Pay-per-user or flat-rate enterprise licensing</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Annual discounts up to 20%</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Free tier for startups and small teams</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Cancel or upgrade anytime</li>
+</ul>
+</div>
+<div class="billing-card">
+<h4><i class="fa-solid fa-building-columns" aria-hidden="true"></i> Enterprise Billing</h4>
+<p>Custom billing solutions for large organizations with complex procurement, compliance, and reporting requirements.</p>
+<ul class="billing-features">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Purchase orders and invoicing</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Multi-department cost allocation</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Dedicated account management</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Custom SLAs and compliance reporting</li>
+</ul>
+</div>
+<div class="billing-card">
+<h4><i class="fa-solid fa-credit-card" aria-hidden="true"></i> Payments &amp; Licensing</h4>
+<p>Secure, global payment processing with support for multiple currencies and licensing models to fit your deployment strategy.</p>
+<ul class="billing-features">
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Credit card, ACH, wire transfer, and crypto</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> On-premise, cloud, or hybrid licensing</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> Volume discounts for multi-year contracts</li>
+<li><i class="fa-solid fa-check color-green" aria-hidden="true"></i> White-label and reseller licensing options</li>
+</ul>
+</div>
+</div>
+<p class="billing-note">All plans include 24/7 support, automatic updates, and access to our global infrastructure. Contact our sales team for custom enterprise pricing and licensing arrangements.</p>
+</div>
+</section>
+<!-- =========================================
+DEVELOPER SECTION
+========================================= -->
+<section class="section dev-section" id="dev">
+<div class="container">
+<div class="dev-content-centered">
+<h2>Built for Developers. Ready for Enterprise.</h2>
+<p>Integrate seamlessly into your existing stack. Our developer portal offers comprehensive documentation, sandbox environments, and dedicated engineering support.</p>
+<a href="/pages/developers.html" class="btn btn-primary">Learn more</a>
+</div>
+</div>
+</section>
+<!-- =========================================
+TESTIMONIALS
+========================================= -->
+<section class="section testimonials">
+<div class="container">
+<div class="section-header">
+<h2>Trusted by Industry Leaders</h2>
+<p>See how global enterprises are accelerating growth with Heropesa.</p>
+</div>
+<div class="test-grid">
+<div class="test-card">
+<p class="test-text">"Heropesa unified our fragmented POS, ERP, and CRM systems into one cohesive platform. We reduced operational costs by 34% and scaled to 12 new countries in under a year."</p>
+<div class="test-meta">
+<div class="test-avatar" aria-hidden="true">JR</div>
+<div class="test-info">
+<h6>James Richardson</h6>
+<span>CTO, GlobalRetail Inc.</span>
+</div>
+</div>
+</div>
+<div class="test-card">
+<p class="test-text">"The SACCO management module transformed how we handle member loans and share capital. Automated compliance reporting alone saved our finance team 200+ hours annually."</p>
+<div class="test-meta">
+<div class="test-avatar" aria-hidden="true">AN</div>
+<div class="test-info">
+<h6>Amina Ndiaye</h6>
+<span>Director, Kenya Community SACCOS</span>
+</div>
+</div>
+</div>
+<div class="test-card">
+<p class="test-text">"Their Prop Firm platform gave us institutional-grade risk controls out of the box. We launched our trading challenges globally with zero latency issues and 99.9% uptime."</p>
+<div class="test-meta">
+<div class="test-avatar" aria-hidden="true">MK</div>
+<div class="test-info">
+<h6>Marcus Klein</h6>
+<span>Founder, Apex Capital Trading</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+PARTNERS
+========================================= -->
+<section class="section partners">
+<div class="container">
+<div class="section-header">
+<h2>Global Partner Ecosystem</h2>
+<p>Seamless integrations with the world's leading enterprise platforms.</p>
+</div>
+<div class="partner-logos" aria-label="Partner logos">
+<i class="fa-brands fa-aws" aria-hidden="true"></i>
+<i class="fa-brands fa-microsoft" aria-hidden="true"></i>
+<i class="fa-brands fa-google" aria-hidden="true"></i>
+<i class="fa-brands fa-salesforce" aria-hidden="true"></i>
+<i class="fa-brands fa-slack" aria-hidden="true"></i>
+<i class="fa-brands fa-stripe" aria-hidden="true"></i>
+<i class="fa-brands fa-hubspot" aria-hidden="true"></i>
+<i class="fa-brands fa-shopify" aria-hidden="true"></i>
+</div>
+<div class="partner-cta">
+<p>Connect with 500+ pre-built integrations or build custom connectors using our open API marketplace.</p>
+<a href="/pages/marketplace.html" class="btn btn-outline">Explore App Marketplace</a>
+</div>
+</div>
+</section>
+<!-- =========================================
+FAQ
+========================================= -->
+<section class="section faq" id="faq">
+<div class="container">
+<div class="section-header">
+<h2>Enterprise Q&amp;A</h2>
+<p>Answers to common questions from CTOs, CFOs, and IT Directors.</p>
+</div>
+<div class="faq-list">
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">Is Heropesa truly scalable for enterprise deployments? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+<div class="faq-a" role="region">Yes. Our architecture supports multi-tenant and dedicated cloud deployments. We handle millions of daily transactions with auto-scaling, load balancing, and geo-redundant databases. SLAs of 99.99% are standard for enterprise tiers.</div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">How do you handle data compliance and security? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+<div class="faq-a" role="region">All data is encrypted at rest (AES-256) and in transit (TLS 1.3). We maintain SOC 2 Type II, ISO 27001, GDPR, and CCPA compliance. Role-based access, audit logs, and automated threat detection are included in every plan.</div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">Can we migrate from legacy systems like SAP or Oracle? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+<div class="faq-a" role="region">Absolutely. Our Migration Engineering team provides zero-downtime data extraction, transformation, and loading. We support direct connectors for SAP, Oracle, Microsoft Dynamics, and custom legacy databases.</div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">What support is included for enterprise clients? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+<div class="faq-a" role="region">Enterprise clients receive 24/7 priority support, a dedicated Customer Success Manager, quarterly architecture reviews, and access to our Premium Engineering Portal with guaranteed response SLAs under 15 minutes.</div>
+</div>
+<div class="faq-item">
+<button class="faq-q" aria-expanded="false">Do you offer custom development or white-label solutions? <i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+<div class="faq-a" role="region">Yes. We offer full white-label deployments, custom module development, and industry-specific configurations. Our Professional Services team works directly with your IT department to align with your roadmap.</div>
+</div>
+</div>
+</div>
+</section>
+<!-- =========================================
+CTA BANNER
+========================================= -->
+<section class="cta-banner">
+<div class="container">
+<h2>Ready to Transform Your Enterprise?</h2>
+<p>Join 1.2M+ businesses running on the world's most intelligent, secure, and scalable platform.</p>
+<div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+<a href="/pages/signup.html" class="btn" style="background: #fff; color: var(--primary);">Start Free 30-Day Trial</a>
+<a href="#demo" class="btn btn-outline">Schedule Demo</a>
+</div>
+</div>
+</section>
+</main>
+<!-- =========================================
+FOOTER
+========================================= -->
+<footer class="heropesa-footer" role="contentinfo">
+<div class="container">
+<div class="footer-grid">
+<div class="footer-brand">
+<a href="/index.html" class="logo">Hero<span class="logo-accent">pesa</span></a>
+<p>Cloud ERP built for modern manufacturers. Unified, intelligent, and designed to scale with your production needs.</p>
+<div class="social-icons">
+<a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in" aria-hidden="true"></i></a>
+<a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+<a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+<a href="#" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+</div>
+</div>
+<div class="footer-col">
+<h5>Core Platforms</h5>
+<ul>
+<li><a href="/pages/business-software.html">Business Software</a></li>
+<li><a href="/pages/posldg.html">Point of Sale</a></li>
+<li><a href="/main_web/pages/erpldg.html">Enterprise ERP</a></li>
+<li><a href="/pages/accounting.html">Accounting Software</a></li>
+<li><a href="/pages/crmldg.html">CRM &amp; Sales</a></li>
+<li><a href="/pages/businessmanagementsystems.html">Business Management Systems</a></li>
+<li><a href="/pages/hr-payroll.html">HR &amp; Payroll</a></li>
+<li><a href="/pages/supply-chain.html">Supply Chain</a></li>
+<li><a href="/pages/inventory.html">Inventory Control</a></li>
+<li><a href="/pages/analytics-bi.html">Analytics &amp; BI</a></li>
+<li><a href="/pages/healthcare-os.html">Healthcare OS</a></li>
+<li><a href="/pages/education.html">Education Platform</a></li>
+<li><a href="/pages/marketing-auto.html">Marketing Automation</a></li>
+<li><a href="/pages/ai-support.html">AI Customer Support</a></li>
+<li><a href="/pages/bulk-messaging.html">Bulk Messaging</a></li>
+<li><a href="/pages/collaboration-tool.html">Collaboration Tool</a></li>
+<li><a href="/pages/help-desk.html">Help Desk</a></li>
+<li><a href="/pages/insights.html">Insights</a></li>
+<li><a href="/pages/buynowpaylater.html">Buy Now, Pay Later</a></li>
+<li><a href="/pages/web-builder.html">Web builder</a></li>
+<li><a href="/pages/learning-lms.html">Learning (LMS)</a></li>
+<li><a href="/pages/drive.html">Drive</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Trading &amp; Finance</h5>
+<ul>
+<li><a href="/pages/trading-prop.html">Trading &amp; Prop</a></li>
+<li><a href="/pages/cfd-prop.html">CFD Prop Firms</a></li>
+<li><a href="/pages/crypto-prop.html">Crypto Prop Solutions</a></li>
+<li><a href="/pages/prediction-markets.html">Prediction Market Solutions</a></li>
+<li><a href="/pages/sports-betting.html">Sports Betting Tech</a></li>
+<li><a href="/pages/lotterysoftware.html">Lottery &amp; Casino Softwares</a></li>
+<li><a href="/pages/payments.html">Payment Processing</a></li>
+<li><a href="/pages/trader-dash.html">Trader Dashboards</a></li>
+<li><a href="/pages/trading-analytics.html">Trading Analytics</a></li>
+<li><a href="/pages/compliance-monitoring.html">Compliance Monitoring</a></li>
+<li><a href="/pages/kyc-aml.html">KYC &amp; AML</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Cloud &amp; Infrastructure</h5>
+<ul>
+<li><a href="/pages/cloud-infra.html">Cloud &amp; Infrastructure</a></li>
+<li><a href="/pages/domains.html">Domain Registration</a></li>
+<li><a href="/pages/web-hosting.html">Web Hosting</a></li>
+<li><a href="/pages/vps-dedicated.html">VPS &amp; Dedicated</a></li>
+<li><a href="/pages/cloud-computing.html">Cloud Computing</a></li>
+<li><a href="/pages/cdn-security.html">CDN &amp; Security</a></li>
+<li><a href="/pages/backup.html">Backup &amp; Recovery</a></li>
+<li><a href="/pages/enterprise-email.html">Enterprise Email</a></li>
+<li><a href="/pages/dev-apis.html">Developer APIs</a></li>
+<li><a href="/pages/monitoring.html">Monitoring &amp; Logs</a></li>
+<li><a href="/pages/infra-status.html">Infrastructure Status</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Security &amp; AI</h5>
+<ul>
+<li><a href="/pages/cybersecurity.html">Cybersecurity Suite</a></li>
+<li><a href="/pages/enterprise-ai.html">Enterprise AI</a></li>
+<li><a href="/pages/automation-rpa.html">Automation &amp; RPA</a></li>
+<li><a href="/pages/cctv-physical.html">CCTV &amp; Physical Security</a></li>
+<li><a href="/pages/business-intel.html">Business Intelligence</a></li>
+<li><a href="/pages/threat-detection.html">Threat Detection</a></li>
+<li><a href="/pages/compliance-gov.html">Compliance &amp; Governance</a></li>
+<li><a href="/pages/identity-access.html">Identity &amp; Access</a></li>
+<li><a href="/pages/soc-monitoring.html">SOC Monitoring</a></li>
+<li><a href="/pages/ai-workflows.html">AI Workflows</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Industries</h5>
+<ul>
+<li><a href="/industries/retail.html">Retail</a></li>
+<li><a href="/industries/hospitality.html">Hospitality</a></li>
+<li><a href="/industries/healthcare.html">Healthcare</a></li>
+<li><a href="/industries/education.html">Education</a></li>
+<li><a href="/industries/restaurants.html">Restaurants</a></li>
+<li><a href="/industries/beauty-wellness.html">Beauty &amp; Wellness</a></li>
+<li><a href="/industries/pro-services.html">Professional Services</a></li>
+<li><a href="/industries/fashion.html">Fashion &amp; Apparel</a></li>
+<li><a href="/industries/finance.html">Finance</a></li>
+<li><a href="/industries/enterprise.html">Enterprise</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Business Types</h5>
+<ul>
+<li><a href="/pages/kioskldg.html">Kiosk</a></li>
+<li><a href="/pages/hairsalonposldg.html">Hair Salon</a></li>
+<li><a href="/pages/medspaposldg.html">Med Spa</a></li>
+<li><a href="/pages/pharmacypos.html">Pharmacy</a></li>
+<li><a href="/pages/barbershoppos.html">Barbershop</a></li>
+<li><a href="/pages/foodnbeveragepos.html">Food & Beverage</a></li>
+<li><a href="/pages/quickservicepos.html">Quick Service</a></li>
+<li><a href="/pages/barsnbreweriespos.html">Bars & Breweries</a></li>
+<li><a href="/pages/retailpos.html">Retail</a></li>
+<li><a href="/pages/beautysalonpos.html">Beauty Salon</a></li>
+<li><a href="/pages/dayspapos.html">Day Spa</a></li>
+<li><a href="/pages/tatoonpiercingpos.html">Tatoo & Piercing</a></li>
+<li><a href="/pages/fitnesspos.html">Fitness</a></li>
+<li><a href="/pages/professionalservicespos.html">Professional Services</a></li>
+<li><a href="/pages/homenrepairpos.html">Home and Repair</a></li>
+<li><a href="/pages/franchisespos.html">Franchises</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Developers</h5>
+<ul>
+<li><a href="/pages/developers.html">Developer Hub</a></li>
+<li><a href="/pages/docs.html">API Documentation</a></li>
+<li><a href="/pages/sdks.html">SDKs &amp; Libraries</a></li>
+<li><a href="/pages/webhooks.html">Webhooks &amp; Events</a></li>
+<li><a href="/pages/marketplace.html">App Marketplace</a></li>
+<li><a href="/pages/console.html">Developer Console</a></li>
+<li><a href="/pages/open-source.html">Open Source</a></li>
+<li><a href="/pages/status.html">Status Page</a></li>
+<li><a href="/pages/changelog.html">Changelog</a></li>
+<li><a href="/pages/sandbox.html">Sandbox Access</a></li>
+<li><a href="/pages/cli.html">CLI Tools</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Company &amp; Legal</h5>
+<ul>
+<li><a href="/pages/about.html">About Us</a></li>
+<li><a href="/pages/leadership.html">Leadership</a></li>
+<li><a href="/pages/investors.html">Investor Relations</a></li>
+<li><a href="/pages/newsroom.html">Newsroom</a></li>
+<li><a href="/pages/careers.html">Careers</a></li>
+<li><a href="/pages/partners.html">Partners</a></li>
+<li><a href="/pages/events.html">Events</a></li>
+<li><a href="/pages/contact-sales.html">Contact Sales</a></li>
+<li><a href="/pages/support.html">Support Center</a></li>
+<li><a href="/pages/offices.html">Global Offices</a></li>
+<li><a href="/pages/privacy.html">Privacy Policy</a></li>
+<li><a href="/pages/terms.html">Terms of Service</a></li>
+<li><a href="/pages/cookies.html">Cookie Preferences</a></li>
+<li><a href="/pages/dpa.html">Data Processing Addendum</a></li>
+<li><a href="/pages/security-compliance.html">Security Compliance</a></li>
+<li><a href="/pages/api-terms.html">API Terms</a></li>
+<li><a href="/pages/licenses.html">Licenses</a></li>
+<li><a href="/pages/accessibility.html">Accessibility</a></li>
+<li><a href="/pages/trust.html">Trust Center</a></li>
+<li><a href="/pages/responsible-ai.html">Responsible AI</a></li>
+<li><a href="/pages/blog.html">Blog</a></li>
+<li><a href="/pages/news.html">News</a></li>
+<li><a href="/pages/faqs.html">FAQs</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h5>Other Services</h5>
+<ul>
+<li><a href="/pages/business-email.html">Business Email</a></li>
+<li><a href="/pages/web-hosting.html">Web Hosting</a></li>
+<li><a href="/pages/reseller-hosting.html">Reseller Hosting</a></li>
+<li><a href="/pages/cloud-vps.html">Cloud VPS</a></li>
+<li><a href="/pages/domain-reseller.html">Domain Reseller</a></li>
+<li><a href="/pages/website-design.html">Website Design</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<div class="footer-links">
+<a href="/pages/privacy.html">Privacy Policy</a>
+<a href="/pages/terms.html">Terms of Service</a>
+<a href="/pages/cookies.html">Cookie Policy</a>
+<a href="/pages/accessibility.html">Accessibility</a>
+<a href="/pages/licenses.html">Licenses</a>
+</div>
+<div>©️ 2026 Heropesa Ltd. All rights reserved.</div>
+</div>
+<p style="font-size:0.75rem;color:var(--text-muted);margin-top:24px;line-height:1.5;">
+Heropesa Manufacturing ERP is a cloud-based business management platform.
+Implementation services and partner integrations may be required for certain capabilities.
+Contact sales for detailed compliance and regulatory information specific to your industry and region.
+</p>
+</div>
+</footer>
+<!-- =========================================
+DEMO MODAL
+========================================= -->
+<div id="demoModal" class="demo-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle" aria-hidden="true">
+<div class="demo-modal-container">
+<div class="demo-modal-header">
+<h3 id="demoModalTitle">Schedule an Enterprise Demo</h3>
+<button class="demo-modal-close" aria-label="Close demo modal">&times;</button>
+</div>
+<form id="demoModalForm">
+<div class="demo-form-group">
+<label for="demo-name">Full Name</label>
+<input type="text" id="demo-name" required placeholder="John Doe" autocomplete="name" />
+</div>
+<div class="demo-form-group">
+<label for="demo-email">Corporate Email</label>
+<input type="email" id="demo-email" required placeholder="name@company.com" autocomplete="email" />
+</div>
+<div class="demo-form-group">
+<label for="demo-size">Company Size</label>
+<select id="demo-size" required>
+<option value="">Select size</option>
+<option>1-9 employees</option>
+<option>10-49 employees</option>
+<option>50-249 employees</option>
+<option>250+ employees</option>
+</select>
+</div>
+<div class="demo-form-group">
+<label for="demo-phone">Phone Number</label>
+<input type="tel" id="demo-phone" required placeholder="+1 (555) 000-0000" autocomplete="tel" />
+</div>
+<button type="submit" class="demo-submit-btn">Submit Request</button>
+</form>
+<div id="demoSuccessState" class="demo-success-state" style="display: none;">
+<i class="fa-solid fa-circle-check color-green" aria-hidden="true"></i>
+<h4>Request Submitted!</h4>
+<p>An enterprise solution specialist will contact you at your corporate email address within the next 15 minutes.</p>
+<button class="demo-close-btn">Close</button>
+</div>
+</div>
+</div>
+<!-- =========================================
+JAVASCRIPT
+========================================= -->
 <script>
-// ==================== NEXUS ERP - COMPLETE APPLICATION ====================
-const DB_KEY = 'nexus_erp_db';
-const SETTINGS_KEY = 'nexus_erp_settings';
-// Default data structure
-function getDefaultDB() {
-const now = new Date().toISOString();
-return {
-users: [
-{ id: 'u1', username: 'admin', password: 'admin123', role: 'admin', fullName: 'System Admin',
-email: 'admin@nexus.com', branch: 'HQ', department: 'IT', active: true, createdAt: now },
-{ id: 'u2', username: 'manager', password: 'manager123', role: 'manager', fullName: 'Jane Manager',
-email: 'jane@nexus.com', branch: 'HQ', department: 'Operations', active: true,
-createdAt: now },
-{ id: 'u3', username: 'staff', password: 'staff123', role: 'staff', fullName: 'Bob Staff',
-email: 'bob@nexus.com', branch: 'Branch A', department: 'Sales', active: true, createdAt: now },
-],
-customers: [
-{ id: 'c1', name: 'Acme Corp', email: 'contact@acme.com', phone: '555-0100', address: '123 Main St',
-type: 'Corporate', status: 'Active', branch: 'HQ', createdAt: now },
-{ id: 'c2', name: 'Globex Inc', email: 'info@globex.com', phone: '555-0101', address: '456 Oak Ave',
-type: 'Enterprise', status: 'Active', branch: 'HQ', createdAt: now },
-{ id: 'c3', name: 'Stark Industries', email: 'tony@stark.com', phone: '555-0102',
-address: '789 Park Rd', type: 'VIP', status: 'Active', branch: 'Branch A', createdAt: now },
-],
-vendors: [
-{ id: 'v1', name: 'SupplyPro', email: 'sales@supplypro.com', phone: '555-0200',
-address: '321 Industrial Blvd', category: 'Raw Materials', status: 'Active', createdAt: now },
-{ id: 'v2', name: 'TechDist', email: 'orders@techdist.com', phone: '555-0201',
-address: '654 Commerce Dr', category: 'Electronics', status: 'Active', createdAt: now },
-],
-products: [
-{ id: 'p1', name: 'Widget Alpha', sku: 'WA-001', category: 'Widgets', price: 49.99, cost: 25.00,
-quantity: 250, minStock: 50, warehouse: 'Main Warehouse', binLocation: 'A-12', createdAt: now },
-{ id: 'p2', name: 'Gadget Beta', sku: 'GB-002', category: 'Gadgets', price: 129.99, cost: 70.00,
-quantity: 80, minStock: 20, warehouse: 'Main Warehouse', binLocation: 'B-03', createdAt: now },
-{ id: 'p3', name: 'Component X', sku: 'CX-003', category: 'Components', price: 19.99, cost: 8.00,
-quantity: 500, minStock: 100, warehouse: 'Secondary WH', binLocation: 'C-07', createdAt: now },
-],
-salesOrders: [
-{ id: 'so1', customerId: 'c1', customerName: 'Acme Corp', items: [{ productId: 'p1', productName: 'Widget Alpha',
-qty: 10, price: 49.99 }], total: 499.90, status: 'Confirmed', date: '2026-07-08',
-branch: 'HQ', createdAt: now },
-{ id: 'so2', customerId: 'c2', customerName: 'Globex Inc', items: [{ productId: 'p2', productName: 'Gadget Beta',
-qty: 3, price: 129.99 }], total: 389.97, status: 'Pending', date: '2026-07-10',
-branch: 'HQ', createdAt: now },
-],
-purchaseOrders: [
-{ id: 'po1', vendorId: 'v1', vendorName: 'SupplyPro', items: [{ productId: 'p1', productName: 'Widget Alpha',
-qty: 100, cost: 25.00 }], total: 2500.00, status: 'Approved', date: '2026-07-05',
-branch: 'HQ', createdAt: now },
-],
-invoices: [
-{ id: 'inv1', customerId: 'c1', customerName: 'Acme Corp', salesOrderId: 'so1', amount: 499.90,
-status: 'Paid', dueDate: '2026-08-08', date: '2026-07-08', createdAt: now },
-{ id: 'inv2', customerId: 'c2', customerName: 'Globex Inc', salesOrderId: 'so2', amount: 389.97,
-status: 'Unpaid', dueDate: '2026-08-10', date: '2026-07-10', createdAt: now },
-],
-journalEntries: [
-{ id: 'je1', date: '2026-07-08', description: 'Sales revenue - Acme Corp', debits: 'Cash',
-credits: 'Revenue', amount: 499.90, status: 'Posted', createdAt: now },
-{ id: 'je2', date: '2026-07-05', description: 'Purchase - SupplyPro', debits: 'Inventory',
-credits: 'Accounts Payable', amount: 2500.00, status: 'Posted', createdAt: now },
-],
-employees: [
-{ id: 'e1', name: 'Alice Johnson', department: 'Sales', position: 'Sales Rep', salary: 55000,
-joinDate: '2024-03-15', branch: 'HQ', status: 'Active', createdAt: now },
-{ id: 'e2', name: 'Charlie Brown', department: 'Warehouse', position: 'Warehouse Manager',
-salary: 48000, joinDate: '2025-01-10', branch: 'Branch A', status: 'Active', createdAt: now },
-],
-attendance: [
-{ id: 'att1', employeeId: 'e1', employeeName: 'Alice Johnson', date: '2026-07-11', checkIn: '08:00',
-checkOut: '17:00', status: 'Present', createdAt: now },
-],
-documents: [
-{ id: 'doc1', name: 'Q2_Report.pdf', type: 'PDF', category: 'Reports', size: '2.4 MB',
-uploadedBy: 'admin', createdAt: now },
-],
-auditLogs: [
-{ id: 'log1', userId: 'u1', username: 'admin', action: 'System initialized', module: 'System',
-timestamp: now, details: 'ERP database seeded with default data' },
-],
-notifications: [
-{ id: 'n1', userId: 'u1', title: 'Welcome', message: 'NexusERP is ready. Default data loaded.',
-read: false, timestamp: now },
-{ id: 'n2', userId: 'u1', title: 'Invoice Due', message: 'Invoice #inv2 for $389.97 is unpaid.',
-read: false, timestamp: now },
-],
-branches: ['HQ', 'Branch A', 'Branch B'],
-warehouses: ['Main Warehouse', 'Secondary WH', 'Distribution Center'],
-settings: { theme: 'light', companyName: 'NexusERP Demo' },
-};
+document.addEventListener('DOMContentLoaded', function() {
+'use strict';
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+function getFocusableElements(container) {
+return container.querySelectorAll(
+'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+);
 }
-function getDB() {
-try { return JSON.parse(localStorage.getItem(DB_KEY)) || getDefaultDB(); } catch (e) { return getDefaultDB(); }
-}
-function saveDB(db) {
-localStorage.setItem(DB_KEY, JSON.stringify(db));
-}
-function generateId(prefix = 'id') {
-return prefix + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5);
-}
-// ==================== APPLICATION CLASS ====================
-class NexusERP {
-constructor() {
-this.db = getDB();
-this.currentUser = null;
-this.openTabs = ['dashboard'];
-this.activeTab = 'dashboard';
-this.activeModule = 'dashboard';
-this.init();
-}
-init() {
-// Ensure DB is saved
-if (!localStorage.getItem(DB_KEY)) {
-this.db = getDefaultDB();
-saveDB(this.db);
-}
-// Load theme
-const theme = this.db.settings?.theme || 'light';
-document.documentElement.setAttribute('data-theme', theme);
-// Bind keyboard shortcuts
-document.addEventListener('keydown', (e) => this.handleShortcut(e));
-// Close modals on overlay click
-document.getElementById('modalOverlay').addEventListener('click', (e) => {
-if (e.target === document.getElementById('modalOverlay')) this.closeModal();
-});
-// Close search on click outside
-document.addEventListener('click', (e) => {
-const sd = document.getElementById('searchDropdown');
-const si = document.getElementById('globalSearchInput');
-if (!sd.contains(e.target) && e.target !== si) sd.classList.remove('show');
-});
-// Close notif panel
-document.addEventListener('click', (e) => {
-const np = document.getElementById('notifPanel');
-const nb = e.target.closest('.btn-icon');
-if (!np.contains(e.target) && !nb) np.classList.remove('show');
-});
-// Render login screen ready
-document.getElementById('loginUser').focus();
-}
-handleShortcut(e) {
-if (!this.currentUser) return;
-if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+function trapFocus(element) {
+const focusable = getFocusableElements(element);
+if (focusable.length === 0) return;
+const first = focusable[0];
+const last = focusable[focusable.length - 1];
+function handler(e) {
+if (e.key !== 'Tab') return;
+if (e.shiftKey) {
+if (document.activeElement === first) {
 e.preventDefault();
-document.getElementById('globalSearchInput').focus();
+last.focus();
 }
-if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+} else {
+if (document.activeElement === last) {
 e.preventDefault();
-this.navigateTo('dashboard');
+first.focus();
 }
 }
-// ---- AUTH ----
-login() {
-const username = document.getElementById('loginUser').value.trim();
-const password = document.getElementById('loginPass').value.trim();
-const errEl = document.getElementById('loginError');
-const user = this.db.users.find(u => u.username === username && u.password === password && u.active);
-if (!user) {
-errEl.textContent = 'Invalid credentials. Please try again.';
+}
+element.addEventListener('keydown', handler);
+return () => element.removeEventListener('keydown', handler);
+}
+// ============================================================
+// 1. TABS
+// ============================================================
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = document.querySelectorAll('.tab-content');
+tabBtns.forEach(function(btn) {
+btn.addEventListener('click', function() {
+tabBtns.forEach(function(b) {
+b.classList.remove('active');
+b.setAttribute('aria-selected', 'false');
+});
+tabContents.forEach(function(c) { c.classList.remove('active'); });
+btn.classList.add('active');
+btn.setAttribute('aria-selected', 'true');
+var target = document.getElementById(btn.dataset.tab);
+if (target) target.classList.add('active');
+});
+// Keyboard navigation for tabs
+btn.addEventListener('keydown', function(e) {
+const btnsArray = Array.from(tabBtns);
+const index = btnsArray.indexOf(btn);
+let newIndex = index;
+if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+e.preventDefault();
+newIndex = (index + 1) % btnsArray.length;
+} else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+e.preventDefault();
+newIndex = (index - 1 + btnsArray.length) % btnsArray.length;
+} else if (e.key === 'Home') {
+e.preventDefault();
+newIndex = 0;
+} else if (e.key === 'End') {
+e.preventDefault();
+newIndex = btnsArray.length - 1;
+}
+if (newIndex !== index) {
+btnsArray[newIndex].click();
+btnsArray[newIndex].focus();
+}
+});
+});
+// ============================================================
+// 2. FAQ ACCORDION
+// ============================================================
+var faqItems = document.querySelectorAll('.faq-item');
+faqItems.forEach(function(item) {
+var q = item.querySelector('.faq-q');
+if (q) {
+q.addEventListener('click', function() {
+var isOpen = item.classList.contains('active');
+faqItems.forEach(function(i) {
+i.classList.remove('active');
+i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+});
+if (!isOpen) {
+item.classList.add('active');
+q.setAttribute('aria-expanded', 'true');
+}
+});
+}
+});
+// ============================================================
+// 3. SCROLL REVEAL
+// ============================================================
+var revealElements = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+document.body.classList.add('js-enabled');
+var revealObserver = new IntersectionObserver(function(entries) {
+entries.forEach(function(entry) {
+if (entry.isIntersecting) {
+entry.target.classList.add('visible');
+revealObserver.unobserve(entry.target);
+}
+});
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+revealElements.forEach(function(el) { revealObserver.observe(el); });
+}
+// ============================================================
+// 4. SMOOTH SCROLL FOR ANCHOR LINKS
+// ============================================================
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+anchor.addEventListener('click', function(e) {
+var href = this.getAttribute('href');
+if (!href || href === '#' || href === '#demo') {
 return;
 }
-this.currentUser = user;
-this.addAuditLog(user.id, user.username, 'Login', 'System', 'User logged in');
-document.getElementById('loginOverlay').classList.add('hidden');
-document.getElementById('appContainer').classList.add('active');
-document.getElementById('sidebarAvatar').textContent = user.fullName.charAt(0).toUpperCase();
-document.getElementById('sidebarUser').textContent = user.fullName;
-this.refreshAll();
-this.navigateTo('dashboard');
-this.showToast('Welcome back, ' + user.fullName + '!', 'success');
+e.preventDefault();
+try {
+var target = document.querySelector(href);
+if (target) {
+target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+closeMobileDrawer();
 }
-logout() {
-if (this.currentUser) {
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Logout', 'System',
-'User logged out');
+} catch (err) {
+console.warn('Invalid scroll selector:', href);
 }
-this.currentUser = null;
-document.getElementById('loginOverlay').classList.remove('hidden');
-document.getElementById('appContainer').classList.remove('active');
-document.getElementById('loginUser').value = 'admin';
-document.getElementById('loginPass').value = 'admin123';
-document.getElementById('loginError').textContent = '';
+});
+});
+// ============================================================
+// 5. FUNCTIONAL HEADER SEARCH
+// ============================================================
+var headerSearchInput = document.getElementById('headerSearchInput');
+var mobileSearchInput = document.getElementById('mobileSearchInput');
+var searchTimeout;
+function clearSearchHighlights() {
+document.querySelectorAll('.search-highlight').forEach(function(el) {
+var parent = el.parentNode;
+parent.replaceChild(document.createTextNode(el.textContent), el);
+parent.normalize();
+});
 }
-// ---- NAVIGATION & TABS ----
-navigateTo(module) {
-if (!this.currentUser) return;
-this.activeModule = module;
-// Add tab if not exists
-if (!this.openTabs.includes(module)) {
-this.openTabs.push(module);
+function performSearch(query) {
+clearSearchHighlights();
+if (query.length < 2) return;
+var walker = document.createTreeWalker(
+document.body,
+NodeFilter.SHOW_TEXT,
+null,
+false
+);
+var nodes = [];
+var node;
+while ((node = walker.nextNode())) {
+var parent = node.parentElement;
+if (!parent) continue;
+var tag = parent.tagName;
+if (['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(tag)) continue;
+if (parent.classList && parent.classList.contains('search-highlight')) continue;
+if (parent.closest && (parent.closest('.heropesa-header') || parent.closest('.mobile-drawer'))) continue;
+nodes.push(node);
 }
-this.activeTab = module;
-this.renderTabs();
-this.renderModule(module);
-// Update sidebar active
-document.querySelectorAll('.sidebar-nav .nav-item').forEach(el => el.classList.remove('active'));
-const navItem = document.querySelector(`.sidebar-nav .nav-item[data-module="${module}"]`);
-if (navItem) navItem.classList.add('active');
-// Hide search dropdown
-document.getElementById('searchDropdown').classList.remove('show');
-document.getElementById('globalSearchInput').value = '';
+var regex = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+nodes.reverse().forEach(function(n) {
+if (regex.test(n.textContent)) {
+var span = document.createElement('span');
+span.className = 'search-highlight';
+span.innerHTML = n.textContent.replace(regex,
+'<mark style="background:transparent;color:inherit;">$1</mark>'
+);
+n.parentNode.replaceChild(span, n);
 }
-closeTab(module) {
-if (module === 'dashboard') return;
-const idx = this.openTabs.indexOf(module);
-if (idx > -1) {
-this.openTabs.splice(idx, 1);
-if (this.activeTab === module) {
-this.activeTab = this.openTabs[this.openTabs.length - 1] || 'dashboard';
-this.activeModule = this.activeTab;
-this.renderModule(this.activeTab);
-this.renderTabs();
+});
+var matches = document.querySelectorAll('.search-highlight');
+if (matches.length > 0) {
+matches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+matches[0].classList.add('active-match');
+}
+}
+function handleSearchInput(e) {
+clearTimeout(searchTimeout);
+var query = e.target.value.trim();
+searchTimeout = setTimeout(function() {
+performSearch(query);
+}, 300);
+}
+function handleSearchKeydown(e) {
+if (e.key === 'Escape') {
+e.target.value = '';
+clearSearchHighlights();
+e.target.blur();
+}
+}
+if (headerSearchInput) {
+headerSearchInput.addEventListener('input', handleSearchInput);
+headerSearchInput.addEventListener('keydown', handleSearchKeydown);
+}
+if (mobileSearchInput) {
+mobileSearchInput.addEventListener('input', handleSearchInput);
+mobileSearchInput.addEventListener('keydown', handleSearchKeydown);
+}
+// ============================================================
+// 6. MOBILE DRAWER
+// ============================================================
+var menuToggle = document.getElementById('menuToggle');
+var mobileDrawer = document.getElementById('mobileDrawer');
+var mobileDrawerBackdrop = document.getElementById('mobileDrawerBackdrop');
+var mobileDrawerClose = document.getElementById('mobileDrawerClose');
+var lastFocusedElement = null;
+var drawerFocusTrap = null;
+function openMobileDrawer() {
+lastFocusedElement = document.activeElement;
+mobileDrawer.classList.add('active');
+mobileDrawerBackdrop.classList.add('active');
+mobileDrawer.setAttribute('aria-hidden', 'false');
+mobileDrawerBackdrop.setAttribute('aria-hidden', 'false');
+menuToggle.setAttribute('aria-expanded', 'true');
+menuToggle.setAttribute('aria-label', 'Close navigation menu');
+document.body.classList.add('no-scroll');
+// Focus the close button
+setTimeout(function() {
+mobileDrawerClose.focus();
+drawerFocusTrap = trapFocus(mobileDrawer);
+}, 100);
+}
+function closeMobileDrawer() {
+mobileDrawer.classList.remove('active');
+mobileDrawerBackdrop.classList.remove('active');
+mobileDrawer.setAttribute('aria-hidden', 'true');
+mobileDrawerBackdrop.setAttribute('aria-hidden', 'true');
+menuToggle.setAttribute('aria-expanded', 'false');
+menuToggle.setAttribute('aria-label', 'Open navigation menu');
+document.body.classList.remove('no-scroll');
+// Close all accordions
+document.querySelectorAll('.mobile-nav-item').forEach(function(item) {
+item.setAttribute('aria-expanded', 'false');
+item.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
+});
+if (drawerFocusTrap) {
+drawerFocusTrap();
+drawerFocusTrap = null;
+}
+// Restore focus
+if (lastFocusedElement) {
+lastFocusedElement.focus();
+}
+}
+// Make closeMobileDrawer globally accessible
+window.closeMobileDrawer = closeMobileDrawer;
+if (menuToggle) {
+menuToggle.addEventListener('click', function() {
+var isOpen = mobileDrawer.classList.contains('active');
+if (isOpen) {
+closeMobileDrawer();
 } else {
-this.renderTabs();
+openMobileDrawer();
+}
+});
+}
+if (mobileDrawerClose) {
+mobileDrawerClose.addEventListener('click', closeMobileDrawer);
+}
+if (mobileDrawerBackdrop) {
+mobileDrawerBackdrop.addEventListener('click', closeMobileDrawer);
+}
+// Escape key closes drawer
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+if (mobileDrawer.classList.contains('active')) {
+closeMobileDrawer();
 }
 }
+});
+// ============================================================
+// 7. MOBILE ACCORDION NAVIGATION
+// ============================================================
+var mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+mobileNavItems.forEach(function(item) {
+var trigger = item.querySelector('.mobile-nav-trigger');
+if (!trigger) return;
+trigger.addEventListener('click', function() {
+var isExpanded = item.getAttribute('aria-expanded') === 'true';
+// Close all other accordions
+mobileNavItems.forEach(function(otherItem) {
+if (otherItem !== item) {
+otherItem.setAttribute('aria-expanded', 'false');
+otherItem.querySelector('.mobile-nav-trigger').setAttribute('aria-expanded', 'false');
 }
-renderTabs() {
-const tabBar = document.getElementById('tabBar');
-const moduleNames = {
-dashboard: '📊 Dashboard',
-crm: '👥 CRM',
-sales: '💰 Sales',
-inventory: '📦 Inventory',
-procurement: '🛒 Procurement',
-finance: '📋 Finance',
-hr: '👤 HR',
-users: '⚙️ Users',
-audit: '📝 Audit',
-documents: '📁 Documents'
-};
-tabBar.innerHTML = this.openTabs.map(m => {
-const active = m === this.activeTab ? ' active' : '';
-const closeBtn = m !== 'dashboard' ?
-`<span class="tab-close" onclick="event.stopPropagation();app.closeTab('${m}')">×</span>` :
-'';
-return `<div class="tab${active}" data-module="${m}" onclick="app.navigateTo('${m}')">${moduleNames[m] || m}${closeBtn}</div>`;
-}).join('');
+});
+// Toggle current
+var newState = !isExpanded;
+item.setAttribute('aria-expanded', newState ? 'true' : 'false');
+trigger.setAttribute('aria-expanded', newState ? 'true' : 'false');
+});
+});
+// Close drawer when clicking a link inside
+mobileDrawer.querySelectorAll('a').forEach(function(link) {
+link.addEventListener('click', function() {
+// Small delay to allow navigation
+setTimeout(closeMobileDrawer, 150);
+});
+});
+// ============================================================
+// 8. DESKTOP MEGA MENU - Keyboard & Focus Management
+// ============================================================
+var navItems = document.querySelectorAll('.nav-item');
+navItems.forEach(function(item) {
+var parentLink = item.querySelector('.nav-parent-link');
+var megaMenu = item.querySelector('.mega-menu');
+if (!parentLink || !megaMenu) return;
+// Click to toggle on touch devices
+parentLink.addEventListener('click', function(e) {
+e.preventDefault();
+var isExpanded = item.getAttribute('aria-expanded') === 'true';
+// Close all other menus
+navItems.forEach(function(otherItem) {
+if (otherItem !== item) {
+otherItem.setAttribute('aria-expanded', 'false');
+otherItem.querySelector('.nav-parent-link').setAttribute('aria-expanded', 'false');
 }
-renderModule(module) {
-// Hide all pages
-document.querySelectorAll('.module-page').forEach(p => p.classList.remove('active'));
-const pageEl = document.getElementById('page-' + module);
-if (pageEl) {
-pageEl.classList.add('active');
-this.loadModuleContent(module, pageEl);
-}
-// Update tab bar active
-document.querySelectorAll('.tab-bar .tab').forEach(t => t.classList.remove('active'));
-const tabEl = document.querySelector(`.tab-bar .tab[data-module="${module}"]`);
-if (tabEl) tabEl.classList.add('active');
-this.activeModule = module;
-this.activeTab = module;
-}
-loadModuleContent(module, pageEl) {
-switch (module) {
-case 'dashboard':
-this.renderDashboard(pageEl);
-break;
-case 'crm':
-this.renderCRM(pageEl);
-break;
-case 'sales':
-this.renderSales(pageEl);
-break;
-case 'inventory':
-this.renderInventory(pageEl);
-break;
-case 'procurement':
-this.renderProcurement(pageEl);
-break;
-case 'finance':
-this.renderFinance(pageEl);
-break;
-case 'hr':
-this.renderHR(pageEl);
-break;
-case 'users':
-this.renderUsers(pageEl);
-break;
-case 'audit':
-this.renderAudit(pageEl);
-break;
-case 'documents':
-this.renderDocuments(pageEl);
-break;
-default:
-pageEl.innerHTML = '<div class="card"><h3>Module not found</h3></div>';
+});
+item.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+parentLink.setAttribute('aria-expanded', isExpanded ? 'false' : 'true');
+if (!isExpanded) {
+// Focus first link in mega menu
+var firstLink = megaMenu.querySelector('a');
+if (firstLink) {
+setTimeout(function() { firstLink.focus(); }, 100);
 }
 }
-refreshAll() {
-this.db = getDB();
-if (this.currentUser) {
-this.renderModule(this.activeModule);
-this.renderTabs();
+});
+// Keyboard navigation within mega menu
+parentLink.addEventListener('keydown', function(e) {
+if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+e.preventDefault();
+item.setAttribute('aria-expanded', 'true');
+parentLink.setAttribute('aria-expanded', 'true');
+var firstLink = megaMenu.querySelector('a');
+if (firstLink) firstLink.focus();
 }
+});
+megaMenu.addEventListener('keydown', function(e) {
+if (e.key === 'Escape') {
+item.setAttribute('aria-expanded', 'false');
+parentLink.setAttribute('aria-expanded', 'false');
+parentLink.focus();
 }
-// ---- DASHBOARD ----
-renderDashboard(el) {
-const db = this.db;
-const totalRevenue = db.invoices.filter(i => i.status === 'Paid').reduce((s, i) => s + i.amount, 0);
-const unpaidInvoices = db.invoices.filter(i => i.status === 'Unpaid').reduce((s, i) => s + i.amount, 0);
-const totalCustomers = db.customers.length;
-const totalProducts = db.products.length;
-const inventoryValue = db.products.reduce((s, p) => s + (p.quantity * p.cost), 0);
-const totalEmployees = db.employees.filter(e => e.status === 'Active').length;
-const pendingPOs = db.purchaseOrders.filter(po => po.status === 'Pending').length;
-const lowStock = db.products.filter(p => p.quantity <= p.minStock).length;
-el.innerHTML = `
-<div class="kpi-grid">
-<div class="kpi-card"><div class="kpi-label">💰 Revenue (Paid)</div><div class="kpi-value">$${totalRevenue.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change up">▲ Total collected</div></div>
-<div class="kpi-card"><div class="kpi-label">📋 Outstanding</div><div class="kpi-value">$${unpaidInvoices.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change down">⚠ Needs attention</div></div>
-<div class="kpi-card"><div class="kpi-label">📦 Inventory Value</div><div class="kpi-value">$${inventoryValue.toLocaleString('en-US',{minimumFractionDigits:2})}</div><div class="kpi-change">${lowStock} low-stock alerts</div></div>
-<div class="kpi-card"><div class="kpi-label">👥 Customers</div><div class="kpi-value">${totalCustomers}</div><div class="kpi-change up">Active accounts</div></div>
-<div class="kpi-card"><div class="kpi-label">📦 Products</div><div class="kpi-value">${totalProducts}</div><div class="kpi-change">In catalog</div></div>
-<div class="kpi-card"><div class="kpi-label">👤 Employees</div><div class="kpi-value">${totalEmployees}</div><div class="kpi-change">Active staff</div></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-<div class="card">
-<div class="card-header"><h3>📊 Monthly Sales Trend</h3></div>
-<div class="chart-bar-row">
-${['Jan','Feb','Mar','Apr','May','Jun','Jul'].map((m,i)=>{
-const val = [3200,4100,3800,5200,4900,6100, totalRevenue || 4500][i];
-const h = Math.min(100, (val/6500)*100);
-return `<div class="chart-bar" style="height:${h}px;background:var(--chart-${(i%5)+1});"><span class="bar-val">$${(val/1000).toFixed(1)}k</span></div>`;
-}).join('')}
-</div>
-<div class="chart-labels">${['Jan','Feb','Mar','Apr','May','Jun','Jul'].map(m=>`<span>${m}</span>`).join('')}</div>
-</div>
-<div class="card">
-<div class="card-header"><h3>🔔 Recent Notifications</h3></div>
-${db.notifications.slice(-6).reverse().map(n=>`<div style="padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><strong>${n.title}</strong> - ${n.message}<br><small style="color:var(--text3);">${new Date(n.timestamp).toLocaleString()}</small></div>`).join('')||'<p style="color:var(--text3);">No notifications</p>'}
-</div>
-</div>
-<div class="card" style="margin-top:16px;">
-<div class="card-header"><h3>📋 Recent Audit Activity</h3></div>
-<div class="table-wrap"><table><thead><tr><th>User</th><th>Action</th><th>Module</th><th>Time</th></tr></thead><tbody>
-${db.auditLogs.slice(-10).reverse().map(l=>`<tr><td>${l.username}</td><td>${l.action}</td><td>${l.module}</td><td>${new Date(l.timestamp).toLocaleString()}</td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
+// Arrow key navigation within mega menu
+var links = Array.from(megaMenu.querySelectorAll('a'));
+var currentIndex = links.indexOf(document.activeElement);
+if (e.key === 'ArrowDown') {
+e.preventDefault();
+var nextIndex = (currentIndex + 1) % links.length;
+links[nextIndex].focus();
+} else if (e.key === 'ArrowUp') {
+e.preventDefault();
+var prevIndex = (currentIndex - 1 + links.length) % links.length;
+links[prevIndex].focus();
 }
-// ---- CRM ----
-renderCRM(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>👥 Customer Management</h3>
-<button class="btn btn-primary btn-sm" onclick="app.openCRMModal()">+ Add Customer</button>
-</div>
-<div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Type</th><th>Status</th><th>Branch</th><th>Actions</th></tr></thead><tbody>
-${db.customers.map(c=>`<tr>
-<td><strong>${c.name}</strong></td><td>${c.email}</td><td>${c.phone}</td>
-<td><span class="badge badge-info">${c.type}</span></td>
-<td><span class="badge ${c.status==='Active'?'badge-success':'badge-danger'}">${c.status}</span></td>
-<td>${c.branch}</td>
-<td><button class="btn btn-outline btn-sm" onclick="app.openCRMModal('${c.id}')">Edit</button>
-<button class="btn btn-danger btn-sm" onclick="app.deleteCustomer('${c.id}')">Del</button></td>
-</tr>`).join('')}
-</tbody></table></div>
-</div>`;
+});
+});
+// Close mega menus when clicking outside
+document.addEventListener('click', function(e) {
+if (!e.target.closest('.nav-item')) {
+navItems.forEach(function(item) {
+item.setAttribute('aria-expanded', 'false');
+var parentLink = item.querySelector('.nav-parent-link');
+if (parentLink) parentLink.setAttribute('aria-expanded', 'false');
+});
 }
-openCRMModal(customerId = null) {
-const db = this.db;
-const customer = customerId ? db.customers.find(c => c.id === customerId) : null;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>${customer?'Edit':'Add'} Customer</h3>
-<div class="form-row"><div class="form-group"><label>Name</label><input id="crmName" value="${customer?.name||''}"></div>
-<div class="form-group"><label>Email</label><input id="crmEmail" value="${customer?.email||''}"></div></div>
-<div class="form-row"><div class="form-group"><label>Phone</label><input id="crmPhone" value="${customer?.phone||''}"></div>
-<div class="form-group"><label>Type</label><select id="crmType"><option>Corporate</option><option>Enterprise</option><option>VIP</option><option>Individual</option></select></div></div>
-<div class="form-group"><label>Address</label><input id="crmAddress" value="${customer?.address||''}"></div>
-<div class="form-row"><div class="form-group"><label>Branch</label><select id="crmBranch">${db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div>
-<div class="form-group"><label>Status</label><select id="crmStatus"><option>Active</option><option>Inactive</option></select></div></div>
-<div class="modal-actions">
-<button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveCustomer('${customerId||''}')">Save</button>
-</div>`;
-if (customer) {
-document.getElementById('crmType').value = customer.type;
-document.getElementById('crmBranch').value = customer.branch;
-document.getElementById('crmStatus').value = customer.status;
+});
+// ============================================================
+// 9. SCROLL HEADER SHADOW
+// ============================================================
+var header = document.getElementById('navbar');
+if (header) {
+var scrollTicking = false;
+window.addEventListener('scroll', function() {
+if (!scrollTicking) {
+window.requestAnimationFrame(function() {
+header.classList.toggle('scrolled', window.scrollY > 10);
+scrollTicking = false;
+});
+scrollTicking = true;
 }
-document.getElementById('modalOverlay').classList.add('show');
+}, { passive: true });
 }
-saveCustomer(customerId) {
-const db = this.db;
-const data = {
-id: customerId || generateId('c'),
-name: document.getElementById('crmName').value,
-email: document.getElementById('crmEmail').value,
-phone: document.getElementById('crmPhone').value,
-type: document.getElementById('crmType').value,
-address: document.getElementById('crmAddress').value,
-branch: document.getElementById('crmBranch').value,
-status: document.getElementById('crmStatus').value,
-createdAt: new Date().toISOString(),
-};
-if (customerId) {
-const idx = db.customers.findIndex(c => c.id === customerId);
-if (idx > -1) { data.createdAt = db.customers[idx].createdAt;
-db.customers[idx] = data; }
+// ============================================================
+// 10. ACTIVE NAVIGATION STATE SYSTEM
+// ============================================================
+function setActiveNav() {
+var currentPath = window.location.pathname;
+var normalized = currentPath.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (normalized === '') normalized = '/';
+// Header direct links
+document.querySelectorAll('.nav-direct-link').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
 } else {
-db.customers.push(data);
+link.classList.remove('active');
 }
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, customerId ? 'Updated customer' :
-'Created customer', 'CRM', data.name);
-this.closeModal();
-this.refreshAll();
-this.showToast('Customer saved!', 'success');
-}
-deleteCustomer(id) {
-if (!confirm('Delete this customer?')) return;
-const db = this.db;
-db.customers = db.customers.filter(c => c.id !== id);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted customer', 'CRM', id);
-this.refreshAll();
-this.showToast('Customer deleted.', 'info');
-}
-// ---- SALES ----
-renderSales(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>💰 Sales Orders</h3>
-<button class="btn btn-primary btn-sm" onclick="app.openSalesModal()">+ New Order</button>
-</div>
-<div class="table-wrap"><table><thead><tr><th>Order#</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
-${db.salesOrders.map(so=>`<tr>
-<td><strong>#${so.id}</strong></td><td>${so.customerName}</td>
-<td>${so.items.length} item(s)</td><td>$${so.total.toFixed(2)}</td>
-<td><span class="badge ${so.status==='Confirmed'?'badge-success':so.status==='Pending'?'badge-warning':'badge-danger'}">${so.status}</span></td>
-<td>${so.date}</td>
-<td><button class="btn btn-outline btn-sm" onclick="app.openSalesModal('${so.id}')">Edit</button>
-<button class="btn btn-danger btn-sm" onclick="app.deleteSalesOrder('${so.id}')">Del</button></td>
-</tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openSalesModal(orderId = null) {
-const db = this.db;
-const order = orderId ? db.salesOrders.find(so => so.id === orderId) : null;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>${order?'Edit':'New'} Sales Order</h3>
-<div class="form-group"><label>Customer</label><select id="soCustomer">${db.customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
-<div class="form-group"><label>Product</label><select id="soProduct">${db.products.map(p=>`<option value="${p.id}">${p.name} - $${p.price}</option>`).join('')}</select></div>
-<div class="form-row"><div class="form-group"><label>Quantity</label><input id="soQty" type="number" value="1" min="1"></div>
-<div class="form-group"><label>Status</label><select id="soStatus"><option>Pending</option><option>Confirmed</option><option>Cancelled</option></select></div></div>
-<div class="form-group"><label>Date</label><input id="soDate" type="date" value="${order?.date||'2026-07-12'}"></div>
-<div class="modal-actions">
-<button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveSalesOrder('${orderId||''}')">Save</button>
-</div>`;
-if (order) {
-document.getElementById('soCustomer').value = order.customerId;
-document.getElementById('soStatus').value = order.status;
-}
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveSalesOrder(orderId) {
-const db = this.db;
-const custId = document.getElementById('soCustomer').value;
-const prodId = document.getElementById('soProduct').value;
-const qty = parseInt(document.getElementById('soQty').value);
-const customer = db.customers.find(c => c.id === custId);
-const product = db.products.find(p => p.id === prodId);
-if (!customer || !product) return;
-const data = {
-id: orderId || generateId('so'),
-customerId: custId,
-customerName: customer.name,
-items: [{ productId: prodId, productName: product.name, qty, price: product.price }],
-total: product.price * qty,
-status: document.getElementById('soStatus').value,
-date: document.getElementById('soDate').value,
-branch: customer.branch,
-createdAt: new Date().toISOString(),
-};
-if (orderId) {
-const idx = db.salesOrders.findIndex(so => so.id === orderId);
-if (idx > -1) { data.createdAt = db.salesOrders[idx].createdAt;
-db.salesOrders[idx] = data; }
+});
+// Header parent nav items
+navItems.forEach(function(item) {
+var parentLink = item.querySelector('.nav-parent-link');
+if (!parentLink) return;
+var megaLinks = item.querySelectorAll('.mega-menu a');
+var isActive = false;
+megaLinks.forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+isActive = true;
+link.classList.add('active');
 } else {
-db.salesOrders.push(data);
-// Auto-create invoice
-const inv = {
-id: generateId('inv'),
-customerId: custId,
-customerName: customer.name,
-salesOrderId: data.id,
-amount: data.total,
-status: 'Unpaid',
-dueDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
-date: data.date,
-createdAt: new Date().toISOString(),
-};
-db.invoices.push(inv);
-this.addNotification(this.currentUser.id, 'Invoice Created',
-`Invoice #${inv.id} for $${inv.amount.toFixed(2)} generated.`);
+link.classList.remove('active');
 }
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, orderId ? 'Updated sales order' :
-'Created sales order', 'Sales', data.id);
-this.closeModal();
-this.refreshAll();
-this.showToast('Sales order saved!', 'success');
-}
-deleteSalesOrder(id) {
-if (!confirm('Delete this order?')) return;
-const db = this.db;
-db.salesOrders = db.salesOrders.filter(so => so.id !== id);
-db.invoices = db.invoices.filter(inv => inv.salesOrderId !== id);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted sales order', 'Sales', id);
-this.refreshAll();
-this.showToast('Order deleted.', 'info');
-}
-// ---- INVENTORY ----
-renderInventory(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>📦 Product Inventory</h3>
-<button class="btn btn-primary btn-sm" onclick="app.openProductModal()">+ Add Product</button>
-</div>
-<div class="table-wrap"><table><thead><tr><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Cost</th><th>Qty</th><th>Min Stock</th><th>Warehouse</th><th>Bin</th><th>Actions</th></tr></thead><tbody>
-${db.products.map(p=>`<tr>
-<td><strong>${p.sku}</strong></td><td>${p.name}</td><td>${p.category}</td>
-<td>$${p.price.toFixed(2)}</td><td>$${p.cost.toFixed(2)}</td>
-<td style="color:${p.quantity<=p.minStock?'var(--danger)':'var(--text)'};font-weight:600;">${p.quantity}</td>
-<td>${p.minStock}</td><td>${p.warehouse}</td><td>${p.binLocation}</td>
-<td><button class="btn btn-outline btn-sm" onclick="app.openProductModal('${p.id}')">Edit</button>
-<button class="btn btn-danger btn-sm" onclick="app.deleteProduct('${p.id}')">Del</button></td>
-</tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openProductModal(productId = null) {
-const db = this.db;
-const product = productId ? db.products.find(p => p.id === productId) : null;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>${product?'Edit':'Add'} Product</h3>
-<div class="form-row"><div class="form-group"><label>Name</label><input id="prodName" value="${product?.name||''}"></div>
-<div class="form-group"><label>SKU</label><input id="prodSku" value="${product?.sku||''}"></div></div>
-<div class="form-row"><div class="form-group"><label>Price</label><input id="prodPrice" type="number" step="0.01" value="${product?.price||''}"></div>
-<div class="form-group"><label>Cost</label><input id="prodCost" type="number" step="0.01" value="${product?.cost||''}"></div></div>
-<div class="form-row"><div class="form-group"><label>Quantity</label><input id="prodQty" type="number" value="${product?.quantity||0}"></div>
-<div class="form-group"><label>Min Stock</label><input id="prodMin" type="number" value="${product?.minStock||10}"></div></div>
-<div class="form-row"><div class="form-group"><label>Category</label><input id="prodCat" value="${product?.category||''}"></div>
-<div class="form-group"><label>Warehouse</label><select id="prodWH">${db.warehouses.map(w=>`<option>${w}</option>`).join('')}</select></div></div>
-<div class="form-group"><label>Bin Location</label><input id="prodBin" value="${product?.binLocation||''}"></div>
-<div class="modal-actions">
-<button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveProduct('${productId||''}')">Save</button>
-</div>`;
-if (product) {
-document.getElementById('prodWH').value = product.warehouse;
-}
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveProduct(productId) {
-const db = this.db;
-const data = {
-id: productId || generateId('p'),
-name: document.getElementById('prodName').value,
-sku: document.getElementById('prodSku').value,
-price: parseFloat(document.getElementById('prodPrice').value),
-cost: parseFloat(document.getElementById('prodCost').value),
-quantity: parseInt(document.getElementById('prodQty').value),
-minStock: parseInt(document.getElementById('prodMin').value),
-category: document.getElementById('prodCat').value,
-warehouse: document.getElementById('prodWH').value,
-binLocation: document.getElementById('prodBin').value,
-createdAt: new Date().toISOString(),
-};
-if (productId) {
-const idx = db.products.findIndex(p => p.id === productId);
-if (idx > -1) { data.createdAt = db.products[idx].createdAt;
-db.products[idx] = data; }
+});
+if (isActive) {
+parentLink.classList.add('active');
 } else {
-db.products.push(data);
+parentLink.classList.remove('active');
 }
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, productId ? 'Updated product' :
-'Created product', 'Inventory', data.name);
-this.closeModal();
-this.refreshAll();
-this.showToast('Product saved!', 'success');
-}
-deleteProduct(id) {
-if (!confirm('Delete this product?')) return;
-const db = this.db;
-db.products = db.products.filter(p => p.id !== id);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted product', 'Inventory', id);
-this.refreshAll();
-this.showToast('Product deleted.', 'info');
-}
-// ---- PROCUREMENT ----
-renderProcurement(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>🛒 Purchase Orders & Vendors</h3>
-<button class="btn btn-primary btn-sm" onclick="app.openPOModal()">+ New PO</button>
-</div>
-<div class="table-wrap"><table><thead><tr><th>PO#</th><th>Vendor</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>
-${db.purchaseOrders.map(po=>`<tr>
-<td><strong>#${po.id}</strong></td><td>${po.vendorName}</td>
-<td>${po.items.length} item(s)</td><td>$${po.total.toFixed(2)}</td>
-<td><span class="badge ${po.status==='Approved'?'badge-success':po.status==='Pending'?'badge-warning':'badge-danger'}">${po.status}</span></td>
-<td>${po.date}</td>
-<td><button class="btn btn-outline btn-sm" onclick="app.openPOModal('${po.id}')">Edit</button>
-<button class="btn btn-danger btn-sm" onclick="app.deletePO('${po.id}')">Del</button></td>
-</tr>`).join('')}
-</tbody></table></div>
-</div>
-<div class="card">
-<div class="card-header"><h3>🏭 Vendors</h3><button class="btn btn-outline btn-sm" onclick="app.openVendorModal()">+ Add Vendor</button></div>
-<div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Category</th><th>Status</th></tr></thead><tbody>
-${db.vendors.map(v=>`<tr><td><strong>${v.name}</strong></td><td>${v.email}</td><td>${v.phone}</td><td>${v.category}</td><td><span class="badge badge-success">${v.status}</span></td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openPOModal(poId = null) {
-const db = this.db;
-const po = poId ? db.purchaseOrders.find(p => p.id === poId) : null;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>${po?'Edit':'New'} Purchase Order</h3>
-<div class="form-group"><label>Vendor</label><select id="poVendor">${db.vendors.map(v=>`<option value="${v.id}">${v.name}</option>`).join('')}</select></div>
-<div class="form-group"><label>Product</label><select id="poProduct">${db.products.map(p=>`<option value="${p.id}">${p.name} - Cost:$${p.cost}</option>`).join('')}</select></div>
-<div class="form-row"><div class="form-group"><label>Quantity</label><input id="poQty" type="number" value="1" min="1"></div>
-<div class="form-group"><label>Status</label><select id="poStatus"><option>Pending</option><option>Approved</option><option>Received</option></select></div></div>
-<div class="form-group"><label>Date</label><input id="poDate" type="date" value="${po?.date||'2026-07-12'}"></div>
-<div class="modal-actions">
-<button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.savePO('${poId||''}')">Save</button>
-</div>`;
-if (po) { document.getElementById('poVendor').value = po.vendorId;
-document.getElementById('poStatus').value = po.status; }
-document.getElementById('modalOverlay').classList.add('show');
-}
-savePO(poId) {
-const db = this.db;
-const vendId = document.getElementById('poVendor').value;
-const prodId = document.getElementById('poProduct').value;
-const qty = parseInt(document.getElementById('poQty').value);
-const vendor = db.vendors.find(v => v.id === vendId);
-const product = db.products.find(p => p.id === prodId);
-if (!vendor || !product) return;
-const data = {
-id: poId || generateId('po'),
-vendorId: vendId,
-vendorName: vendor.name,
-items: [{ productId: prodId, productName: product.name, qty, cost: product.cost }],
-total: product.cost * qty,
-status: document.getElementById('poStatus').value,
-date: document.getElementById('poDate').value,
-branch: 'HQ',
-createdAt: new Date().toISOString(),
-};
-if (poId) {
-const idx = db.purchaseOrders.findIndex(p => p.id === poId);
-if (idx > -1) { data.createdAt = db.purchaseOrders[idx].createdAt;
-db.purchaseOrders[idx] = data; }
+});
+// Footer links
+document.querySelectorAll('.footer-col a, .footer-links a').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
 } else {
-db.purchaseOrders.push(data);
-if (data.status === 'Received') {
-const pidx = db.products.findIndex(p => p.id === prodId);
-if (pidx > -1) db.products[pidx].quantity += qty;
-}
-}
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, poId ? 'Updated PO' : 'Created PO',
-'Procurement', data.id);
-this.closeModal();
-this.refreshAll();
-this.showToast('Purchase order saved!', 'success');
-}
-deletePO(id) {
-if (!confirm('Delete this PO?')) return;
-const db = this.db;
-db.purchaseOrders = db.purchaseOrders.filter(po => po.id !== id);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted PO', 'Procurement', id);
-this.refreshAll();
-this.showToast('PO deleted.', 'info');
-}
-openVendorModal() {
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>Add Vendor</h3>
-<div class="form-row"><div class="form-group"><label>Name</label><input id="vName"></div>
-<div class="form-group"><label>Email</label><input id="vEmail"></div></div>
-<div class="form-row"><div class="form-group"><label>Phone</label><input id="vPhone"></div>
-<div class="form-group"><label>Category</label><input id="vCat"></div></div>
-<div class="form-group"><label>Address</label><input id="vAddr"></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveVendor()">Save</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveVendor() {
-const db = this.db;
-db.vendors.push({
-id: generateId('v'),
-name: document.getElementById('vName').value,
-email: document.getElementById('vEmail').value,
-phone: document.getElementById('vPhone').value,
-category: document.getElementById('vCat').value,
-address: document.getElementById('vAddr').value,
-status: 'Active',
-createdAt: new Date().toISOString(),
-});
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created vendor', 'Procurement', document
-.getElementById('vName').value);
-this.closeModal();
-this.refreshAll();
-this.showToast('Vendor added!', 'success');
-}
-// ---- FINANCE ----
-renderFinance(el) {
-const db = this.db;
-const totalPaid = db.invoices.filter(i => i.status === 'Paid').reduce((s, i) => s + i.amount, 0);
-const totalUnpaid = db.invoices.filter(i => i.status === 'Unpaid').reduce((s, i) => s + i.amount, 0);
-el.innerHTML = `
-<div class="kpi-grid">
-<div class="kpi-card"><div class="kpi-label">💰 Total Collected</div><div class="kpi-value">$${totalPaid.toFixed(2)}</div></div>
-<div class="kpi-card"><div class="kpi-label">📋 Outstanding</div><div class="kpi-value" style="color:var(--danger);">$${totalUnpaid.toFixed(2)}</div></div>
-</div>
-<div class="card">
-<div class="card-header"><h3>📋 Invoices</h3><button class="btn btn-primary btn-sm" onclick="app.openInvoiceModal()">+ New Invoice</button></div>
-<div class="table-wrap"><table><thead><tr><th>Invoice#</th><th>Customer</th><th>Amount</th><th>Status</th><th>Due Date</th><th>Actions</th></tr></thead><tbody>
-${db.invoices.map(inv=>`<tr>
-<td><strong>#${inv.id}</strong></td><td>${inv.customerName}</td><td>$${inv.amount.toFixed(2)}</td>
-<td><span class="badge ${inv.status==='Paid'?'badge-success':'badge-warning'}">${inv.status}</span></td>
-<td>${inv.dueDate}</td>
-<td>${inv.status==='Unpaid'?`<button class="btn btn-success btn-sm" onclick="app.markInvoicePaid('${inv.id}')">Mark Paid</button>`:''}
-<button class="btn btn-danger btn-sm" onclick="app.deleteInvoice('${inv.id}')">Del</button></td>
-</tr>`).join('')}
-</tbody></table></div>
-</div>
-<div class="card">
-<div class="card-header"><h3>📝 Journal Entries</h3><button class="btn btn-outline btn-sm" onclick="app.openJEModal()">+ New Entry</button></div>
-<div class="table-wrap"><table><thead><tr><th>Date</th><th>Description</th><th>Debit</th><th>Credit</th><th>Amount</th><th>Status</th></tr></thead><tbody>
-${db.journalEntries.map(je=>`<tr><td>${je.date}</td><td>${je.description}</td><td>${je.debits}</td><td>${je.credits}</td><td>$${je.amount.toFixed(2)}</td><td><span class="badge badge-success">${je.status}</span></td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openInvoiceModal() {
-const db = this.db;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>New Invoice</h3>
-<div class="form-group"><label>Customer</label><select id="invCust">${db.customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div>
-<div class="form-group"><label>Amount</label><input id="invAmt" type="number" step="0.01"></div>
-<div class="form-row"><div class="form-group"><label>Due Date</label><input id="invDue" type="date" value="${new Date(Date.now()+30*86400000).toISOString().split('T')[0]}"></div>
-<div class="form-group"><label>Status</label><select id="invStatus"><option>Unpaid</option><option>Paid</option></select></div></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveInvoice()">Save</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveInvoice() {
-const db = this.db;
-const custId = document.getElementById('invCust').value;
-const customer = db.customers.find(c => c.id === custId);
-const inv = {
-id: generateId('inv'),
-customerId: custId,
-customerName: customer?.name || '',
-salesOrderId: '',
-amount: parseFloat(document.getElementById('invAmt').value),
-status: document.getElementById('invStatus').value,
-dueDate: document.getElementById('invDue').value,
-date: new Date().toISOString().split('T')[0],
-createdAt: new Date().toISOString(),
-};
-db.invoices.push(inv);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created invoice', 'Finance', inv.id);
-this.closeModal();
-this.refreshAll();
-this.showToast('Invoice created!', 'success');
-}
-markInvoicePaid(id) {
-const db = this.db;
-const inv = db.invoices.find(i => i.id === id);
-if (inv) { inv.status = 'Paid';
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Marked invoice paid', 'Finance',
-id);
-this.refreshAll();
-this.showToast('Invoice marked as paid!', 'success'); }
-}
-deleteInvoice(id) {
-if (!confirm('Delete this invoice?')) return;
-const db = this.db;
-db.invoices = db.invoices.filter(i => i.id !== id);
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Deleted invoice', 'Finance', id);
-this.refreshAll();
-this.showToast('Invoice deleted.', 'info');
-}
-openJEModal() {
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>New Journal Entry</h3>
-<div class="form-group"><label>Description</label><input id="jeDesc"></div>
-<div class="form-row"><div class="form-group"><label>Debit Account</label><input id="jeDebit" value="Cash"></div>
-<div class="form-group"><label>Credit Account</label><input id="jeCredit" value="Revenue"></div></div>
-<div class="form-row"><div class="form-group"><label>Amount</label><input id="jeAmt" type="number" step="0.01"></div>
-<div class="form-group"><label>Date</label><input id="jeDate" type="date" value="2026-07-12"></div></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveJE()">Save</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveJE() {
-const db = this.db;
-db.journalEntries.push({
-id: generateId('je'),
-date: document.getElementById('jeDate').value,
-description: document.getElementById('jeDesc').value,
-debits: document.getElementById('jeDebit').value,
-credits: document.getElementById('jeCredit').value,
-amount: parseFloat(document.getElementById('jeAmt').value),
-status: 'Posted',
-createdAt: new Date().toISOString(),
-});
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created journal entry', 'Finance',
-document.getElementById('jeDesc').value);
-this.closeModal();
-this.refreshAll();
-this.showToast('Journal entry posted!', 'success');
-}
-// ---- HR ----
-renderHR(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>👤 Employee Management</h3><button class="btn btn-primary btn-sm" onclick="app.openEmployeeModal()">+ Add Employee</button></div>
-<div class="table-wrap"><table><thead><tr><th>Name</th><th>Department</th><th>Position</th><th>Salary</th><th>Join Date</th><th>Branch</th><th>Status</th></tr></thead><tbody>
-${db.employees.map(e=>`<tr><td><strong>${e.name}</strong></td><td>${e.department}</td><td>${e.position}</td><td>$${e.salary.toLocaleString()}</td><td>${e.joinDate}</td><td>${e.branch}</td><td><span class="badge badge-success">${e.status}</span></td></tr>`).join('')}
-</tbody></table></div>
-</div>
-<div class="card">
-<div class="card-header"><h3>📅 Attendance</h3></div>
-<div class="table-wrap"><table><thead><tr><th>Employee</th><th>Date</th><th>Check In</th><th>Check Out</th><th>Status</th></tr></thead><tbody>
-${db.attendance.map(a=>`<tr><td>${a.employeeName}</td><td>${a.date}</td><td>${a.checkIn}</td><td>${a.checkOut}</td><td><span class="badge badge-success">${a.status}</span></td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openEmployeeModal() {
-const db = this.db;
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>Add Employee</h3>
-<div class="form-row"><div class="form-group"><label>Name</label><input id="empName"></div>
-<div class="form-group"><label>Department</label><input id="empDept"></div></div>
-<div class="form-row"><div class="form-group"><label>Position</label><input id="empPos"></div>
-<div class="form-group"><label>Salary</label><input id="empSal" type="number"></div></div>
-<div class="form-row"><div class="form-group"><label>Join Date</label><input id="empDate" type="date"></div>
-<div class="form-group"><label>Branch</label><select id="empBranch">${db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveEmployee()">Save</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveEmployee() {
-const db = this.db;
-db.employees.push({
-id: generateId('e'),
-name: document.getElementById('empName').value,
-department: document.getElementById('empDept').value,
-position: document.getElementById('empPos').value,
-salary: parseInt(document.getElementById('empSal').value),
-joinDate: document.getElementById('empDate').value,
-branch: document.getElementById('empBranch').value,
-status: 'Active',
-createdAt: new Date().toISOString(),
-});
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Added employee', 'HR', document
-.getElementById('empName').value);
-this.closeModal();
-this.refreshAll();
-this.showToast('Employee added!', 'success');
-}
-// ---- USERS ----
-renderUsers(el) {
-const db = this.db;
-if (this.currentUser?.role !== 'admin') {
-el.innerHTML =
-'<div class="card"><h3>Access Denied</h3><p>Only administrators can manage users.</p></div>';
-return;
-}
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>⚙️ User Management</h3><button class="btn btn-primary btn-sm" onclick="app.openUserModal()">+ Add User</button></div>
-<div class="table-wrap"><table><thead><tr><th>Username</th><th>Full Name</th><th>Role</th><th>Email</th><th>Branch</th><th>Active</th></tr></thead><tbody>
-${db.users.map(u=>`<tr><td><strong>${u.username}</strong></td><td>${u.fullName}</td><td><span class="badge badge-info">${u.role}</span></td><td>${u.email}</td><td>${u.branch}</td><td>${u.active?'✅':'❌'}</td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openUserModal() {
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>Add User</h3>
-<div class="form-row"><div class="form-group"><label>Username</label><input id="uUser"></div>
-<div class="form-group"><label>Password</label><input id="uPass" type="password"></div></div>
-<div class="form-row"><div class="form-group"><label>Full Name</label><input id="uName"></div>
-<div class="form-group"><label>Email</label><input id="uEmail"></div></div>
-<div class="form-row"><div class="form-group"><label>Role</label><select id="uRole"><option>staff</option><option>manager</option><option>admin</option></select></div>
-<div class="form-group"><label>Branch</label><select id="uBranch">${this.db.branches.map(b=>`<option>${b}</option>`).join('')}</select></div></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveUser()">Save</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveUser() {
-const db = this.db;
-db.users.push({
-id: generateId('u'),
-username: document.getElementById('uUser').value,
-password: document.getElementById('uPass').value,
-role: document.getElementById('uRole').value,
-fullName: document.getElementById('uName').value,
-email: document.getElementById('uEmail').value,
-branch: document.getElementById('uBranch').value,
-department: 'General',
-active: true,
-createdAt: new Date().toISOString(),
-});
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Created user', 'Users', document
-.getElementById('uUser').value);
-this.closeModal();
-this.refreshAll();
-this.showToast('User created!', 'success');
-}
-// ---- AUDIT ----
-renderAudit(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>📝 Audit Logs</h3></div>
-<div class="table-wrap"><table><thead><tr><th>Timestamp</th><th>User</th><th>Action</th><th>Module</th><th>Details</th></tr></thead><tbody>
-${db.auditLogs.slice().reverse().map(l=>`<tr><td>${new Date(l.timestamp).toLocaleString()}</td><td>${l.username}</td><td>${l.action}</td><td>${l.module}</td><td>${l.details||''}</td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-// ---- DOCUMENTS ----
-renderDocuments(el) {
-const db = this.db;
-el.innerHTML = `
-<div class="card">
-<div class="card-header"><h3>📁 Document Management</h3><button class="btn btn-primary btn-sm" onclick="app.openDocModal()">+ Upload Document</button></div>
-<div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Category</th><th>Size</th><th>Uploaded By</th><th>Date</th></tr></thead><tbody>
-${db.documents.map(d=>`<tr><td><strong>${d.name}</strong></td><td>${d.type}</td><td>${d.category}</td><td>${d.size}</td><td>${d.uploadedBy}</td><td>${new Date(d.createdAt).toLocaleString()}</td></tr>`).join('')}
-</tbody></table></div>
-</div>`;
-}
-openDocModal() {
-const modal = document.getElementById('modalContent');
-modal.innerHTML = `
-<h3>Upload Document</h3>
-<div class="form-group"><label>Document Name</label><input id="docName"></div>
-<div class="form-row"><div class="form-group"><label>Type</label><select id="docType"><option>PDF</option><option>DOCX</option><option>XLSX</option><option>Image</option><option>Other</option></select></div>
-<div class="form-group"><label>Category</label><input id="docCat" value="Reports"></div></div>
-<div class="form-group"><label>File Size</label><input id="docSize" value="1.0 MB"></div>
-<div class="modal-actions"><button class="btn btn-outline" onclick="app.closeModal()">Cancel</button>
-<button class="btn btn-primary" onclick="app.saveDoc()">Upload</button></div>`;
-document.getElementById('modalOverlay').classList.add('show');
-}
-saveDoc() {
-const db = this.db;
-db.documents.push({
-id: generateId('doc'),
-name: document.getElementById('docName').value,
-type: document.getElementById('docType').value,
-category: document.getElementById('docCat').value,
-size: document.getElementById('docSize').value,
-uploadedBy: this.currentUser?.username || 'unknown',
-createdAt: new Date().toISOString(),
-});
-saveDB(db);
-this.addAuditLog(this.currentUser.id, this.currentUser.username, 'Uploaded document', 'Documents', document
-.getElementById('docName').value);
-this.closeModal();
-this.refreshAll();
-this.showToast('Document uploaded!', 'success');
-}
-// ---- GLOBAL SEARCH ----
-globalSearch(query) {
-const dropdown = document.getElementById('searchDropdown');
-if (!query || query.length < 1) { dropdown.classList.remove('show'); return; }
-const db = this.db;
-const results = [];
-const q = query.toLowerCase();
-db.customers.forEach(c => { if (c.name.toLowerCase().includes(q) || c.email.toLowerCase().includes(q))
-results.push({ type: 'Customer', label: c.name, id: c.id, module: 'crm' }); });
-db.products.forEach(p => { if (p.name.toLowerCase().includes(q) || p.sku.toLowerCase().includes(q))
-results.push({ type: 'Product', label: p.name + ' (' + p.sku + ')', id: p.id,
-module: 'inventory' }); });
-db.salesOrders.forEach(so => { if (so.id.includes(q) || so.customerName.toLowerCase().includes(q))
-results.push({ type: 'Sales Order', label: '#' + so.id + ' - ' + so.customerName, id: so.id,
-module: 'sales' }); });
-db.invoices.forEach(inv => { if (inv.id.includes(q) || inv.customerName.toLowerCase().includes(q))
-results.push({ type: 'Invoice', label: '#' + inv.id + ' - ' + inv.customerName, id: inv.id,
-module: 'finance' }); });
-db.employees.forEach(e => { if (e.name.toLowerCase().includes(q)) results.push({ type: 'Employee',
-label: e.name, id: e.id, module: 'hr' }); });
-db.vendors.forEach(v => { if (v.name.toLowerCase().includes(q)) results.push({ type: 'Vendor',
-label: v.name, id: v.id, module: 'procurement' }); });
-dropdown.innerHTML = results.slice(0, 15).map(r =>
-`<div class="search-result-item" onclick="app.navigateTo('${r.module}');document.getElementById('searchDropdown').classList.remove('show');document.getElementById('globalSearchInput').value='';">
-<span>${r.label}</span><span class="sr-type">${r.type}</span></div>`
-).join('') || '<div class="search-result-item"><span>No results</span></div>';
-dropdown.classList.add('show');
-}
-// ---- NOTIFICATIONS ----
-toggleNotifPanel() {
-const panel = document.getElementById('notifPanel');
-const dot = document.getElementById('notifDot');
-const db = this.db;
-const userNotifs = db.notifications.filter(n => n.userId === this.currentUser?.id);
-panel.innerHTML = userNotifs.slice(-15).reverse().map(n =>
-`<div class="notif-item ${n.read?'':'unread'}" onclick="app.markNotifRead('${n.id}')">
-<strong>${n.title}</strong><br>${n.message}<br><small style="color:var(--text3);">${new Date(n.timestamp).toLocaleString()}</small></div>`
-).join('') || '<div class="notif-item">No notifications</div>';
-panel.classList.toggle('show');
-const unread = userNotifs.filter(n => !n.read).length;
-dot.style.display = unread > 0 ? 'block' : 'none';
-}
-markNotifRead(id) {
-const db = this.db;
-const n = db.notifications.find(not => not.id === id);
-if (n) { n.read = true;
-saveDB(db); }
-this.toggleNotifPanel();
-}
-addNotification(userId, title, message) {
-const db = this.db;
-db.notifications.push({
-id: generateId('n'),
-userId,
-title,
-message,
-read: false,
-timestamp: new Date().toISOString(),
-});
-saveDB(db);
-}
-// ---- AUDIT LOG ----
-addAuditLog(userId, username, action, module, details = '') {
-const db = this.db;
-db.auditLogs.push({
-id: generateId('log'),
-userId,
-username,
-action,
-module,
-timestamp: new Date().toISOString(),
-details,
-});
-saveDB(db);
-}
-// ---- THEME ----
-toggleTheme() {
-const current = document.documentElement.getAttribute('data-theme');
-const next = current === 'dark' ? 'light' : 'dark';
-document.documentElement.setAttribute('data-theme', next);
-const db = this.db;
-db.settings = db.settings || {};
-db.settings.theme = next;
-saveDB(db);
-this.showToast('Theme: ' + (next === 'dark' ? 'Dark Mode' : 'Light Mode'), 'info');
-}
-// ---- MODAL ----
-closeModal() {
-document.getElementById('modalOverlay').classList.remove('show');
-document.getElementById('modalContent').innerHTML = '';
-}
-// ---- TOAST ----
-showToast(message, type = 'info') {
-const container = document.getElementById('toastContainer');
-const toast = document.createElement('div');
-toast.className = `toast ${type}`;
-toast.textContent = message;
-container.appendChild(toast);
-setTimeout(() => { toast.style.opacity = '0';
-toast.style.transition = 'opacity 0.3s';
-setTimeout(() => toast.remove(), 300); }, 3000);
-}
-}
-// ==================== INITIALIZE ====================
-const app = new NexusERP();
-// Sidebar navigation
-document.getElementById('sidebarNav').addEventListener('click', (e) => {
-const navItem = e.target.closest('.nav-item');
-if (navItem) {
-const module = navItem.dataset.module;
-if (module) app.navigateTo(module);
+link.classList.remove('active');
 }
 });
-// Enter key for login
-document.getElementById('loginPass').addEventListener('keydown', (e) => {
-if (e.key === 'Enter') app.login();
+// Mobile drawer links
+document.querySelectorAll('.mobile-submenu-group a, .mobile-direct-links a').forEach(function(link) {
+var href = link.getAttribute('href');
+if (!href) return;
+var hrefNorm = href.replace(/\/$/, '').replace(/\/index\.html$/, '');
+if (hrefNorm === '') hrefNorm = '/';
+if (normalized === hrefNorm) {
+link.classList.add('active');
+} else {
+link.classList.remove('active');
+}
 });
-document.getElementById('loginUser').addEventListener('keydown', (e) => {
-if (e.key === 'Enter') document.getElementById('loginPass').focus();
+}
+setActiveNav();
+window.addEventListener('popstate', setActiveNav);
+setTimeout(setActiveNav, 100);
+// ============================================================
+// 11. DEMO MODAL
+// ============================================================
+var demoModal = document.getElementById('demoModal');
+var demoModalForm = document.getElementById('demoModalForm');
+var demoSuccessState = document.getElementById('demoSuccessState');
+var demoModalFocusTrap = null;
+var demoLastFocused = null;
+function openDemoModal() {
+demoLastFocused = document.activeElement;
+demoModal.classList.add('active');
+demoModal.setAttribute('aria-hidden', 'false');
+document.body.classList.add('no-scroll');
+demoModalForm.style.display = 'block';
+demoSuccessState.style.display = 'none';
+// Close mobile drawer if open
+if (mobileDrawer.classList.contains('active')) {
+closeMobileDrawer();
+}
+setTimeout(function() {
+var firstInput = demoModal.querySelector('input, button');
+if (firstInput) firstInput.focus();
+demoModalFocusTrap = trapFocus(demoModal);
+}, 100);
+}
+function closeDemoModal() {
+demoModal.classList.remove('active');
+demoModal.setAttribute('aria-hidden', 'true');
+document.body.classList.remove('no-scroll');
+if (demoModalFocusTrap) {
+demoModalFocusTrap();
+demoModalFocusTrap = null;
+}
+if (demoLastFocused) {
+demoLastFocused.focus();
+}
+}
+// Attach to all demo triggers
+document.querySelectorAll('a[href="#demo"], a[href$="#demo"], .demo-trigger').forEach(function(link) {
+link.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
 });
-console.log('🔷 NexusERP Initialized');
-console.log('📋 Default credentials: admin / admin123');
-console.log('⌨️  Shortcuts: Ctrl+K = Global Search | Ctrl+D = Dashboard');
-console.log('📦 Data stored in localStorage:', DB_KEY);
-console.log('🌓 Dark/Light mode available via header toggle');
-console.log('📊 Dashboard | 👥 CRM | 💰 Sales | 📦 Inventory | 🛒 Procurement | 📋 Finance | 👤 HR | ⚙️ Users | 📝 Audit | 📁 Documents');
+});
+// Mobile demo button
+var mobileDemoBtn = document.getElementById('mobileDemoBtn');
+if (mobileDemoBtn) {
+mobileDemoBtn.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
+});
+}
+// Close modal
+var demoCloseBtn = demoModal.querySelector('.demo-modal-close');
+if (demoCloseBtn) {
+demoCloseBtn.addEventListener('click', closeDemoModal);
+}
+var demoCloseSuccessBtn = demoSuccessState.querySelector('.demo-close-btn');
+if (demoCloseSuccessBtn) {
+demoCloseSuccessBtn.addEventListener('click', closeDemoModal);
+}
+// Click outside modal
+demoModal.addEventListener('click', function(e) {
+if (e.target === this) {
+closeDemoModal();
+}
+});
+// Escape closes modal
+document.addEventListener('keydown', function(e) {
+if (e.key === 'Escape' && demoModal.classList.contains('active')) {
+closeDemoModal();
+}
+});
+// Form submission
+if (demoModalForm) {
+demoModalForm.addEventListener('submit', function(e) {
+e.preventDefault();
+demoModalForm.style.display = 'none';
+demoSuccessState.style.display = 'block';
+// Focus the close button in success state
+setTimeout(function() {
+var closeBtn = demoSuccessState.querySelector('.demo-close-btn');
+if (closeBtn) closeBtn.focus();
+}, 100);
+});
+}
+// ============================================================
+// 12. FIX DEAD LINKS - Connect # links to meaningful actions
+// ============================================================
+document.querySelectorAll('a[href="#"]').forEach(function(link) {
+// If it's in a sol-card or similar, make it scroll to demo or a section
+var card = link.closest('.sol-card, .trading-card');
+if (card) {
+var heading = card.querySelector('h4');
+if (heading) {
+var text = heading.textContent.toLowerCase();
+if (text.includes('microfinance') || text.includes('sacco') || text.includes('real estate') || text.includes('property')) {
+link.setAttribute('href', '#demo');
+link.addEventListener('click', function(e) {
+e.preventDefault();
+openDemoModal();
+});
+} else {
+link.setAttribute('href', '#solutions');
+}
+}
+}
+});
+// ============================================================
+// 13. PREFERS REDUCED MOTION
+// ============================================================
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+document.documentElement.style.scrollBehavior = 'auto';
+document.querySelectorAll('.marquee-track').forEach(function(track) {
+track.style.animation = 'none';
+});
+}
+});
 </script>
 </body>
 </html>
